@@ -1,0 +1,24 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% block page_description %}
+The Ofek Foundation 404 page
+{% endblock %}
+
+{% block body_block %}
+	<div id="dropdown">
+		<h2>You seem to have gotten lost</h2>
+		<h3><a href="/">Can I help with that?</a></h3>
+	</div>
+{% endblock %}
+
+{% block end_block %}
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('#dropdown').css('left', ($(document).outerWidth(true) - $('#dropdown').outerWidth(false)) / 2 + "px");
+	  $('#dropdown').css('top', '-' + $('#dropdown').outerHeight(false) + "px");
+	  $('#dropdown').animate({top: ($(document).outerHeight(true) - $('#dropdown').outerHeight(false) * 4) / 2 + "px", opacity: 1}, 2000, function() {
+	    $('#dropdown a').animate({'margin-left': "0px", opacity: 1}, 2000);
+	  });
+	});
+</script>
+{% endblock %}
