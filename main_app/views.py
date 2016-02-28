@@ -5,3 +5,7 @@ from django.http import HttpResponse
 def index(request):
 	context_dict = {}
 	return render(request, 'main_app/index.html', context_dict)
+
+def page_not_found(request):
+	print "PAge NOT FOUND!!!"
+	return render(request, 'main_app/index.html', context_dict)
