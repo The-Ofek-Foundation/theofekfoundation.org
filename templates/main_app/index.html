@@ -1,0 +1,244 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta property="og:url"           content="http://theofekfoundation.org/index.html" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="We are Ofek" />
+	<meta property="og:description"   content="Ofek Gila's main website" />
+{% endblock %}
+
+{% block body_block %}
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+  <div class="header">
+    <div class="fb-like" data-href="http://theofekfoundation.org" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false" style="bottom: 10px; padding-right: 20px;"></div>
+    <div class="g-plusone" data-annotation="inline" size="tall" data-width="300" data-href="http://theofekfoundation.org"></div>
+  </div>
+  <div class="dropdown">
+	<h1>Heya peeps, Ofek Gila here!</h1>
+  </div>
+  <div class="dropright">
+    <h2>Check out my <a href="/blog/">new blog!</a></h2>
+  </div>
+  <div class="projects" id="games">
+    <h2>Games (Most with AIs)</h3>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/ConnectOfek/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/connect-4.jpg" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">Perhaps my strongest AI, my Connect Four Monte Carlo tree search AI is very powerful and very fast!</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Online-Go/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/board-game-go.jpg" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">Play Go, Gomoku, or Wu. The only one with an AI—however—is Gomoku—with a Minimax implementation.</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Mancala/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/mancala.JPG" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">My first Monte Carlo tree search AI! The game itself is programmed with a customizeable set of rules.</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/UltimateTicTacToe/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/Ultimate-Tic-Tac-Toe.jpg" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">An AI I literally whipped over two nights—the interface is slightly lacking—but plays well nonetheless.</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Lame-Duck/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/duck.svg" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">This game precedes this website by half a year, and was made in a few hours. It seems to be the largest attraction of my site for some reason.</div></figure>
+      </div>
+    </section>
+  </div>
+  <div class="projects" id="tools">
+    <h2>Tools and other Math Stuff</h2>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Maze/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/maze.png" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">A <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search">depth-first search maze generator</a> with a generation <strong>animation option</strong> and maze styles!</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/PrimeFactorizer/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/factor-tree.gif" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">A super-fast prime number factorizer that uses a sieve of a size that you get to input!</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Image-Editor/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/image-editor.jpg" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">A neat little image editor that has many effects. Press 'c' to enter commands.</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Grapher/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/grapher.gif" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">A function grapher with a neat tracing and newtons' method (click 'n' in trace mode).</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/Happy-Numbers/');">
+        <figure class="front"><img class="square" src="{% static "images/main_app/happy-number.png" %}" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">A <a href="https://en.wikipedia.org/wiki/Happy_number">Happy Number</a> calculator.</div></figure>
+      </div>
+    </section>
+    <section class="container square">
+      <div class="flippable link" onclick="redirect('/ReveresLatsLettesr/');">
+        <figure class="front"><img class="square" src="https://c2.staticflickr.com/2/1270/4600275420_c7bfb8466d.jpg" /></figure>
+        <figure class="back"><div class="vert-align fit-parent">Reverse the last two characters of words :P</div></figure>
+      </div>
+    </section>
+  </div>
+  <!-- <div class="info" id="contact-me">
+    <h2>Contact Me</h2>
+  </div> -->
+  <div class="info" id="about">
+    <h2>About Me</h2>
+    Hello world!!!<br /><br />
+    I'm currently a High School student in Monta Vista High School where I was introduced to Computer Programming. As you might be able to tell from my website and my <a href="/blog/">blog</a>, I focus more on the logistical side of programming and less on the aesthetic side. That doesn't mean I can't work with html and css—I can and I have—but I find it much less enjoyable, and it takes me more than it should to figure things out. On the other hand—I'm in love with the world of—<br />
+    <img class="square" src="{% static "images/main_app/algorithms.png" %}"></img><br />
+    Sadly, my knowledge in algorithms is still very limited. The AP Computer Science course only covered the very basics of logic. Most of my knowledge in the field has been entirely self-taught. While still in my Introductions to Java course, I built a fully functioning <a href="https://github.com/The-Ofek-Foundation/Snake">Old Snakey game</a> with a few AIs—teaching me the basics of Breadth-first search, a <a href="https://github.com/The-Ofek-Foundation/Maze">maze generator and solver</a> that taught me Depth-first search, and <a href="https://github.com/The-Ofek-Foundation/">much, much more</a> that helped me refine those skills. In the last half-year, however, my limited knowledge has seeped into the grand field of Game Theory!<br /><br />
+    The problem with me obtaining my knowledge independently is that I end up reinventing pre-existing algorithms because I simply don't know they exist. When I started programming and my father asked me to create an ordered histogram, I needed to sort the letters. At that time, I had no knowledge of sorting algorithms, so the way I ended up sorting was what I now know to be a simple selection sort. When creating an AI for <a href="/Online-Go/">Gomoku</a> (five-in-a-row), I had no knowledge of AI algorithms except the breadth-first search I used for an Old Snakey AI—which wouldn't be much help. However, I knew I needed some form of analysis function, so I made one, and then I used it recursively to find the best move. I now know this to be the infamous naive Minimax algorithm. I also greatly improved my algorithm (See my <a href="/blog/artificial%20intelligence/2015/12/18/minimax-improvements.html">blog post on minimax improvements</a>) without external aide. After researching it, however, I came across alpha-beta pruning, which is more significant than any of the individual improvements I made myself.<br /><br />
+    There is, however, one AI that I learned about far before I decided to tackle—the relatively new Monte Carlo tree search. If you were familiar with this AI algorithm, you would be able to guess that I learned about this from an obsession with the game of Go. After joining my school's Go Club (and becoming the president sophomore year), my love for Go has only been increasing. This made it hard to avoid hearing the words "Monte Carlo tree search" although I never knew what they really meant other than that they referred to some random AI algorithm (note the punny use of the word 'random'). After I started getting into Game Theory, I decided to finally teach myself this Monte Carlo tree search. With no formal guide or lesson plan, it took me two whole days to finally create a basic working Monte Carlo tree search AI for the game <a href="/Mancala/">Mancala</a>. I refined and greatly improved this algorithm for my strong <a href="/ConnectOfek/">Connect Four AI</a>. While on vacation, seeing my older brother play Ultimate Tic Tac Toe, I whipped up an <a href="/UltimateTicTacToe/">AI</a> overnight, and greatly improved it on the second night.<br /><br />
+    That's my story so far, and I can't wait until going to a University to formally learn computer science and improve!
+  </div>
+  <div class="footer">
+    Github: <a href="https://github.com/The-Ofek-Foundation">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a href="/blog/">theofekfoundation.org/blog</a> &nbsp; Contact: <a href="mailto:ofekgila@outlook.com">ofekgila@outlook.com</a>
+  </div>
+  <div id="links" style="display: none;"></div>
+  <div style="display: none;"><a href="/ConnectOfek/"></a><a href="/Online-Go/"></a><a href="/Mancala/"></a><a href="/UltimateTicTacToe/"></a><a href="/Lame-Duck/"></a><a href="/Maze/"></a><a href="/PrimeFactorizer/"></a><a href="/Image-Editor/"></a><a href="/Grapher/"></a><a href="/Happy-Numbers/"></a></div>
+{% endblock %}
+
+{% block end_block %}
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('body').css('margin-bottom', 2 * $('.footer').height() + "px");
+	  $('.dropdown').css({'top': "-" + $('.dropdown').height() + "px", 'margin-top': $('.dropdown').height() + "px"});
+	  $('.dropright').css({left: $('.dropdown').outerWidth(true) + "px", opacity: 1});
+
+	  $('.info').css('margin-left', "-=25px").css('padding-left', "+=20px").css('padding-right', "+=20px").css('width', "-=40px");
+
+	  var squares = document.getElementsByClassName("square");
+	  for (var i = 0; i < squares.length; i++)
+	    $(squares[i]).css('height', $(squares[i]).outerWidth(false) + "px");
+
+	//   $('.link').each(function() {
+	//     $("#links").append($('<a href="' + $(this).data("url") + '"></a>'));
+	//   });
+
+	  var prev_container = false, prev_dp = false;
+	  document.onmousemove = function (e) {
+	    var target = e.target;
+	    if (!target.parentElement)
+	      return;
+	    var doub_par = target.parentElement.parentElement;
+	    if (doub_par === prev_dp || (target.tagName === "SECTION"));
+	    else if (target.parentElement.tagName === "FIGURE") {
+	      var tp = target.parentElement.parentElement.parentElement;
+	      $(prev_container).children(".flippable").removeClass("flipped");
+	      prev_container = tp;
+	      prev_dp = doub_par;
+	      $(prev_container).children(".flippable").addClass("flipped");
+	    }
+	    else if (target.tagName === "DIV") {
+	      $(prev_container).children(".flippable").removeClass("flipped");
+	      prev_container = prev_dp = target;
+	    }
+	  };
+	  $('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
+	});
+
+	function indexOf(list, item) {
+	  for (var i = 0; i < list.length; i++)
+	    if (list[i] === item)
+	      return i;
+	  return -1;
+	}
+
+	$(".dropright").on("transitionend", function() {
+	  if (!after) {
+	    after = true;
+	    fit_parent();
+	    vert_align();
+	    $('#games').animate({opacity: 1}, 1000, function() {
+	      $('.header').css('right', "-" + $('.header').outerWidth(true) + "px");
+	      $('.header').animate({right: "0px"}, 1000);
+	    });
+	    $(document).scroll();
+	  }
+	});
+
+	var fit_parents = document.getElementsByClassName("fit-parent");
+	function fit_parent() {
+	  var fp = fit_parents, elem;
+	  for (var i = 0; i < fp.length; i++) {
+	    elem = $(fp[i]);
+	    while (elem.height() > elem.parent().height())
+	        elem.css('font-size', (parseInt(elem.css('font-size')) - 1) + "px" );
+	  }
+	}
+
+	var vert_aligns = document.getElementsByClassName("vert-align");
+	function vert_align() {
+	  var va = vert_aligns, elem;
+	  for (var i = 0; i < va.length; i++) {
+	    elem = $(va[i]);
+	    elem.css('margin-top', (elem.parent().height() - elem.height()) / 2 + "px");
+	  }
+	}
+
+	// Animate tools when scrolled to them
+	var after = false;
+	$(document).scroll(function() {
+	  if(after) {
+	    if (window_at($('#tools')) && !$('#tools').data('animated')) {
+	      $('#tools').animate({opacity: 1, 'margin-top': "0px"}, 1000);
+	      $('#tools').data('animated', true);
+	    }
+	    if (window_at($('#about')) && !$('#about').data('animated')) {
+	      $('#about').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
+	      $('#about').css('height', 'auto');
+	      $('#about').data('animated', true);
+	    }
+	//     if (window_at($('#contact-me')) && !$('#contact-me').data('animated')) {
+	//       $('#contact-me').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
+	//       $('#contact-me').css('height', 'auto');
+	//       $('#contact-me').data('animated', true);
+	//     }
+	  }
+	});
+
+	function window_at(elem) {
+	  return $(document).scrollTop() + $(window).height() - $('.footer').outerHeight(true) >= elem.position().top;
+	}
+
+	// Scroll to top on window reload so always show up on top
+	$(window).on('beforeunload', function() {
+	  $('*').hide();
+	  $(window).scrollTop(0);
+	});
+
+	function redirect(url) {
+	  window.location.href = url;
+	}
+</script>
+{% endblock %}

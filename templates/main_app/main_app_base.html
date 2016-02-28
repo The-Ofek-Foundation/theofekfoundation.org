@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block head_block %}
+	<meta name="description" content="{% block description %}Ofek Gila's website with many game AIs and online tools{% endblock %}">
+
+	{% block rel_block %}
+		<link rel="shortcut icon" href="{% static "images/blog-logo.png" %}" type="image/x-icon" />
+		<link rel="icon" href="{% static "images/blog-logo.png" %}" type="image/gif" />
+	{% endblock %}
+
+	<script src="{% static "assets/plugins/jquery-1.12.1.min.js" %}"></script>
+
+	<link href='https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/main_app.css" %}">
+
+	{% block header_additions %}{% endblock %}
+{% endblock %}
+

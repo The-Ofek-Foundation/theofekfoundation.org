@@ -1,0 +1,162 @@
+html {
+  margin: 0px;
+}
+body {
+  font-family: 'Old Standard TT', serif;
+  font-size: 1.32em;
+  font-weight: 400;
+}
+.dropdown {
+  margin-right: 50px;
+  position: absolute;
+  top: -500px;
+  -webkit-transition: margin-top 1s;
+  transition: margin-top 1s;
+}
+.dropright {
+  background-color: lightblue;
+  border-radius: 25px;
+  border: 5px solid red;
+  margin: 25px;
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transition-property: left, opacity;
+  transition-duration: 1s;
+  transition-delay: 1s;
+  -webkit-transition-property: left, opacity;
+  -webkit-transition-duration: 1s;
+  -webkit-transition-delay: 1s;
+}
+.dropright h2 {
+  font-weight: 400;
+  margin: 8px;
+}
+.dropright a {
+  font-weight: 700;
+}
+.projects {
+  border-radius: 30px;
+  border: 3px solid black;
+  margin: auto;
+  opacity: 0;
+  perspective: 800px;
+  text-align: center;
+  width: 80%;
+  margin-bottom: 60px;
+}
+.projects#games {
+  background-color: #FF7216;
+}
+.projects#tools {
+  background-color: #00FF00;
+}
+.projects .flippable {
+  height: 100%;
+  position: absolute;
+  transform-origin: right center;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  width: 100%;
+}
+.projects .flippable figure {
+  backface-visibility: hidden;
+  display: block;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+}
+.projects .flippable img {
+  border-radius: 15px;
+  height: 100%;
+  margin: 0px;
+  width: 100%;
+}
+.projects .flippable .back {
+  background-color: rgba(0, 100, 255, 0.6);
+  border-radius: 15px;
+  font-size: 1.6em;
+  margin-left: 20px;
+  margin-right: 20px;
+  transform: rotateY(180deg);
+}
+.projects .flippable div {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.projects .flippable.flipped {
+  transform: translateX(-100%) rotateY(-180deg);
+}
+.info {
+  border-radius: 30px;
+  border: 3px solid black;
+  margin-bottom: 60px;
+  margin: auto;
+  opacity: 0;
+  padding-bottom: 40px;
+  text-align: center;
+  width: 80%;
+}
+.info img {
+  width: 70%;
+}
+.container {
+  display: inline-block;
+  height: 50px;
+  margin: 40px;
+  perspective: 800px;
+  position: relative;
+  width: 30%;
+}
+.link {
+  cursor: pointer;
+}
+a {
+  border-radius: 5px;
+  font-weight: 400;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-decoration: none;
+  transition: background-color 1.5s ease-out;
+}
+a:hover {
+  background-color: rgba(255, 255, 0, 0.6);
+  transition: background-color 2s ease-out;
+}
+.header {
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  font-weight: 700;
+  height: auto;
+  padding-bottom: 2px;
+  padding: 10px;
+  padding: 5px 20px;
+  position: fixed;
+  right: -1000px;
+  text-align: right;
+  top: 0px;
+  width: auto;
+  z-index: 10;
+}
+.footer {
+  background-color: yellow;
+  border-top: 1px solid black;
+  bottom: 0px;
+  font-weight: 700;
+  height: auto;
+  left: 0px;
+  padding: 5px 30px;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+.footer a {
+  border-radius: 5px;
+  border: 1px solid;
+  padding-bottom: 1px;
+  padding: 0px 5px;
+}
