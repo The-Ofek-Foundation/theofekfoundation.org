@@ -22,5 +22,3 @@ if settings.DEBUG:
 	)
 else:
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-handler404 = 'main_app.views.page_not_found'

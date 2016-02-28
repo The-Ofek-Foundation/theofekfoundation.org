@@ -25,9 +25,9 @@ SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['theofekfoundation.org','ofekih.pythonanywhere.com']
+ALLOWED_HOSTS = ['theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com']
 
 
 # Application definition
