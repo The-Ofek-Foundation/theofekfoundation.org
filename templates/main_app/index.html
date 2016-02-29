@@ -2,33 +2,8 @@
 
 {% load staticfiles %}
 
-{% block header_additions %}
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-	<meta property="og:url"           content="http://theofekfoundation.org/index.html" />
-	<meta property="og:type"          content="website" />
-	<meta property="og:title"         content="We are Ofek" />
-	<meta property="og:description"   content="Ofek Gila's main website" />
-{% endblock %}
-
-{% block body_block %}
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-  <div class="header">
-    <div class="fb-like" data-href="http://theofekfoundation.org" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false" style="bottom: 10px; padding-right: 20px;"></div>
-    <div class="g-plusone" data-annotation="inline" size="tall" data-width="300" data-href="http://theofekfoundation.org"></div>
-  </div>
-  <div class="dropdown">
-	<h1>Heya peeps, Ofek Gila here!</h1>
-  </div>
-  <div class="dropright">
-    <h2>Check out my <a href="/blog/">new blog!</a></h2>
-  </div>
+{% block body_content %}
+  <h1>Heya peeps, Ofek Gila here!</h1>
   <div class="projects" id="games">
     <h2>Games (Most with AIs)</h3>
     <section class="container square">
@@ -123,17 +98,8 @@
 
 {% block end_block %}
 <script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/platform.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
-</script>
-<script type="text/javascript">
 	$(document).ready(function() {
 	  $('body').css('margin-bottom', 2 * $('.footer').height() + "px");
-	  $('.dropdown').css({'top': "-" + $('.dropdown').height() + "px", 'margin-top': $('.dropdown').height() + "px"});
-	  $('.dropright').css({left: $('.dropdown').outerWidth(true) + "px", opacity: 1});
 
 	  $('.info').css('margin-left', "-=25px").css('padding-left', "+=20px").css('padding-right', "+=20px").css('width', "-=40px");
 
@@ -165,6 +131,14 @@
 	    }
 	  };
 	  $('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
+	  setTimeout(function () {
+	  	fit_parent();
+		vert_align();
+	  }, 1000);
+		$('#games').animate({opacity: 1, 'margin-top': 0}, 1000, function () {
+			after = true;
+		});
+		$(document).scroll();
 	});
 
 	function indexOf(list, item) {
@@ -172,38 +146,6 @@
 	    if (list[i] === item)
 	      return i;
 	  return -1;
-	}
-
-	$(".dropright").on("transitionend", function() {
-	  if (!after) {
-	    after = true;
-	    fit_parent();
-	    vert_align();
-	    $('#games').animate({opacity: 1}, 1000, function() {
-	      $('.header').css('right', "-" + $('.header').outerWidth(true) + "px");
-	      $('.header').animate({right: "0px"}, 1000);
-	    });
-	    $(document).scroll();
-	  }
-	});
-
-	var fit_parents = document.getElementsByClassName("fit-parent");
-	function fit_parent() {
-	  var fp = fit_parents, elem;
-	  for (var i = 0; i < fp.length; i++) {
-	    elem = $(fp[i]);
-	    while (elem.height() > elem.parent().height())
-	        elem.css('font-size', (parseInt(elem.css('font-size')) - 1) + "px" );
-	  }
-	}
-
-	var vert_aligns = document.getElementsByClassName("vert-align");
-	function vert_align() {
-	  var va = vert_aligns, elem;
-	  for (var i = 0; i < va.length; i++) {
-	    elem = $(va[i]);
-	    elem.css('margin-top', (elem.parent().height() - elem.height()) / 2 + "px");
-	  }
 	}
 
 	// Animate tools when scrolled to them
@@ -227,18 +169,10 @@
 	  }
 	});
 
-	function window_at(elem) {
-	  return $(document).scrollTop() + $(window).height() - $('.footer').outerHeight(true) >= elem.position().top;
-	}
-
 	// Scroll to top on window reload so always show up on top
 	$(window).on('beforeunload', function() {
 	  $('*').hide();
 	  $(window).scrollTop(0);
 	});
-
-	function redirect(url) {
-	  window.location.href = url;
-	}
 </script>
 {% endblock %}

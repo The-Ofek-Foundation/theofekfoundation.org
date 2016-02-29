@@ -6,6 +6,47 @@ body {
   font-size: 1.32em;
   font-weight: 400;
 }
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  font-weight: bold;
+}
+.navbar li {
+  float: left;
+}
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 3px 0.5em;
+  text-decoration: none;
+  transition: background-color 1s;
+  border-radius: 0;
+}
+.navbar li a:hover {
+  background-color: purple;
+}
+.navbar li ul {
+  list-style-type: none;
+}
+.navbar li > li a.active {
+  background-color: #4CAF50;
+}
+#navbar-top {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  border-bottom: 2px solid purple;
+  background-color: blue;
+  z-index: 100;
+}
+#navbar-top ul li a:active {
+  background-color: #9932CD;
+}
 #dropdown {
   background-color: orange;
   text-align: center;
@@ -23,40 +64,11 @@ body {
   opacity: 0;
   margin-left: -50px;
 }
-.dropdown {
-  margin-right: 50px;
-  position: absolute;
-  top: -500px;
-  -webkit-transition: margin-top 1s;
-  transition: margin-top 1s;
-}
-.dropright {
-  background-color: lightblue;
-  border-radius: 25px;
-  border: 5px solid red;
-  margin: 25px;
-  opacity: 0;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  transition-property: left, opacity;
-  transition-duration: 1s;
-  transition-delay: 1s;
-  -webkit-transition-property: left, opacity;
-  -webkit-transition-duration: 1s;
-  -webkit-transition-delay: 1s;
-}
-.dropright h2 {
-  font-weight: 400;
-  margin: 8px;
-}
-.dropright a {
-  font-weight: 700;
-}
 .projects {
   border-radius: 30px;
   border: 3px solid black;
   margin: auto;
+  margin-top: -10px;
   opacity: 0;
   perspective: 800px;
   text-align: center;
@@ -142,23 +154,6 @@ a:hover {
   background-color: rgba(255, 255, 0, 0.6);
   transition: background-color 2s ease-out;
 }
-.header {
-  background-color: white;
-  border-bottom-left-radius: 5px;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
-  font-weight: 700;
-  height: auto;
-  padding-bottom: 2px;
-  padding: 10px;
-  padding: 5px 20px;
-  position: fixed;
-  right: -1000px;
-  text-align: right;
-  top: 0px;
-  width: auto;
-  z-index: 10;
-}
 .footer {
   background-color: yellow;
   border-top: 1px solid black;
@@ -176,4 +171,13 @@ a:hover {
   border: 1px solid;
   padding-bottom: 1px;
   padding: 0px 5px;
+}
+.social {
+  font-size: 1px;
+}
+.social iframe {
+  vertical-align: middle;
+}
+.social span {
+  display: inline-block;
 }

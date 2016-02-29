@@ -1,0 +1,1 @@
+lessc ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css

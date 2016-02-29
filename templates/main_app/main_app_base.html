@@ -2,8 +2,14 @@
 
 {% load staticfiles %}
 
+{% block title %}{{page.title}}{% endblock %}
+
 {% block head_block %}
-	<meta name="description" content="{% block page_description %}Ofek Gila's website with many game AIs and online tools{% endblock %}">
+	<meta name="description" content="{{page.full_description}}">
+	<meta property="og:url"           content="{{page.full_url}}" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="{{page.title}}" />
+	<meta property="og:description"   content="{{page.description}}" />
 
 	{% block rel_block %}
 		<link rel="shortcut icon" href="{% static "images/blog-logo.png" %}" type="image/x-icon" />
@@ -11,11 +17,40 @@
 	{% endblock %}
 
 	<script src="{% static "assets/plugins/jquery-1.12.1.min.js" %}"></script>
+	<script type="text/javascript" src="{% static "assets/javascript/theofekfoundation.js" %}"></script>
 
 	<link href='https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/main_app.css" %}">
 
 	{% block header_additions %}{% endblock %}
+{% endblock %}
+
+{% block body_block %}
+
+	<ul class="navbar" id="navbar-top">
+		<li><a href="/">Home</a></li>
+		<li><a href="/blog">Blog</a></li>
+		<ul style="float:right; list-style-type:none;">
+			<li class="vert-padding-align">
+				<div class="social">
+					<span class="google">
+						<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+						<g:plusone size="standard" href="{{page.full_url}}"></g:plusone>
+					</span>
+					<span class="Facebook">
+						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&amp;show_faces=false&amp;layout=button_count" scrolling="no" frameborder="0" style="height: 21px; width: 100px" allowTransparency="true"></iframe>
+					</span>
+				</div>
+			</li>
+			<li><a href="#register" disabled>Register</a></li>
+			<li><a href="#login" disabled>Login</a></li>
+		</ul>
+	</ul>
+
+	<div id="content-wrapper">
+		{% block body_content %}{% endblock %}
+	</div>
+
 {% endblock %}
 
