@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	vert_padding_align();
-	if (document.getElementById('navbar-top').clientHeight + "px")
+	if (document.getElementById('navbar-top') !== null)
 		document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
 });
 
