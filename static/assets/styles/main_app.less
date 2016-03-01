@@ -8,6 +8,11 @@ body {
   font-family: 'Old Standard TT', serif;
   font-size: 1.32em;
   font-weight: 400;
+  margin: 0;
+}
+
+.pseudo-body {
+  margin: 5px;
 }
 
 .navbar {
@@ -50,9 +55,10 @@ body {
   top: 0px;
   left: 0px;
   width: 100%;
-  border-bottom: 2px solid purple;
-  background-color: blue;
+  background-color: #0099CC;
   z-index: 100;
+  padding-bottom: 2px;
+  border-bottom: 1px solid black;
 
   ul li a:active {
     background-color: #9932CD;
@@ -210,4 +216,10 @@ a {
   span {
     display: inline-block;
   }
+}
+
+#content-wrapper {
+  position: absolute;
+  left: 0px;
+  width: 100%;
 }

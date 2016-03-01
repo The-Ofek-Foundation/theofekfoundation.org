@@ -12,8 +12,10 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('main_app.urls')),
+    url(r'^', include('main_app.urls')),
+    url(r'^projects/', include('projects.urls')),
 )
+
 if settings.DEBUG:
 	urlpatterns += patterns(
 		'django.views.static',

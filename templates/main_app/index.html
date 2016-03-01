@@ -3,11 +3,12 @@
 {% load staticfiles %}
 
 {% block body_content %}
+<div class="pseudo-body">
   <h1>Heya peeps, Ofek Gila here!</h1>
   <div class="projects" id="games">
     <h2>Games (Most with AIs)</h3>
     <section class="container square">
-      <div class="flippable link" onclick="redirect('/ConnectOfek/');">
+      <div class="flippable link" onclick="redirect('http://theofekfoundation.org/projects/ConnectFour');">
         <figure class="front"><img class="square" src="{% static "images/main_app/connect-4.jpg" %}" /></figure>
         <figure class="back"><div class="vert-align fit-parent">Perhaps my strongest AI, my Connect Four Monte Carlo tree search AI is very powerful and very fast!</div></figure>
       </div>
@@ -86,20 +87,19 @@
     <img class="square" src="{% static "images/main_app/algorithms.png" %}"></img><br />
     Sadly, my knowledge in algorithms is still very limited. The AP Computer Science course only covered the very basics of logic. Most of my knowledge in the field has been entirely self-taught. While still in my Introductions to Java course, I built a fully functioning <a href="https://github.com/The-Ofek-Foundation/Snake">Old Snakey game</a> with a few AIs—teaching me the basics of Breadth-first search, a <a href="https://github.com/The-Ofek-Foundation/Maze">maze generator and solver</a> that taught me Depth-first search, and <a href="https://github.com/The-Ofek-Foundation/">much, much more</a> that helped me refine those skills. In the last half-year, however, my limited knowledge has seeped into the grand field of Game Theory!<br /><br />
     The problem with me obtaining my knowledge independently is that I end up reinventing pre-existing algorithms because I simply don't know they exist. When I started programming and my father asked me to create an ordered histogram, I needed to sort the letters. At that time, I had no knowledge of sorting algorithms, so the way I ended up sorting was what I now know to be a simple selection sort. When creating an AI for <a href="/Online-Go/">Gomoku</a> (five-in-a-row), I had no knowledge of AI algorithms except the breadth-first search I used for an Old Snakey AI—which wouldn't be much help. However, I knew I needed some form of analysis function, so I made one, and then I used it recursively to find the best move. I now know this to be the infamous naive Minimax algorithm. I also greatly improved my algorithm (See my <a href="/blog/artificial%20intelligence/2015/12/18/minimax-improvements.html">blog post on minimax improvements</a>) without external aide. After researching it, however, I came across alpha-beta pruning, which is more significant than any of the individual improvements I made myself.<br /><br />
-    There is, however, one AI that I learned about far before I decided to tackle—the relatively new Monte Carlo tree search. If you were familiar with this AI algorithm, you would be able to guess that I learned about this from an obsession with the game of Go. After joining my school's Go Club (and becoming the president sophomore year), my love for Go has only been increasing. This made it hard to avoid hearing the words "Monte Carlo tree search" although I never knew what they really meant other than that they referred to some random AI algorithm (note the punny use of the word 'random'). After I started getting into Game Theory, I decided to finally teach myself this Monte Carlo tree search. With no formal guide or lesson plan, it took me two whole days to finally create a basic working Monte Carlo tree search AI for the game <a href="/Mancala/">Mancala</a>. I refined and greatly improved this algorithm for my strong <a href="/ConnectOfek/">Connect Four AI</a>. While on vacation, seeing my older brother play Ultimate Tic Tac Toe, I whipped up an <a href="/UltimateTicTacToe/">AI</a> overnight, and greatly improved it on the second night.<br /><br />
+    There is, however, one AI that I learned about far before I decided to tackle—the relatively new Monte Carlo tree search. If you were familiar with this AI algorithm, you would be able to guess that I learned about this from an obsession with the game of Go. After joining my school's Go Club (and becoming the president sophomore year), my love for Go has only been increasing. This made it hard to avoid hearing the words "Monte Carlo tree search" although I never knew what they really meant other than that they referred to some random AI algorithm (note the punny use of the word 'random'). After I started getting into Game Theory, I decided to finally teach myself this Monte Carlo tree search. With no formal guide or lesson plan, it took me two whole days to finally create a basic working Monte Carlo tree search AI for the game <a href="/Mancala/">Mancala</a>. I refined and greatly improved this algorithm for my strong <a href="http://theofekfoundation.org/projects/ConnectFour">Connect Four AI</a>. While on vacation, seeing my older brother play Ultimate Tic Tac Toe, I whipped up an <a href="/UltimateTicTacToe/">AI</a> overnight, and greatly improved it on the second night.<br /><br />
     That's my story so far, and I can't wait until going to a University to formally learn computer science and improve!
   </div>
   <div class="footer">
     Github: <a href="https://github.com/The-Ofek-Foundation">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a href="/blog/">theofekfoundation.org/blog</a> &nbsp; Contact: <a href="mailto:ofekgila@outlook.com">ofekgila@outlook.com</a>
   </div>
-  <div id="links" style="display: none;"></div>
-  <div style="display: none;"><a href="/ConnectOfek/"></a><a href="/Online-Go/"></a><a href="/Mancala/"></a><a href="/UltimateTicTacToe/"></a><a href="/Lame-Duck/"></a><a href="/Maze/"></a><a href="/PrimeFactorizer/"></a><a href="/Image-Editor/"></a><a href="/Grapher/"></a><a href="/Happy-Numbers/"></a></div>
+</div>
 {% endblock %}
 
 {% block end_block %}
 <script type="text/javascript">
 	$(document).ready(function() {
-	  $('body').css('margin-bottom', 2 * $('.footer').height() + "px");
+	  $('.pseudo-body').css('margin-bottom', 2 * $('.footer').height() + "px");
 
 	  $('.info').css('margin-left', "-=25px").css('padding-left', "+=20px").css('padding-right', "+=20px").css('width', "-=40px");
 

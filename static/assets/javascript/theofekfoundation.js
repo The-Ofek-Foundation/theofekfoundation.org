@@ -1,13 +1,15 @@
 $(document).ready(function() {
+	var content_wrapper = $("#content-wrapper");
+	content_wrapper.css('top', $('#navbar-top').height()).height($(window).outerHeight(true) - $('#navbar-top').outerHeight());
 	vert_padding_align();
-	if (document.getElementById('navbar-top') !== null)
-		document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
+	// if (document.getElementById('navbar-top') !== null)
+	// 	document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
 });
 
 function vert_padding_align() {
 	var vert_padding_align = document.getElementsByClassName('vert-padding-align');
-	for (var i = 0; i < vert_padding_align.length; i++)
-		vert_padding_align[i].style.paddingTop = (vert_padding_align[i].parentElement.clientHeight - vert_padding_align[i].clientHeight) / 2 + "px";
+	for (var i = 0, elem = $(vert_padding_align[i]); i < vert_padding_align.length; i++, elem = $(vert_padding_align[i]))
+		elem.css('padding-top', (elem.parent().height() - elem.height()) / 2 + "px");
 }
 
 function fit_parent() {

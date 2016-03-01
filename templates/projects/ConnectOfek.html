@@ -1,0 +1,91 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/projects/ConnectOfek.css" %}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<a href="https://github.com/the-ofek-foundation/ConnectOfek"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 10;" src="https://camo.githubusercontent.com/121cd7cbdc3e4855075ea8b558508b91ac463ac2/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_green_007200.png"></a>
+<canvas id="board"></canvas>
+<div id="footer">
+	<div id="anal">Analysis:</div>
+	<button id="back">Back</button>
+	<button id="new-game">New Game</button>
+	<button id="stop-ai">Stop AI</button>
+	<button id="start-ai">Play AI</button>
+	<div id="num-trials">Trials:</div>
+</div>
+
+<div id="new-game-menu">
+	<h1 style="margin-top: 0px; margin-bottom: 10px;">New Game</h1>
+	<form id="form-new-game" action="">
+		Board Width:
+		<input type="number" name="d_width" min="4" max="9" step="1" value="7" required>
+		<br />
+		Board Height:
+		<input type="number" name="d_height" min="4" max="9" step="1" value="6" required>
+		<br />
+		Allow Pondering (Faster AI)?
+		<input type="checkbox" id="allow-ponder" name="allow-ponder" checked>
+		<br />
+		AI Turn:
+		<select name="ai-turn" required>
+			<option value="none">None</option>
+			<option value="first">First</option>
+			<option value="second" selected>Second</option>
+			<option value="both">Both</option>
+		</select>
+		<br />
+		AI Difficulty:
+		<select name="ai-diff" required>
+			<option value="Custom" selecte>Custom (choose values below)</option>
+			<option value="Stupid">Stupid</option>
+			<option value="ehh">ehh</option>
+			<option value="Play Fast">Play Fast (must allow pondering)</option>
+			<option value="Normal">Normal</option>
+			<option value="Play Fast ++">Play Fast++ (must allow pondering</option>
+			<option value="Win Fast">Win Fast (num trial increases exponentially)</option>
+			<option value="Hard">Hard</option>
+			<option value="Very Hard">Very Hard</option>
+			<option value="Good Luck">Good Luck</option>
+			<option value="Wreckage">Wreckage (be warned)</option>
+		</select>
+		<br />
+		Ponder?
+		<input type="checkbox" id="ai-ponder" name="ai-ponder" checked>
+		<br />
+		Monte Carlo Trials (500 - 10,000,000):
+		<input type="number" name="mc-trials" id="mc-trials" min="500" max="10000000" step="500" value="10000">
+		<br />
+		Monte Carlo Expansion Constant (0 - 10):
+		<input type="range" name="mc-expansion" id="mc-expansion" min="0" max="10" step="0.1" value="2">
+		<br />
+		Monte Carlo Certainty Threshold (0% - 100%):
+		<input type="number" name="mc-certainty" min="0" max="100" step="1" value="85" required>
+		<br />
+		Smart simulations (plays forced moves):
+		<input type="checkbox" name="smart-simulation" checked>
+		<br />
+		Position #:
+		<input type="text" name="position">
+		<br />
+		Enter a name for the game if you want:
+		<input type="text" name="name">
+		<br />
+		<input type="submit" value="New Game">
+		<button id="btn-new-game-cancel">Cancel</button>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/projects/ConnectOfek.js" %}"></script>
+
+{% endblock %}
