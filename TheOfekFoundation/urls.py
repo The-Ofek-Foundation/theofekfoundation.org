@@ -11,9 +11,9 @@ urlpatterns = patterns('',
     # url(r'^$', 'TheOfekFoundation.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^(?i)admin/', include(admin.site.urls)),
     url(r'^', include('main_app.urls')),
-    url(r'^projects/', include('projects.urls')),
+    url(r'^(?i)games/', include('games.urls')),
 )
 
 if settings.DEBUG:
