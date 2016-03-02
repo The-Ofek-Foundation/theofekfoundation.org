@@ -18,6 +18,7 @@ var monte_carlo_aide = false;
 var MCTS_weights = false;
 var max_trials = 1500000; // prevents overload (occurs around 2.3 million)
 var wrapper_top;
+var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
@@ -88,6 +89,7 @@ function new_game() {
   save_board_state(state_on);
   last_rec = null;
   global_ROOT = create_MCTS_root();
+  num_choose1 = num_choose2 = num_choose3 = lnc1 = lnc2 = lnc3 = stop_choose = false;
 
   oval_width = docwidth / (pits + 3);
   oval_height = docheight / 5;
@@ -104,8 +106,10 @@ function new_game() {
 
 function play_move(pit_loc) {
 
-  if (!sow(pit_loc))
+  if (!sow(pit_loc)) {
     top_turn_global = !top_turn_global;
+    num_choose1 = num_choose2 = num_choose3 = stop_choose = false;
+  }
 
   if(end_game(top_turn_global))
     if (ponder)
@@ -138,6 +142,7 @@ function save_board_state(index) {
 function load_board_state(index) {
   board = board_states[index].board.slice(0);
   top_turn_global = board_states[index].turn;
+  num_choose1 = num_choose2 = num_choose3 = stop_choose = false;
   last_capture_global = board_states[index].last_capture_global;
   last_move_global = board_states[index].last_move_global;
   last_sow_global = board_states[index].last_sow_global;
@@ -168,9 +173,19 @@ function start_ponder() {
   pondering = setInterval(function() {
     if (!global_ROOT)
       global_ROOT = create_MCTS_root();
-    if (global_ROOT.total_tries < max_trials)
-      for (var i = 0; i < monte_carlo_trials / 50; i++)
-        global_ROOT.choose_child();
+    var start_time = new Date().getTime();
+    var temp_count = 0;
+    while ((new Date().getTime() - start_time) < 30 && !stop_choose) {
+      global_ROOT.choose_child();
+      temp_count++;
+    }
+    if (num_choose3 && (temp_count < num_choose3 / 10 || temp_count < num_choose2 / 10 || temp_count < num_choose1 / 10))
+      stop_choose = true;
+    else {
+      num_choose3 = num_choose2;
+      num_choose2 = num_choose1;
+      num_choose1 = temp_count;
+    }
     last_rec = most_tried_child(global_ROOT, null);
     update_analysis();
     if (MCTS_weights && Math.random() > 0.9)
