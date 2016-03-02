@@ -32,3 +32,13 @@ def mancala(request):
 	context_dict = {'page': page}
 	return render(request, 'games/Mancala.html', context_dict)
 
+def ultimatetictactoe(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/games/UltimateTicTacToe/',
+		'full_description': "Play Ultimate Tic Tac Toe online against the computer with a Monte Carlo tree search AI!",
+		'description': "Ultimate Tic Tac Toe online with a strong Monte Carlo AI computer!",
+		'title': 'Ultimate Tic Tac Toe',
+	}
+	context_dict = {'page': page}
+	return render(request, 'games/UltimateTicTacToe.html', context_dict)
+

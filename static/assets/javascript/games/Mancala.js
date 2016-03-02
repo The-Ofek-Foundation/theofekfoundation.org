@@ -157,6 +157,10 @@ function undo() {
   load_board_state(state_on);
   global_ROOT = null;
   draw_board();
+  if (pondering) {
+    stop_ponder();
+    start_ponder();
+  }
 }
 
 function redo() {
@@ -768,6 +772,8 @@ function end_game(top_turn) {
   board[0] += captures;
 
   last_sow_global = -1;
+
+  stop_ponder();
 
   return true;
 }

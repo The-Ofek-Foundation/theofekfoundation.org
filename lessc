@@ -5,3 +5,6 @@ lessc ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games
 lessc ./static/assets/styles/games/OnlineGo.less ./static/assets/styles/games/OnlineGo.css
 
 lessc ./static/assets/styles/games/Mancala.less ./static/assets/styles/games/Mancala.css
+
+lessc ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles/games/UltimateTicTacToe.css
+
