@@ -40,14 +40,27 @@ $(document).ready(function() {
 });
 
 $(window).resize(function() {
+  $("#content-wrapper").outerWidth($(window).outerWidth(true));
+  $("#content-wrapper").outerHeight($(window).outerHeight(true) - $("#content-wrapper").position().top);
+
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
+
   $('#board').width(docwidth).height(docheight);
+  boardui.setAttribute('width', docwidth);
+  boardui.setAttribute('height', docheight);
+
+  disc_width = docwidth / (dimensions[0] + 1);
+  disc_height = docheight / (dimensions[1] + 1);
+
+  $("#form-new-game").height(docheight * 0.6);
 
   $('#new-game-btn').css('top', (docheight - $('#new-game-btn').height()) / 2);
   $('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
   $('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
   $('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
+
+  draw_board();
 });
 
 function start_ponder() {

@@ -21,3 +21,14 @@ def weiqi(request):
 	}
 	context_dict = {'page': page}
 	return render(request, 'games/OnlineGo.html', context_dict)
+
+def mancala(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/games/Mancala/',
+		'full_description': "Mancala online with a strong Monte Carlo AI computer!",
+		'description': "Mancala online with a strong Monte Carlo AI computer!",
+		'title': 'Mancala Kalah',
+	}
+	context_dict = {'page': page}
+	return render(request, 'games/Mancala.html', context_dict)
+

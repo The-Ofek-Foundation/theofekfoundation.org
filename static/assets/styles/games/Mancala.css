@@ -1,0 +1,89 @@
+#board {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+#new-game-menu {
+  position: absolute;
+  visibility: visible;
+  background-color: blue;
+  z-index: -1;
+  width: 80%;
+  height: 80%;
+  left: auto;
+  top: auto;
+  padding: 2%;
+  color: white;
+  -moz-box-shadow: 0 0 50px black;
+  -webkit-box-shadow: 0 0 00px black;
+  box-shadow: 0 0 50px black;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 30px;
+  opacity: 0;
+}
+#form-new-game {
+  overflow-y: auto;
+  height: auto;
+}
+#footer {
+  position: fixed;
+  display: inline;
+  bottom: 0px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  margin: 0px;
+  z-index: 5;
+}
+#footer button {
+  color: white;
+  border-radius: 5px;
+  margin: auto 30px;
+}
+#footer button#new-game {
+  background-color: blue;
+}
+#footer button#back {
+  background-color: red;
+}
+#footer button#stop-ai {
+  background-color: purple;
+}
+#footer button#start-ai {
+  background-color: green;
+}
+#footer #anal {
+  left: 0px;
+  margin: auto 30px;
+  position: absolute;
+  bottom: 0px;
+}
+#footer #num-trials {
+  right: 0px;
+  margin: auto 30px;
+  position: absolute;
+  bottom: 0px;
+}
+input {
+  font-size: 20px;
+}
+.center-btn {
+  position: absolute;
+  border-radius: 15px;
+  top: 50%;
+}
+.center-btn#undo-btn {
+  background-color: red;
+  left: 20%;
+}
+.center-btn#redo-btn {
+  background-color: green;
+  right: 20%;
+}
+.center-btn#new-game-btn {
+  background-color: blue;
+  left: 50%;
+}

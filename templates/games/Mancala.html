@@ -1,0 +1,79 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/Mancala.css" %}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+<div id="footer">
+	<div id="anal">Analysis:</div>
+	<div id="num-trials">Trials:</div>
+</div>
+<button class="center-btn" id="undo-btn" onclick="undo()">Undo</button>
+<button class="center-btn" id="redo-btn" onclick="redo()">Redo</button>
+<button class="center-btn" id="new-game-btn" onclick="show_new_game_menu()">New Game</button>
+<div id="new-game-menu">
+	<h1 style="margin-top: 0px;">New Game</h1>
+	<form id="form-new-game" action="">
+		Number of Pits (1 - 10):
+		<input type="number" name="num-pits" min="1" max="10" step="1" value="6" required>
+		<br />
+		Seeds per Pit (1 - 12):
+		<input type="number" name="seeds-per-pit" min="1" max="12" step="1" value="4" required>
+		<br />
+		Reverse Direction?
+		<input type="checkbox" id="reverse" name="reverse" checked>
+		<br />
+		Capture Rules:
+		<input list="capture-rules" name="capture-rules" value="Same Side and Opposite Occupied">
+		<datalist id="capture-rules">
+			<option value="No Capturing"></option>
+			<option value="Always Capturing"></option>
+			<option value="Same Side and Opposite Occupied"></option>
+			<option value="Opposite Occupied"></option>
+		</datalist>
+		<br />
+		Monte Carlo Ai?
+		<input type="checkbox" id="ai" name="ai">
+		<br />
+		Allow Pondering?
+		<input type="checkbox" id="ai-ponder" name="ai-ponder">
+		<br />
+		Show Monte Carlo weights?
+		<input type="checkbox" id="mc-weight" name="mc-weight">
+		<br />
+		AI Turn:
+		<input list="ai-turn" name="ai-turn" value="Second">
+		<datalist id="ai-turn">
+			<option value="First"></option>
+			<option value="Second"></option>
+			<option value="Both"></option>
+		</datalist>
+		<br />
+		Monte Carlo Trials (10,000 - 1,000,000):
+		<input type="range" name="mc-trials" id="mc-trials" min="10000" max="1000000" step="10000" value="200000">
+		<br />
+		Monte Carlo Expansion Constant (0 - 10):
+		<input type="range" name="mc-expansion" id="mc-expansion" min="0" max="10" step="0.1" value="3.5">
+		<br />
+		Monte Carlo Certainty Threshold (0% - 100%):
+		<input type="number" name="mc-certainty" min="0" max="100" step="1" value="50" required>
+		<br />
+		<input type="submit" value="New Game">
+		<button id="btn-new-game-cancel">Cancel</button>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Mancala.js" %}"></script>
+
+{% endblock %}
