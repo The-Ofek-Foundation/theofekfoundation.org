@@ -1,0 +1,151 @@
+#board {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 50px;
+  height: 50px;
+}
+
+#settings-panel {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  text-align: center;
+}
+
+.countdown {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+#black-cntdwn {
+  float: left;
+  margin-left: 20px;
+}
+
+#white-cntdwn {
+  float: right;
+  margin-right: 20px;
+}
+
+#btn-new-game {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: auto;
+  font-size: 40px;
+  color: white;
+  background-color: blue;
+  border: none;
+  border-radius: 10px;
+}
+
+#btn-undo {
+  display: inline-block;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 10px;
+  width: auto;
+  font-size: 40px;
+  margin: 30px;
+  float: left;
+}
+
+#btn-pass {
+  display: inline-block;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 10px;
+  width: auto;
+  font-size: 40px;
+  margin: 30px;
+}
+
+#btn-redo {
+  display: inline-block;
+  color: white;
+  background-color: green;
+  border: none;
+  border-radius: 10px;
+  width: auto;
+  font-size: 40px;
+  margin: 30px;
+  float: right;
+}
+
+.stone-count {
+  width: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  &#black-stone {
+    background-image: url("https://upload.wikimedia.org/wikipedia/en/b/b6/Realistic_Go_Stone.svg");
+    background-size: 100px;
+    background-repeat: no-repeat;
+    color: white;
+    float: left;
+    font-weight: 600;
+  }
+  &#white-stone {
+    background-image: url("https://upload.wikimedia.org/wikipedia/en/thumb/2/20/Realistic_White_Go_Stone.svg/250px-Realistic_White_Go_Stone.svg.png");
+    background-size: 100px;
+    background-repeat: no-repeat;
+    color: black;
+    float: right;
+    font-weight: 600;
+  }
+}
+
+#stone-capture-layer {
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  font-size: 50px;
+}
+
+#captures-text {
+  position: absolute;
+  height: 100px;
+  width: 100%;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#gomoku-eval {
+  height: 100px;
+  width: 100%;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#new-game-menu {
+  position: absolute;
+  visibility: visible;
+  background-color: blue;
+  z-index: -1;
+  width: 30%;
+  left: 33%;
+  height: 80%;
+  top: 7%;
+  padding: 1%;
+  color: white;
+  h1 {
+    margin-top: 5px;
+  }
+  -moz-box-shadow: 0 0 50px black;
+  -webkit-box-shadow: 0 0 00px black;
+  box-shadow: 0 0 50px black;
+  border-radius: 15px;
+  opacity: 0;
+  text-align: center;
+}
+
+html, button {
+  font-family: 'Open Sans', sans-serif;
+}

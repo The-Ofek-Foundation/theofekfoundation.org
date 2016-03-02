@@ -1,0 +1,82 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/OnlineGo.css" %}">
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+<div id="settings-panel">
+	<div class="countdown" id="black-cntdwn">5:00</div>
+	<button id="btn-new-game">New Game</button>
+	<div class="countdown" id="white-cntdwn">5:00</div>
+	<div id="stone-capture-layer">
+	  <div class="stone-count" id="black-stone"></div>
+	  <div id="captures-text">Number of Captures</div>
+	  <div class="stone-count" id="white-stone"></div>
+	</div>
+	<button id="btn-undo">Undo</button>
+	<button id="btn-pass">Pass</button>
+	<button id="btn-redo">Redo</button>
+	<div id="gomoku-eval">
+	  Gomoku Evaluation:
+	</div>
+</div>
+
+<div id="new-game-menu">
+	<h1>New Game</h1>
+	<form id="form-new-game" action="">
+		Board Size (1 - 80):
+		<input type="number" name="board-size" min="1" max="81" step="2" value="19" required>
+		<br />
+		Handicap (0 - 9):
+		<input type="number" name="handicap" min="0" max="9" step="1" value="0" required>
+		<br />
+		Game Type:
+		<input list="game-types" name="game-types" value="Go">
+		<datalist id="game-types">
+			<option value="Go" selected></option>
+			<option value="Gomoku"></option>
+			<option value="Wu"></option>
+		</datalist>
+		<br />
+		Enter time control (mm:ss):
+		<input id="time-control" name="time-control" type="text" value="5:00">
+		<br />
+		Gomoku Ai?
+		<input type="checkbox" id="gomoku-ai" name="gomoku-ai">
+		<br />
+		Anti Gomoku? (Goal is to lose)
+		<input type="checkbox" id="anti-gomoku" name="anti-gomoku">
+		<br />
+		AI Color:
+		<input list="ai-color" name="ai-color" value="Black">
+		<datalist id="ai-color">
+			<option value="Black"></option>
+			<option value="White"></option>
+			<option value="Both"></option>
+		</datalist>
+		<br />
+		AI Depth:
+		<input type="range" name="ai-depth" id="ai-depth" min="1" max="5" step="1" value="2">
+		<br /><br />
+		<input type="submit" value="New Game">
+		<br /><br />
+		<button id="btn-new-game-cancel">Cancel</button>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/OnlineGo.js" %}"></script>
+
+{% endblock %}

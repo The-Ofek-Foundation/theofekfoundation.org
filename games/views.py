@@ -11,3 +11,13 @@ def connectfour(request):
 	}
 	context_dict = {'page': page}
 	return render(request, 'games/ConnectOfek.html', context_dict)
+
+def weiqi(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/games/OnlineGo',
+		'full_description': "The online games of Go (Weiqi), Gomoku (with a minimax AI), and Wu, with a strong minimax AI for Gomoku.",
+		'description': "Play games in the Go family online!",
+		'title': 'We iqi',
+	}
+	context_dict = {'page': page}
+	return render(request, 'games/OnlineGo.html', context_dict)
