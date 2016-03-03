@@ -1,6 +1,31 @@
 var fish = document.getElementById("fish-images").children;
 var wrapper_top;
 
+setInterval(function () {
+    var elems = document.getElementsByClassName("fish");
+    var duck = $(document.getElementById("duck"));
+    var e1, e2;
+    for (var i = 0; i < elems.length - 1; i++) {
+        e1 = $(elems[i]);
+        for (var a = i + 1; a < elems.length; a++) {
+            e2 = $(elems[a])
+            if (elemOverlap(e1, e2))
+                if (can_eat(e1, e2))
+                    eat_elem(e1, e2);
+                else if (can_eat(e2, e1))
+                    eat_elem(e2, e1);
+        }
+    }
+    for (var i = 0; i < elems.length; i++) {
+        e1 = $(elems[i]);
+        if (elemOverlap(e1, duck))
+            if (can_eat(e1, duck))
+                eat_elem(e1, duck);
+            else if (can_eat(duck, e1))
+                eat_elem(duck, e1);
+    }
+}, 100);
+
 var duck = $('#duck').data('ratio', 1).data('count', 0);
 var count = 0;
 
@@ -42,7 +67,7 @@ function get_fish_speed(fish) {
 
 function eat_elem(hunter, prey)    {
     resize_elem(hunter, Math.sqrt(Math.pow(get_elem_width(hunter), 2) + Math.pow(get_elem_width(prey), 2)), hunter.data('ratio'));
-    if (prey == duck)    {
+    if (prey.attr('id') === "duck")    {
         prey.hide();
         alert("Game Over!!!, Your Score: " + prey.outerWidth() + "!!!");
         $('.fish').remove();
@@ -86,14 +111,6 @@ function move_elem(elem, x, y, distance, speed, callback)    {
             if (callback)
                 callback(elem);
         }, step: function() {
-            elem.siblings('img').each(function() {
-                if (elemOverlap(elem, $(this))) {
-                    if (can_eat(elem, $(this)))
-                        eat_elem(elem, $(this));
-                    else if (can_eat($(this), elem))
-                        eat_elem($(this), elem);
-                }
-            });
             elem.data('count', elem.data('count') + 1);
             if (elem.data('count') % 10 === 0)
                 if (elem == duck)
@@ -128,8 +145,8 @@ function move_fish(fish) {
 
     if (y < wrapper_top)
         y = wrapper_top;
-    else if (y > $("#content-wrapper").outerHeight() - fish.outerHeight())
-        y = $("#content-wrapper").outerHeight() - fish.outerHeight();
+    else if (y > $("#content-wrapper").outerHeight() - wrapper_top - fish.outerHeight())
+        y = $("#content-wrapper").outerHeight() - wrapper_top - fish.outerHeight() - dy;
     move_elem(fish, x, y, calc_dist(dx, dy), get_fish_speed(fish), move_fish);
 }
 
