@@ -323,7 +323,7 @@ function play_move(tboard, move, xturn) {
   if (local_win(tboard, color, move, startx, starty))
     tboard[centerx][centery] = color + 4;
   else if (square_full(tboard, startx, starty))
-    tboard[centerx][centery] = xturn ? 3:4;
+    tboard[centerx][centery] += 2;
 }
 
 function local_win(tboard, color, move, startx, starty) {
