@@ -8,3 +8,5 @@ lessc ./static/assets/styles/games/Mancala.less ./static/assets/styles/games/Man
 
 lessc ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles/games/UltimateTicTacToe.css
 
+lessc ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/LameDuck.css
+

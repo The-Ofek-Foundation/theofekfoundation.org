@@ -1,0 +1,40 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/LameDuck.css" %}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<h1 id="score">Score: 25</h1>
+<img id="duck" src="{% static "images/LameDuck/duck-clipart-duck-clip-art-1.png" %}"></img>
+
+<div id="fish-images">
+	<img src="{% static "images/LameDuck/free-fish-clipart-happy_gold_fish.png" %}">
+	<img src="{% static "images/LameDuck/BTgK4gbac.png" %}">
+	<img src="{% static "images/LameDuck/fish-clipart-jcxyp4kcE.png" %}">
+	<img src="{% static "images/LameDuck/purple-fish-md.png" %}">
+	<img src="{% static "images/LameDuck/LiKd79G6T.png" %}">
+	<img src="{% static "images/LameDuck/6ir6KGe5T.png" %}">
+	<img src="{% static "images/LameDuck/large-striped-tropical-fish-33.3-8332.png" %}">
+	<img src="{% static "images/LameDuck/clipart-fish-11954413101184310947johnny_automatic_tropical_fish.svg.med.png" %}">
+	<img src="{% static "images/LameDuck/tropical-fish-clipart-acqejaXoi.png" %}">
+	<img src="{% static "images/LameDuck/fish-clip-art-LiKX7y4ia.png" %}">
+	<img src="{% static "images/LameDuck/type-clipart-butterflyfish.png" %}">
+	<img src="{% static "images/LameDuck/yellow-orange-fish.png" %}">
+	<img src="{% static "images/LameDuck/betta002.png" %}">
+	<img src="{% static "images/LameDuck/12638975.png" %}">
+	<img src="{% static "images/LameDuck/fish2.png" %}">
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/LameDuck.js" %}"></script>
+
+{% endblock %}

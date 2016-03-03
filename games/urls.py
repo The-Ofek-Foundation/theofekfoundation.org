@@ -6,4 +6,5 @@ urlpatterns = patterns('',
 	url(r'^(?i)OnlineGo/', views.weiqi, name="OnlineGo"),
 	url(r'^(?i)Mancala/', views.mancala, name="Mancala"),
 	url(r'^(?i)UltimateTicTacToe/', views.ultimatetictactoe, name="UltimateTicTacToe"),
+	url(r'^(?i)LameDuck/', views.lameduck, name="LameDuck"),
 )

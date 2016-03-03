@@ -1,0 +1,18 @@
+#duck {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  z-index: 75;
+}
+.fish {
+  position: absolute;
+}
+#content-wrapper {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+#fish-images {
+  z-index: -1;
+  position: absolute;
+  visibility: hidden;
+}

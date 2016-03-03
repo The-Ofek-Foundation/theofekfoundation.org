@@ -447,9 +447,10 @@ function start_ponder() {
       global_ROOT.choose_child();
       temp_count++;
     }
-    if (num_choose3 && (temp_count < num_choose3 / 8 || temp_count < num_choose2 / 8 || temp_count < num_choose1 / 8))
+    if (num_choose4 && (temp_count < num_choose4 / 9 || temp_count < num_choose3 / 9 || temp_count < num_choose2 / 9 || temp_count < num_choose1 / 9))
       stop_choose = true;
     else {
+      num_choose4 = num_choose3;
       num_choose3 = num_choose2;
       num_choose2 = num_choose1;
       num_choose1 = temp_count;

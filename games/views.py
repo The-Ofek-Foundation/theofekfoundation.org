@@ -42,3 +42,13 @@ def ultimatetictactoe(request):
 	context_dict = {'page': page}
 	return render(request, 'games/UltimateTicTacToe.html', context_dict)
 
+def lameduck(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/games/LameDuck/',
+		'full_description': "The Lame Duck Game! Eat smaller fish, and watch out from larger ones.",
+		'description': "The Lame Duck Game!",
+		'title': 'Lame Duck',
+	}
+	context_dict = {'page': page}
+	return render(request, 'games/LameDuck.html', context_dict)
+
