@@ -107,7 +107,7 @@ function move_elem(elem, x, y, distance, speed, callback)    {
     elem.animate(
         {left: x + 'px', top: y + 'px'},
         {duration: distance * speed, easing: "linear", complete: function() {
-            elem.css({left: x + 'px', right: y + 'px'});
+            elem.css({left: x + 'px', top: y + 'px'});
             if (callback)
                 callback(elem);
         }, step: function() {
@@ -136,8 +136,8 @@ function move_fish(fish) {
     var dx = -3 * fish.outerWidth() + 6 * fish.outerWidth() * Math.random();
     var dy = -3 * fish.outerHeight() + 6 * fish.outerHeight() * Math.random();
     var offset = fish.offset();
-    var x = offset.left + dx;
-    var y = offset.top + dy;
+    var x = parseInt(fish.css('left')) + dx;
+    var y = parseInt(fish.css('top')) + dy;
     if (x < 0)
         x = 0;
     else if (x > $("#content-wrapper").outerWidth() - fish.outerWidth())
@@ -145,8 +145,8 @@ function move_fish(fish) {
 
     if (y < wrapper_top)
         y = wrapper_top;
-    else if (y > $("#content-wrapper").outerHeight() - wrapper_top - fish.outerHeight())
-        y = $("#content-wrapper").outerHeight() - wrapper_top - fish.outerHeight() - dy;
+    else if (y > $("#content-wrapper").outerHeight() - fish.outerHeight())
+        y = $("#content-wrapper").outerHeight() - fish.outerHeight() - Math.abs(dy);
     move_elem(fish, x, y, calc_dist(dx, dy), get_fish_speed(fish), move_fish);
 }
 
