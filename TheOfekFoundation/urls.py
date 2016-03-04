@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 
     url(r'^(?i)admin/', include(admin.site.urls)),
     url(r'^', include('main_app.urls')),
+    url(r'^', include('main_app.misurls')),
     url(r'^(?i)games/', include('games.urls')),
     url(r'^(?i)tools/', include('tools.urls')),
 )
