@@ -1,0 +1,37 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/HappyNumber.css" %}">
+
+<script src="https://rawgit.com/MikeMcl/big.js/master/big.min.js"></script>
+
+{% endblock %}
+
+{% block body_content %}
+
+<h1>Happy Number Problem</h1>
+<h3><a href="https://en.wikipedia.org/wiki/Happy_number" target="_blank">What is a happy number?</a></h3>
+<div id="main-content">
+	<input id="input-number" placeholder="enter your number here">
+	<button id="calculate-btn">Calculate</button>
+	<br /><br />
+	<input id="developer-input" placeholder="developer commands">
+	<button id="eval-btn">Evaluate</button>
+	<br />
+	Ex: power = 3, mode = "multiply"
+	<br />
+	<h3 id="calculation-status">Result:</h3>
+	<div id="calculations-div">???</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/tools/HappyNumber.js" %}"></script>
+
+{% endblock %}
+

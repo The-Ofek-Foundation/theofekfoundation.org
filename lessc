@@ -16,3 +16,5 @@ lessc ./static/assets/styles/tools/PrimeFactorizer.less ./static/assets/styles/t
 
 lessc ./static/assets/styles/tools/Grapher.less ./static/assets/styles/tools/Grapher.css
 
+lessc ./static/assets/styles/tools/HappyNumber.less ./static/assets/styles/tools/HappyNumber.css
+

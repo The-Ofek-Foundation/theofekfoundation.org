@@ -31,3 +31,14 @@ def grapher(request):
 	}
 	context_dict = {'page': page}
 	return render(request, 'tools/Grapher.html', context_dict)
+
+def happynumber(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/tools/HappyNumber/',
+		'full_description': "A neat tool to calculate happy numbers, and variants.",
+		'description': "A neat tool to calculate happy numbers, and variants.",
+		'title': 'We Are Happy',
+	}
+	context_dict = {'page': page}
+	return render(request, 'tools/HappyNumber.html', context_dict)
+
