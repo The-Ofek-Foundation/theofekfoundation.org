@@ -10,3 +10,5 @@ lessc ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles
 
 lessc ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/LameDuck.css
 
+lessc ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.css
+

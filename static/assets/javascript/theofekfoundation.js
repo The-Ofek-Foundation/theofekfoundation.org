@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	var content_wrapper = $("#content-wrapper");
-	content_wrapper.css('top', $('#navbar-top').height()).height($(window).outerHeight(true) - $('#navbar-top').outerHeight());
+	var content_wrapper = $("#content-wrapper"), window_height = $(window).outerHeight(true);
+	content_wrapper.css('top', $('#navbar-top').outerHeight(true)).height(window_height - $('#navbar-top').outerHeight(true));
 	vert_padding_align();
 	// if (document.getElementById('navbar-top') !== null)
 	// 	document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
