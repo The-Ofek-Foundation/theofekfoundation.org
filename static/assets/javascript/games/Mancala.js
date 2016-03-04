@@ -23,7 +23,7 @@ var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 
-$(document).ready(function() {
+function page_ready() {
 
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
@@ -45,7 +45,7 @@ $(document).ready(function() {
   $('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
   $('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
   $('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
-});
+};
 
 $(window).resize(function() {
   $("#content-wrapper").outerWidth($(window).outerWidth(true));

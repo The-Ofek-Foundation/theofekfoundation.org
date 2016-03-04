@@ -18,7 +18,7 @@ var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 
-$(document).ready(function() {
+function page_ready() {
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
   wrapper_top = $("#content-wrapper").position().top;
@@ -57,7 +57,7 @@ $(document).ready(function() {
   }
 
   new_game();
-});
+};
 
 $(window).resize(function(event) {
   $("#content-wrapper").outerWidth($(window).outerWidth(true));
@@ -447,10 +447,9 @@ function start_ponder() {
       global_ROOT.choose_child();
       temp_count++;
     }
-    if (num_choose4 && (temp_count < num_choose4 / 9 || temp_count < num_choose3 / 9 || temp_count < num_choose2 / 9 || temp_count < num_choose1 / 9))
+    if (num_choose3 && (temp_count < num_choose3 / 9 || temp_count < num_choose2 / 9 || temp_count < num_choose1 / 9))
       stop_choose = true;
     else {
-      num_choose4 = num_choose3;
       num_choose3 = num_choose2;
       num_choose2 = num_choose1;
       num_choose1 = temp_count;

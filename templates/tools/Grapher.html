@@ -1,0 +1,42 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/Grapher.css" %}">
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.0/math.min.js"></script>
+
+{% endblock %}
+
+{% block body_content %}
+
+<div id="header">
+	Enter A Function:
+	<input id="expression">
+	<select id="operation">
+		<option value="value">Value</option>
+		<option value="derivative">Derivative</option>
+		<option value="graph" selected>Graph</option>
+		<option value="clear">Clear</option>
+		<option value="regraph">Redraw</option>
+		<option value="draw-deriv">Draw Derivative</option>
+		<option value="trace">Trace</option>
+	</select>
+	<button id="btn-eval">Evaluate</button>
+	<button id="btn-settings">_</button>
+</div>
+<canvas id="graph"></canvas>
+<div id="upper-upper-footer"></div>
+<div id="upper-footer"></div>
+<div id="footer">
+	This program uses <a href="http://mathjs.org/">math.js</a> to evaluate expressions
+</div>
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/tools/Grapher.js" %}"></script>
+
+{% endblock %}

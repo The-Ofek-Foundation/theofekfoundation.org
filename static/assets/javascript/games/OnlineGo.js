@@ -1238,7 +1238,7 @@ function new_game(length, handicap, starttime) {
   }
 }
 
-$(document).ready(function() {
+function page_ready() {
 
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
@@ -1259,7 +1259,7 @@ $(document).ready(function() {
   board_left = $("#board").position().left;
 
   new_game(19, 0, 300);
-});
+};
 
 $(window).resize(function(event) {
   $("#content-wrapper").outerWidth($(window).outerWidth(true));

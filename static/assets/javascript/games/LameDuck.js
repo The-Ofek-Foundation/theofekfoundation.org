@@ -177,11 +177,11 @@ function add_fish() {
     setTimeout(add_fish, 1000 + Math.random() * 3000);
 }
 
-$(document).ready(function() {
+function page_ready() {
     add_fish();
 
     wrapper_top = $("#content-wrapper").position().top;
 
     $(window).mousemove(function(evt) { move_duck(evt.pageX, evt.pageY - wrapper_top);});
     $(window).mousemove();
-});
+};

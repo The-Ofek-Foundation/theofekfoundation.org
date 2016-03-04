@@ -1,0 +1,37 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/PrimeFactorizer.css" %}">
+
+<script src="https://rawgit.com/MikeMcl/big.js/master/big.min.js"></script>
+
+{% endblock %}
+
+{% block body_content %}
+
+<h1>Prime Number Factorizer</h1>
+<div id="main-content">
+	<input id="sieve-size" placeholder="enter the max number range"></input>
+	<button id="create-sieve">Create Sieve</button>
+	<div id="sieve-generated"></div>
+	<br /><br />
+	<input id="input-number" placeholder="enter your number here"></input>
+	<button id="calculate-btn">Factorize</button>
+	<button id="pdp">PDP</button>
+	<button id="clear">C</button>
+	<br />
+	<h3 id="calculation-status">Result:</h3>
+	<div id="calculations-div">???</div>
+	<div id="time-div">???</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/tools/PrimeFactorizer.js" %}"></script>
+
+{% endblock %}

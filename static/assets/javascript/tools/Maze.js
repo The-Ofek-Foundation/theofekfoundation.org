@@ -20,7 +20,7 @@ var dead_visited;
 var mazeui = document.getElementById("maze");
 var brush = mazeui.getContext("2d");
 
-$(document).ready(function() {
+function page_ready() {
   $("#maze-tr-div").css('top', $("#content-wrapper").position().top);
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
@@ -28,11 +28,9 @@ $(document).ready(function() {
   dimensions[0] = 23;
   dimensions[1] = 23;
 
-  setTimeout(function () {
-    resize_maze();
-    generateMaze();
-  }, 100);
-});
+  resize_maze();
+  generateMaze();
+};
 
 function resize_maze() {
   var rec_block_width;

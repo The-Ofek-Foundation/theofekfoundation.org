@@ -19,7 +19,7 @@ var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
 
-$(document).ready(function() {
+function page_ready() {
   docwidth = $("#content-wrapper").outerWidth(true);
   docheight = $("#content-wrapper").outerHeight(true);
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
   new_game(window.location.hash);
 
   $('input[name="name"]').val(new_cookie_id());
-});
+};
 
 $(window).resize(function() {
   $("#content-wrapper").outerWidth($(window).outerWidth(true));

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from games import views
 
 urlpatterns = patterns('',
@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 	url(r'^(?i)Mancala/', views.mancala, name="Mancala"),
 	url(r'^(?i)UltimateTicTacToe/', views.ultimatetictactoe, name="UltimateTicTacToe"),
 	url(r'^(?i)LameDuck/', views.lameduck, name="LameDuck"),
+	url(r'^', include('main_app.misurls')),
 )
