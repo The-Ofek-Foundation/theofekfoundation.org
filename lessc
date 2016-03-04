@@ -12,3 +12,5 @@ lessc ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/La
 
 lessc ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.css
 
+lessc ./static/assets/styles/tools/PrimeFactorizer.less ./static/assets/styles/tools/PrimeFactorizer.css
+

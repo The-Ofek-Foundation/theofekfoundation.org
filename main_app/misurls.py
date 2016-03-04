@@ -8,4 +8,5 @@ urlpatterns = patterns('',
 	url(r'^(?i)UltimateTicTacToe/$', RedirectView.as_view(url='/games/UltimateTicTacToe/', permanent=False), name='UltimateTicTacToe'),
 	url(r'^(?i)LameDuck/$', RedirectView.as_view(url='/games/LameDuck/', permanent=False), name='LameDuck'),
 	url(r'^(?i)Maze/$', RedirectView.as_view(url='/tools/Maze/', permanent=False), name='Maze'),
+	url(r'^(?i)PrimeFactorizer/$', RedirectView.as_view(url='/tools/PrimeFactorizer/', permanent=False), name='PrimeFactorizer'),
 )
