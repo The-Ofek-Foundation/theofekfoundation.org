@@ -18,3 +18,5 @@ lessc ./static/assets/styles/tools/Grapher.less ./static/assets/styles/tools/Gra
 
 lessc ./static/assets/styles/tools/HappyNumber.less ./static/assets/styles/tools/HappyNumber.css
 
+lessc ./static/assets/styles/tools/ReveresLatsLettesr.less ./static/assets/styles/tools/ReveresLatsLettesr.css
+

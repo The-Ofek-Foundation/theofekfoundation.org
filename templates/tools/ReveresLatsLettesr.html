@@ -1,0 +1,36 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/ReveresLatsLettesr.css" %}">
+
+<meta name="viewport" content="width=device-width">
+
+{% endblock %}
+
+{% block body_content %}
+
+<h1>Dose Whta ti Sasy no teh Tni</h1>
+<h4>Inptu:</h4>
+<textarea id="input" placeholder="This is an example sentence"></textarea>
+<br />
+<h4>Outptu:</h4>
+<textarea id="output" placeholder="Thsi si na exampel sentenec" style="resize: none;" readonly></textarea>
+<br />
+<button id="select-all">Seletc All</button>
+<button id="speak-text">Sya ti Otu Lodu!</button>
+<select id="voice-select"></select>
+<br /><br />
+Chekc otu <a href="http://chess123.github.io/flipper">Kesva Viswanadhs'a versino!</a> (tI alos swasp punctuatino!)
+<h3><a href="https://repl.it/Blmm/3"> Pythno Exampel Coed: </a></h3>
+<script src="//repl.it/embed/Blmm/4.js"></script>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/tools/ReveresLatsLettesr.js" %}"></script>
+
+{% endblock %}
