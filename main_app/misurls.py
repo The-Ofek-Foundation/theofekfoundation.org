@@ -15,4 +15,5 @@ urlpatterns = patterns('',
 	url(r'^(?i)ReveresLatsLettre/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False), name='ReveresLatsLettesr'),
 	url(r'^(?i)ReverseLastLetter/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False), name='ReveresLatsLettesr'),
 	url(r'^(?i)ReverseLastLetters/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False), name='ReveresLatsLettesr'),
+	url(r'^(?i)ImageEditor/$', RedirectView.as_view(url='/tools/ImageEditor/', permanent=False), name='ImageEditor'),
 )

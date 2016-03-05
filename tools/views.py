@@ -45,9 +45,21 @@ def happynumber(request):
 def revereslatslettesr(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/ReveresLatsLettesr/',
+		'full_description': "Reveres Lats Tow Lettesr fo Worsd.",
+		'description': "Reveres Lats Tow Lettesr fo Worsd.",
+		'title': 'We Reverse',
+	}
+	context_dict = {'page': page}
+	return render(request, 'tools/ReveresLatsLettesr.html', context_dict)
+
+def imageeditor(request):
+	page = {
+		'full_url': 'http://theofekfoundation.org/tools/ImageEditor/',
 		'full_description': "A neat tool to calculate happy numbers, and variants.",
 		'description': "A neat tool to calculate happy numbers, and variants.",
 		'title': 'We Are Happy',
 	}
 	context_dict = {'page': page}
-	return render(request, 'tools/ReveresLatsLettesr.html', context_dict)
+	return render(request, 'tools/ImageEditor.html', context_dict)
+
+

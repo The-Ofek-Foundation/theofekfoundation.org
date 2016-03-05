@@ -1,0 +1,31 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/ImageEditor.css" %}">
+
+<meta name="viewport" content="width=device-width">
+
+{% endblock %}
+
+{% block body_content %}
+
+<div id="color-preview"></div>
+<div id="color-text"></div>
+<canvas id="background"></canvas>
+<div id="effects-pane">
+<input placeholder="URL to image (Enter to change)" id="image-src" value="http://theofekfoundation.org{% static "images/ImageEditor/default.JPG" %}"></input>
+</div>
+<div id="sound"></div>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/tools/ImageEditor.js" %}"></script>
+
+{% endblock %}
+
+
