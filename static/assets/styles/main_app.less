@@ -30,10 +30,14 @@ body {
       display: block;
       color: white;
       text-align: center;
-      padding: 3px 0.5em;
       text-decoration: none;
-      transition: background-color 1s;
       border-radius: 0;
+      font-weight: 400;
+    }
+
+    &.link {
+      transition: background-color 1s;
+      padding: 3px 0.5em;
 
       &:hover {
         background-color: purple;
@@ -44,7 +48,7 @@ body {
       list-style-type: none;
     }
 
-    > li a.active {
+    > li.link:active {
       background-color: #4CAF50;
     }
   }
@@ -55,16 +59,15 @@ body {
   top: 0px;
   left: 0px;
   width: 100%;
-  padding-bottom: 2px;
   background-color: #0099CC;
   z-index: 100;
   border-bottom: 1px solid black;
 
-  li a {
+  li {
     padding-bottom: 2px;
   }
 
-  ul li a:active {
+  ul li.link:active {
     background-color: #9932CD;
   }
 }
@@ -177,7 +180,7 @@ body {
 	cursor: pointer;
 }
 
-a {
+#content-wrapper a {
   border-radius: 5px;
   font-weight: 400;
   padding-left: 4px;

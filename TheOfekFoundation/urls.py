@@ -17,14 +17,14 @@ urlpatterns = patterns('',
     url(r'^(?i)tools/', include('tools.urls')),
 )
 
-if settings.DEBUG:
-	urlpatterns += patterns(
-		'django.views.static',
-		(r'^media/(?P<path>.*)',
-		'serve',
-		{'document_root': settings.MEDIA_ROOT}),
-	)
-else:
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# if settings.DEBUG:
+# 	urlpatterns += patterns(
+# 		'django.views.static',
+# 		(r'^media/(?P<path>.*)',
+# 		'serve',
+# 		{'document_root': settings.MEDIA_ROOT}),
+# 	)
+# else:
+# 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'main_app.views.page_not_found'

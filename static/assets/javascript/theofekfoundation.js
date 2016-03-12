@@ -2,6 +2,7 @@ function doc_ready() {
 	var content_wrapper = $("#content-wrapper"), window_height = $(window).outerHeight(true);
 	content_wrapper.css('top', $('#navbar-top').outerHeight(true)).height(window_height - $('#navbar-top').outerHeight(true));
 	vert_padding_align();
+
 	if (page_ready)
 		page_ready();
 	// console.log($("#navbar-top").outerHeight());
@@ -21,8 +22,9 @@ var get_final_navbar_height = setInterval(function () {
 			clearInterval(get_final_navbar_height);
 		}
 		else	navbar_height = $("#navbar-top").outerHeight();
-	count_repeats++;
-	if (count_repeats > 5) {
+	if (temp_height !== null)
+		count_repeats++;
+	if (count_repeats > 20 && temp_height !== null) {
 		doc_ready();
 		clearInterval(get_final_navbar_height);
 	}
