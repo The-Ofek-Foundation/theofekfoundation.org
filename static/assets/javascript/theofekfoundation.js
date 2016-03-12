@@ -2,20 +2,27 @@ function doc_ready() {
 	var content_wrapper = $("#content-wrapper"), window_height = $(window).outerHeight(true);
 	content_wrapper.css('top', $('#navbar-top').outerHeight(true)).height(window_height - $('#navbar-top').outerHeight(true));
 	vert_padding_align();
-
-	if (page_ready)
-		page_ready();
+	prt();
 	// console.log($("#navbar-top").outerHeight());
 	// if (document.getElementById('navbar-top') !== null)
 	// 	document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
 };
 
-var page_ready = 0;
+function prt() {	// page ready test
+	console.log("testing3");
+	if (typeof page_ready === "function")
+		page_ready();
+	else if (page_ready === null)
+		setTimeout(prt, 500);
+}
+
+var page_ready = null;
 
 var navbar_height = null;
 var count_repeats = 0;
 var get_final_navbar_height = setInterval(function () {
 	var temp_height = $("#navbar-top").outerHeight();
+	console.log(temp_height);
 	if (temp_height != navbar_height)
 		if (navbar_height) {
 			doc_ready();
@@ -28,7 +35,7 @@ var get_final_navbar_height = setInterval(function () {
 		doc_ready();
 		clearInterval(get_final_navbar_height);
 	}
-}, 30);
+}, 60);
 
 function vert_padding_align() {
 	var vert_padding_align = document.getElementsByClassName('vert-padding-align');

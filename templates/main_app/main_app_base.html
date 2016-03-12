@@ -39,6 +39,7 @@
 				<div class="social">
 					<span class="google">
 						<g:plusone size="standard" href="{{page.full_url}}"></g:plusone>
+						<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 					</span>
 					<span class="Facebook">
 						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&amp;show_faces=false&amp;layout=button_count" scrolling="no" frameborder="0" style="height: 21px; width: 100px" allowTransparency="true"></iframe>
@@ -54,7 +55,9 @@
 		{% block body_content %}{% endblock %}
 	</div>
 
-	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+	<script type="text/javascript">
+		page_ready = 1;
+	</script>
 
 {% endblock %}
 
