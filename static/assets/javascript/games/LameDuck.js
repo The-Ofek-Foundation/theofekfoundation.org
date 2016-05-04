@@ -81,6 +81,8 @@ function eat_elem(hunter, prey)    {
         resize_elem(duck, 25, duck.data('ratio'));
         prey.show();
         max_score = 25;
+        $("#high-score").text(max_score);
+        $('#score').text(duck.outerWidth());
     }
     else prey.remove();
 }
