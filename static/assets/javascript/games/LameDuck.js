@@ -1,11 +1,12 @@
 var fish = document.getElementById("fish-images").children;
 var wrapper_top;
+var max_score = 25;
 
 setInterval(function () {
     var elems = document.getElementsByClassName("fish");
     var duck = $(document.getElementById("duck"));
     var e1, e2;
-    for (var i = 0; i < elems.length - 1; i++) {
+    for (var i = 0; i < elems.length - 1; i++) {    // check overlapping fish
         e1 = $(elems[i]);
         for (var a = i + 1; a < elems.length; a++) {
             e2 = $(elems[a])
@@ -16,7 +17,7 @@ setInterval(function () {
                     eat_elem(e2, e1);
         }
     }
-    for (var i = 0; i < elems.length; i++) {
+    for (var i = 0; i < elems.length; i++) {    // check duck overlaps
         e1 = $(elems[i]);
         if (elemOverlap(e1, duck))
             if (can_eat(e1, duck))
@@ -24,6 +25,7 @@ setInterval(function () {
             else if (can_eat(duck, e1))
                 eat_elem(duck, e1);
     }
+    resize_elem(duck, get_elem_width(duck) * 0.999, duck.data('ratio'));
 }, 100);
 
 var duck = $('#duck').data('ratio', 1).data('count', 0);
@@ -47,8 +49,13 @@ function resize_elem(elem, width, ratio) {
     if (ratio >= 1)
         resize_elem_abs(elem, width, width / ratio);
     else resize_elem_abs(elem, width * ratio, width);
-    if (elem == duck)
-        $('#score').text("Score: " + duck.outerWidth());
+    if (elem.attr('id') === 'duck') {
+        if (duck.outerWidth() > max_score) {
+            max_score = duck.outerWidth();
+            $("#high-score").text(max_score);
+        }
+        $('#score').text(duck.outerWidth());
+    }
 }
 
 function calc_dist(dx, dy) {
@@ -67,12 +74,13 @@ function get_fish_speed(fish) {
 
 function eat_elem(hunter, prey)    {
     resize_elem(hunter, Math.sqrt(Math.pow(get_elem_width(hunter), 2) + Math.pow(get_elem_width(prey), 2)), hunter.data('ratio'));
-    if (prey.attr('id') === "duck")    {
+    if (prey.attr('id') === "duck")    { // new game functionality
         prey.hide();
-        alert("Game Over!!!, Your Score: " + prey.outerWidth() + "!!!");
+        alert("Game Over!!!, Your Score: " + max_score + "!!!");
         $('.fish').remove();
         resize_elem(duck, 25, duck.data('ratio'));
         prey.show();
+        max_score = 25;
     }
     else prey.remove();
 }
@@ -110,13 +118,14 @@ function move_elem(elem, x, y, distance, speed, callback)    {
             elem.css({left: x + 'px', top: y + 'px'});
             if (callback)
                 callback(elem);
-        }, step: function() {
-            elem.data('count', elem.data('count') + 1);
-            if (elem.data('count') % 10 === 0)
-                if (elem == duck)
-                    resize_elem(elem, get_elem_width(elem) * 0.999, elem.data('ratio'));
-                else resize_elem(elem, get_elem_width(elem) * 0.9999, elem.data('ratio'));
-        }
+        },
+        // step: function() {
+            // elem.data('count', elem.data('count') + 1);
+            // if (elem.data('count') % 10 === 0)
+            //     if (elem == duck)
+            //         resize_elem(elem, get_elem_width(elem) * 0.999, elem.data('ratio'));
+            //     else resize_elem(elem, get_elem_width(elem) * 0.9999, elem.data('ratio'));
+        // }
     });
 }
 

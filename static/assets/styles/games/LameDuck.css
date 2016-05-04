@@ -16,3 +16,11 @@
   position: absolute;
   visibility: hidden;
 }
+#left-details {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+#left-details h1 {
+  margin-bottom: 0em;
+  margin-top: 0em;
+}
