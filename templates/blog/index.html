@@ -1,0 +1,19 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/blog/index.css" %}">
+{% endblock %}
+
+{% block body_content %}
+	<iframe id="main-content-iframe" src="http://the-ofek-foundation.github.io/blog/{{pathname}}" height="100%"></iframe>
+{% endblock %}
+
+{% block end_block %}
+<script type="text/javascript">
+	$(window).resize(function () {
+		$("#content-wrapper").height($(window).outerHeight(true) - $("#navbar-top").outerHeight(true));
+	});
+</script>
+{% endblock %}

@@ -22,3 +22,5 @@ lessc ./static/assets/styles/tools/ReveresLatsLettesr.less ./static/assets/style
 
 lessc ./static/assets/styles/tools/ImageEditor.less ./static/assets/styles/tools/ImageEditor.css
 
+lessc ./static/assets/styles/blog/index.less ./static/assets/styles/blog/index.css
+

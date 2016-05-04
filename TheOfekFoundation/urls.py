@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^', include('main_app.urls')),
     url(r'^(?i)games/', include('games.urls')),
     url(r'^(?i)tools/', include('tools.urls')),
+    url(r'^(?i)blog/', include('blog.urls')),
 )
 
 # if settings.DEBUG:
