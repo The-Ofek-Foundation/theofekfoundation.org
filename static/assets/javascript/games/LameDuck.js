@@ -1,6 +1,7 @@
 var fish = document.getElementById("fish-images").children;
 var wrapper_top;
 var max_score = 25;
+var duck_width = 25;
 
 setInterval(function () {
     var elems = document.getElementsByClassName("fish");
@@ -26,7 +27,8 @@ setInterval(function () {
             else if (can_eat(duck, e1))
                 eat_elem(duck, e1);
     }
-    resize_elem(duck, get_elem_width(duck) * 0.99, duck.data('ratio'));
+    if (duck_width > 10)
+        resize_elem(duck, duck_width * 0.998, duck.data('ratio'));
 }, 100);
 
 var duck = $('#duck').data('ratio', 1).data('count', 0);
@@ -47,18 +49,24 @@ function get_elem_width(elem) {
 }
 
 function resize_elem(elem, width, ratio) {
-    if (ratio >= 1)
-        resize_elem_abs(elem, width, width / ratio);
-    else if (elem.attr('id') === 'duck' && duck.outerWidth() <= 10)
-        return;
-    else resize_elem_abs(elem, width * ratio, width);
     if (elem.attr('id') === 'duck') {
+        if (ratio >= 1) {
+            duck_width = width;
+            resize_elem_abs(elem, width, width / ratio);
+        }
+        else {
+            duck_width = width * ratio;
+            resize_elem_abs(elem, width * ratio, width);
+        }
         if (duck.outerWidth() > max_score) {
             max_score = duck.outerWidth();
             $("#high-score").text(max_score);
         }
-        $('#score').text(duck.outerWidth());
+        $('#score').text(duck_width + 0.5 | 0);
     }
+    else if (ratio >= 1)
+        resize_elem_abs(elem, width, width / ratio);
+    else resize_elem_abs(elem, width * ratio, width);
 }
 
 function calc_dist(dx, dy) {
@@ -68,7 +76,7 @@ function calc_dist(dx, dy) {
 }
 
 function get_duck_speed() {
-    return duck.outerWidth() / 10.0;
+    return duck_width / 10.0;
 }
 
 function get_fish_speed(fish) {
