@@ -20,7 +20,7 @@ setInterval(function () {
     }
     for (var i = 0; i < elems.length; i++) {    // check duck overlaps
         e1 = $(elems[i]);
-        resize_elem(e1, get_elem_width(e1) * 0.995, e1.data('ratio'));
+        resize_elem(e1, get_elem_width(e1) * 0.993, e1.data('ratio'));
         if (elemOverlap(e1, duck))
             if (can_eat(e1, duck))
                 eat_elem(e1, duck);
@@ -28,8 +28,8 @@ setInterval(function () {
                 eat_elem(duck, e1);
     }
     if (duck_width > 13)
-        resize_elem(duck, duck_width * 0.998, duck.data('ratio'));
-}, 100);
+        resize_elem(duck, duck_width * 0.997, duck.data('ratio'));
+}, 200);
 
 var duck = $('#duck').data('ratio', 1).data('count', 0);
 var count = 0;
