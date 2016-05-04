@@ -27,7 +27,7 @@ setInterval(function () {
             else if (can_eat(duck, e1))
                 eat_elem(duck, e1);
     }
-    if (duck_width > 10)
+    if (duck_width > 13)
         resize_elem(duck, duck_width * 0.998, duck.data('ratio'));
 }, 100);
 
@@ -64,9 +64,15 @@ function resize_elem(elem, width, ratio) {
         }
         $('#score').text(duck_width + 0.5 | 0);
     }
-    else if (ratio >= 1)
-        resize_elem_abs(elem, width, width / ratio);
-    else resize_elem_abs(elem, width * ratio, width);
+    else {
+        if (width * ratio < 8 || width / ratio < 8) {
+            elem.remove();
+            return;
+        }
+        if (ratio >= 1)
+            resize_elem_abs(elem, width, width / ratio);
+        else resize_elem_abs(elem, width * ratio, width);
+    }
 }
 
 function calc_dist(dx, dy) {
