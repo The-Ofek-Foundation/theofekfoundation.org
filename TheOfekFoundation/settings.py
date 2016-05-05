@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'ofekih$theofekfoundationdb',
         'USER': 'ofekih',
         'PASSWORD': 'SFD#$%\36grdsg%&$t',
-        'HOST': 'ofekih',
+        'HOST': 'ofekih.mysql.pythonanywhere-services.com',
     }
 }
 
