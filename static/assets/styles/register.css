@@ -12,7 +12,13 @@
   margin-bottom: 0.5em;
 }
 #user_form p input {
+  transition: outline 1s;
   width: 20em;
+  border: 1px solid lightgray;
+  padding: 5px;
+}
+#user_form p input:focus {
+  outline: double;
 }
 #user_form input[type=submit] {
   transition: background-color 1s;

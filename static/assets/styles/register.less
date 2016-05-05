@@ -17,7 +17,14 @@
 		}
 
 		input {
+			transition: outline 1s;
 			width: 20em;
+			border: 1px solid lightgray;
+			padding: 5px;
+
+			&:focus {
+				outline: double;
+			}
 		}
 	}
 	input[type=submit] {
