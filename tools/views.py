@@ -5,6 +5,7 @@ from django.shortcuts import render
 def maze(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/Maze/',
+		'pathname': 'tools/Maze',
 		'full_description': "Generate a Maze online!",
 		'description': "Generate a Maze online!",
 		'title': 'We Generate',
@@ -15,6 +16,7 @@ def maze(request):
 def primefactorizer(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/PrimeFactorizer/',
+		'pathname': 'tools/PrimeFactorizer',
 		'full_description': "A super fast online Prime Factorizer using a sieve.",
 		'description': "A super fast online Prime Factorizer using a sieve.",
 		'title': 'We Factorize',
@@ -25,6 +27,7 @@ def primefactorizer(request):
 def grapher(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/Grapher/',
+		'pathname': 'tools/Grapher',
 		'full_description': "A function grapher with a trace and newtons' method.",
 		'description': "A function grapher with a trace and newtons' method.",
 		'title': 'We Graph',
@@ -35,6 +38,7 @@ def grapher(request):
 def happynumber(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/HappyNumber/',
+		'pathname': 'tools/HappyNumber',
 		'full_description': "A neat tool to calculate happy numbers, and variants.",
 		'description': "A neat tool to calculate happy numbers, and variants.",
 		'title': 'We Are Happy',
@@ -45,6 +49,7 @@ def happynumber(request):
 def revereslatslettesr(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/ReveresLatsLettesr/',
+		'pathname': 'tools/ReveresLatsLettesr',
 		'full_description': "Reveres Lats Tow Lettesr fo Worsd.",
 		'description': "Reveres Lats Tow Lettesr fo Worsd.",
 		'title': 'We Reverse',
@@ -55,6 +60,7 @@ def revereslatslettesr(request):
 def imageeditor(request):
 	page = {
 		'full_url': 'http://theofekfoundation.org/tools/ImageEditor/',
+		'pathname': 'tools/ImageEditor',
 		'full_description': "A neat tool to calculate happy numbers, and variants.",
 		'description': "A neat tool to calculate happy numbers, and variants.",
 		'title': 'We Are Happy',

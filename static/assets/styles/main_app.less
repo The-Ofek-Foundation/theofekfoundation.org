@@ -37,10 +37,12 @@ body {
 
     &.link {
       transition: background-color 1s;
-      padding: 3px 0.5em;
 
       &:hover {
         background-color: purple;
+        &[disabled] {
+          background-color: gray;
+        }
       }
     }
 
@@ -65,11 +67,17 @@ body {
 
   li {
     padding-bottom: 2px;
+    padding: 3px 0.5em;
   }
 
   ul li.link:active {
     background-color: #9932CD;
   }
+}
+
+#navbar-username {
+  cursor: default;
+  font-weight: bold;
 }
 
 #dropdown {
