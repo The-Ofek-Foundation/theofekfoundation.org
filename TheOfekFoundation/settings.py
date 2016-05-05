@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ofekih$theofekfoundationdb',
         'USER': 'ofekih',
-        'PASSWORD': '',
+        'PASSWORD': 'awesome1',
         'HOST': 'ofekih.mysql.pythonanywhere-services.com',
     }
 }
