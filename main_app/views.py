@@ -53,8 +53,8 @@ def register(request, redirect_pathname):
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            # if 'picture' in request.FILES:
+            #     profile.picture = request.FILES['picture']
 
             # Now we save the UserProfile model instance.
             profile.save()
@@ -77,11 +77,23 @@ def register(request, redirect_pathname):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
+    page = {
+        'full_url': 'http://theofekfoundation.org/register',
+        'pathname': redirect_pathname,
+        'full_description': "Register to TheOfekFoundation! Make a free account today!",
+        'description': "Register to TheOfekFoundation!",
+        'title': 'We Register',
+    }
+    context_dict = {
+        'page': page,
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'registered': registered,
+        'redirect_pathname': redirect_pathname,
+    }
     # Render the template depending on the context.
     return render_to_response(
-            'main_app/register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'registered': registered, 'redirect_pathname': redirect_pathname},
-            context)
+        'main_app/register.html', context_dict, context)
 
 def user_login(request, redirect_pathname):
     # Like before, obtain the context for the user's request.

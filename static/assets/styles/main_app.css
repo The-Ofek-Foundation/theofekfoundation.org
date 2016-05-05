@@ -203,3 +203,6 @@ body {
   left: 0px;
   width: 100%;
 }
+.center-align {
+  text-align: center;
+}

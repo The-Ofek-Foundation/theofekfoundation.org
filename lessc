@@ -1,5 +1,7 @@
 lessc ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css
 
+lessc ./static/assets/styles/register.less ./static/assets/styles/register.css
+
 lessc ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games/ConnectOfek.css
 
 lessc ./static/assets/styles/games/OnlineGo.less ./static/assets/styles/games/OnlineGo.css

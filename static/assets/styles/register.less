@@ -1,0 +1,49 @@
+#content-wrapper {
+	text-align: center;
+}
+
+#user_form {
+	display: inline-block;
+	padding: 1em 2em;
+	border: 1px solid black;
+	text-align: left;
+
+	p {
+		margin-top: 0;
+		margin-bottom: 0.5em;
+
+		label {
+			// margin-right: 100em;
+		}
+
+		input {
+			width: 20em;
+		}
+	}
+	input[type=submit] {
+		transition: background-color 1s;
+		border: 1px solid #777777;
+		background-color: white;
+		padding: 4px;
+		cursor: pointer;
+		border-radius: 4px;
+
+		&:hover {
+			background-color: lightgreen;
+		}
+
+		&:active {
+			background-color: pink;
+		}
+	}
+}
+
+.errorlist {
+	list-style: none;
+	font-weight: bold;
+	text-align: center;
+	border: 1px solid black;
+	padding: 0.5em;
+	background-color: pink;
+	border-radius: 1em;
+}
