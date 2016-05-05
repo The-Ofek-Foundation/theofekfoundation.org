@@ -23,7 +23,7 @@ STATIC_PATH = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = False
 
@@ -69,10 +69,20 @@ WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'ofekih$theofekfoundationdb',
+        'USER': 'ofekih',
+        'PASSWORD': 'SFD#$%\36grdsg%&$t',
+        'HOST': 'ofekih',
     }
 }
 
