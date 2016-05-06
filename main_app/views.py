@@ -166,7 +166,7 @@ def register(request, redirect_pathname):
 		profile_form = UserProfileForm()
 
 	page = {
-		'full_url': 'http://theofekfoundation.org/register',
+		'full_url': 'http://theofekfoundation.org',
 		'pathname': redirect_pathname,
 		'full_description': "Register to TheOfekFoundation! Make a free account today!",
 		'description': "Register to TheOfekFoundation!",
@@ -221,7 +221,14 @@ def user_login(request, redirect_pathname):
 	else:
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
-		return render_to_response('main_app/login.html', {'redirect_pathname': redirect_pathname}, context)
+		page = {
+			'full_url': 'http://theofekfoundation.org',
+			'pathname': redirect_pathname,
+			'full_description': "Login to TheOfekFoundation! Make a free account today!",
+			'description': "Login to TheOfekFoundation!",
+			'title': 'We Login',
+		}
+		return render_to_response('main_app/login.html', {'page': page, 'redirect_pathname': redirect_pathname}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -289,7 +296,7 @@ class ResetPasswordRequestView(FormView):
 				for user in associated_users:
 					c = {
 						'email': user.email,
-						'domain': 'example.com', #or your domain
+						'domain': 'theofekfoundation.org', #or your domain
 						'site_name': 'TheOfekFoundation',
 						'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 						'user': user,
