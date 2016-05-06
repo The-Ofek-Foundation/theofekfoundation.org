@@ -1,22 +1,48 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Rango</title>
-    </head>
+{% extends 'main_app/main_app_base.html' %}
 
-    <body>
-        <h1>Login to Rango</h1>
+{% load staticfiles %}
 
-        <form id="login_form" method="post" action="/login/{{redirect_pathname}}">
-            {% csrf_token %}
-            Username: <input type="text" name="username" value="" size="50" />
-            <br />
-            Password: <input type="password" name="password" value="" size="50" />
-            <br />
+{% block header_additions %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/styles/login.css" %}">
+{% endblock %}
 
-            <input type="submit" value="submit" />
-        </form>
+{% block body_content %}
+    {% if user.is_authenticated %}
+    <h1>You are already in!</h1>
 
-    </body>
-</html>
+    <a href="/logout">Logout from the Foundation</a> or <a href="/">go to homepage</a>?
+    <br />
+    {% else %}
+    <h1>Login to the Foundation!</h1>
+
+    <form id="login_form" method="post" action="/login/{{redirect_pathname}}">
+        Enter Account Details:
+        <br />
+        {% csrf_token %}
+        Username: <input type="text" name="username" value="" size="50" />
+        <br />
+        Password: <input type="password" name="password" value="" size="50" />
+        <br />
+
+        <div class="center-align">
+            <input type="submit" name="submit" value="Login" />
+        </div>
+    </form>
+    {% endif %}
+{% endblock %}
+
+{% block end_block %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        resize_login_form();
+    });
+
+    $(window).resize(function () {
+        resize_login_form();
+    });
+
+    function resize_login_form() {
+        $("#login_form").width($("input[name]").outerWidth());
+    }
+</script>
+{% endblock %}

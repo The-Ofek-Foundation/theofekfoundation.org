@@ -202,6 +202,7 @@ body {
   position: absolute;
   left: 0px;
   width: 100%;
+  top: 38px;
 }
 .center-align {
   text-align: center;

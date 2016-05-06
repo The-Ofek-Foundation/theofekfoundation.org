@@ -78,14 +78,14 @@ def index(request):
 			},
 			{
 				'redirect': '/tools/ReveresLatsLettesr/',
-				'imagesrc': 'https://c2.staticflickr.com/2/1270/4600275420_c7bfb8466d.jpg',
+				'imagesrc': '/static/images/main_app/4600275420_c7bfb8466d.jpg',
 				'description': 'Reverse the last two characters of words :P',
 			},
 		],
 	}
 	projects = {
-		'games': games,
 		'tools': tools,
+		'games': games,
 	}
 	context_dict = {
 		'page': page,

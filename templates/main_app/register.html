@@ -7,12 +7,14 @@
 {% endblock %}
 
 {% block body_content %}
-    <h1>Join the Foundation!</h1>
-
     {% if registered %}
+    <h1>Welcome to the Foundation!</h1>
+
     <strong>Thank you for registering!</strong>
     <a href="/">Return to the homepage.</a><br />
     {% else %}
+    <h1>Join the Foundation!</h1>
+
     <form id="user_form" method="post" action="/register/{{redirect_pathname}}" enctype="multipart/form-data">
         Enter account details:
         {% csrf_token %}
@@ -44,6 +46,5 @@
     function resize_user_form() {
         $("#user_form").width($("p input").outerWidth());
     }
-
 </script>
 {% endblock %}
