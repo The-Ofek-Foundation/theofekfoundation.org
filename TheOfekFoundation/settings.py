@@ -33,32 +33,32 @@ ALLOWED_HOSTS = ['theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.co
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'main_app',
-    'games',
-    'tools',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'main_app',
+	'games',
+	'tools',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 TEMPLATE_DIRS = (
-    TEMPLATE_PATH,
+	TEMPLATE_PATH,
 )
 
 STATICFILES_DIRS = (
-    STATIC_PATH,
+	STATIC_PATH,
 )
 
 ROOT_URLCONF = 'TheOfekFoundation.urls'
@@ -70,21 +70,21 @@ WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
+#	 'default': {
+#		 'ENGINE': 'django.db.backends.sqlite3',
+#		 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#	 }
 # }
 
 # Uncomment below lines for distribution
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ofekih$theofekfoundationdb',
-        'USER': 'ofekih',
-        'PASSWORD': 'awesome1',
-        'HOST': 'ofekih.mysql.pythonanywhere-services.com',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'ofekih$theofekfoundationdb',
+		'USER': 'ofekih',
+		'PASSWORD': 'awesome1',
+		'HOST': 'ofekih.mysql.pythonanywhere-services.com',
+	}
 }
 
 # Internationalization
@@ -110,3 +110,12 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/login/'
+
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'test@gmail.com'
+SERVER_EMAIL = 'test@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kekofesov@gmail.com'
+EMAIL_HOST_PASSWORD = '!2}4$67B'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
