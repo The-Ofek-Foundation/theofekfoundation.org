@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from main_app import views
-from views import PasswordResetConfirmView, ResetPasswordRequestView
+# from views import PasswordResetConfirmView, ResetPasswordRequestView
 
 urlpatterns = patterns('',
 	url(r'^$', views.index, name='index'),

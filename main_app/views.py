@@ -94,8 +94,8 @@ def index(request):
 		],
 	}
 	projects = {
-		'tools': tools,
 		'games': games,
+		'tools': tools,
 	}
 	context_dict = {
 		'page': page,
