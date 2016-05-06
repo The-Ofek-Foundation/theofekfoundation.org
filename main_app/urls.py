@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 from main_app import views
 from django.views.generic.base import RedirectView
-from django.contrib.auth.view import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
+from django.contrib.auth.views import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 
 urlpatterns = patterns('',
 	url(r'^$', views.index, name='index'),
