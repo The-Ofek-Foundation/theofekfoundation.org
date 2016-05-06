@@ -16,6 +16,14 @@
     <h1>Login to the Foundation!</h1>
 
     <form id="login_form" method="post" action="/login/{{redirect_pathname}}">
+
+        {% if error_message %}
+        <div class="errorlist">
+            {{error_message}}
+        </div>
+        <br />
+        {% endif %}
+
         Enter Account Details:
         <br />
         {% csrf_token %}

@@ -150,8 +150,7 @@ def register(request, redirect_pathname):
 			# Update our variable to tell the template registration was successful.
 			registered = True
 
-			if redirect_pathname:
-				return HttpResponseRedirect('/' + redirect_pathname)
+			return HttpResponseRedirect('/login/' + redirect_pathname)
 
 		# Invalid form or forms - mistakes or something else?
 		# Print problems to the terminal.
@@ -187,6 +186,14 @@ def user_login(request, redirect_pathname):
 	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
 
+	page = {
+		'full_url': 'http://theofekfoundation.org',
+		'pathname': redirect_pathname,
+		'full_description': "Login to TheOfekFoundation! Make a free account today!",
+		'description': "Login to TheOfekFoundation!",
+		'title': 'We Login',
+	}
+
 	# If the request is a HTTP POST, try to pull out the relevant information.
 	if request.method == 'POST':
 		# Gather the username and password provided by the user.
@@ -201,6 +208,7 @@ def user_login(request, redirect_pathname):
 		# If we have a User object, the details are correct.
 		# If None (Python's way of representing the absence of a value), no user
 		# with matching credentials was found.
+		error_message = ''
 		if user:
 			# Is the account active? It could have been disabled.
 			if user.is_active:
@@ -210,24 +218,18 @@ def user_login(request, redirect_pathname):
 				return HttpResponseRedirect('/' + redirect_pathname)
 			else:
 				# An inactive account was used - no logging in!
-				return HttpResponse("Your Rango account is disabled.")
+				error_message = "Your Rango account is disabled."
 		else:
 			# Bad login details were provided. So we can't log the user in.
 			print ("Invalid login details: {0}, {1}".format(username, password))
-			return HttpResponse("Invalid login details supplied.")
+			error_message = "Invalid login details supplied."
+		return render_to_response('main_app/login.html', {'page': page, 'redirect_pathname': redirect_pathname, 'error_message': error_message}, context)
 
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
 	else:
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
-		page = {
-			'full_url': 'http://theofekfoundation.org',
-			'pathname': redirect_pathname,
-			'full_description': "Login to TheOfekFoundation! Make a free account today!",
-			'description': "Login to TheOfekFoundation!",
-			'title': 'We Login',
-		}
 		return render_to_response('main_app/login.html', {'page': page, 'redirect_pathname': redirect_pathname}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
