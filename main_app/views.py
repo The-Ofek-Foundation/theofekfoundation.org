@@ -29,6 +29,8 @@ def index(request):
 		'title': 'We are Ofek',
 	}
 	games = {
+		'name': 'Games',
+		'id': 'games',
 		'header': 'Games (Most with AIs)',
 		'list': [
 			{
@@ -59,6 +61,8 @@ def index(request):
 		],
 	}
 	tools = {
+		'name': 'Tools',
+		'id': 'tools',
 		'header': 'Tools and other Math Stuff',
 		'list': [
 			{
@@ -93,10 +97,10 @@ def index(request):
 			},
 		],
 	}
-	projects = {
-		'games': games,
-		'tools': tools,
-	}
+	projects = [
+		games,
+		tools,
+	]
 	context_dict = {
 		'page': page,
 		'projects': projects,

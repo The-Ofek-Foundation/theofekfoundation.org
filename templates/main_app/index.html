@@ -6,8 +6,8 @@
 
 <div class="pseudo-body">
   <h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
-  {% for projectname, project in projects.items %}
-    <div class="projects" id="{{projectname}}">
+  {% for project in projects %}
+    <div class="projects" id="{{project.id}}">
       <h2>{{project.header}}</h2>
       {% for item in project.list %}
         <section class="container square">
