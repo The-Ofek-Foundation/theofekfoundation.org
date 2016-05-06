@@ -124,8 +124,6 @@ body {
   background-color: rgba(0, 100, 255, 0.6);
   border-radius: 15px;
   font-size: 1.6em;
-  margin-left: 20px;
-  margin-right: 20px;
   transform: rotateY(180deg);
 }
 .projects .flippable div {
