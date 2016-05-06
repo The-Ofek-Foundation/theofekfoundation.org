@@ -3,80 +3,26 @@
 {% load staticfiles %}
 
 {% block body_content %}
+
 <div class="pseudo-body">
-  <h1>Heya peeps, Ofek Gila here!</h1>
-  <div class="projects" id="games">
-    <h2>Games (Most with AIs)</h3>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/games/ConnectFour/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/connect-4.jpg" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">Perhaps my strongest AI, my Connect Four Monte Carlo tree search AI is very powerful and very fast!</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/games/OnlineGo/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/board-game-go.jpg" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">Play Go, Gomoku, or Wu. The only one with an AI—however—is Gomoku—with a Minimax implementation.</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/games/Mancala/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/mancala.JPG" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">My first Monte Carlo tree search AI! The game itself is programmed with a customizeable set of rules.</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/games/UltimateTicTacToe/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/Ultimate-Tic-Tac-Toe.jpg" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">An AI I literally whipped over two nights—the interface is slightly lacking—but plays well nonetheless.</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/games/LameDuck/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/duck.svg" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">This game precedes this website by half a year, and was made in a few hours. It seems to be the largest attraction of my site for some reason.</div></figure>
-      </div>
-    </section>
-  </div>
-  <div class="projects" id="tools">
-    <h2>Tools and other Math Stuff</h2>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/Maze/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/maze.png" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">A <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search">depth-first search maze generator</a> with a generation <strong>animation option</strong> and maze styles!</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/PrimeFactorizer/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/factor-tree.gif" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">A super-fast prime number factorizer that uses a sieve of a size that you get to input!</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/ImageEditor/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/image-editor.jpg" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">A neat little image editor that has many effects. Press 'c' to enter commands.</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/Grapher/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/grapher.gif" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">A function grapher with a neat tracing and newtons' method (click 'n' in trace mode).</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/HappyNumbers/');">
-        <figure class="front"><img class="square" src="{% static "images/main_app/happy-number.png" %}" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">A <a href="https://en.wikipedia.org/wiki/Happy_number">Happy Number</a> calculator.</div></figure>
-      </div>
-    </section>
-    <section class="container square">
-      <div class="flippable link" onclick="redirect('/tools/ReveresLatsLettesr/');">
-        <figure class="front"><img class="square" src="https://c2.staticflickr.com/2/1270/4600275420_c7bfb8466d.jpg" /></figure>
-        <figure class="back"><div class="vert-align fit-parent">Reverse the last two characters of words :P</div></figure>
-      </div>
-    </section>
-  </div>
+  <h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
+  {% for projectname, project in projects.items %}
+    <div class="projects" id="{{projectname}}">
+      <h2>{{project.header}}</h2>
+      {% for item in project.list %}
+        <section class="container square">
+          <div class="flippable link" onclick="redirect('{{item.redirect}}');">
+            <figure class="front">
+              <img class="square" src="{{item.imagesrc}}">
+            </figure>
+            <figure class="back">
+              <div class="vert-align fit-parent">{% autoescape off %}{{item.description}}{% endautoescape %}</div>
+            </figure>
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  {% endfor %}
   <!-- <div class="info" id="contact-me">
     <h2>Contact Me</h2>
   </div> -->
