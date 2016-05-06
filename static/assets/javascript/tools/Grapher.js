@@ -14,6 +14,7 @@ var animate = true;
 var functions_animating = 0;
 var immediate = typeof(setImmediate) == 'undefined' ? false:true;
 var increment = immediate ? 0.002:0.02;
+var draw_coordinate_axes = true;
 
 $('#expression').val(EXPR);
 
@@ -291,7 +292,8 @@ function draw_graph(derivative) {
     draw_function($('#expression').val(), null, null, derivative);
   });
 
-  draw_axes();
+  if (draw_coordinate_axes)
+	draw_axes();
 }
 
 function page_ready() {
@@ -365,7 +367,8 @@ $('#btn-eval').click(function() {
       break;
     case 'clear':
       clear_graph();
-      draw_axes();
+      if (draw_coordinate_axes)
+	    draw_axes();
       $('#operation').val('graph');
       break;
   }
@@ -394,6 +397,9 @@ $('#btn-settings').click(function() {
       break;
     case 'no animation': case 'stop animation': case 'stop animating':
       animate = false;
+      break;
+    case 'toggle axes':
+      draw_coordinate_axes = !draw_coordinate_axes;
       break;
   }
   update_dri();
