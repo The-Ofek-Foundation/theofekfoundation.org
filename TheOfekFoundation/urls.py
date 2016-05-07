@@ -7,15 +7,16 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'TheOfekFoundation.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+	# Examples:
+	# url(r'^$', 'TheOfekFoundation.views.home', name='home'),
+	# url(r'^blog/', include('blog.urls')),
 
-    url(r'^(?i)admin/', include(admin.site.urls)),
-    url(r'^', include('main_app.urls')),
-    url(r'^(?i)games/', include('games.urls')),
-    url(r'^(?i)tools/', include('tools.urls')),
-    url(r'^(?i)blog/', include('blog.urls')),
+	url(r'^(?i)account/', include('account.urls')),
+	url(r'^(?i)admin/', include(admin.site.urls)),
+	url(r'^(?i)blog/', include('blog.urls')),
+	url(r'^(?i)games/', include('games.urls')),
+	url(r'^(?i)tools/', include('tools.urls')),
+	url(r'^', include('main_app.urls')),
 )
 
 # if settings.DEBUG:

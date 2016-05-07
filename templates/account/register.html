@@ -15,7 +15,7 @@
     {% else %}
     <h1>Join the Foundation!</h1>
 
-    <form id="user_form" method="post" action="/register/{{redirect_pathname}}" enctype="multipart/form-data">
+    <form id="user_form" method="post" action="/account/register/{{redirect_pathname}}" enctype="multipart/form-data">
         Enter account details:
         {% csrf_token %}
 

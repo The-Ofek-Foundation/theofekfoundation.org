@@ -50,10 +50,10 @@
 				<li>
 					<a id="navbar-username">{{user.username}}</a>
 				</li>
-				<li class="link"><a href="/logout/{{page.pathname}}">Logout</a></li>
+				<li class="link"><a href="/account/logout/{{page.pathname}}">Logout</a></li>
 			{% else %}
-				<li class="link"><a href="/register/{{page.pathname}}">Register</a></li>
-				<li class="link"><a href="/login/{{page.pathname}}">Login</a></li>
+				<li class="link"><a href="/account/register/{{page.pathname}}">Register</a></li>
+				<li class="link"><a href="/account/login/{{page.pathname}}">Login</a></li>
 			{% endif %}
 		</ul>
 	</ul>

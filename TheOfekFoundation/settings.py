@@ -70,21 +70,21 @@ WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 # DATABASES = {
-#	 'default': {
-#		 'ENGINE': 'django.db.backends.sqlite3',
-#		 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#	 }
+# 	'default': {
+# 		'ENGINE': 'django.db.backends.sqlite3',
+# 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+# 	}
 # }
 
 # Uncomment below lines for distribution
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'ofekih$theofekfoundationdb',
-		'USER': 'ofekih',
-		'PASSWORD': 'awesome1',
-		'HOST': 'ofekih.mysql.pythonanywhere-services.com',
-	}
+	 'default': {
+		 'ENGINE': 'django.db.backends.mysql',
+		 'NAME': 'ofekih$theofekfoundationdb',
+		 'USER': 'ofekih',
+		 'PASSWORD': 'awesome1',
+		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
+	 }
 }
 
 # Internationalization
@@ -109,13 +109,13 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/account/login/'
 
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'test@gmail.com'
-SERVER_EMAIL = 'test@gmail.com'
+DEFAULT_FROM_EMAIL = 'theofekfoundation@gmail.com'
+SERVER_EMAIL = 'theofekfoundation@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'kekofesov@gmail.com'
-EMAIL_HOST_PASSWORD = '!2}4$67B'
+EMAIL_HOST_USER = 'theofekfoundation@gmail.com'
+EMAIL_HOST_PASSWORD = 'SFEuy5476yRHdfhyey#^%$7845:{'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

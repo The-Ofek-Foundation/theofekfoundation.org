@@ -1,18 +1,17 @@
-{# test template #}
-    <!-- code for displaying success or error message in template -->
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-        {% endif %}
-    </ul>
 
-    <!-- Form rendering code for template -->
-    <form action="" method="post">
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+	{% endif %}
+</ul>
 
-        {% csrf_token %}
-        {{ form.as_p }}
+<!-- Form rendering code for template -->
+<form action="" method="post">
 
-        <input type="submit" value="Submit" />
-    </form>
+	{% csrf_token %}
+	{{ form.as_p }}
+
+	<input type="submit" value="Submit" />
+</form>
