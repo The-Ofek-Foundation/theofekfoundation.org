@@ -5,10 +5,32 @@ from django.http import HttpResponse, HttpResponseRedirect
 from main_app.forms import UserForm, UserProfileForm
 from django.template import RequestContext
 from main_app import pages, display_projects
+from datetime import datetime
 
 # Create your views here.
 def index(request):
 	context = RequestContext(request)
+
+	visits = request.session.get('visits')
+	if not visits:
+		visits = 1
+
+	reset_last_visit_time = False
+
+	last_visit = request.session.get('last_visit')
+	if last_visit:
+		last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+		if (datetime.now() - last_visit_time).seconds > 0:
+			visits += 1
+			reset_last_visit_time = True
+	else:
+		reset_last_visit_time = True
+
+	if reset_last_visit_time:
+		request.session['last_visit'] = str(datetime.now())
+		request.session['visits'] = visits
+
 	context_dict = {
 		'page': pages.index,
 		'projects': display_projects.projects,
