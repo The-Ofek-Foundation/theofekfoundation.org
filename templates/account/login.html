@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block authenticated_block %}
-	<h1>You are already in!</h1>
+	<h1>You are already in, {{user.username}}!</h1>
 
 	<a href="/account/logout">Logout from the Foundation</a> or <a href="/">go to homepage</a>?
 	<br />
@@ -21,4 +21,14 @@
 	<br />
 	Password: <input type="password" name="password" value="" size="50" />
 	<br />
+{% endblock %}
+
+{% block end_additions %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".errorlist").each(function (e) {
+			$(this).insertAfter($(this).next());
+		});
+	});
+</script>
 {% endblock %}

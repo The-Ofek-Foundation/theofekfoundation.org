@@ -25,7 +25,6 @@
 		<div class="errorlist">
 			{{error_message}}
 		</div>
-		<br />
 		{% endif %}
 
 		{% block form_content %}
@@ -57,4 +56,8 @@
 </script>
 {% endif %}
 {% endwith %}
+
+{% block end_additions %}
+{% endblock %}
+
 {% endblock %}

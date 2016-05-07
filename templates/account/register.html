@@ -22,3 +22,14 @@
 	{{ user_form.as_p }}
 	{{ profile_form.as_p }}
 {% endblock %}
+
+{% block end_additions %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".errorlist").each(function (e) {
+			$(this).insertAfter($(this).next().children(1));
+			$(this).remove();
+		});
+	});
+</script>
+{% endblock %}
