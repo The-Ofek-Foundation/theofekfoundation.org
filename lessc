@@ -1,8 +1,10 @@
 lessc ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css
 
-lessc ./static/assets/styles/register.less ./static/assets/styles/register.css
+lessc ./static/assets/styles/account/account_form_base.less ./static/assets/styles/account/account_form_base.css
 
-lessc ./static/assets/styles/login.less ./static/assets/styles/login.css
+lessc ./static/assets/styles/account/register.less ./static/assets/styles/account/register.css
+
+lessc ./static/assets/styles/account/login.less ./static/assets/styles/account/login.css
 
 lessc ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games/ConnectOfek.css
 

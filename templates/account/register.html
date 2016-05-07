@@ -1,50 +1,24 @@
-{% extends 'main_app/main_app_base.html' %}
+{% extends 'account/account_form_base.html' %}
 
 {% load staticfiles %}
 
-{% block header_additions %}
-    <link rel="stylesheet" type="text/css" href="{% static "assets/styles/register.css" %}">
+{% block authenticated_block %}
+	<h1>Welcome to the Foundation!</h1>
+
+	<strong>Thank you for registering!</strong>
+	<a href="/">Return to the homepage.</a>
+	<br />
 {% endblock %}
 
-{% block body_content %}
-    {% if registered %}
-    <h1>Welcome to the Foundation!</h1>
-
-    <strong>Thank you for registering!</strong>
-    <a href="/">Return to the homepage.</a><br />
-    {% else %}
-    <h1>Join the Foundation!</h1>
-
-    <form id="user_form" method="post" action="/account/register/{{redirect_pathname}}" enctype="multipart/form-data">
-        Enter account details:
-        {% csrf_token %}
-
-        <!-- Display each form. The as_p method wraps each element in a paragraph
-             (<p>) element. This ensures each element appears on a new line,
-             making everything look neater. -->
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-
-        <!-- Provide a button to click to submit the form. -->
-        <div class="center-align">
-            <input type="submit" name="submit" value="Register" />
-        </div>
-    </form>
-    {% endif %}
+{% block unauthenticated_block %}
+	<h1>Join the Foundation!</h1>
 {% endblock %}
 
-{% block end_block %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        resize_user_form();
-    });
+{% block form_content %}
+	Enter account details:
 
-    $(window).resize(function () {
-        resize_user_form();
-    });
+	{% csrf_token %}
 
-    function resize_user_form() {
-        $("#user_form").width($("p input").outerWidth());
-    }
-</script>
+	{{ user_form.as_p }}
+	{{ profile_form.as_p }}
 {% endblock %}

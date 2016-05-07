@@ -1,56 +1,24 @@
-{% extends 'main_app/main_app_base.html' %}
+{% extends 'account/account_form_base.html' %}
 
 {% load staticfiles %}
 
-{% block header_additions %}
-    <link rel="stylesheet" type="text/css" href="{% static "assets/styles/login.css" %}">
+{% block authenticated_block %}
+	<h1>You are already in!</h1>
+
+	<a href="/account/logout">Logout from the Foundation</a> or <a href="/">go to homepage</a>?
+	<br />
 {% endblock %}
 
-{% block body_content %}
-    {% if user.is_authenticated %}
-    <h1>You are already in!</h1>
-
-    <a href="/account/logout">Logout from the Foundation</a> or <a href="/">go to homepage</a>?
-    <br />
-    {% else %}
-    <h1>Login to the Foundation!</h1>
-
-    <form id="login_form" method="post" action="/account/login/{{redirect_pathname}}">
-
-        {% if error_message %}
-        <div class="errorlist">
-            {{error_message}}
-        </div>
-        <br />
-        {% endif %}
-
-        Enter Account Details:
-        <br />
-        {% csrf_token %}
-        Username: <input type="text" name="username" value="" size="50" />
-        <br />
-        Password: <input type="password" name="password" value="" size="50" />
-        <br />
-
-        <div class="center-align">
-            <input type="submit" name="submit" value="Login" />
-        </div>
-    </form>
-    {% endif %}
+{% block unauthenticated_block %}
+	<h1>Login to the Foundation!</h1>
 {% endblock %}
 
-{% block end_block %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        resize_login_form();
-    });
-
-    $(window).resize(function () {
-        resize_login_form();
-    });
-
-    function resize_login_form() {
-        $("#login_form").width($("input[name]").outerWidth());
-    }
-</script>
+{% block form_content %}
+	Enter Account Details:
+	<br />
+	{% csrf_token %}
+	Username: <input type="text" name="username" value="" size="50" />
+	<br />
+	Password: <input type="password" name="password" value="" size="50" />
+	<br />
 {% endblock %}

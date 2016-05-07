@@ -16,4 +16,7 @@ urlpatterns = patterns('',
 	url(r'^(?i)ReverseLastLetter/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False), name='ReveresLatsLettesr'),
 	url(r'^(?i)ReverseLastLetters/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False), name='ReveresLatsLettesr'),
 	url(r'^(?i)ImageEditor/$', RedirectView.as_view(url='/tools/ImageEditor/', permanent=False), name='ImageEditor'),
+	url(r'^(?i)login/$', RedirectView.as_view(url='/account/login/', permanent=False), name='Login'),
+	url(r'^(?i)register/$', RedirectView.as_view(url='/account/register/', permanent=False), name='Register'),
+	url(r'^(?i)blog/$', RedirectView.as_view(url='/blog/', permanent=False), name='Blog'),
 )

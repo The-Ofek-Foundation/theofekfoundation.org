@@ -1,0 +1,60 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/account/account_form_base.css" %}">
+{% endblock %}
+
+{% block body_content %}
+
+	{% if user.is_authenticated or registered %}
+
+	{% block authenticated_block %}
+	{% endblock %}
+
+	{% else %}
+
+	{% block unauthenticated_block %}
+	{% endblock %}
+
+	{% with page.form as form %}
+	<form class="account_form" id="{{form.id}}" method="{{form.method}}" action="{{form.action}}" {% if form.enctype %}enctype="{{form.enctype}}"{% endif %}>
+
+		{% if error_message %}
+		<div class="errorlist">
+			{{error_message}}
+		</div>
+		<br />
+		{% endif %}
+
+		{% block form_content %}
+		{% endblock %}
+
+		<div class="center-align">
+			<input type="submit" name="submit" value="{{form.submit_value}}" />
+		</div>
+	</form>
+	{% endwith %}
+	{% endif %}
+{% endblock %}
+
+{% block end_block %}
+{% with page.form as form %}
+{% if form.resize %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		resize_form();
+	});
+
+	$(window).resize(function () {
+		resize_form();
+	});
+
+	function resize_form() {
+		$("#{{form.id}}").width($("{% if form.resize_reference_query %}{{form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
+	}
+</script>
+{% endif %}
+{% endwith %}
+{% endblock %}

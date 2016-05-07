@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.conf import settings
+from account import pages
 
 # Create your views here.
 def register(request, redirect_pathname):
@@ -60,7 +61,7 @@ def register(request, redirect_pathname):
 			# Update our variable to tell the template registration was successful.
 			registered = True
 
-			return HttpResponseRedirect('/account/login/' + redirect_pathname)
+			return HttpResponseRedirect('/' + pages.login['pathname'] + redirect_pathname)
 
 		# Invalid form or forms - mistakes or something else?
 		# Print problems to the terminal.
@@ -74,13 +75,10 @@ def register(request, redirect_pathname):
 		user_form = UserForm()
 		profile_form = UserProfileForm()
 
-	page = {
-		'full_url': 'http://theofekfoundation.org',
-		'pathname': redirect_pathname,
-		'full_description': "Register to TheOfekFoundation! Make a free account today!",
-		'description': "Register to TheOfekFoundation!",
-		'title': 'We Register',
-	}
+	page = pages.register
+	page['pathname'] = redirect_pathname
+	page['form']['action'] += redirect_pathname
+
 	context_dict = {
 		'page': page,
 		'user_form': user_form,
@@ -96,13 +94,9 @@ def user_login(request, redirect_pathname):
 	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
 
-	page = {
-		'full_url': 'http://theofekfoundation.org',
-		'pathname': redirect_pathname,
-		'full_description': "Login to TheOfekFoundation! Make a free account today!",
-		'description': "Login to TheOfekFoundation!",
-		'title': 'We Login',
-	}
+	page = pages.login
+	page['pathname'] = redirect_pathname
+	page['form']['action'] += redirect_pathname
 
 	# If the request is a HTTP POST, try to pull out the relevant information.
 	if request.method == 'POST':
@@ -233,7 +227,7 @@ class ResetPasswordRequestView(FormView):
 
 class PasswordResetConfirmView(FormView):
 	template_name = "account/test_template.html"
-	success_url = '/account/login/'
+	success_url = '/' + pages.login['pathname']
 	form_class = SetPasswordForm
 
 	def post(self, request, uidb64=None, token=None, *arg, **kwargs):

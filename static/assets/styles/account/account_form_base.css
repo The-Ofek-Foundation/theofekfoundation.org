@@ -1,0 +1,47 @@
+#content-wrapper {
+  text-align: center;
+}
+.account_form {
+  display: inline-block;
+  padding: 1em 2em;
+  border: 1px solid black;
+  text-align: left;
+}
+.account_form p {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+.account_form > input,
+.account_form p input {
+  transition: outline 1s;
+  width: 20em;
+  border: 1px solid lightgray;
+  padding: 5px;
+}
+.account_form > input:focus,
+.account_form p input:focus {
+  outline: double;
+}
+.account_form input[type=submit] {
+  transition: background-color 1s;
+  border: 1px solid #777777;
+  background-color: white;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.account_form input[type=submit]:hover {
+  background-color: lightgreen;
+}
+.account_form input[type=submit]:active {
+  background-color: pink;
+}
+.errorlist {
+  list-style: none;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid black;
+  padding: 0.5em;
+  background-color: pink;
+  border-radius: 1em;
+}
