@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.conf import settings
 from account import pages
+import copy
 
 # Create your views here.
 def register(request, redirect_pathname):
@@ -75,7 +76,7 @@ def register(request, redirect_pathname):
 		user_form = UserForm()
 		profile_form = UserProfileForm()
 
-	page = pages.register
+	page = copy.deepcopy(pages.register)
 	page['pathname'] = redirect_pathname
 	page['form']['action'] += redirect_pathname
 
@@ -94,7 +95,7 @@ def user_login(request, redirect_pathname):
 	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
 
-	page = pages.login
+	page = copy.deepcopy(pages.login)
 	page['pathname'] = redirect_pathname
 	page['form']['action'] += redirect_pathname
 
@@ -184,11 +185,8 @@ class ResetPasswordRequestView(FormView):
 							'protocol': 'http',
 							}
 						subject_template_name='registration/password_reset_subject.txt'
-						# copied from django/contrib/admin/templates/registration/password_reset_subject.txt to templates directory
-						email_template_name='registration/password_reset_email.html'
-						# copied from django/contrib/admin/templates/registration/password_reset_email.html to templates directory
+						email_template_name='account/password_reset_email.html'
 						subject = loader.render_to_string(subject_template_name, c)
-						# Email subject *must not* contain newlines
 						subject = ''.join(subject.splitlines())
 						email = loader.render_to_string(email_template_name, c)
 						send_mail(subject, email, settings.DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
@@ -207,7 +205,7 @@ class ResetPasswordRequestView(FormView):
 				for user in associated_users:
 					c = {
 						'email': user.email,
-						'domain': 'theofekfoundation.org', #or your domain
+						'domain': request.META['HTTP_HOST'], #or your domain
 						'site_name': 'TheOfekFoundation',
 						'uid': urlsafe_base64_encode(force_bytes(user.pk)),
 						'user': user,
@@ -215,7 +213,7 @@ class ResetPasswordRequestView(FormView):
 						'protocol': 'http',
 						}
 					subject_template_name='registration/password_reset_subject.txt'
-					email_template_name='registration/password_reset_email.html'
+					email_template_name='account/password_reset_email.html'
 					subject = loader.render_to_string(subject_template_name, c)
 					# Email subject *must not* contain newlines
 					subject = ''.join(subject.splitlines())
