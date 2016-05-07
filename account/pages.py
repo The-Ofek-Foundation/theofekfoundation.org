@@ -43,3 +43,18 @@ reset_password = {
 		'resize': False,
 	},
 }
+
+reset_password_confirm = {
+	'full_url': 'http://theofekfoundation.org',
+	'pathname': 'account/reset_password_confirm/',
+	'full_description': "Reset your password for TheOfekFoundation.",
+	'description': "Reset your password.",
+	'title': 'We Forget',
+	'form': {
+		'id': 'reset_confirm_form',
+		'method': 'post',
+		'action': '',
+		'submit_value': 'Reset Password',
+		'resize': False,
+	},
+}

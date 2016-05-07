@@ -231,9 +231,14 @@ class ResetPasswordRequestView(FormView):
 		return self.form_invalid(form)
 
 class PasswordResetConfirmView(FormView):
-	template_name = "account/test_template.html"
+	template_name = "account/reset_password.html"
 	success_url = '/' + pages.login['pathname']
 	form_class = SetPasswordForm
+
+	def get_context_data(self, **kwargs):
+		context = super(PasswordResetConfirmView, self).get_context_data(**kwargs)
+		context['page'] = pages.reset_password_confirm
+		return context
 
 	def post(self, request, uidb64=None, token=None, *arg, **kwargs):
 		"""
