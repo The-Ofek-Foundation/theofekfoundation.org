@@ -18,8 +18,8 @@
 	{% block unauthenticated_block %}
 	{% endblock %}
 
-	{% with page.form as form %}
-	<form class="account_form" id="{{form.id}}" method="{{form.method}}" action="{{form.action}}" {% if form.enctype %}enctype="{{form.enctype}}"{% endif %}>
+	{% with page.form as html_form %}
+	<form class="account_form" id="{{html_form.id}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
 
 		{% if error_message %}
 		<div class="errorlist">
@@ -31,16 +31,21 @@
 		{% endblock %}
 
 		<div class="center-align">
-			<input type="submit" name="submit" value="{{form.submit_value}}" />
+			<input type="submit" name="submit" value="{{html_form.submit_value}}" />
 		</div>
+
+		{% block end_form_block %}
+		{% endblock %}
+
 	</form>
 	{% endwith %}
 	{% endif %}
+
 {% endblock %}
 
 {% block end_block %}
-{% with page.form as form %}
-{% if form.resize %}
+{% with page.form as html_form %}
+{% if html_form.resize %}
 <script type="text/javascript">
 	$(document).ready(function () {
 		resize_form();
@@ -51,13 +56,10 @@
 	});
 
 	function resize_form() {
-		$("#{{form.id}}").width($("{% if form.resize_reference_query %}{{form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
+		$("#{{html_form.id}}").width($("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
 	}
 </script>
 {% endif %}
 {% endwith %}
-
-{% block end_additions %}
-{% endblock %}
 
 {% endblock %}

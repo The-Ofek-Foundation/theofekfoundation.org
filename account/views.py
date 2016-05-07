@@ -146,9 +146,14 @@ def user_logout(request, redirect_pathname):
 	return HttpResponseRedirect('/' + redirect_pathname)
 
 class ResetPasswordRequestView(FormView):
-	template_name = "account/test_template.html"	#code for template is given below the view's code
-	success_url = '/'
+	template_name = "account/reset_password.html"
+	success_url = '/account/reset_password/'
 	form_class = PasswordResetRequestForm
+
+	def get_context_data(self, **kwargs):
+		context = super(ResetPasswordRequestView, self).get_context_data(**kwargs)
+		context['page'] = pages.reset_password
+		return context
 
 	@staticmethod
 	def validate_email_address(email):
@@ -161,7 +166,7 @@ class ResetPasswordRequestView(FormView):
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
 		if form.is_valid():
-			data= form.cleaned_data["email_or_username"]
+			data = form.cleaned_data["email_or_username"]
 		if self.validate_email_address(data) is True:				 #uses the method written above
 			'''
 			If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.

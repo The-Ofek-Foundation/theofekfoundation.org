@@ -1,7 +1,5 @@
 {% extends 'account/account_form_base.html' %}
 
-{% load staticfiles %}
-
 {% block authenticated_block %}
 	<h1>Welcome to the Foundation!</h1>
 
@@ -23,13 +21,15 @@
 	{{ profile_form.as_p }}
 {% endblock %}
 
-{% block end_additions %}
-<script type="text/javascript">
-	$(document).ready(function () {
-		$(".errorlist").each(function (e) {
-			$(this).insertAfter($(this).next().children(1));
-			$(this).remove();
+{% block end_block %}
+	{{block.super}}
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".errorlist").each(function (e) {
+				$(this).insertAfter($(this).next().children(1));
+				$(this).remove();
+			});
 		});
-	});
-</script>
+	</script>
 {% endblock %}

@@ -1,7 +1,5 @@
 {% extends 'account/account_form_base.html' %}
 
-{% load staticfiles %}
-
 {% block authenticated_block %}
 	<h1>You are already in, {{user.username}}!</h1>
 
@@ -23,12 +21,23 @@
 	<br />
 {% endblock %}
 
-{% block end_additions %}
-<script type="text/javascript">
-	$(document).ready(function () {
-		$(".errorlist").each(function (e) {
-			$(this).insertAfter($(this).next());
+{% block end_form_block %}
+	<br />
+	<div class="center-align" style="font-size: 0.75em;">
+		Forgot your login details?
+		<br />
+		<i><a href="/account/reset_password/">Reset your password</a></i>
+	</div>
+{% endblock %}
+
+{% block end_block %}
+	{{block.super}}
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".errorlist").each(function (e) {
+				$(this).insertAfter($(this).next());
+			});
 		});
-	});
-</script>
+	</script>
 {% endblock %}

@@ -28,3 +28,18 @@ login = {
 		'resize': True,
 	},
 }
+
+reset_password = {
+	'full_url': 'http://theofekfoundation.org',
+	'pathname': 'account/reset_password/',
+	'full_description': "Reset your password for TheOfekFoundation.",
+	'description': "Reset your password.",
+	'title': 'We Forget',
+	'form': {
+		'id': 'reset_form',
+		'method': 'post',
+		'action': '',
+		'submit_value': 'Send Email',
+		'resize': False,
+	},
+}
