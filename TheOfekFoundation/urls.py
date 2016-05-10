@@ -6,6 +6,7 @@ from django.conf.urls import handler404
 from django.contrib import admin
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
 	# Examples:
 	# url(r'^$', 'TheOfekFoundation.views.home', name='home'),

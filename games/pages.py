@@ -1,3 +1,11 @@
+index = {
+	'full_url': 'http://theofekfoundation.org/games/',
+	'pathname': 'games/',
+	'full_description': "Play games on TheOfekFoundation! Either two player, or against the (very powerful) AIs!",
+	'description': "Play games on TheOfekFoundation!",
+	'title': 'We Play',
+}
+
 connectfour = {
 	'full_url': 'http://theofekfoundation.org/games/ConnectFour/',
 	'pathname': 'games/ConnectFour/',

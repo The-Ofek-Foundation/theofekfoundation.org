@@ -21,4 +21,6 @@ urlpatterns = patterns('',
 	url(r'^(?i)register/$', RedirectView.as_view(url='/account/register/', permanent=False), name='Register'),
 	url(r'^(?i)reset_password/$', RedirectView.as_view(url='/account/reset_password/', permanent=False), name='ResetPassword'),
 	url(r'^(?i)blog/$', RedirectView.as_view(url='/blog/', permanent=False), name='Blog'),
+	url(r'^(?i)games/$', RedirectView.as_view(url='/games/', permanent=False), name='Games'),
+	url(r'^(?i)tools/$', RedirectView.as_view(url='/tools/', permanent=False), name='Tools'),
 )

@@ -8,7 +8,9 @@
   <h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
   {% for project in projects %}
     <div class="projects" id="{{project.id}}">
+	  {% autoescape off %}
       <h2>{{project.header}}</h2>
+      {% endautoescape %}
       {% for item in project.list %}
         <section class="container square">
           <div class="flippable link" onclick="redirect('{{item.redirect}}');">

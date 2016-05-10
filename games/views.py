@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from games import pages
 
-# Create your views here.
+def index(request):
+	context_dict = {'page': pages.index}
+	return render(request, 'games/index.html', context_dict)
 
 def connectfour(request):
 	context_dict = {'page': pages.connectfour}

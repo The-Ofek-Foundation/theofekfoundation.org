@@ -25,8 +25,6 @@ SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = False
-
 ALLOWED_HOSTS = ['theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com']
 
 
@@ -42,6 +40,8 @@ INSTALLED_APPS = (
 	'main_app',
 	'games',
 	'tools',
+	'account',
+	'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -53,13 +53,25 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_DIRS = (
-	TEMPLATE_PATH,
-)
-
 STATICFILES_DIRS = (
 	STATIC_PATH,
 )
+
+TEMPLATES = [
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [TEMPLATE_PATH],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				"django.contrib.auth.context_processors.auth",
+			],
+			'debug': DEBUG,
+		}
+	}
+]
+
+SITE_ID = 1
 
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
