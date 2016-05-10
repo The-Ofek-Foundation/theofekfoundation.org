@@ -61,6 +61,8 @@ STATICFILES_DIRS = (
 	STATIC_PATH,
 )
 
+STATIC_ROOT = STATIC_PATH
+
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
 WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
