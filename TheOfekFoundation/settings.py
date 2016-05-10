@@ -53,25 +53,13 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_DIRS = (
+    TEMPLATE_PATH,
+)
+
 STATICFILES_DIRS = (
 	STATIC_PATH,
 )
-
-TEMPLATES = [
-	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [TEMPLATE_PATH],
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				"django.contrib.auth.context_processors.auth",
-			],
-			'debug': DEBUG,
-		}
-	}
-]
-
-SITE_ID = 1
 
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
