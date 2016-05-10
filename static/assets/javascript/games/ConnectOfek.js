@@ -1022,7 +1022,7 @@ $('#form-new-game').submit(function() {
       expansion_const = 2;
       certainty_threshold = 0.25;
       ponder = false;
-      increasing_factor = 1.23;
+      increasing_factor = 1.3;
       break;
     case "hard":
       smart_simulation = true;
