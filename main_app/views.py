@@ -4,8 +4,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from main_app.forms import UserForm, UserProfileForm
 from django.template import RequestContext
-from main_app import pages, display_projects
+from main_app import display_projects
+from main_app.models import WebsiteCategory, WebsitePage
 from datetime import datetime
+
+main_category = WebsiteCategory.objects.get(name='Homepage')
+main_pages = WebsitePage.objects.filter(category=main_category)
 
 # Create your views here.
 def index(request):
@@ -32,7 +36,7 @@ def index(request):
 		request.session['visits'] = visits
 
 	context_dict = {
-		'page': pages.index,
+		'page': main_pages.get(name='Homepage'),
 		'projects': display_projects.projects,
 	}
 	return render(request, 'main_app/index.html', context_dict)
