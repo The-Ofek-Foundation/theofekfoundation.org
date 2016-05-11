@@ -211,7 +211,7 @@ function save_settings_cookie(c_id) {
   settings.monte_carlo_trials = monte_carlo_trials;
   settings.certainty_threshold = certainty_threshold;
 
-  setCookie(c_id, JSON.stringify(settings), 10);
+  setCookie(c_id, JSON.stringify(settings), 1);
 }
 
 function load_settings_cookie(cookie) {
