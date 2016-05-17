@@ -61,7 +61,7 @@ STATICFILES_DIRS = (
 	STATIC_PATH,
 )
 
-STATIC_ROOT = STATIC_PATH
+# STATIC_ROOT = STATIC_PATH
 
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
@@ -106,10 +106,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_URL = '/account/login/'
 
@@ -121,3 +121,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'theofekfoundation@gmail.com'
 EMAIL_HOST_PASSWORD = 'SFEuy5476yRHdfhyey#^%$7845:{'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DOMAIN = 'theofekfoundation.org'
