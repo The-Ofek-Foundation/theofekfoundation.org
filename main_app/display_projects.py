@@ -3,7 +3,7 @@
 games = {
 	'name': 'Games',
 	'id': 'games',
-	'header': '<a href="/games/">Games</a> (Most with AIs)',
+	'header': 'Games (Most with AIs)',
 	'list': [
 		{
 			'redirect': '/games/ConnectFour/',

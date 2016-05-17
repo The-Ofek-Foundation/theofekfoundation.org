@@ -19,7 +19,6 @@ from django.conf import settings
 from account import pages
 import copy
 
-# Create your views here.
 def register(request, redirect_pathname):
 	# Like before, get the request's context.
 	context = RequestContext(request)
