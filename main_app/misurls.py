@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic.base import RedirectView
 
-urlpatterns = patterns('',
+urlpatterns = [
 	url(r'^(?i)ConnectFour/$', RedirectView.as_view(url='/games/ConnectFour/', permanent=False)),
 	url(r'^(?i)OnlineGo/$', RedirectView.as_view(url='/games/OnlineGo/', permanent=False)),
 	url(r'^(?i)Mancala/$', RedirectView.as_view(url='/games/Mancala/', permanent=False)),
@@ -23,4 +23,4 @@ urlpatterns = patterns('',
 	url(r'^(?i)blog/$', RedirectView.as_view(url='/blog/', permanent=False)),
 	url(r'^(?i)games/$', RedirectView.as_view(url='/games/', permanent=False)),
 	url(r'^(?i)tools/$', RedirectView.as_view(url='/tools/', permanent=False)),
-)
+]

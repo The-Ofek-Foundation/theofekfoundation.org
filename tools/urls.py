@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 from tools import views
 
-urlpatterns = patterns('',
+urlpatterns = [
 	url(r'^(?i)Maze/$', views.maze, name="Maze Generator"),
 	url(r'^(?i)PrimeFactorizer/$', views.primefactorizer, name="Prime Factorizer"),
 	url(r'^(?i)Grapher/$', views.grapher, name="Grapher"),
@@ -9,4 +9,4 @@ urlpatterns = patterns('',
 	url(r'^(?i)ReveresLatsLettesr/$', views.revereslatslettesr, name="Text Reverser"),
 	url(r'^(?i)ImageEditor/$', views.imageeditor, name="Image Editor"),
 	url(r'^', include('main_app.misurls')),
-)
+]

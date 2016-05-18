@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, url, include
 from games import views
 
-urlpatterns = patterns('',
+urlpatterns = [
 	url(r'^$', views.index, name="Games"),
 	url(r'^(?i)ConnectFour/', views.connectfour, name="Connect Four"),
 	url(r'^(?i)OnlineGo/', views.weiqi, name="Weiqi"),
@@ -9,4 +9,4 @@ urlpatterns = patterns('',
 	url(r'^(?i)UltimateTicTacToe/', views.ultimatetictactoe, name="Ultimate Tic Tac Toe"),
 	url(r'^(?i)LameDuck/', views.lameduck, name="Lame Duck"),
 	url(r'^', include('main_app.misurls')),
-)
+]

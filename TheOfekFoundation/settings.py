@@ -53,9 +53,23 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_DIRS = (
-    TEMPLATE_PATH,
-)
+# TEMPLATE_DIRS = (
+#	 TEMPLATE_PATH,
+# )
+
+TEMPLATES = [
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'APP_DIRS': True,
+		'DIRS': [ TEMPLATE_PATH ],
+		'OPTIONS': {
+			'debug': DEBUG,
+			'context_processors': [
+				"django.contrib.auth.context_processors.auth",
+			]
+		}
+	},
+]
 
 STATICFILES_DIRS = (
 	STATIC_PATH,

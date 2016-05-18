@@ -7,7 +7,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 
-urlpatterns = patterns('',
+urlpatterns = [
 	# Examples:
 	# url(r'^$', 'TheOfekFoundation.views.home', name='home'),
 	# url(r'^blog/', include('blog.urls')),
@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 	url(r'^(?i)games/', include('games.urls')),
 	url(r'^(?i)tools/', include('tools.urls')),
 	url(r'^', include('main_app.urls')),
-)
+]
 
 # if settings.DEBUG:
 # 	urlpatterns += patterns(
