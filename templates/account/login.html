@@ -3,7 +3,7 @@
 {% block authenticated_block %}
 	<h1>You are already in, {{user.username}}!</h1>
 
-	<a href="/account/logout">Logout from the Foundation</a> or <a href="/">go to homepage</a>?
+	<a href="{% url 'Logout' '' %}">Logout from the Foundation</a> or <a href="{% url 'Homepage' %}">go to homepage</a>?
 	<br />
 {% endblock %}
 
@@ -26,7 +26,7 @@
 	<div class="center-align" style="font-size: 0.75em;">
 		Forgot your login details?
 		<br />
-		<i><a href="/account/reset_password/">Reset your password</a></i>
+		<i><a href="{% url 'Password Reset' %}">Reset your password</a></i>
 	</div>
 {% endblock %}
 

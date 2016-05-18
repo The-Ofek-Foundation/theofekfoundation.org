@@ -39,7 +39,7 @@ def populate():
 		full_description = "Play games on TheOfekFoundation! Either two player, or against the (very powerful) AIs!",
 		description = "Play games on TheOfekFoundation!",
 		title = 'We Play',
-		name = 'Games Home',
+		name = 'Games',
 	)
 	add_page(
 		category = category,
@@ -151,8 +151,8 @@ def add_category(name):
 	return c
 
 def add_page(category, full_url, pathname, full_description, description, title, name):
-	p = WebsitePage.objects.get_or_create(category=category, name=name)[0]
-	p.full_url = full_url
+	p = WebsitePage.objects.get_or_create(category=category, full_url=full_url)[0]
+	p.name = name
 	p.pathname = pathname
 	p.full_description = full_description
 	p.description = description
