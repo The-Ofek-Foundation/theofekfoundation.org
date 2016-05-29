@@ -4,7 +4,7 @@ var dimensions = [7, 6];
 var board;
 var red_turn_global;
 var global_ROOT;
-var expansion_const = 2.5;
+var expansion_const = 1.4970703125;
 var ai_turn = false;
 var monte_carlo_trials = 10000;
 var over;
@@ -1013,7 +1013,7 @@ $('#form-new-game').submit(function() {
 		case "play fast ++":
 			smart_simulation = true;
 			monte_carlo_trials = 0;
-			expansion_const = 2.5;
+			expansion_const = 1.4970703125;
 			certainty_threshold = 1;
 			ponder = true;
 			increasing_factor = 1.08;
@@ -1029,7 +1029,7 @@ $('#form-new-game').submit(function() {
 		case "hard":
 			smart_simulation = true;
 			monte_carlo_trials = 5000;
-			expansion_const = 2;
+			expansion_const = 1.4970703125;
 			certainty_threshold = 0.25;
 			ponder = true;
 			increasing_factor = 1.07;
@@ -1037,7 +1037,7 @@ $('#form-new-game').submit(function() {
 		case "very hard":
 			smart_simulation = true;
 			monte_carlo_trials = 10000;
-			expansion_const = 2;
+			expansion_const = 1.4970703125;
 			certainty_threshold = 0.15;
 			ponder = true;
 			increasing_factor = 1.07;
@@ -1045,7 +1045,7 @@ $('#form-new-game').submit(function() {
 		case "good luck":
 			smart_simulation = true;
 			monte_carlo_trials = 150000;
-			expansion_const = 5;
+			expansion_const = 1.4970703125;
 			certainty_threshold = 0.05;
 			ponder = true;
 			increasing_factor = 1.07;
@@ -1053,7 +1053,7 @@ $('#form-new-game').submit(function() {
 		case "wreckage":
 			smart_simulation = true;
 			monte_carlo_trials = 5000000;
-			expansion_const = 6;
+			expansion_const = 5;
 			certainty_threshold = 0.01;
 			ponder = true;
 			increasing_factor = 1.07;

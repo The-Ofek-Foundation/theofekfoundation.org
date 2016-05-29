@@ -2,7 +2,7 @@ var docwidth, docheight;
 var boardwidth, squarewidth;
 var board;
 var global_ROOT;
-var expansion_const = 1.9375;
+var expansion_const = 1.0625;
 var ai_turn = false;
 var monte_carlo_trials = 10000;
 var max_trials = 500000; // Prevent Overflow
@@ -930,20 +930,12 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 	return [v1, v2];
 }
 
-var skip = true;
-
 function find_best_expansion_const(seed, time_to_think, bound) {
 	console.log("!!!");
 	console.log("Best constant: ", seed);
 	console.log("Bound: ", bound);
 	console.log("!!!");
-	if (skip) {
-		skip = false;
-		var round_2 = test_expansion_consts(seed, seed-bound, 200, time_to_think, false);
-		if (round_2[1] > round_2[0])
-			find_best_expansion_const(seed-bound, time_to_think, bound / 2);
-		else find_best_expansion_const(seed, time_to_think, bound / 2);
-	}
+
 	var round_1 = test_expansion_consts(seed, seed+bound, 200, time_to_think, false);
 	if (round_1[1] > round_1[0])
 		find_best_expansion_const(seed+bound, time_to_think, bound / 2);
