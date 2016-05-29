@@ -1261,6 +1261,10 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				if (r.children.length < 2 || error < certainty_threshold)
 					break;
 			}
+			r = (I % 2 === 0) === red_turn_global ? r2:r1;
+			if (r.total_tries === 0)
+				for (var i = 0; i < 5000; i++)
+					r.choose_child();
 			var best_child = most_tried_child(r, null);
 			var best_col = best_child.last_move;
 			var best_row = play_move(board, best_col, red_turn_global);
