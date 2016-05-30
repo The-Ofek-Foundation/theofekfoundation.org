@@ -3,6 +3,7 @@ var boardwidth, squarewidth;
 var board;
 var global_ROOT;
 var expansion_const = 1.03125;
+// bound: ~0.0156
 var ai_turn = false;
 var monte_carlo_trials = 10000;
 var max_trials = 500000; // Prevent Overflow

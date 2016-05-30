@@ -582,6 +582,9 @@ function run_MCTS(times, threshold, callback) {
 function run_MCTS_recursive(times, threshold, callback, count) {
 	var start_time = new Date().getTime();
 	var init_times = times;
+	if (times === 0 && global_ROOT.total_tries < 5E3)
+		while (global_ROOT.total_tries < 5E3)
+			global_ROOT.choose_child();
 	while (times > 0 && (new Date().getTime() - start_time) < 100) {
 		global_ROOT.choose_child();
 		times--;
@@ -1014,6 +1017,7 @@ $('#form-new-game').submit(function() {
 			smart_simulation = true;
 			monte_carlo_trials = 0;
 			expansion_const = 3.671875;
+			// bound: ~0.039
 			certainty_threshold = 1;
 			ponder = true;
 			increasing_factor = 1.08;
