@@ -1254,8 +1254,8 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 
 		while (over < 0) {
 			var start_time = new Date().getTime();
-			var r = (I % 2 === 0) === red_turn_global ? r1:r2;
-			expansion_const = (I % 2 === 0) === red_turn_global ? c1:c2;
+			var r = (I % 2 === 0) === red_turn_global ? r2:r1;
+			expansion_const = (I % 2 === 0) === red_turn_global ? c2:c1;
 			if (!r)
 				r = create_MCTS_root();
 			while ((new Date().getTime() - start_time) / 1E3 < time_to_think) {
@@ -1265,7 +1265,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				if (r.children.length < 2 || error < certainty_threshold)
 					break;
 			}
-			r = (I % 2 === 0) === red_turn_global ? r2:r1;
+			r = (I % 2 === 0) === red_turn_global ? r1:r2;
 			if (r.total_tries === 0)
 				for (var i = 0; i < 5000; i++)
 					r.choose_child();
