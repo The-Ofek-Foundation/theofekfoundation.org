@@ -1016,8 +1016,8 @@ $('#form-new-game').submit(function() {
 		case "play fast ++":
 			smart_simulation = true;
 			monte_carlo_trials = 0;
-			expansion_const = 3.671875;
-			// bound: ~0.039
+			expansion_const = 1.8359375;
+			// bound: ~0.0195
 			certainty_threshold = 1;
 			ponder = true;
 			increasing_factor = 1.08;
