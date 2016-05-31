@@ -211,7 +211,7 @@ function save_settings_cookie(c_id) {
 	settings.monte_carlo_trials = monte_carlo_trials;
 	settings.certainty_threshold = certainty_threshold;
 
-	setCookie(c_id, JSON.stringify(settings), 1);
+	setCookie(c_id, JSON.stringify(settings), 10);
 }
 
 function load_settings_cookie(cookie) {
@@ -406,6 +406,7 @@ function set_turn(turn, col, row) {
 				break;
 		}
 		stop_ponder();
+		setCookie(cookie_id, "", -1);
 	}
 
 	monte_carlo_trials *= increasing_factor;
@@ -1016,8 +1017,8 @@ $('#form-new-game').submit(function() {
 		case "play fast ++":
 			smart_simulation = true;
 			monte_carlo_trials = 0;
-			expansion_const = 1.8359375;
-			// bound: ~0.0195
+			expansion_const = 1.85546875;
+			// bound: ~0.0098
 			certainty_threshold = 1;
 			ponder = true;
 			increasing_factor = 1.08;
@@ -1048,9 +1049,10 @@ $('#form-new-game').submit(function() {
 			break;
 		case "good luck":
 			smart_simulation = true;
-			monte_carlo_trials = 150000;
-			expansion_const = 1.4970703125;
-			certainty_threshold = 0.05;
+			monte_carlo_trials = 200000;
+			expansion_const = 1.8125;
+			// bound: 0.03125
+			certainty_threshold = 0.01;
 			ponder = true;
 			increasing_factor = 1.07;
 			break;
@@ -1254,8 +1256,8 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 
 		while (over < 0) {
 			var start_time = new Date().getTime();
-			var r = (I % 2 === 0) === red_turn_global ? r2:r1;
-			expansion_const = (I % 2 === 0) === red_turn_global ? c2:c1;
+			var r = (I % 2 === 0) === red_turn_global ? r1:r2;
+			expansion_const = (I % 2 === 0) === red_turn_global ? c1:c2;
 			if (!r)
 				r = create_MCTS_root();
 			while ((new Date().getTime() - start_time) / 1E3 < time_to_think) {
@@ -1265,10 +1267,10 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				if (r.children.length < 2 || error < certainty_threshold)
 					break;
 			}
-			r = (I % 2 === 0) === red_turn_global ? r1:r2;
-			if (r.total_tries === 0)
-				for (var i = 0; i < 5000; i++)
-					r.choose_child();
+			// r = (I % 2 === 0) === red_turn_global ? r1:r2;
+			// if (r.total_tries === 0)
+			// 	for (var i = 0; i < 5000; i++)
+			// 		r.choose_child();
 			var best_child = most_tried_child(r, null);
 			var best_col = best_child.last_move;
 			var best_row = play_move(board, best_col, red_turn_global);
@@ -1333,19 +1335,25 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 	return [v1, v2];
 }
 
-function find_best_expansion_const(seed, time_to_think, bound) {
+function find_best_expansion_const(seed, time_to_think, bound, num_simulations, prolly_greater) {
 	console.log("!!!");
 	console.log("Best constant: ", seed);
 	console.log("Bound: ", bound);
 	console.log("!!!");
 
-	var round_1 = test_expansion_consts(seed, seed+bound, 200, time_to_think, false);
+	var delta_1, delta_2;
+
+	var round_1 = test_expansion_consts(seed, seed + prolly_greater ? bound:-bound, num_simulations, time_to_think, true);
 	if (round_1[1] > round_1[0])
-		find_best_expansion_const(seed+bound, time_to_think, bound / 2);
+		find_best_expansion_const(prolly_greater ? bound:-bound, time_to_think, bound / 2);
 	else {
-		var round_2 = test_expansion_consts(seed, seed-bound, 200, time_to_think, false);
+		delta_1 = round_1[0] - round_1[1];
+		var round_2 = test_expansion_consts(seed, seed + prolly_greater ? -bound:bound, num_simulations, time_to_think, false);
 		if (round_2[1] > round_2[0])
-			find_best_expansion_const(seed-bound, time_to_think, bound / 2);
-		else find_best_expansion_const(seed, time_to_think, bound / 2);
+			find_best_expansion_const(seed + prolly_greater ? -bound:bound, time_to_think, bound / 2, true);
+		else {
+			delta_2 = round_2[0] - round_2[1];
+			find_best_expansion_const(seed, time_to_think, bound / 2, num_simulations, delta_1 < delta_2 === prolly_greater);
+		}
 	}
 }

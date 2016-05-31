@@ -931,19 +931,25 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 	return [v1, v2];
 }
 
-function find_best_expansion_const(seed, time_to_think, bound) {
+function find_best_expansion_const(seed, time_to_think, bound, num_simulations, prolly_greater) {
 	console.log("!!!");
 	console.log("Best constant: ", seed);
 	console.log("Bound: ", bound);
 	console.log("!!!");
 
-	var round_1 = test_expansion_consts(seed, seed+bound, 200, time_to_think, false);
+	var delta_1, delta_2;
+
+	var round_1 = test_expansion_consts(seed, seed + prolly_greater ? bound:-bound, num_simulations, time_to_think, true);
 	if (round_1[1] > round_1[0])
-		find_best_expansion_const(seed+bound, time_to_think, bound / 2);
+		find_best_expansion_const(prolly_greater ? bound:-bound, time_to_think, bound / 2);
 	else {
-		var round_2 = test_expansion_consts(seed, seed-bound, 200, time_to_think, false);
+		delta_1 = round_1[0] - round_1[1];
+		var round_2 = test_expansion_consts(seed, seed + prolly_greater ? -bound:bound, num_simulations, time_to_think, false);
 		if (round_2[1] > round_2[0])
-			find_best_expansion_const(seed-bound, time_to_think, bound / 2);
-		else find_best_expansion_const(seed, time_to_think, bound / 2);
+			find_best_expansion_const(seed + prolly_greater ? -bound:bound, time_to_think, bound / 2, true);
+		else {
+			delta_2 = round_2[0] - round_2[1];
+			find_best_expansion_const(seed, time_to_think, bound / 2, num_simulations, delta_1 < delta_2 === prolly_greater);
+		}
 	}
 }
