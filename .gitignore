@@ -1,0 +1,5 @@
+#Compiled python files
+**/*.pyc
+
+#wsgi
+TheOfekFoundation/wsgi.py

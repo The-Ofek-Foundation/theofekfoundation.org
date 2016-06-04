@@ -23,7 +23,7 @@ STATIC_PATH = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['theofekfoundation.org', 'www.theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com']
 
@@ -85,23 +85,23 @@ WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-# DATABASES = {
-# 	'default': {
-# 		'ENGINE': 'django.db.backends.sqlite3',
-# 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-# 	}
-# }
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	}
+}
 
 # Uncomment below lines for distribution
-DATABASES = {
-	 'default': {
-		 'ENGINE': 'django.db.backends.mysql',
-		 'NAME': 'ofekih$theofekfoundationdb',
-		 'USER': 'ofekih',
-		 'PASSWORD': 'awesome1',
-		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
-	 }
-}
+# DATABASES = {
+# 	 'default': {
+# 		 'ENGINE': 'django.db.backends.mysql',
+# 		 'NAME': 'ofekih$theofekfoundationdb',
+# 		 'USER': 'ofekih',
+# 		 'PASSWORD': 'awesome1',
+# 		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
+# 	 }
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
