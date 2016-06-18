@@ -15,6 +15,7 @@ var time_to_think = 5;
 var certainty_threshold = 0.05;
 var wrapper_top;
 var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
+var anti_tic_tac_toe = false;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
@@ -567,7 +568,7 @@ function MCTS_simulate(father) {
 	var tboard = onetotwod(father.State.board);
 	if (father.State.game_over || game_over(tboard, father.State.turn ? 6:5, father.last_move)) {
 		father.State.game_over = true;
-		return -1;
+		return anti_tic_tac_toe ? 1:-1;
 	}
 	if (tie_game(tboard))
 		return 0;
@@ -641,7 +642,7 @@ function MCTS_simulate(father) {
 		lm = [x, y];
 		turn = !turn;
 	}
-	if (turn === father.State.turn)
+	if ((turn === father.State.turn) !== anti_tic_tac_toe)
 		return -1;
 	return 1;
 }
