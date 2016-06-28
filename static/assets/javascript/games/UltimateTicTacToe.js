@@ -2,7 +2,7 @@ var docwidth, docheight;
 var boardwidth, squarewidth;
 var board;
 var global_ROOT;
-var expansion_const = 1.03125;
+var expansion_const;
 // bound: ~0.0156
 var ai_turn = false;
 var monte_carlo_trials = 10000;
@@ -99,6 +99,8 @@ function new_game() {
 		for (var a = 0; a < board[i].length; a++)
 			board[i][a] = 0;
 	}
+
+	expansion_const = anti_tic_tac_toe ? 1.581328125:1.03125;
 
 	num_choose1 = num_choose2 = num_choose3 = lnc1 = lnc2 = lnc3 = stop_choose = false;
 
@@ -836,8 +838,10 @@ function efficiency_test() {
 	}, 1);
 }
 
+var t1;
 function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 	var v1 = v2 = 0;
+	t1 = [c1, c2];
 	for (var I = 0; I < num_trials; I++) {
 		over = false;
 		prev_move = false;
@@ -903,7 +907,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 					console.log("tie");
 				break;
 			case 5:
-				if (I % 2 === 0) {
+				if ((I % 2 === 0) !== anti_tic_tac_toe) {
 					v1++;
 					if (output)
 						console.log("c1 wins");
@@ -915,7 +919,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				}
 				break;
 			case 6:
-				if (I % 2 === 0) {
+				if ((I % 2 === 0) !== anti_tic_tac_toe) {
 					v2++;
 					if (output)
 						console.log("c2 wins");
@@ -938,16 +942,19 @@ function find_best_expansion_const(seed, time_to_think, bound, num_simulations, 
 	console.log("Bound: ", bound);
 	console.log("!!!");
 
+	if (seed < 0)
+		return;
+
 	var delta_1, delta_2;
 
-	var round_1 = test_expansion_consts(seed, seed + prolly_greater ? bound:-bound, num_simulations, time_to_think, true);
+	var round_1 = test_expansion_consts(seed, prolly_greater ? (seed + bound):(seed - bound), num_simulations, time_to_think, false);
 	if (round_1[1] > round_1[0])
-		find_best_expansion_const(prolly_greater ? bound:-bound, time_to_think, bound / 2);
+		find_best_expansion_const(prolly_greater ? (seed + bound):(seed - bound), time_to_think, bound / 2, num_simulations, true);
 	else {
 		delta_1 = round_1[0] - round_1[1];
-		var round_2 = test_expansion_consts(seed, seed + prolly_greater ? -bound:bound, num_simulations, time_to_think, false);
+		var round_2 = test_expansion_consts(seed, prolly_greater ? (seed - bound):(seed + bound), num_simulations, time_to_think, false);
 		if (round_2[1] > round_2[0])
-			find_best_expansion_const(seed + prolly_greater ? -bound:bound, time_to_think, bound / 2, true);
+			find_best_expansion_const(prolly_greater ? (seed - bound):(seed + bound), time_to_think, bound / 2, num_simulations, true);
 		else {
 			delta_2 = round_2[0] - round_2[1];
 			find_best_expansion_const(seed, time_to_think, bound / 2, num_simulations, delta_1 < delta_2 === prolly_greater);
