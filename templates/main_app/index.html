@@ -5,84 +5,86 @@
 {% block body_content %}
 
 <div class="pseudo-body">
-  <h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
-  {% for project in projects %}
-    <div class="projects" id="{{project.id}}">
-	  {% autoescape off %}
-      <h2>{{project.header}}</h2>
-      {% endautoescape %}
-      {% for item in project.list %}
-        <section class="container square">
-          <div class="flippable link" onclick="redirect('{% url item.name %}');">
-            <figure class="front">
-              <img class="square" src="{% static item.imagesrc %}">
-            </figure>
-            <figure class="back">
-              <div class="vert-align fit-parent">{% autoescape off %}{{item.description}}{% endautoescape %}</div>
-            </figure>
-          </div>
-        </section>
-      {% endfor %}
-    </div>
-  {% endfor %}
-  <!-- <div class="info" id="contact-me">
-    <h2>Contact Me</h2>
-  </div> -->
-  <div class="info" id="about">
-    <h2>About Me</h2>
-    Hello world!!!<br /><br />
-    I'm currently a High School student in Monta Vista High School where I was introduced to Computer Programming. As you might be able to tell from my website and my <a href="{% url 'Blog' '' %}">blog</a>, I focus more on the logistical side of programming and less on the aesthetic side. That doesn't mean I can't work with html and css—I can and I have—but I find it much less enjoyable, and it takes me more than it should to figure things out. On the other hand—I'm in love with the world of—<br />
-    <img class="square" src="{% static "images/main_app/algorithms.png" %}"><br />
-    Sadly, my knowledge in algorithms is still very limited. The AP Computer Science course only covered the very basics of logic. Most of my knowledge in the field has been entirely self-taught. While still in my Introductions to Java course, I built a fully functioning <a href="https://github.com/The-Ofek-Foundation/Snake">Old Snakey game</a> with a few AIs—teaching me the basics of Breadth-first search, a <a href="https://github.com/The-Ofek-Foundation/Maze">maze generator and solver</a> that taught me Depth-first search, and <a href="https://github.com/The-Ofek-Foundation/">much, much more</a> that helped me refine those skills. In the last half-year, however, my limited knowledge has seeped into the grand field of Game Theory!<br /><br />
-    The problem with me obtaining my knowledge independently is that I end up reinventing preexisting algorithms because I simply don't know they exist. When I started programming and my father asked me to create an ordered histogram, I needed to sort the letters. At that time, I had no knowledge of sorting algorithms, so the way I ended up sorting was what I now know to be a simple selection sort. When creating an AI for <a href="{% url 'Weiqi' %}">Gomoku</a> (five-in-a-row), I had no knowledge of AI algorithms except the breadth-first search I used for an Old Snakey AI—which wouldn't be much help. However, I knew I needed some form of analysis function, so I made one, and then I used it recursively to find the best move. I now know this to be the infamous naive Minimax algorithm. I also greatly improved my algorithm (See my <a href="{% url 'Blog' 'artificial%20intelligence/2015/12/18/minimax-improvements.html' %}">blog post on minimax improvements</a>) without external aide. After researching it, however, I came across alpha-beta pruning, which is more significant than any of the individual improvements I made myself.<br /><br />
-    There is, however, one AI that I learned about far before I decided to tackle—the relatively new <a href="{% url 'Blog' 'artificial%20intelligence/2016/06/27/what-is-the-monte-carlo-tree-search.html' %}">Monte Carlo tree search</a>. If you were familiar with this AI algorithm, you would be able to guess that I learned about this from an obsession with the game of Go. After joining my school's Go Club (and becoming the president sophomore year), my love for Go has only been increasing. This made it hard to avoid hearing the words "Monte Carlo tree search" although I never knew what they really meant other than that they referred to some random AI algorithm (note the punny use of the word 'random'). After I started getting into Game Theory, I decided to finally teach myself this Monte Carlo tree search. With no formal guide or lesson plan, it took me two whole days to finally create a basic working Monte Carlo tree search AI for the game <a href="{% url 'Mancala' %}">Mancala</a>. I refined and greatly improved this algorithm for my strong <a href="{% url 'Connect Four' %}">Connect Four AI</a>. While on vacation, seeing my older brother play Ultimate Tic Tac Toe, I whipped up an <a href="{% url 'Ultimate Tic Tac Toe' %}">AI</a> overnight, and greatly improved it on the second night.<br /><br />
-    That's my story so far, and I can't wait until going to a University to formally learn computer science and improve!
-  </div>
-  <div class="footer">
-    Github: <a href="https://github.com/The-Ofek-Foundation">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a>
-  </div>
+	<h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
+	{% for project in projects %}
+		<div class="projects" id="{{project.id}}">
+		{% autoescape off %}
+			<h2>{{project.header}}</h2>
+			{% endautoescape %}
+			{% for item in project.list %}
+				<section class="container square">
+					<div class="flippable link" onclick="redirect('{% url item.name %}');">
+						<figure class="front">
+							<img class="square" src="{% static item.imagesrc %}">
+						</figure>
+						<figure class="back">
+							<div class="vert-align fit-parent">{% autoescape off %}{{item.description}}{% endautoescape %}</div>
+						</figure>
+					</div>
+				</section>
+			{% endfor %}
+		</div>
+	{% endfor %}
+	<!-- <div class="info" id="contact-me">
+		<h2>Contact Me</h2>
+	</div> -->
+	<div class="info" id="about">
+		<h2>About Me</h2>
+		Hello world!!!<br /><br />
+		I'm currently a High School student in Monta Vista High School where I was introduced to Computer Programming. As you might be able to tell from my website and my <a href="{% url 'Blog' '' %}">blog</a>, I focus more on the logistical side of programming and less on the aesthetic side. That doesn't mean I can't work with html and css—I can and I have—but I find it much less enjoyable, and it takes me more than it should to figure things out. On the other hand—I'm in love with the world of—<br />
+		<img class="square" src="{% static "images/main_app/algorithms.png" %}"><br />
+		Sadly, my knowledge in algorithms is still very limited. The AP Computer Science course only covered the very basics of logic. Most of my knowledge in the field has been entirely self-taught. While still in my Introductions to Java course, I built a fully functioning <a href="https://github.com/The-Ofek-Foundation/Snake">Old Snakey game</a> with a few AIs—teaching me the basics of Breadth-first search, a <a href="https://github.com/The-Ofek-Foundation/Maze">maze generator and solver</a> that taught me Depth-first search, and <a href="https://github.com/The-Ofek-Foundation/">much, much more</a> that helped me refine those skills. In the last half-year, however, my limited knowledge has seeped into the grand field of Game Theory!<br /><br />
+		The problem with me obtaining my knowledge independently is that I end up reinventing preexisting algorithms because I simply don't know they exist. When I started programming and my father asked me to create an ordered histogram, I needed to sort the letters. At that time, I had no knowledge of sorting algorithms, so the way I ended up sorting was what I now know to be a simple selection sort. When creating an AI for <a href="{% url 'Weiqi' %}">Gomoku</a> (five-in-a-row), I had no knowledge of AI algorithms except the breadth-first search I used for an Old Snakey AI—which wouldn't be much help. However, I knew I needed some form of analysis function, so I made one, and then I used it recursively to find the best move. I now know this to be the infamous naive Minimax algorithm. I also greatly improved my algorithm (See my <a href="{% url 'Blog' 'artificial%20intelligence/2015/12/18/minimax-improvements.html' %}">blog post on minimax improvements</a>) without external aide. After researching it, however, I came across alpha-beta pruning, which is more significant than any of the individual improvements I made myself.<br /><br />
+		There is, however, one AI that I learned about far before I decided to tackle—the relatively new <a href="{% url 'Blog' 'artificial%20intelligence/2016/06/27/what-is-the-monte-carlo-tree-search.html' %}">Monte Carlo tree search</a>. If you were familiar with this AI algorithm, you would be able to guess that I learned about this from an obsession with the game of Go. After joining my school's Go Club (and becoming the president sophomore year), my love for Go has only been increasing. This made it hard to avoid hearing the words "Monte Carlo tree search" although I never knew what they really meant other than that they referred to some random AI algorithm (note the punny use of the word 'random'). After I started getting into Game Theory, I decided to finally teach myself this Monte Carlo tree search. With no formal guide or lesson plan, it took me two whole days to finally create a basic working Monte Carlo tree search AI for the game <a href="{% url 'Mancala' %}">Mancala</a>. I refined and greatly improved this algorithm for my strong <a href="{% url 'Connect Four' %}">Connect Four AI</a>. While on vacation, seeing my older brother play Ultimate Tic Tac Toe, I whipped up an <a href="{% url 'Ultimate Tic Tac Toe' %}">AI</a> overnight, and greatly improved it on the second night.<br /><br />
+		That's my story so far, and I can't wait until going to a University to formally learn computer science and improve!
+	</div>
+	<div class="footer">
+		Github: <a href="https://github.com/The-Ofek-Foundation">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a>
+	</div>
 </div>
 {% endblock %}
 
 {% block end_block %}
 <script type="text/javascript">
 	$(document).ready(function() {
-	  $('.pseudo-body').css('margin-bottom', 2 * $('.footer').height() + "px");
+		$('.pseudo-body').css('margin-bottom', 2 * $('.footer').height() + "px");
 
-	  $('.info').css('margin-left', "-=25px").css('padding-left', "+=20px").css('padding-right', "+=20px").css('width', "-=40px");
+		$('.info').css('margin-left', "-=25px").css('padding-left', "+=20px").css('padding-right', "+=20px").css('width', "-=40px");
 
-	  var squares = document.getElementsByClassName("square");
-	  for (var i = 0; i < squares.length; i++)
-	    $(squares[i]).css('height', $(squares[i]).outerWidth(false) + "px");
+		var squares = document.getElementsByClassName("square");
+		for (var i = 0; i < squares.length; i++)
+			$(squares[i]).css('height', $(squares[i]).outerWidth(false) + "px");
 
-	//   $('.link').each(function() {
-	//     $("#links").append($('<a href="' + $(this).data("url") + '"></a>'));
-	//   });
+	//	 $('.link').each(function() {
+	//		 $("#links").append($('<a href="' + $(this).data("url") + '"></a>'));
+	//	 });
 
-	  var prev_container = false, prev_dp = false;
-	  document.onmousemove = function (e) {
-	    var target = e.target;
-	    if (!target.parentElement)
-	      return;
-	    var doub_par = target.parentElement.parentElement;
-	    if (doub_par === prev_dp || (target.tagName === "SECTION"));
-	    else if (target.parentElement.tagName === "FIGURE") {
-	      var tp = target.parentElement.parentElement.parentElement;
-	      $(prev_container).children(".flippable").removeClass("flipped");
-	      prev_container = tp;
-	      prev_dp = doub_par;
-	      $(prev_container).children(".flippable").addClass("flipped");
-	    }
-	    else if (target.tagName === "DIV") {
-	      $(prev_container).children(".flippable").removeClass("flipped");
-	      prev_container = prev_dp = target;
-	    }
-	  };
-	  $('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
-	  setTimeout(function () {
-	  	fit_parent();
+		var prev_container = false, prev_dp = false;
+		document.onmousemove = function (e) {
+			var target = e.target;
+			if (!target.parentElement)
+				return;
+			var doub_par = target.parentElement.parentElement;
+			if (doub_par === prev_dp || (target.tagName === "SECTION"));
+			else if (target.parentElement.tagName === "FIGURE") {
+				var tp = target.parentElement.parentElement.parentElement;
+				$(prev_container).children(".flippable").removeClass("flipped");
+				prev_container = tp;
+				prev_dp = doub_par;
+				$(prev_container).children(".flippable").addClass("flipped");
+			}
+			else if (target.tagName === "DIV") {
+				$(prev_container).children(".flippable").removeClass("flipped");
+				prev_container = prev_dp = target;
+			}
+		};
+		$('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
+		fit_parent();
 		vert_align();
-	  }, 1000);
+		setTimeout(function () {
+			fit_parent();
+			vert_align();
+		}, 1000);
 		$('#games').animate({opacity: 1, 'margin-top': 0}, 1000, function () {
 			after = true;
 		});
@@ -90,37 +92,37 @@
 	});
 
 	function indexOf(list, item) {
-	  for (var i = 0; i < list.length; i++)
-	    if (list[i] === item)
-	      return i;
-	  return -1;
+		for (var i = 0; i < list.length; i++)
+			if (list[i] === item)
+				return i;
+		return -1;
 	}
 
 	// Animate tools when scrolled to them
 	var after = false;
 	$(document).scroll(function() {
-	  if(after) {
-	    if (window_at($('#tools')) && !$('#tools').data('animated')) {
-	      $('#tools').animate({opacity: 1, 'margin-top': "0px"}, 1000);
-	      $('#tools').data('animated', true);
-	    }
-	    if (window_at($('#about')) && !$('#about').data('animated')) {
-	      $('#about').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
-	      $('#about').css('height', 'auto');
-	      $('#about').data('animated', true);
-	    }
-	//     if (window_at($('#contact-me')) && !$('#contact-me').data('animated')) {
-	//       $('#contact-me').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
-	//       $('#contact-me').css('height', 'auto');
-	//       $('#contact-me').data('animated', true);
-	//     }
-	  }
+		if(after) {
+			if (window_at($('#tools')) && !$('#tools').data('animated')) {
+				$('#tools').animate({opacity: 1, 'margin-top': "0px"}, 1000);
+				$('#tools').data('animated', true);
+			}
+			if (window_at($('#about')) && !$('#about').data('animated')) {
+				$('#about').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
+				$('#about').css('height', 'auto');
+				$('#about').data('animated', true);
+			}
+	//		 if (window_at($('#contact-me')) && !$('#contact-me').data('animated')) {
+	//			 $('#contact-me').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
+	//			 $('#contact-me').css('height', 'auto');
+	//			 $('#contact-me').data('animated', true);
+	//		 }
+		}
 	});
 
 	// Scroll to top on window reload so always show up on top
 	$(window).on('beforeunload', function() {
-	  $('*').hide();
-	  $(window).scrollTop(0);
+		$('*').hide();
+		$(window).scrollTop(0);
 	});
 </script>
 {% endblock %}

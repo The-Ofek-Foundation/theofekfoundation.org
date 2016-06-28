@@ -1,3 +1,8 @@
+$(document).ready(function () {
+	vert_padding_align();
+	console.log("heya");
+});
+
 function doc_ready() {
 	var content_wrapper = $("#content-wrapper"), window_height = $(window).outerHeight(true);
 	content_wrapper.css('top', $('#navbar-top').outerHeight(true)).height(window_height - $('#navbar-top').outerHeight(true));
@@ -9,7 +14,7 @@ function doc_ready() {
 };
 
 function prt() {	// page ready test
-	console.log("testing3");
+	// console.log("testing3");
 	if (typeof page_ready === "function")
 		page_ready();
 	else if (page_ready === null)
@@ -22,7 +27,7 @@ var navbar_height = null;
 var count_repeats = 0;
 var get_final_navbar_height = setInterval(function () {
 	var temp_height = $("#navbar-top").outerHeight();
-	console.log(temp_height);
+	// console.log(temp_height);
 	if (temp_height != navbar_height)
 		if (navbar_height) {
 			doc_ready();
