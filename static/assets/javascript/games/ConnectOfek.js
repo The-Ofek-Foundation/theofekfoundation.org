@@ -467,15 +467,15 @@ function get_winning_move(tboard, turn) {
 function MCTS_get_children(father, board) {
 	var tboard = setup_board(board);
 
-	if (father.game_over)
+	if (typeof father.game_over !== 'undefined')
 		return [];
 
 	var win = get_winning_move(tboard, father.turn);
 	if (!win)
 		win = get_winning_move(tboard, !father.turn);
 	else {
-		father.game_over = true;
-		return [new MCTS_Node(!father.turn, father, win[0])];
+		father.game_over = win[0];
+		return;
 	}
 	if (win)
 		return [new MCTS_Node(!father.turn, father, win[0])];
@@ -541,6 +541,10 @@ function MCTS_simulate_smart(board, g_turn, g_over) {
 		last_move = get_winning_move(tboard, turn);
 		if (!last_move)
 			last_move = get_winning_move(tboard, !turn);
+		else {
+			done = turn ? 1:2;
+			break;
+		}
 		if (!last_move)
 			do {
 				col = Math.random() * tboard.length | 0;
@@ -671,7 +675,7 @@ function get_MCTS_depth_range() {
 function get_best_move_MCTS() {
 	var best_child = most_tried_child(global_ROOT, null);
 	if (!best_child)
-		return -1;
+		return global_ROOT.game_over;
 	return best_child.last_move;
 }
 
@@ -1155,15 +1159,22 @@ function MCTS_child_potential(child, t) {
 	var n = child.total_tries;
 	var c = expansion_const;
 
-	return w / n	+	c * Math.sqrt(Math.log(t) / n);
+	return w / n + c * Math.sqrt(Math.log(t) / n);
 }
 
 MCTS_Node.prototype.choose_child = function(board) {
-	board += this.last_move ? (this.last_move + 1):'';
-	if (!this.children)
+	if (this.last_move !== '')
+		board += this.last_move + 1;
+	if (typeof this.children === 'undefined')
 		this.children = MCTS_get_children(this, board);
-	if (this.children.length === 0 || this.game_over) // leaf node
+	if (typeof this.game_over !== 'undefined') // next move wins
 		this.back_propogate(1);
+	else if (this.children.length === 0) {
+		if (MCTS_simulate(board, this.turn, this.game_over) !== 0) {
+			console.log(MCTS_simulate(board, this.turn, this.game_over), this);
+		}
+		this.back_propogate(0);
+	}
 	else {
 		var i;
 		var count_unexplored = 0;
