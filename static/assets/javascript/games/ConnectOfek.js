@@ -70,7 +70,7 @@ function start_ponder() {
 		var start_time = new Date().getTime();
 		var temp_count = 0;
 		while ((new Date().getTime() - start_time) < 30 && !stop_choose) {
-			global_ROOT.choose_child();
+			global_ROOT.choose_child(position);
 			temp_count++;
 		}
 		if (num_choose3 && (temp_count < num_choose3 / 10 || temp_count < num_choose2 / 10 || temp_count < num_choose1 / 10))
@@ -382,6 +382,7 @@ function set_turn(turn, col, row) {
 	if (global_ROOT)
 		global_ROOT.parent = null;
 	else global_ROOT = create_MCTS_root();
+	global_ROOT.last_move = '';
 
 	var mtc = most_tried_child(global_ROOT, null);
 
@@ -463,22 +464,21 @@ function get_winning_move(tboard, turn) {
 	return false;
 }
 
-function MCTS_get_children(state, father) {
-	var tboard = setup_board(state.board);
+function MCTS_get_children(father, board) {
+	var tboard = setup_board(board);
 
-	if (state.game_over)
+	if (father.game_over)
 		return [];
 
-	var win = get_winning_move(tboard, state.turn);
+	var win = get_winning_move(tboard, father.turn);
 	if (!win)
-		win = get_winning_move(tboard, !state.turn);
+		win = get_winning_move(tboard, !father.turn);
 	else {
-		var nstate = new State(state.board + (win[0] + 1), !state.turn);
-		nstate.game_over = true;
-		return [new MCTS_Node(nstate, father, win[0])];
+		father.game_over = true;
+		return [new MCTS_Node(!father.turn, father, win[0])];
 	}
 	if (win)
-		return [new MCTS_Node(new State(state.board + (win[0] + 1), !state.turn), father, win[0])];
+		return [new MCTS_Node(!father.turn, father, win[0])];
 
 	var col, count = 0;
 
@@ -489,14 +489,15 @@ function MCTS_get_children(state, father) {
 	var children = new Array(count);
 	for (col = 0; col < tboard.length; col++)
 		if (tboard[col][0] === 0)
-			children[--count] = new MCTS_Node(new State(state.board + (col + 1), !state.turn), father, col);
+			children[--count] = new MCTS_Node(!father.turn, father, col);
 
-	for (var i = 0; i < children.length - 1; i++)
-		for (var a = i + 1; a < children.length; a++)
-			if (identical_boards(setup_board(children[i].State.board), setup_board(children[a].State.board))) {
-				children.splice(a, 1);
-				a--;
-			}
+	if (/^4*$/.test(board))
+		for (var i = 0; i < children.length - 1; i++)
+			for (var a = i + 1; a < children.length; a++)
+				if (identical_boards(setup_board(board + (children[i].last_move + 1)), setup_board(board + (children[a].last_move+1)))) {
+					children.splice(a, 1);
+					a--;
+				}
 
 	return children;
 }
@@ -510,12 +511,12 @@ function ib (b1, b2) {
 
 var MCTS_simulate;
 
-function MCTS_dumb_simulate(state) {
-	if (state.game_over)
+function MCTS_dumb_simulate(board, g_turn, g_over) {
+	if (g_over)
 		return -1;
-	var tboard = setup_board(state.board);
+	var tboard = setup_board(board);
 
-	var last_move, turn = state.turn, done = false;
+	var last_move, turn = g_turn, done = false;
 	var row, col;
 	while (done == -1) {
 			do {
@@ -528,13 +529,13 @@ function MCTS_dumb_simulate(state) {
 
 	if (done === 0)
 		return 0;
-	return done == (state.turn ? 1:2) ? 1:-1;
+	return done == (g_turn ? 1:2) ? 1:-1;
 }
 
-function MCTS_simulate_smart(state) {
-	var tboard = setup_board(state.board);
+function MCTS_simulate_smart(board, g_turn, g_over) {
+	var tboard = setup_board(board);
 
-	var last_move, turn = state.turn, done = game_over_full(tboard);
+	var last_move, turn = g_turn, done = game_over_full(tboard);
 	var row, col;
 	while (done == -1) {
 		last_move = get_winning_move(tboard, turn);
@@ -556,12 +557,12 @@ function MCTS_simulate_smart(state) {
 
 	if (done === 0)
 		return 0;
-	return done == (state.turn ? 1:2) ? 1:-1;
+	return done == (g_turn ? 1:2) ? 1:-1;
 }
 
 function create_MCTS_root() {
 	MCTS_simulate = smart_simulation ? MCTS_simulate_smart:MCTS_dumb_simulate;
-	return new MCTS_Node(new State(position, red_turn_global), null, null);
+	return new MCTS_Node(red_turn_global, null, '');
 }
 
 function MCTS_get_next_root(col) {
@@ -585,9 +586,9 @@ function run_MCTS_recursive(times, threshold, callback, count) {
 	var init_times = times;
 	if (times === 0 && global_ROOT.total_tries < 5E3)
 		while (global_ROOT.total_tries < 5E3)
-			global_ROOT.choose_child();
+			global_ROOT.choose_child(position);
 	while (times > 0 && (new Date().getTime() - start_time) < 100) {
-		global_ROOT.choose_child();
+		global_ROOT.choose_child(position);
 		times--;
 	}
 	if (count % 20 === 0) {
@@ -1140,14 +1141,8 @@ function getCookie(cname) {
 		return "";
 }
 
-var State = function(board, turn) {
-	this.board = board;
+var MCTS_Node = function(turn, parent, last_move) {
 	this.turn = turn;
-};
-
-
-var MCTS_Node = function(State, parent, last_move) {
-	this.State = State;
 	this.parent = parent;
 	this.last_move = last_move;
 	this.hits = 0;
@@ -1163,11 +1158,12 @@ function MCTS_child_potential(child, t) {
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-MCTS_Node.prototype.choose_child = function() {
+MCTS_Node.prototype.choose_child = function(board) {
+	board += this.last_move ? (this.last_move + 1):'';
 	if (!this.children)
-		this.children = MCTS_get_children(this.State, this);
-	if (this.children.length === 0) // leaf node
-		this.run_simulation();
+		this.children = MCTS_get_children(this, board);
+	if (this.children.length === 0 || this.game_over) // leaf node
+		this.back_propogate(1);
 	else {
 		var i;
 		var count_unexplored = 0;
@@ -1181,7 +1177,7 @@ MCTS_Node.prototype.choose_child = function() {
 				if (this.children[i].total_tries === 0) {
 					count_unexplored--;
 					if (count_unexplored === 0) {
-						this.children[i].run_simulation();
+						this.children[i].run_simulation(board);
 						return;
 					}
 				}
@@ -1196,13 +1192,13 @@ MCTS_Node.prototype.choose_child = function() {
 					best_child = this.children[i];
 				}
 			}
-			best_child.choose_child();
+			best_child.choose_child(board);
 		}
 	}
 };
 
-MCTS_Node.prototype.run_simulation = function() {
-	this.back_propogate(MCTS_simulate(this.State));
+MCTS_Node.prototype.run_simulation = function(board) {
+	this.back_propogate(MCTS_simulate(board, this.turn, this.game_over));
 };
 
 MCTS_Node.prototype.back_propogate = function(simulation) {
@@ -1211,22 +1207,19 @@ MCTS_Node.prototype.back_propogate = function(simulation) {
 	else if (simulation < 0)
 		this.misses++;
 	this.total_tries++;
-	if (this.parent) {
-		if (this.parent.State.turn === this.State.turn)
-			this.parent.back_propogate(simulation);
-		else this.parent.back_propogate(-simulation);
-	}
+	if (this.parent)
+		this.parent.back_propogate(-simulation);
 };
 
 function efficiency_test() {
 	global_ROOT = create_MCTS_root();
 	var total_trials, start = new Date().getTime();
 	for (total_trials = 0; total_trials < 100000; total_trials++)
-		global_ROOT.choose_child();
+		global_ROOT.choose_child(position);
 	console.log((new Date().getTime() - start) / 1E3);
 	setInterval(function() {
 		for (var i = 0; i < 1000; i++)
-			global_ROOT.choose_child();
+			global_ROOT.choose_child(position);
 		$('#num-trials').text(global_ROOT.total_tries);
 	}, 1);
 }
@@ -1234,8 +1227,8 @@ function efficiency_test() {
 function speed_test() {
 	global_ROOT = create_MCTS_root();
 	var total_trials, start = new Date().getTime();
-	for (total_trials = 0; total_trials < 500000; total_trials++)
-		global_ROOT.choose_child();
+	for (total_trials = 0; total_trials < 5E5; total_trials++)
+		global_ROOT.choose_child(position);
 	console.log((new Date().getTime() - start) / 1E3);
 }
 
@@ -1262,7 +1255,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				r = create_MCTS_root();
 			while ((new Date().getTime() - start_time) / 1E3 < time_to_think) {
 				for (var i = 0; i < 100; i++)
-					r.choose_child();
+					r.choose_child(position);
 				var error = get_certainty(r);
 				if (r.children.length < 2 || error < certainty_threshold)
 					break;
