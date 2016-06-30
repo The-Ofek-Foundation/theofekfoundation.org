@@ -464,36 +464,55 @@ function get_winning_move(tboard, turn) {
 	return false;
 }
 
+function c_get_winning_move(tboard, turn) {
+	var row, color = turn ? 1:2, c = 0;
+	for (var col = 0; col < tboard.length; col++) {
+		if (tboard[col][0] !== 0)
+			continue;
+		c++;
+		for (row = tboard[col].length - 1; tboard[col][row] !== 0; row--);
+		if (game_over_color(tboard, col, row, color) != -1)
+			return [col, row];
+	}
+	return [false, c];
+}
+function a_get_winning_move(tboard, turn, c) {
+	var row, color = turn ? 1:2, a = new Array(c);
+	for (var col = 0; col < tboard.length; col++) {
+		if (tboard[col][0] !== 0)
+			continue;
+		a[--c] = col + 1;
+		for (row = tboard[col].length - 1; tboard[col][row] !== 0; row--);
+		if (game_over_color(tboard, col, row, color) != -1)
+			return [col, row];
+	}
+	return [false, a];
+}
+
 function MCTS_get_children(father, board) {
 	var tboard = setup_board(board);
 
 	if (typeof father.game_over !== 'undefined')
 		return [];
 
-	var win = get_winning_move(tboard, father.turn);
-	if (!win)
-		win = get_winning_move(tboard, !father.turn);
+	var win = c_get_winning_move(tboard, father.turn);
+	if (win[0] === false)
+		win = a_get_winning_move(tboard, !father.turn, win[1]);
 	else {
 		father.game_over = win[0];
 		return;
 	}
-	if (win)
+	if (win[0] !== false)
 		return [new MCTS_Node(!father.turn, father, win[0])];
 
-	var col, count = 0;
-
-	for (col = 0; col < tboard.length; col++)
-		if (tboard[col][0] === 0)
-			count++;
-
-	var children = new Array(count);
-	for (col = 0; col < tboard.length; col++)
-		if (tboard[col][0] === 0)
-			children[--count] = new MCTS_Node(!father.turn, father, col);
+	var i = 0;
+	var children = new Array(win[1].length);
+	for (i = 0; i < win[1].length; i++)
+		children[i] = new MCTS_Node(!father.turn, father, win[1][i] - 1);
 
 	if (/^4*$/.test(board))
-		for (var i = 0; i < children.length - 1; i++)
-			for (var a = i + 1; a < children.length; a++)
+		for (i = 0; i < children.length - 1; i++)
+			for (a = i + 1; a < children.length; a++)
 				if (identical_boards(setup_board(board + (children[i].last_move + 1)), setup_board(board + (children[a].last_move+1)))) {
 					children.splice(a, 1);
 					a--;
