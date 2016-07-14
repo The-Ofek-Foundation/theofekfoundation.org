@@ -36,6 +36,9 @@
 .account_form input[type=submit]:active {
   background-color: pink;
 }
+.account_form .hidden-input {
+  display: none;
+}
 .errorlist {
   list-style: none;
   font-weight: bold;

@@ -3,7 +3,7 @@
 {% block authenticated_block %}
 	<h1>You are already in, {{user.username}}!</h1>
 
-	<a href="{% url 'Logout' '' %}">Logout from the Foundation</a> or <a href="{% url 'Homepage' %}">go to homepage</a>?
+	<a href="{% url 'Logout' %}">Logout from the Foundation</a> or <a href="{% url 'Homepage' %}">go to homepage</a>?
 	<br />
 {% endblock %}
 

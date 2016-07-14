@@ -17,9 +17,10 @@ from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.conf import settings
 from account import pages
+from django.http import JsonResponse
 import copy
 
-def register(request, redirect_pathname):
+def register(request):
 	# Like before, get the request's context.
 	context = RequestContext(request)
 
@@ -61,7 +62,7 @@ def register(request, redirect_pathname):
 			# Update our variable to tell the template registration was successful.
 			registered = True
 
-			return HttpResponseRedirect('/' + pages.login['pathname'] + redirect_pathname)
+			return HttpResponseRedirect('/' + request.POST['path'])
 
 		# Invalid form or forms - mistakes or something else?
 		# Print problems to the terminal.
@@ -75,28 +76,23 @@ def register(request, redirect_pathname):
 		user_form = UserForm()
 		profile_form = UserProfileForm()
 
-	page = copy.deepcopy(pages.register)
-	page['pathname'] = redirect_pathname
-	page['form']['action'] += redirect_pathname
+	page = pages.register
 
 	context_dict = {
 		'page': page,
 		'user_form': user_form,
 		'profile_form': profile_form,
 		'registered': registered,
-		'redirect_pathname': redirect_pathname,
 	}
 	# Render the template depending on the context.
 	return render_to_response(
 		'account/register.html', context_dict, context)
 
-def user_login(request, redirect_pathname):
+def user_login(request):
 	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
 
-	page = copy.deepcopy(pages.login)
-	page['pathname'] = redirect_pathname
-	page['form']['action'] += redirect_pathname
+	page = pages.login
 
 	# If the request is a HTTP POST, try to pull out the relevant information.
 	if request.method == 'POST':
@@ -119,7 +115,7 @@ def user_login(request, redirect_pathname):
 				# If the account is valid and active, we can log the user in.
 				# We'll send the user back to the homepage.
 				login(request, user)
-				return HttpResponseRedirect('/' + redirect_pathname)
+				return HttpResponseRedirect('/' + request.POST['path'])
 			else:
 				# An inactive account was used - no logging in!
 				error_message = "Your Rango account is disabled."
@@ -127,23 +123,22 @@ def user_login(request, redirect_pathname):
 			# Bad login details were provided. So we can't log the user in.
 			print ("Invalid login details: {0}, {1}".format(username, password))
 			error_message = "Invalid login details supplied."
-		return render_to_response('account/login.html', {'page': page, 'redirect_pathname': redirect_pathname, 'error_message': error_message}, context)
+		return render_to_response('account/login.html', {'page': page, 'error_message': error_message}, context)
 
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
 	else:
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
-		return render_to_response('account/login.html', {'page': page, 'redirect_pathname': redirect_pathname}, context)
+		return render_to_response('account/login.html', {'page': page}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
-def user_logout(request, redirect_pathname):
+def user_logout(request):
 	# Since we know the user is logged in, we can now just log them out.
 	logout(request)
 
-	# Take the user back to the homepage.
-	return HttpResponseRedirect('/' + redirect_pathname)
+	return JsonResponse({"hi": "lo"})
 
 class ResetPasswordRequestView(FormView):
 	template_name = "account/reset_password.html"

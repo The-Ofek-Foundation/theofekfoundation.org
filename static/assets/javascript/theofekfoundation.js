@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	vert_padding_align();
-	console.log("heya");
+	// console.log("heya");
 });
 
 function doc_ready() {
@@ -11,6 +11,20 @@ function doc_ready() {
 	// console.log($("#navbar-top").outerHeight());
 	// if (document.getElementById('navbar-top') !== null)
 	// 	document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
+
+	$(".path-link").click(function(event) {
+		setLocallyStored("path", $(this).data('path'));
+		redirect($(this).data('url'));
+	});
+
+	$("#logout-url").click(function(event) {
+		$.post($(this).data('url'),
+			{'csrfmiddlewaretoken': CSRF_TOKEN},
+			function (data) {
+				redirect(window.location.href);
+			}
+		)
+	});
 };
 
 function prt() {	// page ready test
@@ -74,4 +88,12 @@ function window_at(elem) {
 
 function redirect(url) {
 	window.location.href = url;
+}
+
+function getLocallyStored(key) {
+	return JSON.parse(localStorage.getItem(key));
+}
+
+function setLocallyStored(key, val) {
+	localStorage.setItem(key, JSON.stringify(val));
 }

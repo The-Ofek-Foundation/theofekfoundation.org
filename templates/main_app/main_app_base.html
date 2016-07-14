@@ -50,10 +50,10 @@
 				<li>
 					<a id="navbar-username">{{user.username}}</a>
 				</li>
-				<li class="link"><a href="{% url 'Logout' page.pathname %}">Logout</a></li>
+				<li class="link"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
 			{% else %}
-				<li class="link"><a href="{% url 'Register' page.pathname %}">Register</a></li>
-				<li class="link"><a href="{% url 'Login' page.pathname %}">Login</a></li>
+				<li class="link"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
+				<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
 			{% endif %}
 		</ul>
 	</ul>
@@ -64,7 +64,9 @@
 
 	<script type="text/javascript">
 		page_ready = 1;
+		var CSRF_TOKEN = "{{ csrf_token }}";
 	</script>
+</script>
 
 {% endblock %}
 

@@ -30,6 +30,8 @@
 		{% block form_content %}
 		{% endblock %}
 
+		<input type="text" class="hidden-input" name="path">
+
 		<div class="center-align">
 			<input type="submit" name="submit" value="{{html_form.submit_value}}" />
 		</div>
@@ -49,6 +51,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		resize_form();
+		$(".hidden-input[name=path]").val(getLocallyStored('path') ? getLocallyStored('path'):'');
 	});
 
 	$(window).resize(function () {
