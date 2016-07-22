@@ -78,6 +78,13 @@
 	</url>
 	<url>
 		<loc>
+			http://www.theofekfoundation.org/tools/PasswordGenerator/
+		</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.85</priority>
+	</url>
+	<url>
+		<loc>
 			http://www.theofekfoundation.org/tools/ReveresLatsLettesr/
 		</loc>
 		<changefreq>daily</changefreq>

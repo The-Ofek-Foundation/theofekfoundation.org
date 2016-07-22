@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^(?i)LameDuck/$', RedirectView.as_view(url='/games/LameDuck/', permanent=False)),
 	url(r'^(?i)Maze/$', RedirectView.as_view(url='/tools/Maze/', permanent=False)),
 	url(r'^(?i)PrimeFactorizer/$', RedirectView.as_view(url='/tools/PrimeFactorizer/', permanent=False)),
+	url(r'^(?i)PasswordGenerator/$', RedirectView.as_view(url='/tools/PasswordGenerator/', permanent=False)),
 	url(r'^(?i)Grapher/$', RedirectView.as_view(url='/tools/Grapher/', permanent=False)),
 	url(r'^(?i)HappyNumbers/$', RedirectView.as_view(url='/tools/HappyNumbers/', permanent=False)),
 	url(r'^(?i)ReveresLatsLettesr/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=False)),

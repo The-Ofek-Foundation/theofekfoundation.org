@@ -18,6 +18,8 @@ lessc ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.c
 
 lessc ./static/assets/styles/tools/PrimeFactorizer.less ./static/assets/styles/tools/PrimeFactorizer.css
 
+lessc ./static/assets/styles/tools/PasswordGenerator.less ./static/assets/styles/tools/PasswordGenerator.css
+
 lessc ./static/assets/styles/tools/Grapher.less ./static/assets/styles/tools/Grapher.css
 
 lessc ./static/assets/styles/tools/HappyNumber.less ./static/assets/styles/tools/HappyNumber.css

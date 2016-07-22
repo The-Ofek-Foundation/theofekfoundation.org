@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 STATIC_PATH = os.path.join(BASE_DIR, 'static')
+MAIN_IMAGES = os.path.join(os.path.join(STATIC_PATH, 'images'), 'main_app')
 
 
 # Quick-start development settings - unsuitable for production
@@ -73,6 +74,7 @@ TEMPLATES = [
 
 STATICFILES_DIRS = (
 	STATIC_PATH,
+	MAIN_IMAGES
 )
 
 # STATIC_ROOT = STATIC_PATH

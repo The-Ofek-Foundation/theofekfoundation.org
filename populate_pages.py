@@ -109,6 +109,15 @@ def populate():
 	)
 	add_page(
 		category = category,
+		full_url = 'http://theofekfoundation.org/tools/PasswordGenerator/',
+		pathname = 'tools/PasswordGenerator',
+		full_description = "Generate your passwords randomly to protect your accounts!",
+		description = "Generate passwords quickly.",
+		title = 'We Protect',
+		name = 'Password Generator',
+	)
+	add_page(
+		category = category,
 		full_url = 'http://theofekfoundation.org/tools/Grapher/',
 		pathname = 'tools/Grapher',
 		full_description = "A function grapher with a trace and newtons' method.",

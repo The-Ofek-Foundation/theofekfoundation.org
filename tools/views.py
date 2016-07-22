@@ -12,6 +12,10 @@ def primefactorizer(request):
 	context_dict = {'page': main_pages.get(name='Prime Factorizer')}
 	return render(request, 'tools/PrimeFactorizer.html', context_dict)
 
+def passwordgenerator(request):
+	context_dict = {'page': main_pages.get(name='Password Generator')}
+	return render(request, 'tools/PasswordGenerator.html', context_dict)
+
 def grapher(request):
 	context_dict = {'page': main_pages.get(name='Grapher')}
 	return render(request, 'tools/Grapher.html', context_dict)
