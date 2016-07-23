@@ -65,6 +65,9 @@
 	<script type="text/javascript">
 		page_ready = 1;
 		var CSRF_TOKEN = "{{ csrf_token }}";
+		{% if user.is_authenticated %}
+		ga('set', 'userId', '{{ user.id }}'); // Set the user ID using signed-in user_id.
+		{% endif %}
 	</script>
 </script>
 
