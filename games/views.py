@@ -14,12 +14,9 @@ def index(request):
 
 def _get_game_settings(request, game_name, context_dict):
 	if not request.user.is_authenticated():
-		return {}
+		return {'game_name': game_name}
 	game_settings = GameSettings.objects.get_or_create(game_name=game_name, user_id=request.user.id)
-	if game_settings[1]:
-		context_dict['game_settings'] = {}
-	else:
-		context_dict['game_settings'] = json.dumps(game_settings[0].get_settings())
+	context_dict['game_settings'] = json.dumps(game_settings[0].get_settings())
 
 def connectfour(request):
 	context_dict = {'page': main_pages.get(name='Connect Four')}

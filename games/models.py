@@ -23,5 +23,4 @@ class GameSettings(models.Model):
 			val = field.value_to_string(self)
 			if not (val is None) and not (val == 'None') and not (val == ''):
 				settings[key] = val
-		print settings
 		return settings
