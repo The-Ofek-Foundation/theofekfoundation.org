@@ -286,15 +286,13 @@ function setTurn(turn, move) {
 		stopPonder();
 	}
 
-	if (!over && (turn === (aiTurn === 'first') || aiTurn == "both"))
-		setTimeout(playAIMove, 25);
+	if (!over && aiTurn !== 'null' && (turn === (aiTurn === 'first') || aiTurn == "both"))		setTimeout(playAIMove, 25);
 }
 
 $('#board').mousedown(function (e) {
 	if (e.which === 3)
 		return;
-	if (xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")
-		return;
+	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")		return;
 	if (over) {
 		alert("The game is already over!");
 		return;
@@ -408,8 +406,7 @@ function tieGame(tboard) {
 }
 
 $('#board').mousemove(function (e) {
-	if (xTurnGlobal == (aiTurn === 'first') || aiTurn == "both" || over)
-		return;
+	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both" || over)		return;
 	var move = getMove(e.pageX, e.pageY - wrapperTop);
 	if (legalMove(board, move, prevMove, false))
 		drawHover(move);
