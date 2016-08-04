@@ -270,17 +270,19 @@ function setTurn(turn, move) {
 	drawBoard();
 
 	if (over) {
-		switch (over) {
-			case "tie":
-				alert("Game tied!");
-				break;
-			case 5:
-				alert("X wins!");
-				break;
-			case 6:
-				alert ("O wins!");
-				break;
-		}
+		setTimeout(function() {
+			switch (over) {
+				case "tie":
+					alert("Game tied!");
+					break;
+				case 5:
+					alert("X wins!");
+					break;
+				case 6:
+					alert ("O wins!");
+					break;
+			}
+		}, 100);
 		stopPonder();
 	}
 
@@ -748,7 +750,9 @@ function MCTSChildPotential(child, t) {
 
 MCTSNode.prototype.chooseChild = function(board) {
 	if (this.lastMove)
-		playMove(board, this.lastMove, this.turn);
+		playMove(board, this.lastMove, !this.turn);
+	// console.log('before');
+	// printBoard(board);
 	if (!this.children)
 		this.children = MCTSGetChildren(this, board);
 	if (this.children.length === 0) // leaf node
@@ -785,6 +789,20 @@ MCTSNode.prototype.chooseChild = function(board) {
 		}
 	}
 };
+
+function printBoard(board) {
+	for (let i = 0; i < board.length; i++) {
+		let row = '';
+		for (let a = 0; a < board[i].length; a++) {
+			row += board[i][a];
+			if (a % 3 === 2 && a !== board[i].length - 1)
+				row += '|';
+		}
+		console.log(row);
+		if (i % 3 === 2 && i !== board.length - 1)
+			console.log('-----------');
+	}
+}
 
 MCTSNode.prototype.runSimulation = function(board) {
 	this.backPropogate(MCTSSimulate(this, board));
