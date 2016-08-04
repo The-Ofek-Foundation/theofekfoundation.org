@@ -788,11 +788,8 @@ MCTSNode.prototype.backPropogate = function(simulation) {
 	else if (simulation < 0)
 		this.misses++;
 	this.totalTries++;
-	if (this.parent) {
-		if (this.parent.turn === this.turn)
-			this.parent.backPropogate(simulation);
-		else this.parent.backPropogate(-simulation);
-	}
+	if (this.parent)
+		this.parent.backPropogate(-simulation);
 };
 
 function speedTest() {
