@@ -395,17 +395,19 @@ function set_turn(turn, col, row) {
 	save_settings_cookie(cookie_id);
 
 	if (over != -1) {
-		switch (over) {
-			case 0:
-				alert("Game tied!");
-				break;
-			case 1:
-				alert("Red wins!");
-				break;
-			case 2:
-				alert ("Yellow wins!");
-				break;
-		}
+		setTimeout(function () {
+			switch (over) {
+				case 0:
+					alert("Game tied!");
+					break;
+				case 1:
+					alert("Red wins!");
+					break;
+				case 2:
+					alert ("Yellow wins!");
+					break;
+			}
+		}, 100);
 		stop_ponder();
 		setCookie(cookie_id, "", -1);
 	}
