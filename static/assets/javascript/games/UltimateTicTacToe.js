@@ -435,7 +435,7 @@ function startPonder() {
 		var startTime = new Date().getTime();
 		var tempCount = 0;
 		while ((new Date().getTime() - startTime) < 30 && !stopChoose) {
-			globalRoot.chooseChild();
+			globalRoot.chooseChild(onetotwod(twotooned(board)));
 			tempCount++;
 		}
 		if (numChoose3 && (tempCount < numChoose3 / 9 || tempCount < numChoose2 / 9 || tempCount < numChoose1 / 9))
@@ -507,13 +507,12 @@ function getCookie(cname) {
 		return "";
 }
 
-function MCTSGetChildren(state, father) {
-	var tboard = onetotwod(state.board);
-	var turn = state.turn;
+function MCTSGetChildren(father, tboard) {
+	var turn = father.turn;
 	var children = [];
 	var i, a;
 
-	if (state.gameOver || tieGame(tboard))
+	if (father.gameOver || tieGame(tboard))
 		return [];
 
 	if (father.lastMove) {
@@ -522,21 +521,15 @@ function MCTSGetChildren(state, father) {
 		if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4) {
 			for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
 				for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++)
-					if (tboard[i][a] === 0) {
-						playMove(tboard, [i, a], turn);
-						children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
-						tboard = onetotwod(state.board);
-					}
+					if (tboard[i][a] === 0)
+						children.push(new MCTSNode(father, !turn, [i, a]));
 			return children;
 		}
 	}
 	else {
 		for (i = 0; i < 9; i++)
-			for (a = 0; a < 9; a++) {
-				tboard[i][a] = 1;
-				children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
-				tboard[i][a] = 0;
-			}
+			for (a = 0; a < 9; a++)
+				children.push(new MCTSNode(father, !turn, [i, a]));
 		return children;
 	}
 
@@ -545,24 +538,21 @@ function MCTSGetChildren(state, father) {
 			if (tboard[I][A] != 5 && tboard[I][A] != 6 && tboard[I][A] != 3 && tboard[I][A] != 4)
 				for (i = I-1; i <= I+1; i++)
 					for (a = A-1; a <= A+1; a++)
-						if (tboard[i][a] === 0) {
-							playMove(tboard, [i, a], turn);
-							children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
-							tboard = onetotwod(state.board);
-						}
+						if (tboard[i][a] === 0)
+							children.push(new MCTSNode(father, !turn, [i, a]));
 	return children;
 }
 
-function MCTSSimulate(father) {
-	var tboard = onetotwod(father.State.board);
-	if (father.State.gameOver || gameOver(tboard, father.State.turn ? 6:5, father.lastMove)) {
-		father.State.gameOver = true;
+function MCTSSimulate(father, tboard) {
+	if (father.gameOver || gameOver(tboard, father.turn ? 6:5, father.lastMove)) {
+		father.gameOver = true;
+		father.gameOver = true;
 		return anti ? 1:-1;
 	}
 	if (tieGame(tboard))
 		return 0;
 
-	var lm = father.lastMove, turn = father.State.turn, done = false;
+	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
 	var x, y, count;
 	var swap = false;
@@ -631,7 +621,7 @@ function MCTSSimulate(father) {
 		lm = [x, y];
 		turn = !turn;
 	}
-	if ((turn === father.State.turn) !== anti)
+	if ((turn === father.turn) !== anti)
 		return -1;
 	return 1;
 }
@@ -651,16 +641,16 @@ function twotooned(twod) {
 }
 
 function createMCTSRoot() {
-	return new MCTSNode(new State(twotooned(board), xTurnGlobal), null, prevMove);
+	return new MCTSNode(null, xTurnGlobal, prevMove);
 }
 
 function runMCTS(time) {
 	if (!globalRoot)
 		globalRoot = createMCTSRoot();
 	var startTime = new Date().getTime();
-	while ((new Date().getTime() - startTime) / 1E3 < time && globalRoot.totalTries < maxTrials) {
+	while ((new Date().getTime() - startTime) / 1E3 < time) {
 		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild();
+			globalRoot.chooseChild(onetotwod(twotooned(board)));
 		var error = getCertainty(globalRoot);
 		if (globalRoot.children.length < 2 || error < certaintyThreshold)
 			return;
@@ -729,14 +719,9 @@ function MCTSGetNextRoot(move) {
 	return null;
 }
 
-var State = function(board, turn) {
-	this.board = board;
-	this.turn = turn;
-};
-
-var MCTSNode = function(State, parent, lastMove) {
-	this.State = State;
+var MCTSNode = function(parent, turn, lastMove) {
 	this.parent = parent;
+	this.turn = turn;
 	this.lastMove = lastMove;
 	this.hits = 0;
 	this.misses = 0;
@@ -751,11 +736,14 @@ function MCTSChildPotential(child, t) {
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-MCTSNode.prototype.chooseChild = function() {
+MCTSNode.prototype.chooseChild = function(board) {
+	if (this.lastMove) {
+		playMove(board, this.lastMove, !this.turn);
+	}
 	if (!this.children)
-		this.children = MCTSGetChildren(this.State, this);
+		this.children = MCTSGetChildren(this, board);
 	if (this.children.length === 0) // leaf node
-		this.runSimulation();
+		this.runSimulation(board);
 	else {
 		var i;
 		var countUnexplored = 0;
@@ -769,7 +757,8 @@ MCTSNode.prototype.chooseChild = function() {
 				if (this.children[i].totalTries === 0) {
 					countUnexplored--;
 					if (countUnexplored === 0) {
-						this.children[i].runSimulation();
+						playMove(board, this.children[i].lastMove, !this.children[i].turn);
+						this.children[i].runSimulation(board);
 						return;
 					}
 				}
@@ -784,13 +773,13 @@ MCTSNode.prototype.chooseChild = function() {
 					bestChild = this.children[i];
 				}
 			}
-			bestChild.chooseChild();
+			bestChild.chooseChild(board);
 		}
 	}
 };
 
-MCTSNode.prototype.runSimulation = function() {
-	this.backPropogate(MCTSSimulate(this));
+MCTSNode.prototype.runSimulation = function(board) {
+	this.backPropogate(MCTSSimulate(this, board));
 };
 
 MCTSNode.prototype.backPropogate = function(simulation) {
@@ -800,7 +789,7 @@ MCTSNode.prototype.backPropogate = function(simulation) {
 		this.misses++;
 	this.totalTries++;
 	if (this.parent) {
-		if (this.parent.State.turn === this.State.turn)
+		if (this.parent.turn === this.turn)
 			this.parent.backPropogate(simulation);
 		else this.parent.backPropogate(-simulation);
 	}
@@ -810,7 +799,7 @@ function speedTest() {
 	globalRoot = createMCTSRoot();
 	var totalTrials, start = new Date().getTime();
 	for (totalTrials = 0; totalTrials < 5E5; totalTrials++)
-		globalRoot.chooseChild();
+		globalRoot.chooseChild(onetotwod(twotooned(board)));
 	console.log((new Date().getTime() - start) / 1E3);
 }
 
@@ -818,7 +807,7 @@ function efficiencyTest() {
 	speedTest();
 	setInterval(function() {
 		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild();
+			globalRoot.chooseChild(onetotwod(twotooned(board)));
 		$('#num-trials').text(globalRoot.totalTries);
 	}, 1);
 }
@@ -848,7 +837,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 				r = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (var i = 0; i < 100; i++)
-					r.chooseChild();
+					r.chooseChild(onetotwod(twotooned(board)));
 				var error = getCertainty(r);
 				if (r.children.length < 2 || error < certaintyThreshold)
 					break;
