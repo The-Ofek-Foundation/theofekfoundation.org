@@ -51,13 +51,13 @@ body {
   position: absolute;
   bottom: 0px;
 }
-#new-game-menu {
+#game-settings-menu {
   position: absolute;
   visibility: visible;
   background-color: blue;
   z-index: -1;
   width: 80%;
-  left: auto;
+  left: 5%;
   height: auto;
   top: auto;
   padding: 5%;
@@ -70,6 +70,21 @@ body {
   font-size: 30px;
   opacity: 0;
 }
-input {
+.game-settings-table {
+  text-align: left;
+  margin: auto;
+}
+.game-settings-table td {
+  padding: 0.25em 1em;
+}
+.game-settings-table input,
+.game-settings-table select {
+  width: 10em;
+  padding: 0.25em 1em;
   font-size: 20px;
+}
+.game-settings-table input[type=checkbox],
+.game-settings-table select[type=checkbox] {
+  width: auto;
+  margin-left: 1em;
 }

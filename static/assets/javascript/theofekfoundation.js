@@ -19,7 +19,6 @@ function doc_ready() {
 
 	$("#logout-url").click(function(event) {
 		$.post($(this).data('url'),
-			{'csrfmiddlewaretoken': CSRF_TOKEN},
 			function (data) {
 				redirect(window.location.href);
 			}
@@ -29,8 +28,10 @@ function doc_ready() {
 
 function prt() {	// page ready test
 	// console.log("testing3");
-	if (typeof page_ready === "function")
+	if (typeof page_ready === 'function')
 		page_ready();
+	else if (typeof pageReady === 'function')
+		pageReady();
 	else if (page_ready === null)
 		setTimeout(prt, 500);
 }
@@ -96,4 +97,60 @@ function getLocallyStored(key) {
 
 function setLocallyStored(key, val) {
 	localStorage.setItem(key, JSON.stringify(val));
+}
+
+function snakeToCamel(s) {
+	return s.replace(/(\_\w)/g, function($1){return $1[1].toUpperCase();});
+}
+
+function camelToSnake(s){
+	return s.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+}
+
+function convertToPython(o) {
+	for (key in o) {
+		if (typeof o[key] === 'boolean')
+			o[key] = o[key] ? 'True':'False';
+	}
+}
+
+function convertFromPython(o) {
+	for (key in o) {
+		if (typeof o[key] === 'string') {
+			if (o[key].toLowerCase() === 'true' || o[key].toLowerCase() === 'false')
+				o[key] = o[key].toLowerCase() === 'true';
+		}
+	}
+}
+
+function convertKeysObject(o, revert) {
+	new_object = {};
+	if (revert) {
+		// convertToPython(o);
+		for (key in o)
+			new_object[camelToSnake(key)] = o[key];
+	}
+	else {
+		convertFromPython(o);
+		for (key in o)
+			new_object[snakeToCamel(key)] = o[key];
+	}
+	return new_object;
+}
+
+function castType(val, typedVal) {
+	// Cast val to type of typedVal
+	switch (typeof typedVal) {
+		case 'undefined':
+			throw new Error("Error converting to undefined.");
+			return val;
+		case 'string':
+			return String(val);
+		case 'number':
+			return Number(val);
+		case 'boolean':
+			return String(val).toLowerCase() === 'true';
+		default:
+			return val;
+	}
 }

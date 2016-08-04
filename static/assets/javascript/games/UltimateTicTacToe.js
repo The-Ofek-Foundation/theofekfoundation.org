@@ -1,29 +1,28 @@
 var docwidth, docheight;
 var boardwidth, squarewidth;
 var board;
-var global_ROOT;
-var expansion_const;
+var globalRoot;
+var expansionConstant;
 // bound: ~0.0156
-var ai_turn = false;
-var monte_carlo_trials = 10000;
-var max_trials = 500000; // Prevent Overflow
+var aiTurn = 'second';
+var maxTrials = 500000; // Prevent Overflow
 var over;
-var prev_move;
-var x_turn_global;
+var prevMove;
+var xTurnGlobal;
 var ponder = false, pondering;
-var time_to_think = 5;
-var certainty_threshold = 0.05;
-var wrapper_top;
-var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
-var anti_tic_tac_toe = false;
+var timeToThink = 5;
+var certaintyThreshold = 0.05;
+var wrapperTop;
+var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
+var anti = false;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 
-function page_ready() {
+function pageReady() {
 	docwidth = $("#content-wrapper").outerWidth(true);
 	docheight = $("#content-wrapper").outerHeight(true);
-	wrapper_top = $("#content-wrapper").position().top;
+	wrapperTop = $("#content-wrapper").position().top;
 
 	boardwidth = docwidth < docheight ? docwidth:docheight;
 
@@ -37,28 +36,7 @@ function page_ready() {
 	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
 	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
 
-	new_game();
-
-	ponder = prompt("Ponder?", "Yes").toLowerCase() == "yes" ? true:false;
-	time_to_think = parseFloat(prompt("Time to think (seconds):", "5"));
-	var ai = prompt("AI turn: ", "Second");
-
-	switch (ai.toLowerCase()) {
-		case "first":
-			ai_turn = true;
-			break;
-		case "second":
-			ai_turn = false;
-			break;
-		case "both":
-			ai_turn = "both";
-			break;
-		default:
-			ai_turn = null;
-			break;
-	}
-
-	new_game();
+	newGame();
 };
 
 $(window).resize(function(event) {
@@ -67,7 +45,7 @@ $(window).resize(function(event) {
 
 	docwidth = $("#content-wrapper").outerWidth(true);
 	docheight = $("#content-wrapper").outerHeight(true);
-	wrapper_top = $("#content-wrapper").position().top;
+	wrapperTop = $("#content-wrapper").position().top;
 
 	boardwidth = docwidth < docheight ? docwidth:docheight;
 
@@ -83,16 +61,16 @@ $(window).resize(function(event) {
 	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
 	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
 
-	draw_board();
+	drawBoard();
 });
 
-function new_game() {
+function newGame() {
 	squarewidth = boardwidth / 9;
 
-	adjust_buttons();
+	adjustButtons();
 
 	over = false;
-	prev_move = false;
+	prevMove = false;
 	board = new Array(9);
 	for (var i = 0; i < board.length; i++) {
 		board[i] = new Array(9);
@@ -100,37 +78,47 @@ function new_game() {
 			board[i][a] = 0;
 	}
 
-	expansion_const = anti_tic_tac_toe ? 1.581328125:1.03125;
+	getSettings();
+	populateSettingsForm(gameSettings.getSettings());
 
-	num_choose1 = num_choose2 = num_choose3 = lnc1 = lnc2 = lnc3 = stop_choose = false;
+	expansionConstant = anti ? 1.581328125:1.03125;
 
-	x_turn_global = true;
+	numChoose1 = numChoose2 = numChoose3 = lnc1 = lnc2 = lnc3 = stopChoose = false;
 
-	global_ROOT = create_MCTS_root();
-	draw_board();
+	xTurnGlobal = true;
 
-	if (ai_turn == x_turn_global || ai_turn == 'both')
-		setTimeout(play_ai_move, 20);
+	globalRoot = createMCTSRoot();
+	drawBoard();
 
-	stop_ponder();
+	if (((aiTurn === 'first') == xTurnGlobal) || aiTurn == 'both')
+		setTimeout(playAIMove, 20);
+
+	stopPonder();
 	if (ponder)
-		start_ponder();
+		startPonder();
 }
 
-function clear_board() {
+function getSettings() {
+	aiTurn = gameSettings.getOrSet('aiTurn', 'second');
+	ponder = gameSettings.getOrSet('ponder', false);
+	anti = gameSettings.getOrSet('anti', false);
+	timeToThink = gameSettings.getOrSet('timeToThink', 5);
+}
+
+function clearBoard() {
 	brush.clearRect(0, 0, boardwidth, boardwidth);
 }
 
-function draw_grid() {
-	if (prev_move && !over) {
-		var next_center = [prev_move[0] % 3 * 3 + 1, prev_move[1] % 3 * 3 + 1];
-		var next_center_color = board[next_center[0]][next_center[1]];
-		if (next_center_color != 5 && next_center_color != 6 && next_center_color != 3 && next_center_color != 4 && x_turn_global) {
+function drawGrid() {
+	if (prevMove && !over) {
+		var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
+		var nextCenterColor = board[nextCenter[0]][nextCenter[1]];
+		if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4 && xTurnGlobal) {
 			brush.fillStyle = "rgba(102, 162, 255, 0.5)";
-			brush.fillRect((next_center[0] - 1) * squarewidth, (next_center[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
-		} else if (next_center_color != 5 && next_center_color != 6 && next_center_color != 3 && next_center_color != 4 && !x_turn_global) {
+			brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+		} else if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4 && !xTurnGlobal) {
 				brush.fillStyle = "rgba(255, 123, 123, 0.5)";
-				brush.fillRect((next_center[0] - 1) * squarewidth, (next_center[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
 		}
 	}
 
@@ -163,7 +151,7 @@ function draw_grid() {
 	brush.closePath();
 }
 
-function draw_piece(x, y) {
+function drawPiece(x, y) {
 	var o4 = squarewidth / 4;
 	var color;
 	switch(board[x][y]) {
@@ -207,35 +195,35 @@ function draw_piece(x, y) {
 	}
 	brush.fill();
 }
-function draw_board() {
-	clear_board();
-	draw_grid();
-	update_analysis();
+function drawBoard() {
+	clearBoard();
+	drawGrid();
+	updateAnalysis();
 
 	for (var I = 1; I < 9; I+=3)
 		for (var A = 1; A < 9; A+=3)
 			if (board[I][A] == 5 || board[I][A] == 6)
-				draw_piece(I, A);
+				drawPiece(I, A);
 			else for (var i = I-1; i <= I+1; i++)
 				for (var a = A-1; a <= A+1; a++)
 					if (board[i][a] !== 0)
-						draw_piece(i, a);
+						drawPiece(i, a);
 }
 
-function draw_hover(move) {
-	board[move[0]][move[1]] = x_turn_global ? 1:2;
-	draw_board();
+function drawHover(move) {
+	board[move[0]][move[1]] = xTurnGlobal ? 1:2;
+	drawBoard();
 	board[move[0]][move[1]] = 0;
 }
 
-function get_move(xloc, yloc) {
+function getMove(xloc, yloc) {
 	var left = (docwidth - boardwidth) / 2;
 	if (xloc < left || xloc > left + boardwidth || yloc > boardwidth)
 		return [-1, -1];
 	return [(xloc - left) / squarewidth | 0, yloc / squarewidth | 0];
 }
 
-function legal_move(tboard, move, prev_move, output) {
+function legalMove(tboard, move, prevMove, output) {
 	if (move[0] < 0 || move[1] < 0)
 		return false;
 	if (board[move[0]][move[1]] !== 0)
@@ -246,9 +234,9 @@ function legal_move(tboard, move, prev_move, output) {
 			alert("Square already finished");
 		return false;
 	}
-	if (prev_move) {
-		var center = tboard[prev_move[0] % 3 * 3 + 1][prev_move[1] % 3 * 3 + 1];
-		if ((center != 5 && center != 6 && center != 3 && center != 4) && (prev_move[0] % 3 != Math.floor(move[0] / 3) || prev_move[1] % 3 != Math.floor(move[1] / 3))) {
+	if (prevMove) {
+		var center = tboard[prevMove[0] % 3 * 3 + 1][prevMove[1] % 3 * 3 + 1];
+		if ((center != 5 && center != 6 && center != 3 && center != 4) && (prevMove[0] % 3 != Math.floor(move[0] / 3) || prevMove[1] % 3 != Math.floor(move[1] / 3))) {
 			if (output)
 				alert("Wrong square!");
 			return false;
@@ -257,29 +245,29 @@ function legal_move(tboard, move, prev_move, output) {
 	return true;
 }
 
-function set_turn(turn, move) {
-	var color = x_turn_global ? 5:6;
-	if (game_over(board, color, move))
+function setTurn(turn, move) {
+	var color = xTurnGlobal ? 5:6;
+	if (gameOver(board, color, move))
 		over = color;
-	else if (tie_game(board))
+	else if (tieGame(board))
 		over = 'tie';
 
-	x_turn_global = turn;
-	prev_move = move;
+	xTurnGlobal = turn;
+	prevMove = move;
 
-	global_ROOT = MCTS_get_next_root(move);
-	if (global_ROOT)
-		global_ROOT.parent = null;
-	else global_ROOT = create_MCTS_root();
+	globalRoot = MCTSGetNextRoot(move);
+	if (globalRoot)
+		globalRoot.parent = null;
+	else globalRoot = createMCTSRoot();
 
-	num_choose1 = num_choose2 = num_choose3 = stop_choose = false;
+	numChoose1 = numChoose2 = numChoose3 = stopChoose = false;
 
-//	 var mtc = most_tried_child(global_ROOT, null);
+//	 var mtc = mostTriedChild(globalRoot, null);
 
-//	 if (!over && (turn === ai_turn || ai_turn == "both") && mtc && mtc.last_move)
-//		 draw_hover(mtc.last_move[0]);
-//	 else	draw_board();
-	draw_board();
+//	 if (!over && (turn === aiTurn || aiTurn == "both") && mtc && mtc.lastMove)
+//		 drawHover(mtc.lastMove[0]);
+//	 else	drawBoard();
+	drawBoard();
 
 	if (over) {
 		switch (over) {
@@ -293,44 +281,44 @@ function set_turn(turn, move) {
 				alert ("O wins!");
 				break;
 		}
-		stop_ponder();
+		stopPonder();
 	}
 
-	if (!over && (turn === ai_turn || ai_turn == "both"))
-		setTimeout(play_ai_move, 25);
+	if (!over && (turn === (aiTurn === 'first') || aiTurn == "both"))
+		setTimeout(playAIMove, 25);
 }
 
 $('#board').mousedown(function (e) {
 	if (e.which === 3)
 		return;
-	if (x_turn_global == ai_turn || ai_turn == "both")
+	if (xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")
 		return;
 	if (over) {
 		alert("The game is already over!");
 		return;
 	}
-	var move = get_move(e.pageX, e.pageY - wrapper_top);
-	if (!legal_move(board, move, prev_move, true))
+	var move = getMove(e.pageX, e.pageY - wrapperTop);
+	if (!legalMove(board, move, prevMove, true))
 		return;
 
-	play_move(board, move, x_turn_global);
+	playMove(board, move, xTurnGlobal);
 
-	set_turn(!x_turn_global, move);
+	setTurn(!xTurnGlobal, move);
 	e.preventDefault();
 });
 
-function play_move(tboard, move, xturn) {
+function playMove(tboard, move, xturn) {
 	var color = xturn ? 1:2;
 	tboard[move[0]][move[1]] = color;
 	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
 	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
-	if (local_win(tboard, color, move, startx, starty))
+	if (localWin(tboard, color, move, startx, starty))
 		tboard[centerx][centery] = color + 4;
-	else if (square_full(tboard, startx, starty))
+	else if (squareFull(tboard, startx, starty))
 		tboard[centerx][centery] += 2;
 }
 
-function local_win(tboard, color, move, startx, starty) {
+function localWin(tboard, color, move, startx, starty) {
 	var i, a;
 
 	for (var trial = 0; trial < 4; trial++) {
@@ -365,7 +353,7 @@ function local_win(tboard, color, move, startx, starty) {
 	return false;
 }
 
-function square_full(tboard, startx, starty) {
+function squareFull(tboard, startx, starty) {
 	for (var i = startx; i < startx + 3; i++)
 		for (var a = starty; a < starty + 3; a++)
 			if (tboard[i][a] === 0)
@@ -373,7 +361,7 @@ function square_full(tboard, startx, starty) {
 	return true;
 }
 
-function game_over(tboard, color, m) {
+function gameOver(tboard, color, m) {
 	var i, a;
 	var move = [m[0] - m[0] % 3 + 1, m[1] - m[1] % 3 + 1];
 
@@ -409,7 +397,7 @@ function game_over(tboard, color, m) {
 	return false;
 }
 
-function tie_game(tboard) {
+function tieGame(tboard) {
 	for (var i = 1; i < 9; i+=3)
 		for (var a = 1; a < 9; a+=3)
 			if (tboard[i][a] != 3 && tboard[i][a] != 4 && tboard[i][a] != 6 && tboard[i][a] != 5)
@@ -418,55 +406,55 @@ function tie_game(tboard) {
 }
 
 $('#board').mousemove(function (e) {
-	if (x_turn_global == ai_turn || ai_turn == "both" || over)
+	if (xTurnGlobal == (aiTurn === 'first') || aiTurn == "both" || over)
 		return;
-	var move = get_move(e.pageX, e.pageY - wrapper_top);
-	if (legal_move(board, move, prev_move, false))
-		draw_hover(move);
+	var move = getMove(e.pageX, e.pageY - wrapperTop);
+	if (legalMove(board, move, prevMove, false))
+		drawHover(move);
 });
 
-function update_analysis() {
-	var range = get_MCTS_depth_range();
-	$('#anal').text("Analysis: Depth-" + range[1] + " Result-" + range[2] + " Certainty-" + (global_ROOT && global_ROOT.total_tries > 0 ? (result_certainty(global_ROOT) * 100).toFixed(0):"0") + "%");
-	$('#num-trials').text("Trials: " + global_ROOT.total_tries);
+function updateAnalysis() {
+	var range = getMCTSDepthRange();
+	$('#anal').text("Analysis: Depth-" + range[1] + " Result-" + range[2] + " Certainty-" + (globalRoot && globalRoot.totalTries > 0 ? (resultCertainty(globalRoot) * 100).toFixed(0):"0") + "%");
+	$('#num-trials').text("Trials: " + globalRoot.totalTries);
 }
 
-function result_certainty(root) {
-	if (root.total_tries > (root.hits + root.misses) * 3)
-		return 1 - (root.hits + root.misses) / root.total_tries;
+function resultCertainty(root) {
+	if (root.totalTries > (root.hits + root.misses) * 3)
+		return 1 - (root.hits + root.misses) / root.totalTries;
 	else if (root.hits > root.misses)
-		return (root.hits - root.misses) / root.total_tries;
+		return (root.hits - root.misses) / root.totalTries;
 	else if (root.hits < root.misses)
-		return (root.misses - root.hits) / root.total_tries;
-	else return 1 - (root.hits + root.misses) / root.total_tries;
+		return (root.misses - root.hits) / root.totalTries;
+	else return 1 - (root.hits + root.misses) / root.totalTries;
 }
 
-function start_ponder() {
+function startPonder() {
 	pondering = setInterval(function() {
-		if (!global_ROOT)
-			global_ROOT = create_MCTS_root();
-		var start_time = new Date().getTime();
-		var temp_count = 0;
-		while ((new Date().getTime() - start_time) < 30 && !stop_choose) {
-			global_ROOT.choose_child();
-			temp_count++;
+		if (!globalRoot)
+			globalRoot = createMCTSRoot();
+		var startTime = new Date().getTime();
+		var tempCount = 0;
+		while ((new Date().getTime() - startTime) < 30 && !stopChoose) {
+			globalRoot.chooseChild();
+			tempCount++;
 		}
-		if (num_choose3 && (temp_count < num_choose3 / 9 || temp_count < num_choose2 / 9 || temp_count < num_choose1 / 9))
-			stop_choose = true;
+		if (numChoose3 && (tempCount < numChoose3 / 9 || tempCount < numChoose2 / 9 || tempCount < numChoose1 / 9))
+			stopChoose = true;
 		else {
-			num_choose3 = num_choose2;
-			num_choose2 = num_choose1;
-			num_choose1 = temp_count;
+			numChoose3 = numChoose2;
+			numChoose2 = numChoose1;
+			numChoose1 = tempCount;
 		}
-		update_analysis();
+		updateAnalysis();
 	}, 1);
 }
 
-function stop_ponder() {
+function stopPonder() {
 	clearInterval(pondering);
 }
 
-function adjust_buttons() {
+function adjustButtons() {
 	$('.footer button').css('font-size', squarewidth / 4);
 	$('.footer').css("height", squarewidth / 2);
 	$('.footer').css('margin-bottom', squarewidth / 4 - $('#back').outerHeight(false));
@@ -474,29 +462,29 @@ function adjust_buttons() {
 	$('.footer #num-trials').css('line-height', squarewidth / 2 + "px");
 }
 
-function new_cookie_id() {
+function newCookieId() {
 	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	var c_id;
+	var cId;
 
 	do {
-		c_id = "";
+		cId = "";
 		for( var i=0; i < 5; i++)
-				c_id += possible.charAt(Math.floor(Math.random() * possible.length));
-	} while (getCookie(c_id));
+				cId += possible.charAt(Math.floor(Math.random() * possible.length));
+	} while (getCookie(cId));
 
-	return c_id;
+	return cId;
 }
 
-function get_MCTS_depth_range() {
+function getMCTSDepthRange() {
 	var root, range = new Array(3);
-	for (range[0] = -1, root = global_ROOT; root && root.children; range[0]++, root = least_tried_child(root));
-	for (range[1] = -1, root = global_ROOT; root && root.children; range[1]++, root = most_tried_child(root));
-	root = global_ROOT;
-	if (root.total_tries > (root.hits + root.misses) * 3)
+	for (range[0] = -1, root = globalRoot; root && root.children; range[0]++, root = leastTriedChild(root));
+	for (range[1] = -1, root = globalRoot; root && root.children; range[1]++, root = mostTriedChild(root));
+	root = globalRoot;
+	if (root.totalTries > (root.hits + root.misses) * 3)
 		range[2] = "Tie";
-	else if ((root.hits > root.misses) == x_turn_global)
+	else if ((root.hits > root.misses) == xTurnGlobal)
 		range[2] = "X";
-	else if ((root.hits < root.misses) == x_turn_global)
+	else if ((root.hits < root.misses) == xTurnGlobal)
 		range[2] = "O";
 	else range[2] = "Tie";
 	return range;
@@ -520,24 +508,24 @@ function getCookie(cname) {
 		return "";
 }
 
-function MCTS_get_children(state, father) {
+function MCTSGetChildren(state, father) {
 	var tboard = onetotwod(state.board);
 	var turn = state.turn;
 	var children = [];
 	var i, a;
 
-	if (state.game_over || tie_game(tboard))
+	if (state.gameOver || tieGame(tboard))
 		return [];
 
-	if (father.last_move) {
-		var next_center = [father.last_move[0] % 3 * 3 + 1, father.last_move[1] % 3 * 3 + 1];
-		var next_center_color = tboard[next_center[0]][next_center[1]];
-		if (next_center_color != 5 && next_center_color != 6 && next_center_color != 3 && next_center_color != 4) {
-			for (i = next_center[0] - 1; i <= next_center[0] + 1; i++)
-				for (a = next_center[1] - 1; a <= next_center[1] + 1; a++)
+	if (father.lastMove) {
+		var nextCenter = [father.lastMove[0] % 3 * 3 + 1, father.lastMove[1] % 3 * 3 + 1];
+		var nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
+		if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4) {
+			for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
+				for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++)
 					if (tboard[i][a] === 0) {
-						play_move(tboard, [i, a], turn);
-						children.push(new MCTS_Node(new State(twotooned(tboard), !turn), father, [i, a]));
+						playMove(tboard, [i, a], turn);
+						children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
 						tboard = onetotwod(state.board);
 					}
 			return children;
@@ -547,7 +535,7 @@ function MCTS_get_children(state, father) {
 		for (i = 0; i < 9; i++)
 			for (a = 0; a < 9; a++) {
 				tboard[i][a] = 1;
-				children.push(new MCTS_Node(new State(twotooned(tboard), !turn), father, [i, a]));
+				children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
 				tboard[i][a] = 0;
 			}
 		return children;
@@ -559,92 +547,92 @@ function MCTS_get_children(state, father) {
 				for (i = I-1; i <= I+1; i++)
 					for (a = A-1; a <= A+1; a++)
 						if (tboard[i][a] === 0) {
-							play_move(tboard, [i, a], turn);
-							children.push(new MCTS_Node(new State(twotooned(tboard), !turn), father, [i, a]));
+							playMove(tboard, [i, a], turn);
+							children.push(new MCTSNode(new State(twotooned(tboard), !turn), father, [i, a]));
 							tboard = onetotwod(state.board);
 						}
 	return children;
 }
 
-function MCTS_simulate(father) {
+function MCTSSimulate(father) {
 	var tboard = onetotwod(father.State.board);
-	if (father.State.game_over || game_over(tboard, father.State.turn ? 6:5, father.last_move)) {
-		father.State.game_over = true;
-		return anti_tic_tac_toe ? 1:-1;
+	if (father.State.gameOver || gameOver(tboard, father.State.turn ? 6:5, father.lastMove)) {
+		father.State.gameOver = true;
+		return anti ? 1:-1;
 	}
-	if (tie_game(tboard))
+	if (tieGame(tboard))
 		return 0;
 
-	var lm = father.last_move, turn = father.State.turn, done = false;
-	var next_center, next_center_color;
+	var lm = father.lastMove, turn = father.State.turn, done = false;
+	var nextCenter, nextCenterColor;
 	var x, y, count;
 	var swap = false;
 	var tries;
 	while (!done) {
-		next_center = [lm[0] % 3 * 3 + 1, lm[1] % 3 * 3 + 1];
-		next_center_color = tboard[next_center[0]][next_center[1]];
+		nextCenter = [lm[0] % 3 * 3 + 1, lm[1] % 3 * 3 + 1];
+		nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
 		count = 0;
 		tries = 0;
 		if (swap)
-			if (next_center_color !== 5 && next_center_color !== 6 && next_center_color !== 3 && next_center_color !== 4) {
-				for (x = next_center[0]-1; x <= next_center[0]+1; x++)
-					for (y = next_center[1]-1; y <= next_center[1]+1; y++)
+			if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
+				for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 						if (tboard[x][y] === 0)
 							count++;
 				count = Math.random() * count | 0;
 				outer:
-				for (x = next_center[0]-1; x <= next_center[0]+1; x++)
-					for (y = next_center[1]-1; y <= next_center[1]+1; y++)
+				for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 						if (tboard[x][y] === 0)
 							if (count === 0)
 								break outer;
 							else count--;
 			}
 			else {
-				for (next_center[0] = 1; next_center[0] < 9; next_center[0] += 3)
-					for (next_center[1] = 1; next_center[1] < 9; next_center[1] += 3) {
-						next_center_color = tboard[next_center[0]][next_center[1]];
-						if (next_center_color !== 5 && next_center_color !== 6 && next_center_color !== 3 && next_center_color !== 4)
-							for (x = next_center[0]-1; x <= next_center[0]+1; x++)
-								for (y = next_center[1]-1; y <= next_center[1]+1; y++)
+				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
+					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
+						nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
+						if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+							for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+								for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 									if (tboard[x][y] === 0)
 										count++;
 					}
 				count = Math.random() * count | 0;
 				outer1:
-				for (next_center[0] = 1; next_center[0] < 9; next_center[0] += 3)
-					for (next_center[1] = 1; next_center[1] < 9; next_center[1] += 3) {
-						next_center_color = tboard[next_center[0]][next_center[1]];
-						if (next_center_color !== 5 && next_center_color !== 6 && next_center_color !== 3 && next_center_color !== 4)
-							for (x = next_center[0]-1; x <= next_center[0]+1; x++)
-								for (y = next_center[1]-1; y <= next_center[1]+1; y++)
+				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
+					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
+						nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
+						if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+							for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+								for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 									if (tboard[x][y] === 0)
 										if (count === 0)
 											break outer1;
 										else count--;
 					}
 			}
-		else if (next_center_color !== 5 && next_center_color !== 6 && next_center_color !== 3 && next_center_color !== 4)
+		else if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
 				do {
-					x = next_center[0] - 1 + Math.random() * 3 | 0;
-					y = next_center[1] - 1 + Math.random() * 3 | 0;
+					x = nextCenter[0] - 1 + Math.random() * 3 | 0;
+					y = nextCenter[1] - 1 + Math.random() * 3 | 0;
 					tries++;
 				}	while (tboard[x][y] !== 0);
 			else do {
 				x = Math.random() * 9 | 0;
 				y = Math.random() * 9 | 0;
 				tries++;
-			}	while (!legal_move(tboard, [x, y], lm, false));
+			}	while (!legalMove(tboard, [x, y], lm, false));
 		if (tries > 1)
 			swap = true;
-		play_move(tboard, [x, y], turn);
-		done = game_over(tboard, turn ? 5:6, [x, y]);
-		if (tie_game(tboard))
+		playMove(tboard, [x, y], turn);
+		done = gameOver(tboard, turn ? 5:6, [x, y]);
+		if (tieGame(tboard))
 			return 0;
 		lm = [x, y];
 		turn = !turn;
 	}
-	if ((turn === father.State.turn) !== anti_tic_tac_toe)
+	if ((turn === father.State.turn) !== anti)
 		return -1;
 	return 1;
 }
@@ -663,83 +651,81 @@ function twotooned(twod) {
 	return oned;
 }
 
-function create_MCTS_root() {
-	return new MCTS_Node(new State(twotooned(board), x_turn_global), null, prev_move);
+function createMCTSRoot() {
+	return new MCTSNode(new State(twotooned(board), xTurnGlobal), null, prevMove);
 }
 
-function run_MCTS(time) {
-	if (!global_ROOT)
-		global_ROOT = create_MCTS_root();
-	var start_time = new Date().getTime();
-	while ((new Date().getTime() - start_time) / 1E3 < time && global_ROOT.total_tries < max_trials) {
+function runMCTS(time) {
+	if (!globalRoot)
+		globalRoot = createMCTSRoot();
+	var startTime = new Date().getTime();
+	while ((new Date().getTime() - startTime) / 1E3 < time && globalRoot.totalTries < maxTrials) {
 		for (var i = 0; i < 1000; i++)
-			global_ROOT.choose_child();
-		var error = get_certainty(global_ROOT);
-		if (global_ROOT.children.length < 2 || error < certainty_threshold)
+			globalRoot.chooseChild();
+		var error = getCertainty(globalRoot);
+		if (globalRoot.children.length < 2 || error < certaintyThreshold)
 			return;
 	}
-	console.log("Total Simulations: " + global_ROOT.total_tries);
+	console.log("Total Simulations: " + globalRoot.totalTries);
 }
 
-function get_certainty(root) {
-	var best_child = most_tried_child(root, null);
-	var ratio = most_tried_child(root, best_child).total_tries / best_child.total_tries;
-	var ratio_wins = best_child.hits < best_child.misses ? (best_child.hits / best_child.misses * 2):(best_child.misses / best_child.hits * 3);
-	return ratio > ratio_wins ? ratio_wins:ratio;
+function getCertainty(root) {
+	var bestChild = mostTriedChild(root, null);
+	var ratio = mostTriedChild(root, bestChild).totalTries / bestChild.totalTries;
+	var ratioWins = bestChild.hits < bestChild.misses ? (bestChild.hits / bestChild.misses * 2):(bestChild.misses / bestChild.hits * 3);
+	return ratio > ratioWins ? ratioWins:ratio;
 }
 
-function play_ai_move() {
-//	 ai_stopped = false;
-
-	run_MCTS(time_to_think);
+function playAIMove() {
+	runMCTS(timeToThink);
 	fpaim();
 }
 
 function fpaim() {
-	var best_move = get_best_move_MCTS();
-	play_move(board, best_move, x_turn_global);
-	set_turn(!x_turn_global, best_move);
+	var bestMove = getBestMoveMCTS();
+	playMove(board, bestMove, xTurnGlobal);
+	setTurn(!xTurnGlobal, bestMove);
 }
 
-function get_best_move_MCTS() {
-	var best_child = most_tried_child(global_ROOT, null);
-	if (!best_child)
+function getBestMoveMCTS() {
+	var bestChild = mostTriedChild(globalRoot, null);
+	if (!bestChild)
 		return -1;
-	return best_child.last_move;
+	return bestChild.lastMove;
 }
 
-function most_tried_child(root, exclude) {
-	var most_trials = 0, child = null;
+function mostTriedChild(root, exclude) {
+	var mostTrials = 0, child = null;
 	if (!root.children)
 		return null;
 	if (root.children.length == 1)
 		return root.children[0];
 	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i] != exclude && root.children[i].total_tries > most_trials) {
-			most_trials = root.children[i].total_tries;
+		if (root.children[i] != exclude && root.children[i].totalTries > mostTrials) {
+			mostTrials = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
 }
 
-function least_tried_child(root) {
-	var least_trials = root.total_tries + 1, child = null;
+function leastTriedChild(root) {
+	var leastTrials = root.totalTries + 1, child = null;
 	if (!root.children)
 		return null;
 	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i].total_tries < least_trials) {
-			least_trials = root.children[i].total_tries;
+		if (root.children[i].totalTries < leastTrials) {
+			leastTrials = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
 }
 
-function MCTS_get_next_root(move) {
-	if (!global_ROOT || !global_ROOT.children)
+function MCTSGetNextRoot(move) {
+	if (!globalRoot || !globalRoot.children)
 		return null;
-	for (var i = 0; i < global_ROOT.children.length; i++)
-		if (global_ROOT.children[i].last_move[0] == move[0] && global_ROOT.children[i].last_move[1] == move[1]) {
-			return global_ROOT.children[i];
+	for (var i = 0; i < globalRoot.children.length; i++)
+		if (globalRoot.children[i].lastMove[0] == move[0] && globalRoot.children[i].lastMove[1] == move[1]) {
+			return globalRoot.children[i];
 		}
 	return null;
 }
@@ -749,102 +735,102 @@ var State = function(board, turn) {
 	this.turn = turn;
 };
 
-var MCTS_Node = function(State, parent, last_move) {
+var MCTSNode = function(State, parent, lastMove) {
 	this.State = State;
 	this.parent = parent;
-	this.last_move = last_move;
+	this.lastMove = lastMove;
 	this.hits = 0;
 	this.misses = 0;
-	this.total_tries = 0;
+	this.totalTries = 0;
 };
 
-function MCTS_child_potential(child, t) {
+function MCTSChildPotential(child, t) {
 	var w = child.misses - child.hits;
-	var n = child.total_tries;
-	var c = expansion_const;
+	var n = child.totalTries;
+	var c = expansionConstant;
 
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-MCTS_Node.prototype.choose_child = function() {
+MCTSNode.prototype.chooseChild = function() {
 	if (!this.children)
-		this.children = MCTS_get_children(this.State, this);
+		this.children = MCTSGetChildren(this.State, this);
 	if (this.children.length === 0) // leaf node
-		this.run_simulation();
+		this.runSimulation();
 	else {
 		var i;
-		var count_unexplored = 0;
+		var countUnexplored = 0;
 		for (i = 0; i < this.children.length; i++)
-			if (this.children[i].total_tries === 0)
-				count_unexplored++;
+			if (this.children[i].totalTries === 0)
+				countUnexplored++;
 
-		if (count_unexplored > 0) {
-			var ran = Math.floor(Math.random() * count_unexplored);
+		if (countUnexplored > 0) {
+			var ran = Math.floor(Math.random() * countUnexplored);
 			for (i = 0; i < this.children.length; i++)
-				if (this.children[i].total_tries === 0) {
-					count_unexplored--;
-					if (count_unexplored === 0) {
-						this.children[i].run_simulation();
+				if (this.children[i].totalTries === 0) {
+					countUnexplored--;
+					if (countUnexplored === 0) {
+						this.children[i].runSimulation();
 						return;
 					}
 				}
 
 		}
 		else {
-			var best_child = this.children[0], best_potential = MCTS_child_potential(this.children[0], this.total_tries), potential;
+			var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
 			for (i = 1; i < this.children.length; i++) {
-				potential = MCTS_child_potential(this.children[i], this.total_tries);
-				if (potential > best_potential) {
-					best_potential = potential;
-					best_child = this.children[i];
+				potential = MCTSChildPotential(this.children[i], this.totalTries);
+				if (potential > bestPotential) {
+					bestPotential = potential;
+					bestChild = this.children[i];
 				}
 			}
-			best_child.choose_child();
+			bestChild.chooseChild();
 		}
 	}
 };
 
-MCTS_Node.prototype.run_simulation = function() {
-	this.back_propogate(MCTS_simulate(this));
+MCTSNode.prototype.runSimulation = function() {
+	this.backPropogate(MCTSSimulate(this));
 };
 
-MCTS_Node.prototype.back_propogate = function(simulation) {
+MCTSNode.prototype.backPropogate = function(simulation) {
 	if (simulation > 0)
 		this.hits++;
 	else if (simulation < 0)
 		this.misses++;
-	this.total_tries++;
+	this.totalTries++;
 	if (this.parent) {
 		if (this.parent.State.turn === this.State.turn)
-			this.parent.back_propogate(simulation);
-		else this.parent.back_propogate(-simulation);
+			this.parent.backPropogate(simulation);
+		else this.parent.backPropogate(-simulation);
 	}
 };
 
-function speed_test() {
-	global_ROOT = create_MCTS_root();
-	var total_trials, start = new Date().getTime();
-	for (total_trials = 0; total_trials < 5E5; total_trials++)
-		global_ROOT.choose_child();
+function speedTest() {
+	globalRoot = createMCTSRoot();
+	var totalTrials, start = new Date().getTime();
+	for (totalTrials = 0; totalTrials < 5E5; totalTrials++)
+		globalRoot.chooseChild();
 	console.log((new Date().getTime() - start) / 1E3);
 }
 
-function efficiency_test() {
-	speed_test();
+function efficiencyTest() {
+	speedTest();
 	setInterval(function() {
 		for (var i = 0; i < 1000; i++)
-			global_ROOT.choose_child();
-		$('#num-trials').text(global_ROOT.total_tries);
+			globalRoot.chooseChild();
+		$('#num-trials').text(globalRoot.totalTries);
 	}, 1);
 }
 
 var t1;
-function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
+function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 	var v1 = v2 = 0;
 	t1 = [c1, c2];
-	for (var I = 0; I < num_trials; I++) {
+	for (var I = 0; I < numTrials; I++) {
 		over = false;
-		prev_move = false;
+		prevMove = false;
 		board = new Array(9);
 		for (var i = 0; i < board.length; i++) {
 			board[i] = new Array(9);
@@ -852,53 +838,53 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				board[i][a] = 0;
 		}
 
-		x_turn_global = true;
-		var r1 = create_MCTS_root(), r2 = create_MCTS_root();
+		xTurnGlobal = true;
+		var r1 = createMCTSRoot(), r2 = createMCTSRoot();
 
 		while (!over) {
-			var start_time = new Date().getTime();
-			var r = (I % 2 === 0) === x_turn_global ? r1:r2;
-			expansion_const = (I % 2 === 0) === x_turn_global ? c1:c2;
+			var startTime = new Date().getTime();
+			var r = (I % 2 === 0) === xTurnGlobal ? r1:r2;
+			expansionConstant = (I % 2 === 0) === xTurnGlobal ? c1:c2;
 			if (!r)
-				r = create_MCTS_root();
-			while ((new Date().getTime() - start_time) / 1E3 < time_to_think) {
+				r = createMCTSRoot();
+			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (var i = 0; i < 100; i++)
-					r.choose_child();
-				var error = get_certainty(r);
-				if (r.children.length < 2 || error < certainty_threshold)
+					r.chooseChild();
+				var error = getCertainty(r);
+				if (r.children.length < 2 || error < certaintyThreshold)
 					break;
 			}
-			var best_child = most_tried_child(r, null);
-			var best_move = best_child.last_move;
-			play_move(board, best_move, x_turn_global);
+			var bestChild = mostTriedChild(r, null);
+			var bestMove = bestChild.lastMove;
+			playMove(board, bestMove, xTurnGlobal);
 
-			var color = x_turn_global ? 5:6;
-			if (game_over(board, color, best_move))
+			var color = xTurnGlobal ? 5:6;
+			if (gameOver(board, color, bestMove))
 				over = color;
-			else if (tie_game(board))
+			else if (tieGame(board))
 				over = 'tie';
 
-			x_turn_global = !x_turn_global;
-			prev_move = best_move;
+			xTurnGlobal = !xTurnGlobal;
+			prevMove = bestMove;
 
 			if (r1.children) {
 				for (var i = 0; i < r1.children.length; i++)
-					if (r1.children[i].last_move[0] == best_move[0] && r1.children[i].last_move[1] == best_move[1]) {
+					if (r1.children[i].lastMove[0] == bestMove[0] && r1.children[i].lastMove[1] == bestMove[1]) {
 						r1 = r1.children[i];
 						break;
 					}
 				r1.parent = null;
 			}
-			else r1 = create_MCTS_root();
+			else r1 = createMCTSRoot();
 			if (r2.children) {
 				for (var i = 0; i < r2.children.length; i++)
-					if (r2.children[i].last_move[0] == best_move[0] && r2.children[i].last_move[1] == best_move[1]) {
+					if (r2.children[i].lastMove[0] == bestMove[0] && r2.children[i].lastMove[1] == bestMove[1]) {
 						r2 = r2.children[i];
 						break;
 					}
 				r2.parent = null;
 			}
-			else r2 = create_MCTS_root();
+			else r2 = createMCTSRoot();
 			// console.log("next turn ", board);
 		}
 		switch (over) {
@@ -907,7 +893,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 					console.log("tie");
 				break;
 			case 5:
-				if ((I % 2 === 0) !== anti_tic_tac_toe) {
+				if ((I % 2 === 0) !== anti) {
 					v1++;
 					if (output)
 						console.log("c1 wins");
@@ -919,7 +905,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 				}
 				break;
 			case 6:
-				if ((I % 2 === 0) !== anti_tic_tac_toe) {
+				if ((I % 2 === 0) !== anti) {
 					v2++;
 					if (output)
 						console.log("c2 wins");
@@ -936,7 +922,7 @@ function test_expansion_consts(c1, c2, num_trials, time_to_think, output) {
 	return [v1, v2];
 }
 
-function find_best_expansion_const(seed, time_to_think, bound, num_simulations, prolly_greater) {
+function findBestExpansionConstant(seed, timeToThink, bound, numSimulations, prollyGreater) {
 	console.log("!!!");
 	console.log("Best constant: ", seed);
 	console.log("Bound: ", bound);
@@ -945,19 +931,103 @@ function find_best_expansion_const(seed, time_to_think, bound, num_simulations, 
 	if (seed < 0)
 		return;
 
-	var delta_1, delta_2;
+	var delta1, delta2;
 
-	var round_1 = test_expansion_consts(seed, prolly_greater ? (seed + bound):(seed - bound), num_simulations, time_to_think, false);
-	if (round_1[1] > round_1[0])
-		find_best_expansion_const(prolly_greater ? (seed + bound):(seed - bound), time_to_think, bound / 2, num_simulations, true);
+	var round1 = testExpansionConstants(seed, prollyGreater ? (seed + bound):(seed - bound), numSimulations, timeToThink, false);
+	if (round1[1] > round1[0])
+		findBestExpansionConstant(prollyGreater ? (seed + bound):(seed - bound), timeToThink, bound / 2, numSimulations, true);
 	else {
-		delta_1 = round_1[0] - round_1[1];
-		var round_2 = test_expansion_consts(seed, prolly_greater ? (seed - bound):(seed + bound), num_simulations, time_to_think, false);
-		if (round_2[1] > round_2[0])
-			find_best_expansion_const(prolly_greater ? (seed - bound):(seed + bound), time_to_think, bound / 2, num_simulations, true);
+		delta1 = round1[0] - round1[1];
+		var round2 = testExpansionConstants(seed, prollyGreater ? (seed - bound):(seed + bound), numSimulations, timeToThink, false);
+		if (round2[1] > round2[0])
+			findBestExpansionConstant(prollyGreater ? (seed - bound):(seed + bound), timeToThink, bound / 2, numSimulations, true);
 		else {
-			delta_2 = round_2[0] - round_2[1];
-			find_best_expansion_const(seed, time_to_think, bound / 2, num_simulations, delta_1 < delta_2 === prolly_greater);
+			delta2 = round2[0] - round2[1];
+			findBestExpansionConstant(seed, timeToThink, bound / 2, numSimulations, delta1 < delta2 === prollyGreater);
 		}
 	}
 }
+
+$(document).keypress(function(event) {
+	switch (event.which) {
+		case 115: case 83: // s
+			showSettingsForm();
+			break;
+		case 110: case 78: // n
+			newGame();
+			break;
+	}
+});
+
+$('#done').click(function (event) {
+	let settings = getNewSettings();
+	gameSettings.setSettings(settings);
+	hideSettingsForm();
+	newGame();
+});
+
+$('#cancel').click(function (event) {
+	hideSettingsForm();
+	populateSettingsForm(gameSettings.getSettings());
+});
+
+$('#save').click(function (event) {
+	let settings = getNewSettings();
+	gameSettings.setSettings(settings);
+	gameSettings.saveSettings(settings);
+	hideSettingsForm();
+	newGame();
+});
+
+function getNewSettings() {
+	return {
+		'ponder': document.getElementById('ponder').checked,
+		'aiTurn': document.getElementById('ai-turn').value,
+		'timeToThink': document.getElementById('time-to-think').value,
+		'anti': document.getElementById('anti-tic-tac-toe').checked,
+	}
+}
+
+function populateSettingsForm(settings) {
+	document.getElementById('ponder').checked = settings.ponder;
+	document.getElementById('ai-turn').value = settings.aiTurn;
+	document.getElementById('time-to-think').value = settings.timeToThink;
+	document.getElementById('anti-tic-tac-toe').checked = settings.anti;
+}
+
+function showSettingsForm() {
+	$('#game-settings-menu').animate({opacity: 0.9}, "slow").css('z-index', 100);
+}
+
+function hideSettingsForm() {
+	$('#game-settings-menu').animate({opacity: 0}, "slow").css('z-index', -1);
+}
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});

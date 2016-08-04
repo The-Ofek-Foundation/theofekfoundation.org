@@ -8,5 +8,6 @@ urlpatterns = [
 	url(r'^(?i)Mancala/', views.mancala, name="Mancala"),
 	url(r'^(?i)UltimateTicTacToe/', views.ultimatetictactoe, name="Ultimate Tic Tac Toe"),
 	url(r'^(?i)LameDuck/', views.lameduck, name="Lame Duck"),
+	url(r'^(?i)api/save_settings/', views.save_settings, name="save_settings"),
 	url(r'^', include('main_app.misurls')),
 ]

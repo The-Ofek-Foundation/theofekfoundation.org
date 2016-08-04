@@ -1,8 +1,10 @@
-{% extends 'main_app/main_app_base.html' %}
+{% extends 'games/_base.html' %}
 
 {% load staticfiles %}
 
 {% block header_additions %}
+
+{{block.super}}
 
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/UltimateTicTacToe.css" %}">
 
@@ -20,67 +22,61 @@
 <canvas id="board"></canvas>
 <div id="footer">
 	<div id="anal">Analysis:</div>
-	<!-- <button id="back">Back</button>
-	<button id="new-game">New Game</button>
-	<button id="stop-ai">Stop AI</button>
-	<button id="start-ai">Play AI</button> -->
 	<div id="num-trials">Trials:</div>
 </div>
 
-<div id="new-game-menu">
-	<h1 style="margin-top: 0px;">New Game</h1>
-	<form id="form-new-game" action="">
-		Allow Pondering (Faster AI)?
-		<input type="checkbox" id="allow-ponder" name="allow-ponder" checked>
-		<br />
-		AI Turn:
-		<input list="ai-turn" name="ai-turn" value="Second">
-		<datalist id="ai-turn">
-			<option value="None"></option>
-			<option value="First"></option>
-			<option value="Second"></option>
-			<option value="Both"></option>
-		</datalist>
-		<br />
-		AI Difficulty:
-		<input list="ai-diff" name="ai-diff" value="Custom">
-		<datalist id="ai-diff">
-			<option value="Custom">Set values below</option>
-			<option value="Stupid"></option>
-			<option value="ehh"></option>
-			<option value="Play Fast">Must allow pondering</option>
-			<option value="Normal"></option>
-			<option value="Play Fast ++">Must allow pondering</option>
-			<option value="Win Fast">Num Trials increases exponentially</option>
-			<option value="Hard"></option>
-			<option value="Very Hard"></option>
-			<option value="Good Luck"></option>
-			<option value="Wreckage"></option>
-		</datalist>
-		<br />
-		Ponder?
-		<input type="checkbox" id="ai-ponder" name="ai-ponder">
-		<br />
-		Monte Carlo Trials (500 - 250,000):
-		<input type="number" name="mc-trials" id="mc-trials" min="500" max="250000" step="500" value="5000">
-		<br />
-		Monte Carlo Expansion Constant (0 - 10):
-		<input type="range" name="mc-expansion" id="mc-expansion" min="0" max="10" step="0.1" value="2">
-		<br />
-		Monte Carlo Certainty Threshold (0% - 100%):
-		<input type="number" name="mc-certainty" min="0" max="100" step="1" value="85" required>
-		<br />
-		Enter a name for the game if you want:
-		<input type="text" name="name">
-		<br />
-		<input type="submit" value="New Game">
-		<button id="btn-new-game-cancel">Cancel</button>
+<div id="game-settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table class="game-settings-table">
+		<tr>
+			<td>Allow Pondering (Faster AI)?</td>
+			<td><input type="checkbox" id="ponder" checked></td>
+		</tr>
+
+		<tr>
+			<td>AI Turn:</td>
+			<td>
+				<select id="ai-turn">
+					<option value="null">None</option>
+					<option value="first">First</option>
+					<option value="second" selected>Second</option>
+					<option value="both">Both</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Time to think (secs):</td>
+			<td><input type="number" id="time-to-think" min="0" max="10" value="5"></td>
+		</tr>
+
+		<tr>
+			<td>Anti Tic Tac Toe?</td>
+			<td><input type="checkbox" id="anti-tic-tac-toe"></td>
+		</tr>
+
+		<tr>
+			<td>
+				<input type="submit" id="done" value="Done">
+				{% if user.is_authenticated %}
+				<input type="submit" id="save" value="Save">
+				{% endif %}
+				<input type="submit" id="cancel" value="Cancel">
+			</td>
+		</tr>
+
 	</form>
 </div>
 
 {% endblock %}
 
 {% block end_block %}
+
+<script type="text/javascript">
+	{% autoescape off %}
+	gameSettings = new GameSettings('UltimateTicTacToe', convertKeysObject({{ game_settings }}));
+	{% endautoescape %}
+</script>
 
 <script type="text/javascript" src="{% static "assets/javascript/games/UltimateTicTacToe.js" %}"></script>
 
