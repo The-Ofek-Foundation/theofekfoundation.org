@@ -270,17 +270,19 @@ function setTurn(turn, move) {
 	drawBoard();
 
 	if (over) {
-		switch (over) {
-			case "tie":
-				alert("Game tied!");
-				break;
-			case 5:
-				alert("X wins!");
-				break;
-			case 6:
-				alert ("O wins!");
-				break;
-		}
+		setTimeout(function () {
+			switch (over) {
+				case 0:
+					alert("Game tied!");
+					break;
+				case 1:
+					alert("Red wins!");
+					break;
+				case 2:
+					alert ("Yellow wins!");
+					break;
+			}
+		}, 100);
 		stopPonder();
 	}
 
