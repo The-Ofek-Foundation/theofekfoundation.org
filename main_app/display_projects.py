@@ -36,7 +36,7 @@ tools = {
 		{
 			'name': 'Maze Generator',
 			'imagesrc': 'maze.png',
-			'description': 'A <a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search">depth-first search maze generator</a> with a generation <strong>animation option</strong> and maze styles!',
+			'description': 'A <a class="animated" href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search">depth-first search maze generator</a> with a generation <strong>animation option</strong> and maze styles!',
 		},	{
 			'name': 'Prime Factorizer',
 			'imagesrc': 'factor-tree.gif',
@@ -52,7 +52,7 @@ tools = {
 		},	{
 			'name': 'Happy Number Calculator',
 			'imagesrc': 'happy-number.png',
-			'description': 'A <a href="https://en.wikipedia.org/wiki/Happy_number">Happy Number</a> calculator.',
+			'description': 'A <a class="animated" href="https://en.wikipedia.org/wiki/Happy_number">Happy Number</a> calculator.',
 		},	{
 			'name': 'Text Reverser',
 			'imagesrc': '4600275420_c7bfb8466d.jpg',

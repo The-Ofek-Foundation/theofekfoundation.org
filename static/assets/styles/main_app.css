@@ -157,7 +157,7 @@ body {
 .link {
   cursor: pointer;
 }
-#content-wrapper a {
+#content-wrapper a.animated {
   border-radius: 5px;
   font-weight: 400;
   padding-left: 4px;
@@ -165,11 +165,11 @@ body {
   text-decoration: none;
   transition: background-color 1.5s ease-out;
 }
-#content-wrapper a:hover {
+#content-wrapper a.animated:hover {
   background-color: rgba(255, 255, 0, 0.6);
   transition: background-color 2s ease-out;
 }
-#content-wrapper h2 a {
+#content-wrapper h2 a.animated {
   font-weight: bold;
 }
 .footer {
