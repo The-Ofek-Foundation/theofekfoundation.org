@@ -13,13 +13,15 @@ def index(request):
 	return render(request, 'games/index.html', context_dict)
 
 def _get_game_settings(request, game_name, context_dict):
-	if not request.user.is_authenticated():
-		return {'game_name': game_name}
-	game_settings = GameSettings.objects.get_or_create(game_name=game_name, user_id=request.user.id)
-	context_dict['game_settings'] = json.dumps(game_settings[0].get_settings())
+	if request.user.is_authenticated():
+		game_settings = GameSettings.objects.get_or_create(game_name=game_name, user_id=request.user.id)
+		context_dict['game_settings'] = json.dumps(game_settings[0].get_settings())
+	else:
+		context_dict['game_settings'] = {'game_name': game_name}
 
 def connectfour(request):
 	context_dict = {'page': main_pages.get(name='Connect Four')}
+	_get_game_settings(request, 'Connect Four', context_dict)
 	return render(request, 'games/ConnectOfek.html', context_dict)
 
 def weiqi(request):

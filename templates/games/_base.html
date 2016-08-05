@@ -2,8 +2,16 @@
 
 {% load staticfiles %}
 
-{% block header_additions %}
+{% block end_block %}
 
 <script type="text/javascript" src="{% static "assets/javascript/games/utils.js" %}"></script>
+
+{% if game_settings %}
+<script type="text/javascript">
+	{% autoescape off %}
+	gameSettings = new GameSettings('UltimateTicTacToe', convertKeysObject({{ game_settings }}));
+	{% endautoescape %}
+</script>
+{% endif %}
 
 {% endblock %}

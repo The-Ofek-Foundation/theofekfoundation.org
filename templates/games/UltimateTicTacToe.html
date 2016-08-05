@@ -71,12 +71,7 @@
 {% endblock %}
 
 {% block end_block %}
-
-<script type="text/javascript">
-	{% autoescape off %}
-	gameSettings = new GameSettings('UltimateTicTacToe', convertKeysObject({{ game_settings }}));
-	{% endautoescape %}
-</script>
+{{ block.super }}
 
 <script type="text/javascript" src="{% static "assets/javascript/games/UltimateTicTacToe.js" %}"></script>
 

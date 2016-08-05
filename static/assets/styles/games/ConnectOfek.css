@@ -29,6 +29,9 @@ body {
 #footer button#new-game {
   background-color: blue;
 }
+#footer button#settings {
+  background-color: gray;
+}
 #footer button#back {
   background-color: red;
 }
@@ -50,16 +53,16 @@ body {
   position: absolute;
   bottom: 0px;
 }
-#new-game-menu {
+#game-settings-menu {
   position: absolute;
   visibility: visible;
   background-color: blue;
   z-index: -1;
   width: 80%;
-  height: 80%;
-  left: auto;
+  left: 5%;
+  height: auto;
   top: auto;
-  padding: 2%;
+  padding: 2% 5%;
   color: white;
   -moz-box-shadow: 0 0 50px black;
   -webkit-box-shadow: 0 0 00px black;
@@ -69,9 +72,29 @@ body {
   font-size: 30px;
   opacity: 0;
 }
-#form-new-game {
+.game-settings-table {
+  text-align: left;
+  margin: auto;
+}
+.game-settings-table td {
+  padding: 0.25em 1em;
+}
+.game-settings-table input,
+.game-settings-table select {
+  min-width: 10em;
+  padding: 0.25em 1em;
+  font-size: 20px;
+}
+.game-settings-table input[type=checkbox],
+.game-settings-table select[type=checkbox] {
+  width: auto;
+  margin-left: 4em;
+}
+.game-settings-table tbody {
+  display: block;
+  max-height: 100%;
   overflow-y: auto;
-  height: auto;
+  overflow-x: hidden;
 }
 input,
 select {

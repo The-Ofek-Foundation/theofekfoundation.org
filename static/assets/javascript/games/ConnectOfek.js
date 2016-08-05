@@ -1,38 +1,36 @@
-var docwidth, docheight;
+var docWidth, docHeight;
 var discWidth, discHeight;
-var dimensions = [7, 6];
 var board;
 var redTurnGlobal;
 var globalRoot;
-var expansionConstant = 1.4970703125;
-var aiTurn = false;
-var monteCarloTrials = 10000;
+var expansionConstant;
+var aiTurn;
+var monteCarloTrials;
 var over;
-var ponder = true, pondering;
-var certaintyThreshold = 0.15;
+var ponder, pondering;
+var certaintyThreshold;
 var position, cookieId;
 var aiStopped = false;
-var smartSimulation = true;
-var increasingFactor = 1.07;
+var smartSimulation;
+var increasingFactor;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
 
 function pageReady() {
-	docwidth = $("#content-wrapper").outerWidth(true);
-	docheight = $("#content-wrapper").outerHeight(true);
+	docWidth = $("#content-wrapper").outerWidth(true);
+	docHeight = $("#content-wrapper").outerHeight(true);
 
-	$('#board').width(docwidth).height(docheight);
-	boardui.setAttribute('width', docwidth);
-	boardui.setAttribute('height', docheight);
+	$('#board').width(docWidth).height(docHeight);
+	boardui.setAttribute('width', docWidth);
+	boardui.setAttribute('height', docHeight);
 
-	$("#form-new-game").height(docheight * 0.6);
+	$("#form-new-game").height(docHeight * 0.6);
 
-	$('#new-game-btn').css('top', (docheight - $('#new-game-btn').height()) / 2);
-	$('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
-	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
-	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
+	$(".game-settings-table").css('height', docHeight - $("#game-settings-menu h1").outerHeight() - parseInt($("#game-settings-menu").css('padding-top')) - parseInt($("#game-settings-menu").css('padding-bottom')) + 'px');
+	while ($('#game-settings-menu').outerHeight() > docHeight)
+		$('.game-settings-table').css('height', $('.game-settings-table').outerHeight() - 1 + 'px');
 
 	newGame(window.location.hash);
 
@@ -43,22 +41,21 @@ $(window).resize(function() {
 	$("#content-wrapper").outerWidth($(window).outerWidth(true));
 	$("#content-wrapper").outerHeight($(window).outerHeight(true) - $("#content-wrapper").position().top);
 
-	docwidth = $("#content-wrapper").outerWidth(true);
-	docheight = $("#content-wrapper").outerHeight(true);
+	docWidth = $("#content-wrapper").outerWidth(true);
+	docHeight = $("#content-wrapper").outerHeight(true);
 
-	$('#board').width(docwidth).height(docheight);
-	boardui.setAttribute('width', docwidth);
-	boardui.setAttribute('height', docheight);
+	$(".game-settings-table").css('height', docHeight - $("#game-settings-menu h1").outerHeight() - parseInt($("#game-settings-menu").css('padding-top')) - parseInt($("#game-settings-menu").css('padding-bottom')) + 'px');
+	while ($('#game-settings-menu').outerHeight() > docHeight)
+		$('.game-settings-table').css('height', $('.game-settings-table').outerHeight() - 1 + 'px');
 
-	discWidth = docwidth / (dimensions[0] + 1);
-	discHeight = docheight / (dimensions[1] + 1);
+	$('#board').width(docWidth).height(docHeight);
+	boardui.setAttribute('width', docWidth);
+	boardui.setAttribute('height', docHeight);
 
-	$("#form-new-game").height(docheight * 0.6);
+	discWidth = docWidth / (dimensions[0] + 1);
+	discHeight = docHeight / (dimensions[1] + 1);
 
-	$('#new-game-btn').css('top', (docheight - $('#new-game-btn').height()) / 2);
-	$('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
-	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
-	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
+	$("#form-new-game").height(docHeight * 0.6);
 
 	drawBoard();
 });
@@ -126,8 +123,11 @@ function newGame(cId) {
 		return;
 	}
 
-	discWidth = docwidth / (dimensions[0] + 1);
-	discHeight = docheight / (dimensions[1] + 1);
+	getSettings();
+	populateSettingsForm(gameSettings.getSettings());
+
+	discWidth = docWidth / (dimensions[0] + 1);
+	discHeight = docHeight / (dimensions[1] + 1);
 
 	adjustButtons();
 
@@ -148,7 +148,7 @@ function newGame(cId) {
 	globalRoot = createMCTSRoot();
 	drawBoard();
 
-	if (aiTurn == redTurnGlobal || aiTurn == 'both')
+	if ((aiTurn === 'first') === redTurnGlobal || aiTurn == 'both')
 		setTimeout(playAiMove, 20);
 
 	stopPonder();
@@ -159,8 +159,11 @@ function newGame(cId) {
 function newGameCookie(cookie) {
 	loadSettingsCookie(cookie);
 
-	discWidth = docwidth / (dimensions[0] + 1);
-	discHeight = docheight / (dimensions[1] + 1);
+	getSettings();
+	populateSettingsForm(gameSettings.getSettings());
+
+	discWidth = docWidth / (dimensions[0] + 1);
+	discHeight = docHeight / (dimensions[1] + 1);
 	adjustButtons();
 
 	board = new Array(dimensions[0]);
@@ -176,7 +179,7 @@ function newGameCookie(cookie) {
 	globalRoot = createMCTSRoot();
 	drawBoard();
 
-	if (aiTurn == redTurnGlobal || aiTurn == 'both')
+	if ((aiTurn === 'first') == redTurnGlobal || aiTurn == 'both')
 		setTimeout(playAiMove, 20);
 
 	stopPonder();
@@ -197,19 +200,49 @@ function newCookieId() {
 	return cId;
 }
 
-function saveSettingsCookie(cId) {
-	var settings = {};
+function getSettings() {
+	ponder = gameSettings.getOrSet('ponder', false);
+	aiTurn = gameSettings.getOrSet('aiTurn', 'second');
+	dimensions = gameSettings.getOrSet('dimensions', [7, 6]);
+	expansionConstant = gameSettings.getOrSet('expansionConstant', 1.4970703125)
+	smartSimulation = gameSettings.getOrSet('smartSimulation', true);
+	increasingFactor = gameSettings.getOrSet('increasingFactor', 1.07);
+	monteCarloTrials = gameSettings.getOrSet('monteCarloTrials', 10000);
+	certaintyThreshold = gameSettings.getOrSet('certaintyThreshold', 0.15);
+}
 
-	settings.over = over;
+function populateSettingsForm(settings) {
+	$('input[name="d-width"]').val(settings.dimensions[0]);
+	$('input[name="d-height"]').val(settings.dimensions[1]);
+	$('select[name="ai-turn"]').val(settings.aiTurn);
+	$('input[name="smart-simulation"]').prop('checked', settings.smartSimulation);
+	$('input[name="mc-trials"]').val(settings.monteCarloTrials);
+	$('input[name="mc-expansion"]').val(settings.expansionConstant);
+	$('input[name="mc-certainty"]').val((1 - settings.certaintyThreshold) * 100);
+	$('input[name="ai-ponder"]').prop('checked', settings.ponder);
+}
+
+function getSettingsDict() {
+	let settings = {};
+
 	settings.ponder = ponder;
 	settings.aiTurn = aiTurn;
-	settings.position = position;
 	settings.dimensions = dimensions;
 	settings.expansionConstant = expansionConstant;
 	settings.smartSimulation = smartSimulation;
 	settings.increasingFactor = increasingFactor;
 	settings.monteCarloTrials = monteCarloTrials;
 	settings.certaintyThreshold = certaintyThreshold;
+
+	return settings;
+}
+
+function saveSettingsCookie(cId, settings) {
+	if (!settings)
+		settings = getSettingsDict();
+
+	settings.over = over;
+	settings.position = position;
 
 	setCookie(cId, JSON.stringify(settings), 10);
 }
@@ -282,7 +315,7 @@ function drawEllipse(x, y, w, h) {
 }
 
 function clearBoard() {
-	brush.clearRect(0, 0, docwidth, docheight);
+	brush.clearRect(0, 0, docWidth, docHeight);
 }
 
 function drawGrid() {
@@ -290,13 +323,13 @@ function drawGrid() {
 	brush.strokeStyle = "black";
 
 	brush.beginPath();
-	for (var i = discWidth / 2; i < docwidth; i += discWidth) {
+	for (var i = discWidth / 2; i < docWidth; i += discWidth) {
 		brush.moveTo(i, discHeight / 2);
-		brush.lineTo(i, docheight - discHeight / 2);
+		brush.lineTo(i, docHeight - discHeight / 2);
 	}
-	for (var a = 3 * discHeight / 2; a < docheight; a += discHeight) {
+	for (var a = 3 * discHeight / 2; a < docHeight; a += discHeight) {
 		brush.moveTo(discWidth / 2, a);
-		brush.lineTo(docwidth - discWidth / 2, a);
+		brush.lineTo(docWidth - discWidth / 2, a);
 	}
 	brush.stroke();
 	brush.closePath();
@@ -349,9 +382,9 @@ function drawHover(col) {
 }
 
 function getCol(xloc, yloc) {
-	if (xloc > docwidth - discWidth / 2 || xloc < discWidth / 2)
+	if (xloc > docWidth - discWidth / 2 || xloc < discWidth / 2)
 		return -1;
-	else if (yloc > docheight - discHeight / 2)
+	else if (yloc > docHeight - discHeight / 2)
 		return -2;
 	return Math.floor((xloc - discWidth / 2) / discWidth);
 }
@@ -386,7 +419,7 @@ function setTurn(turn, col, row) {
 
 	var mtc = mostTriedChild(globalRoot, null);
 
-	if (over == -1 && (turn === aiTurn || aiTurn == "both") && mtc && mtc.lastMove)
+	if (over == -1 && (turn === (aiTurn === 'first') || aiTurn == "both") && mtc && mtc.lastMove)
 		drawHover(mtc.lastMove);
 	else	drawBoard();
 
@@ -415,7 +448,7 @@ function setTurn(turn, col, row) {
 	monteCarloTrials *= increasingFactor;
 	numChoose1 = numChoose2 = numChoose3 = stopChoose = false;
 
-	if (over == -1 && (turn === aiTurn || aiTurn == "both"))
+	if (over == -1 && (turn === (aiTurn === 'first') || aiTurn == "both"))
 		setTimeout(playAiMove, 25);
 }
 
@@ -431,7 +464,7 @@ function playMove(tboard, col, turn) {
 $('#board').mousedown(function (e) {
 	if (e.which === 3)
 		return;
-	if (redTurnGlobal == aiTurn || aiTurn == "both")
+	if (redTurnGlobal === (aiTurn === 'first') || aiTurn == "both")
 		return;
 	if (over != -1) {
 		alert("The game is already over!");
@@ -446,7 +479,7 @@ $('#board').mousedown(function (e) {
 });
 
 $('#board').mousemove(function (e) {
-	if (redTurnGlobal == aiTurn || aiTurn == "both" || over != -1)
+	if (redTurnGlobal == (aiTurn === 'first') || aiTurn == "both" || over != -1)
 		return;
 	var col = getCol(e.pageX);
 	if (!legalMove(board, col, false))
@@ -967,160 +1000,169 @@ function identicalBoards(board1, board2) {
 	return true;
 }
 
-function showNewGameMenu() {
-	$('#new-game-menu').animate({opacity: 0.9}, "slow").css('z-index', 100);
+function showSettingsForm() {
+	$('#game-settings-menu').animate({opacity: 0.9}, "slow").css('z-index', 100);
 }
 
-$('#new-game').click(showNewGameMenu);
+$('#new-game').click(function() {
+	newGame($('input[name="name"]').val())
+});
 
-var dontSubmit;
+$('#settings').click(showSettingsForm);
 
-$('#form-new-game').submit(function() {
-	if (dontSubmit) {
-		dontSubmit = false;
-		return false;
-	}
+function getNewSettings() {
+	let settings = {};
 
-	dimensions[0] = parseInt($('input[name="d-width"]').val());
-	dimensions[1] = parseInt($('input[name="d-height"]').val());
+	settings['dimensions'] = [parseInt($('input[name="d-width"]').val()),
+		parseInt($('input[name="d-height"]').val())];
 
-	switch ($('select[name="ai-turn"]').val()) {
-		case "first":
-			aiTurn = true;
-			break;
-		case "second":
-			aiTurn = false;
-			break;
-		case "both":
-			aiTurn = "both";
-			break;
-		default: aiTurn = null;
-	}
+	settings['aiTurn'] = $('select[name="ai-turn"]').val();
 
-	var allowPonder = $('input[name="allow-ponder"]').prop('checked');
+	let allowPonder = $('input[name="allow-ponder"]').prop('checked');
 
 	switch ($('select[name="ai-diff"]').val().toLowerCase()) {
 		case "custom":
-			smartSimulation = $('input[name="smart-simulation"]').prop('checked');
-			monteCarloTrials = $('input[name="mc-trials"]').val();
-			expansionConstant = $('input[name="mc-expansion"]').val();
-			certaintyThreshold = (1 - $('input[name="mc-certainty"]').val() / 100).toFixed(2);
-			ponder =	$('input[name="ai-ponder"]').prop('checked');
-			increasingFactor = 1.05;
+			settings['smartSimulation'] = $('input[name="smart-simulation"]').prop('checked');
+			settings['monteCarloTrials'] = parseInt($('input[name="mc-trials"]').val());
+			settings['expansionConstant'] = parseFloat($('input[name="mc-expansion"]').val());
+			settings['certaintyThreshold'] = parseFloat((1 - $('input[name="mc-certainty"]').val() / 100).toFixed(2));
+			settings['ponder'] = $('input[name="ai-ponder"]').prop('checked');
+			settings['increasingFactor'] = 1.05;
 			break;
 		case "stupid":
-			smartSimulation = false;
-			monteCarloTrials = dimensions[0] * 2;
-			expansionConstant = 10;
-			certaintyThreshold = 0;
-			ponder = false;
-			increasingFactor = 1;
+			settings['smartSimulation'] = false;
+			settings['monteCarloTrials'] = dimensions[0] * 2;
+			settings['expansionConstant'] = 10;
+			settings['certaintyThreshold'] = 0;
+			settings['ponder'] = false;
+			settings['increasingFactor'] = 1;
 			break;
 		case "ehh":
-			smartSimulation = true;
-			monteCarloTrials = dimensions[0] * dimensions[1];
-			expansionConstant = 2;
-			certaintyThreshold = 0;
-			ponder = false;
-			increasingFactor = 1;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = dimensions[0] * dimensions[1];
+			settings['expansionConstant'] = 2;
+			settings['certaintyThreshold'] = 0;
+			settings['ponder'] = false;
+			settings['increasingFactor'] = 1;
 			break;
 		case "play fast":
-			smartSimulation = false;
-			monteCarloTrials = 0;
-			expansionConstant = 2;
-			certaintyThreshold = 1;
-			ponder = true;
-			increasingFactor = 1.05;
+			settings['smartSimulation'] = false;
+			settings['monteCarloTrials'] = 0;
+			settings['expansionConstant'] = 2;
+			settings['certaintyThreshold'] = 1;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.05;
 			break;
 		case "normal":
-			smartSimulation = true;
-			monteCarloTrials = 1000;
-			expansionConstant = 10;
-			certaintyThreshold = 0.4;
-			ponder = false;
-			increasingFactor = 1.1;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 1000;
+			settings['expansionConstant'] = 10;
+			settings['certaintyThreshold'] = 0.4;
+			settings['ponder'] = false;
+			settings['increasingFactor'] = 1.1;
 			break;
 		case "play fast ++":
-			smartSimulation = true;
-			monteCarloTrials = 0;
-			expansionConstant = 1.85546875;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 0;
+			settings['expansionConstant'] = 1.85546875;
 			// bound: ~0.0098
-			certaintyThreshold = 1;
-			ponder = true;
-			increasingFactor = 1.08;
+			settings['certaintyThreshold'] = 1;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.08;
 			break;
 		case "win fast":
-			smartSimulation = true;
-			monteCarloTrials = 500;
-			expansionConstant = 2;
-			certaintyThreshold = 0.25;
-			ponder = false;
-			increasingFactor = 1.3;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 500;
+			settings['expansionConstant'] = 2;
+			settings['certaintyThreshold'] = 0.25;
+			settings['ponder'] = false;
+			settings['increasingFactor'] = 1.3;
 			break;
 		case "hard":
-			smartSimulation = true;
-			monteCarloTrials = 5000;
-			expansionConstant = 1.4970703125;
-			certaintyThreshold = 0.25;
-			ponder = true;
-			increasingFactor = 1.07;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 5000;
+			settings['expansionConstant'] = 1.4970703125;
+			settings['certaintyThreshold'] = 0.25;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.07;
 			break;
 		case "very hard":
-			smartSimulation = true;
-			monteCarloTrials = 10000;
-			expansionConstant = 1.4970703125;
-			certaintyThreshold = 0.15;
-			ponder = true;
-			increasingFactor = 1.07;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 10000;
+			settings['expansionConstant'] = 1.4970703125;
+			settings['certaintyThreshold'] = 0.15;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.07;
 			break;
 		case "good luck":
-			smartSimulation = true;
-			monteCarloTrials = 200000;
-			expansionConstant = 1.8125;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 200000;
+			settings['expansionConstant'] = 1.8125;
 			// bound: 0.03125
-			certaintyThreshold = 0.01;
-			ponder = true;
-			increasingFactor = 1.07;
+			settings['certaintyThreshold'] = 0.01;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.07;
 			break;
 		case "wreckage":
-			smartSimulation = true;
-			monteCarloTrials = 5000000;
-			expansionConstant = 5;
-			certaintyThreshold = 0.01;
-			ponder = true;
-			increasingFactor = 1.07;
+			settings['smartSimulation'] = true;
+			settings['monteCarloTrials'] = 5000000;
+			settings['expansionConstant'] = 5;
+			settings['certaintyThreshold'] = 0.01;
+			settings['ponder'] = true;
+			settings['increasingFactor'] = 1.07;
 			break;
 	}
 
 	if (!allowPonder)
-		ponder = false;
+		settings['ponder'] = false;
 
 	position = $('input[name="position"]').val();
-	monteCarloTrials = monteCarloTrials * Math.pow(increasingFactor, position.length);
+	settings['monteCarloTrials'] = settings['monteCarloTrials'] * Math.pow(increasingFactor, position.length);
 
 	var name = $('input[name="name"]').val();
 	over = -1;
 
-	saveSettingsCookie(name);
+	ts = JSON.stringify(settings);
 
-	$('#new-game-menu').animate({opacity: 0}, "slow", function() {
+	saveSettingsCookie(name, settings);
+
+	return JSON.parse(ts);
+}
+
+$('#done').click(function() {
+	let settings = getNewSettings();
+	gameSettings.setSettings(settings);
+	hideSettingsForm(function() {
 		$(this).css('z-index', -1);
 		$('input[name="name"]').val(newCookieId());
 		newGame(name);
 	});
-
-	return false;
 });
 
-$('#btn-new-game-cancel').click(function() {
-	dontSubmit = true;
-	$('#new-game-menu').animate({opacity: 0}, "slow", function() {
+$('#save').click(function() {
+	let settings = getNewSettings();
+	gameSettings.setSettings(settings);
+	gameSettings.saveSettings(settings);
+	hideSettingsForm(function() {
+		$(this).css('z-index', -1);
+		$('input[name="name"]').val(newCookieId());
+		newGame(name);
+	});
+});
+
+$('#cancel').click(function() {
+	hideSettingsForm(function() {
 		$(this).css('z-index', -1);
 	});
 });
 
+function hideSettingsForm(callback) {
+	$('#game-settings-menu').animate({opacity: 0}, "slow", callback);
+}
+
+
 $('#back').click(function() {
-	if (aiTurn === true || aiTurn === false) {
+	if (aiTurn === 'first' || aiTurn === 'second') {
 		position = position.substring(0, position.length - 2);
 		monteCarloTrials /= Math.pow(increasingFactor, 2);
 	}
@@ -1137,13 +1179,13 @@ $('#back').click(function() {
 
 $('#stop-ai').click(function() {
 	aiStopped = true;
-	aiTurn = "None";
+	aiTurn = "none";
 });
 
 $('#start-ai').click(function() {
-	if (aiTurn == redTurnGlobal || aiTurn == "Both")
+	if ((aiTurn === 'first') == redTurnGlobal || aiTurn == "both")
 		return;
-	aiTurn = redTurnGlobal;
+	aiTurn = redTurnGlobal ? 'first':'second';
 
 	playAiMove();
 });
@@ -1172,7 +1214,7 @@ $(document).keypress(function(event) {
 			showSettingsForm();
 			break;
 		case 110: case 78: // n
-			newGame();
+			newGame($('input[name="name"]').val());
 			break;
 	}
 });
