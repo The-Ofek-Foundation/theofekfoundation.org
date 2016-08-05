@@ -1166,6 +1166,17 @@ function getCookie(cname) {
 		return "";
 }
 
+$(document).keypress(function(event) {
+	switch (event.which) {
+		case 115: case 83: // s
+			showSettingsForm();
+			break;
+		case 110: case 78: // n
+			newGame();
+			break;
+	}
+});
+
 class MCTSNode {
 	constructor(turn, parent, lastMove) {
 		this.turn = turn;
