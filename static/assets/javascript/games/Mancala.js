@@ -862,10 +862,12 @@ $('#btn-new-game-cancel').click(function() {
 	});
 });
 
-var State = function(board, turn) {
-	this.board = board;
-	this.turn = turn;
-};
+class State {
+	constructor(board, turn) {
+		this.board = board;
+		this.turn = turn;
+	}
+}
 
 function childPotential(child, t, turn) {
 	var w;
@@ -878,56 +880,58 @@ function childPotential(child, t, turn) {
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-var MCTSNode = function(State, parent, lastMove) {
-	this.State = State;
-	this.parent = parent;
-	this.lastMove = lastMove;
-	this.hits = 0;
-	this.misses = 0;
-	this.totalTries = 0;
-};
+class MCTSNode {
+	constructor(State, parent, lastMove) {
+		this.State = State;
+		this.parent = parent;
+		this.lastMove = lastMove;
+		this.hits = 0;
+		this.misses = 0;
+		this.totalTries = 0;
+	}
 
-MCTSNode.prototype.chooseChild = function() {
-	if (!this.children)
-		this.children = MCTSGetChildren(this.State, this);
-	if (this.children.length === 0) // leaf node
-		this.runSimulation();
-	else {
-		var i;
-		var unexplored = [];
-		for (i = 0; i < this.children.length; i++)
-			if (this.children[i].totalTries === 0)
-				unexplored.push(this.children[i]);
-
-		if (unexplored.length > 0)
-			unexplored[Math.floor(Math.random() * unexplored.length)].runSimulation();
+	chooseChild() {
+		if (!this.children)
+			this.children = MCTSGetChildren(this.State, this);
+		if (this.children.length === 0) // leaf node
+			this.runSimulation();
 		else {
-			var bestChild = this.children[0], bestPotential = childPotential(this.children[0], this.totalTries, this.State.turn), potential;
-			for (i = 1; i < this.children.length; i++) {
-				potential = childPotential(this.children[i], this.totalTries, this.State.turn);
-				if (potential > bestPotential) {
-					bestPotential = potential;
-					bestChild = this.children[i];
+			var i;
+			var unexplored = [];
+			for (i = 0; i < this.children.length; i++)
+				if (this.children[i].totalTries === 0)
+					unexplored.push(this.children[i]);
+
+			if (unexplored.length > 0)
+				unexplored[Math.floor(Math.random() * unexplored.length)].runSimulation();
+			else {
+				var bestChild = this.children[0], bestPotential = childPotential(this.children[0], this.totalTries, this.State.turn), potential;
+				for (i = 1; i < this.children.length; i++) {
+					potential = childPotential(this.children[i], this.totalTries, this.State.turn);
+					if (potential > bestPotential) {
+						bestPotential = potential;
+						bestChild = this.children[i];
+					}
 				}
+				bestChild.chooseChild();
 			}
-			bestChild.chooseChild();
 		}
 	}
-};
 
-MCTSNode.prototype.runSimulation = function() {
-	this.backPropogate(MCTSSimulate(this.State));
-};
-
-MCTSNode.prototype.backPropogate = function(simulation) {
-	if (simulation > 0)
-		this.hits++;
-	else if (simulation < 0)
-		this.misses++;
-	this.totalTries++;
-	if (this.parent) {
-		if (this.parent.State.turn === this.State.turn)
-			this.parent.backPropogate(simulation);
-		else this.parent.backPropogate(-simulation);
+	runSimulation() {
+		this.backPropogate(MCTSSimulate(this.State));
 	}
-};
+
+	backPropogate(simulation) {
+		if (simulation > 0)
+			this.hits++;
+		else if (simulation < 0)
+			this.misses++;
+		this.totalTries++;
+		if (this.parent) {
+			if (this.parent.State.turn === this.State.turn)
+				this.parent.backPropogate(simulation);
+			else this.parent.backPropogate(-simulation);
+		}
+	}
+}

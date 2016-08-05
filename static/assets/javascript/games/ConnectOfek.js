@@ -1166,14 +1166,76 @@ function getCookie(cname) {
 		return "";
 }
 
-var MCTSNode = function(turn, parent, lastMove) {
-	this.turn = turn;
-	this.parent = parent;
-	this.lastMove = lastMove;
-	this.hits = 0;
-	this.misses = 0;
-	this.totalTries = 0;
-};
+class MCTSNode {
+	constructor(turn, parent, lastMove) {
+		this.turn = turn;
+		this.parent = parent;
+		this.lastMove = lastMove;
+		this.hits = 0;
+		this.misses = 0;
+		this.totalTries = 0;
+	}
+
+	chooseChild(board) {
+		if (this.lastMove !== '')
+			board += this.lastMove + 1;
+		if (typeof this.children === 'undefined')
+			this.children = MCTSGetChildren(this, board);
+		if (typeof this.gameOver !== 'undefined') // next move wins
+			this.backPropogate(1);
+		else if (this.children.length === 0) {
+			if (MCTSSimulate(board, this.turn, this.gameOver) !== 0) {
+				console.log(MCTSSimulate(board, this.turn, this.gameOver), this);
+			}
+			this.backPropogate(0);
+		}
+		else {
+			var i;
+			var countUnexplored = 0;
+			for (i = 0; i < this.children.length; i++)
+				if (this.children[i].totalTries === 0)
+					countUnexplored++;
+
+			if (countUnexplored > 0) {
+				var ran = Math.floor(Math.random() * countUnexplored);
+				for (i = 0; i < this.children.length; i++)
+					if (this.children[i].totalTries === 0) {
+						countUnexplored--;
+						if (countUnexplored === 0) {
+							this.children[i].runSimulation(board);
+							return;
+						}
+					}
+
+			}
+			else {
+				var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
+				for (i = 1; i < this.children.length; i++) {
+					potential = MCTSChildPotential(this.children[i], this.totalTries);
+					if (potential > bestPotential) {
+						bestPotential = potential;
+						bestChild = this.children[i];
+					}
+				}
+				bestChild.chooseChild(board);
+			}
+		}
+	}
+
+	runSimulation(board) {
+		this.backPropogate(MCTSSimulate(board, this.turn, this.gameOver));
+	}
+
+	backPropogate(simulation) {
+		if (simulation > 0)
+			this.hits++;
+		else if (simulation < 0)
+			this.misses++;
+		this.totalTries++;
+		if (this.parent)
+			this.parent.backPropogate(-simulation);
+	}
+}
 
 function MCTSChildPotential(child, t) {
 	var w = child.misses - child.hits;
@@ -1182,66 +1244,6 @@ function MCTSChildPotential(child, t) {
 
 	return w / n + c * Math.sqrt(Math.log(t) / n);
 }
-
-MCTSNode.prototype.chooseChild = function(board) {
-	if (this.lastMove !== '')
-		board += this.lastMove + 1;
-	if (typeof this.children === 'undefined')
-		this.children = MCTSGetChildren(this, board);
-	if (typeof this.gameOver !== 'undefined') // next move wins
-		this.backPropogate(1);
-	else if (this.children.length === 0) {
-		if (MCTSSimulate(board, this.turn, this.gameOver) !== 0) {
-			console.log(MCTSSimulate(board, this.turn, this.gameOver), this);
-		}
-		this.backPropogate(0);
-	}
-	else {
-		var i;
-		var countUnexplored = 0;
-		for (i = 0; i < this.children.length; i++)
-			if (this.children[i].totalTries === 0)
-				countUnexplored++;
-
-		if (countUnexplored > 0) {
-			var ran = Math.floor(Math.random() * countUnexplored);
-			for (i = 0; i < this.children.length; i++)
-				if (this.children[i].totalTries === 0) {
-					countUnexplored--;
-					if (countUnexplored === 0) {
-						this.children[i].runSimulation(board);
-						return;
-					}
-				}
-
-		}
-		else {
-			var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
-			for (i = 1; i < this.children.length; i++) {
-				potential = MCTSChildPotential(this.children[i], this.totalTries);
-				if (potential > bestPotential) {
-					bestPotential = potential;
-					bestChild = this.children[i];
-				}
-			}
-			bestChild.chooseChild(board);
-		}
-	}
-};
-
-MCTSNode.prototype.runSimulation = function(board) {
-	this.backPropogate(MCTSSimulate(board, this.turn, this.gameOver));
-};
-
-MCTSNode.prototype.backPropogate = function(simulation) {
-	if (simulation > 0)
-		this.hits++;
-	else if (simulation < 0)
-		this.misses++;
-	this.totalTries++;
-	if (this.parent)
-		this.parent.backPropogate(-simulation);
-};
 
 function efficiencyTest() {
 	globalRoot = createMCTSRoot();

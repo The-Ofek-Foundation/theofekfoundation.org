@@ -3,3 +3,5 @@
 
 #wsgi
 TheOfekFoundation/wsgi.py
+
+scripts/*
