@@ -37,6 +37,14 @@ function pageReady() {
 	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
 
 	newGame();
+
+	setTimeout(function() {
+		let explainSettings = getLocallyStored('settingsExplained');
+		if (!explainSettings) {
+			alert("Type 's' to change your settings or 'n' to create a new game!");
+			setLocallyStored('settingsExplained', true);
+		}
+	}, 100);
 };
 
 $(window).resize(function(event) {
