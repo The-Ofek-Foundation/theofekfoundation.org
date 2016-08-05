@@ -1,12 +1,12 @@
 $(document).ready(function () {
-	vert_padding_align();
+	vertPaddingAlign();
 	// console.log("heya");
 });
 
-function doc_ready() {
-	var content_wrapper = $("#content-wrapper"), window_height = $(window).outerHeight(true);
-	content_wrapper.css('top', $('#navbar-top').outerHeight(true)).height(window_height - $('#navbar-top').outerHeight(true));
-	vert_padding_align();
+function docReady() {
+	var contentWrapper = $("#content-wrapper"), windowHeight = $(window).outerHeight(true);
+	contentWrapper.css('top', $('#navbar-top').outerHeight(true)).height(windowHeight - $('#navbar-top').outerHeight(true));
+	vertPaddingAlign();
 	prt();
 	// console.log($("#navbar-top").outerHeight());
 	// if (document.getElementById('navbar-top') !== null)
@@ -28,44 +28,42 @@ function doc_ready() {
 
 function prt() {	// page ready test
 	// console.log("testing3");
-	if (typeof page_ready === 'function')
-		page_ready();
-	else if (typeof pageReady === 'function')
+	if (typeof pageReady === 'function')
 		pageReady();
-	else if (page_ready === null)
+	else if (pageReady === null)
 		setTimeout(prt, 500);
 }
 
-var page_ready = null;
+var pageReady = null;
 
-var navbar_height = null;
-var count_repeats = 0;
-var get_final_navbar_height = setInterval(function () {
-	var temp_height = $("#navbar-top").outerHeight();
-	// console.log(temp_height);
-	if (temp_height != navbar_height)
-		if (navbar_height) {
-			doc_ready();
-			clearInterval(get_final_navbar_height);
+var navbarHeight = null;
+var countRepeats = 0;
+var getFinalNavbarHeight = setInterval(function () {
+	var tempHeight = $("#navbar-top").outerHeight();
+	// console.log(tempHeight);
+	if (tempHeight != navbarHeight)
+		if (navbarHeight) {
+			docReady();
+			clearInterval(getFinalNavbarHeight);
 		}
-		else	navbar_height = $("#navbar-top").outerHeight();
-	if (temp_height !== null)
-		count_repeats++;
-	if (count_repeats > 20 && temp_height !== null) {
-		doc_ready();
-		clearInterval(get_final_navbar_height);
+		else	navbarHeight = $("#navbar-top").outerHeight();
+	if (tempHeight !== null)
+		countRepeats++;
+	if (countRepeats > 20 && tempHeight !== null) {
+		docReady();
+		clearInterval(getFinalNavbarHeight);
 	}
 }, 60);
 
-function vert_padding_align() {
-	var vert_padding_align = document.getElementsByClassName('vert-padding-align');
-	for (var i = 0, elem = $(vert_padding_align[i]); i < vert_padding_align.length; i++, elem = $(vert_padding_align[i]))
+function vertPaddingAlign() {
+	var vertPaddingAlign = document.getElementsByClassName('vert-padding-align');
+	for (var i = 0, elem = $(vertPaddingAlign[i]); i < vertPaddingAlign.length; i++, elem = $(vertPaddingAlign[i]))
 		elem.css('padding-top', (elem.parent().height() - elem.height()) / 2 + "px");
 }
 
-function fit_parent() {
-	var fit_parents = document.getElementsByClassName("fit-parent");
-	var fp = fit_parents, elem;
+function fitParent() {
+	var fitParents = document.getElementsByClassName("fit-parent");
+	var fp = fitParents, elem;
 	for (var i = 0; i < fp.length; i++) {
 		elem = $(fp[i]);
 		while (elem.height() > elem.parent().height())
@@ -73,17 +71,17 @@ function fit_parent() {
 	}
 }
 
-function vert_align() {
-	var vert_aligns = document.getElementsByClassName("vert-align");
+function vertAlign() {
+	var vertAligns = document.getElementsByClassName("vert-align");
 
-	var va = vert_aligns, elem;
+	var va = vertAligns, elem;
 	for (var i = 0; i < va.length; i++) {
 		elem = $(va[i]);
 		elem.css('margin-top', (elem.parent().height() - elem.height()) / 2 + "px");
 	}
 }
 
-function window_at(elem) {
+function windowAt(elem) {
 	return $(document).scrollTop() + $(window).height() - $('.footer').outerHeight(true) >= elem.position().top;
 }
 
@@ -124,18 +122,18 @@ function convertFromPython(o) {
 }
 
 function convertKeysObject(o, revert) {
-	new_object = {};
+	newObject = {};
 	if (revert) {
 		// convertToPython(o);
 		for (key in o)
-			new_object[camelToSnake(key)] = o[key];
+			newObject[camelToSnake(key)] = o[key];
 	}
 	else {
 		convertFromPython(o);
 		for (key in o)
-			new_object[snakeToCamel(key)] = o[key];
+			newObject[snakeToCamel(key)] = o[key];
 	}
-	return new_object;
+	return newObject;
 }
 
 function castType(val, typedVal) {

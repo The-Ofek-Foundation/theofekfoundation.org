@@ -59,31 +59,31 @@
 	//		 $("#links").append($('<a class="animated" href="' + $(this).data("url") + '"></a>'));
 	//	 });
 
-		var prev_container = false, prev_dp = false;
+		var prevContainer = false, prevDp = false;
 		document.onmousemove = function (e) {
 			var target = e.target;
 			if (!target.parentElement)
 				return;
-			var doub_par = target.parentElement.parentElement;
-			if (doub_par === prev_dp || (target.tagName === "SECTION"));
+			var doubPar = target.parentElement.parentElement;
+			if (doubPar === prevDp || (target.tagName === "SECTION"));
 			else if (target.parentElement.tagName === "FIGURE") {
 				var tp = target.parentElement.parentElement.parentElement;
-				$(prev_container).children(".flippable").removeClass("flipped");
-				prev_container = tp;
-				prev_dp = doub_par;
-				$(prev_container).children(".flippable").addClass("flipped");
+				$(prevContainer).children(".flippable").removeClass("flipped");
+				prevContainer = tp;
+				prevDp = doubPar;
+				$(prevContainer).children(".flippable").addClass("flipped");
 			}
 			else if (target.tagName === "DIV") {
-				$(prev_container).children(".flippable").removeClass("flipped");
-				prev_container = prev_dp = target;
+				$(prevContainer).children(".flippable").removeClass("flipped");
+				prevContainer = prevDp = target;
 			}
 		};
 		$('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
-		fit_parent();
-		vert_align();
+		fitParent();
+		vertAlign();
 		setTimeout(function () {
-			fit_parent();
-			vert_align();
+			fitParent();
+			vertAlign();
 		}, 1000);
 		$('#games').animate({opacity: 1, 'margin-top': 0}, 1000, function () {
 			after = true;
@@ -102,16 +102,16 @@
 	var after = false;
 	$(document).scroll(function() {
 		if(after) {
-			if (window_at($('#tools')) && !$('#tools').data('animated')) {
+			if (windowAt($('#tools')) && !$('#tools').data('animated')) {
 				$('#tools').animate({opacity: 1, 'margin-top': "0px"}, 1000);
 				$('#tools').data('animated', true);
 			}
-			if (window_at($('#about')) && !$('#about').data('animated')) {
+			if (windowAt($('#about')) && !$('#about').data('animated')) {
 				$('#about').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
 				$('#about').css('height', 'auto');
 				$('#about').data('animated', true);
 			}
-	//		 if (window_at($('#contact-me')) && !$('#contact-me').data('animated')) {
+	//		 if (windowAt($('#contact-me')) && !$('#contact-me').data('animated')) {
 	//			 $('#contact-me').animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
 	//			 $('#contact-me').css('height', 'auto');
 	//			 $('#contact-me').data('animated', true);

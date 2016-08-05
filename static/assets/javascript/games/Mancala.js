@@ -1,40 +1,40 @@
 var docwidth, docheight;
 var pits = 6;
-var seeds_per_pit = 4;
-var board, board_copy;
-var top_turn_global;
-var monte_carlo_trials = 200000;
+var seedsPerPit = 4;
+var board, boardCopy;
+var topTurnGlobal;
+var monteCarloTrials = 200000;
 var ai = -1;
-var capturing_rules = "Same Side and Opposite Occupied";
-var reverse_drawing = true;
-var last_capture_global, last_move_global, last_sow_global;
-var global_ROOT;
-var expansion_const = 3.5;
-var board_states, state_on;
+var capturingRules = "Same Side and Opposite Occupied";
+var reverseDrawing = true;
+var lastCaptureGlobal, lastMoveGlobal, lastSowGlobal;
+var globalRoot;
+var expansionConstant = 3.5;
+var boardStates, stateOn;
 var ponder = false, pondering;
-var last_rec;
-var certainty_threshold = 0.5;
-var monte_carlo_aide = false;
-var MCTS_weights = false;
-var max_trials = 1500000; // prevents overload (occurs around 2.3 million)
-var wrapper_top;
-var num_choose1, num_choose2, num_choose3, lnc1, lnc2, lnc3, stop_choose;
+var lastRec;
+var certaintyThreshold = 0.5;
+var monteCarloAide = false;
+var MCTSWeights = false;
+var maxTrials = 1500000; // prevents overload (occurs around 2.3 million)
+var wrapperTop;
+var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 
-function page_ready() {
+function pageReady() {
 
 	docwidth = $("#content-wrapper").outerWidth(true);
 	docheight = $("#content-wrapper").outerHeight(true);
-	wrapper_top = $("#content-wrapper").position().top;
+	wrapperTop = $("#content-wrapper").position().top;
 
 	$('#board').width(docwidth).height(docheight);
 
 	boardui.setAttribute('width', docwidth);
 	boardui.setAttribute('height', docheight);
 
-	new_game();
+	newGame();
 
 	$("#form-new-game").height(docheight * 0.6);
 
@@ -59,10 +59,10 @@ $(window).resize(function() {
 	boardui.setAttribute('width', docwidth);
 	boardui.setAttribute('height', docheight);
 
-	oval_width = docwidth / (pits + 3);
-	oval_height = docheight / 5;
+	ovalWidth = docwidth / (pits + 3);
+	ovalHeight = docheight / 5;
 
-	wrapper_top = $("#content-wrapper").position().top;
+	wrapperTop = $("#content-wrapper").position().top;
 
 	$('#board').width(docwidth).height(docheight);
 
@@ -74,420 +74,420 @@ $(window).resize(function() {
 	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
 	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
 
-	draw_board();
+	drawBoard();
 });
 
-function new_game() {
+function newGame() {
 	board = new Array(pits * 2 + 2);
 	for (var i = 0; i < pits * 2 + 2; i++)
-		board[i] = seeds_per_pit;
+		board[i] = seedsPerPit;
 	board[0] = board[pits + 1] = 0;
-	top_turn_global = true;
-	last_sow_global = last_capture_global = last_move_global = -1;
-	board_states = [];
-	state_on = 0;
-	save_board_state(state_on);
-	last_rec = null;
-	global_ROOT = create_MCTS_root();
-	num_choose1 = num_choose2 = num_choose3 = lnc1 = lnc2 = lnc3 = stop_choose = false;
+	topTurnGlobal = true;
+	lastSowGlobal = lastCaptureGlobal = lastMoveGlobal = -1;
+	boardStates = [];
+	stateOn = 0;
+	saveBoardState(stateOn);
+	lastRec = null;
+	globalRoot = createMCTSRoot();
+	numChoose1 = numChoose2 = numChoose3 = lnc1 = lnc2 = lnc3 = stopChoose = false;
 
-	oval_width = docwidth / (pits + 3);
-	oval_height = docheight / 5;
-	draw_board();
-	adjust_buttons();
+	ovalWidth = docwidth / (pits + 3);
+	ovalHeight = docheight / 5;
+	drawBoard();
+	adjustButtons();
 
 	if (ai == "First" || ai == "Both")
-		setTimeout(play_monte_carlo_ai_move, 30);
+		setTimeout(playMonteCarloAiMove, 30);
 
-	stop_ponder();
+	stopPonder();
 	if (ponder)
-		start_ponder();
+		startPonder();
 }
 
-function play_move(pit_loc) {
+function playMove(pitLoc) {
 
-	if (!sow(pit_loc)) {
-		top_turn_global = !top_turn_global;
-		num_choose1 = num_choose2 = num_choose3 = stop_choose = false;
+	if (!sow(pitLoc)) {
+		topTurnGlobal = !topTurnGlobal;
+		numChoose1 = numChoose2 = numChoose3 = stopChoose = false;
 	}
 
-	if(end_game(top_turn_global))
+	if(endGame(topTurnGlobal))
 		if (ponder)
-			stop_ponder();
+			stopPonder();
 
-	state_on++;
-	save_board_state(state_on);
+	stateOn++;
+	saveBoardState(stateOn);
 
-	global_ROOT = MCTS_get_next_root(pit_loc);
-	if (global_ROOT)
-		global_ROOT.parent = null;
-	else global_ROOT = create_MCTS_root();
+	globalRoot = MCTSGetNextRoot(pitLoc);
+	if (globalRoot)
+		globalRoot.parent = null;
+	else globalRoot = createMCTSRoot();
 
-	update_analysis();
+	updateAnalysis();
 
-	draw_board();
+	drawBoard();
 
-	if (ai == "Both" || (ai == "First" && top_turn_global) || (ai == "Second" && !top_turn_global))
-		setTimeout(play_monte_carlo_ai_move, 30);
+	if (ai == "Both" || (ai == "First" && topTurnGlobal) || (ai == "Second" && !topTurnGlobal))
+		setTimeout(playMonteCarloAiMove, 30);
 }
 
-function save_board_state(index) {
-	board_states = board_states.slice(0, index);
-	board_states[index] = new State(board.slice(0), top_turn_global);
-	board_states[index].last_capture_global = last_capture_global;
-	board_states[index].last_move_global = last_move_global;
-	board_states[index].last_sow_global = last_sow_global;
+function saveBoardState(index) {
+	boardStates = boardStates.slice(0, index);
+	boardStates[index] = new State(board.slice(0), topTurnGlobal);
+	boardStates[index].lastCaptureGlobal = lastCaptureGlobal;
+	boardStates[index].lastMoveGlobal = lastMoveGlobal;
+	boardStates[index].lastSowGlobal = lastSowGlobal;
 }
 
-function load_board_state(index) {
-	board = board_states[index].board.slice(0);
-	top_turn_global = board_states[index].turn;
-	num_choose1 = num_choose2 = num_choose3 = stop_choose = false;
-	last_capture_global = board_states[index].last_capture_global;
-	last_move_global = board_states[index].last_move_global;
-	last_sow_global = board_states[index].last_sow_global;
+function loadBoardState(index) {
+	board = boardStates[index].board.slice(0);
+	topTurnGlobal = boardStates[index].turn;
+	numChoose1 = numChoose2 = numChoose3 = stopChoose = false;
+	lastCaptureGlobal = boardStates[index].lastCaptureGlobal;
+	lastMoveGlobal = boardStates[index].lastMoveGlobal;
+	lastSowGlobal = boardStates[index].lastSowGlobal;
 }
 
 function undo() {
-	if (state_on === 0) {
+	if (stateOn === 0) {
 		alert("No moves left to undo!");
 		return;
 	}
-	state_on--;
-	load_board_state(state_on);
-	global_ROOT = null;
-	draw_board();
+	stateOn--;
+	loadBoardState(stateOn);
+	globalRoot = null;
+	drawBoard();
 	if (pondering) {
-		stop_ponder();
-		start_ponder();
+		stopPonder();
+		startPonder();
 	}
 }
 
 function redo() {
-	if (state_on >= board_states.length - 1) {
+	if (stateOn >= boardStates.length - 1) {
 		alert("No moves left to redo!");
 		return;
 	}
-	state_on++;
-	load_board_state(state_on);
-	draw_board();
+	stateOn++;
+	loadBoardState(stateOn);
+	drawBoard();
 }
 
-function start_ponder() {
+function startPonder() {
 	pondering = setInterval(function() {
-		if (!global_ROOT)
-			global_ROOT = create_MCTS_root();
-		var start_time = new Date().getTime();
-		var temp_count = 0;
-		while ((new Date().getTime() - start_time) < 30 && !stop_choose) {
-			global_ROOT.choose_child();
-			temp_count++;
+		if (!globalRoot)
+			globalRoot = createMCTSRoot();
+		var startTime = new Date().getTime();
+		var tempCount = 0;
+		while ((new Date().getTime() - startTime) < 30 && !stopChoose) {
+			globalRoot.chooseChild();
+			tempCount++;
 		}
-		if (num_choose3 && (temp_count < num_choose3 / 10 || temp_count < num_choose2 / 10 || temp_count < num_choose1 / 10))
-			stop_choose = true;
+		if (numChoose3 && (tempCount < numChoose3 / 10 || tempCount < numChoose2 / 10 || tempCount < numChoose1 / 10))
+			stopChoose = true;
 		else {
-			num_choose3 = num_choose2;
-			num_choose2 = num_choose1;
-			num_choose1 = temp_count;
+			numChoose3 = numChoose2;
+			numChoose2 = numChoose1;
+			numChoose1 = tempCount;
 		}
-		last_rec = most_tried_child(global_ROOT, null);
-		update_analysis();
-		if (MCTS_weights && Math.random() > 0.9)
-			draw_board();
+		lastRec = mostTriedChild(globalRoot, null);
+		updateAnalysis();
+		if (MCTSWeights && Math.random() > 0.9)
+			drawBoard();
 	}, 1);
 }
 
-function adjust_buttons() {
-	$('.footer button').css('font-size', oval_height / 4);
-	$('.footer').css("height", oval_height / 2 + "px");
-//	 $('.footer').css('margin-bottom', oval_height / 2 - $('#anal').outerHeight(false));
-	$('.footer #anal').css('line-height', oval_height / 2 + "px");
-	$('.footer #num-trials').css('line-height', oval_height / 2 + "px");
+function adjustButtons() {
+	$('.footer button').css('font-size', ovalHeight / 4);
+	$('.footer').css("height", ovalHeight / 2 + "px");
+//	 $('.footer').css('margin-bottom', ovalHeight / 2 - $('#anal').outerHeight(false));
+	$('.footer #anal').css('line-height', ovalHeight / 2 + "px");
+	$('.footer #num-trials').css('line-height', ovalHeight / 2 + "px");
 }
 
-function update_analysis() {
-	var range = get_MCTS_depth_range();
+function updateAnalysis() {
+	var range = getMCTSDepthRange();
 	$('#anal').text("Analysis: Best-" + range[1] +" Worst-" + range[0] + " Result-" + range[2]);
-	$('#num-trials').text("Trials: " + global_ROOT.total_tries);
+	$('#num-trials').text("Trials: " + globalRoot.totalTries);
 }
 
-function stop_ponder() {
+function stopPonder() {
 	clearInterval(pondering);
 }
 
-function create_MCTS_root() {
-	return new MCTS_Node(new State(board, top_turn_global), null, null);
+function createMCTSRoot() {
+	return new MCTSNode(new State(board, topTurnGlobal), null, null);
 }
 
-function MCTS_get_next_root(pit_loc) {
-	if (!global_ROOT || !global_ROOT.children)
+function MCTSGetNextRoot(pitLoc) {
+	if (!globalRoot || !globalRoot.children)
 		return null;
-	for (var i = 0; i < global_ROOT.children.length; i++)
-		if (global_ROOT.children[i].last_move == pit_loc) {
-			return global_ROOT.children[i];
+	for (var i = 0; i < globalRoot.children.length; i++)
+		if (globalRoot.children[i].lastMove == pitLoc) {
+			return globalRoot.children[i];
 		}
 	return null;
 }
 
-function run_MCTS(times, threshold, callback) {
-	if (!global_ROOT)
-		global_ROOT = create_MCTS_root();
-	run_MCTS_recursive(times, threshold, 10, 10, callback);
+function runMCTS(times, threshold, callback) {
+	if (!globalRoot)
+		globalRoot = createMCTSRoot();
+	runMCTSRecursive(times, threshold, 10, 10, callback);
 }
 
-function run_MCTS_recursive(times, threshold, time_on, total_times, callback) {
-	for (var a = 0; a < times / total_times; a++)
-		global_ROOT.choose_child();
-//	 if (last_rec != most_tried_child(global_ROOT, null)) {
-		last_rec = most_tried_child(global_ROOT, null);
-		update_analysis();
-		if (MCTS_weights)
-			draw_board();
+function runMCTSRecursive(times, threshold, timeOn, totalTimes, callback) {
+	for (var a = 0; a < times / totalTimes; a++)
+		globalRoot.chooseChild();
+//	 if (lastRec != mostTriedChild(globalRoot, null)) {
+		lastRec = mostTriedChild(globalRoot, null);
+		updateAnalysis();
+		if (MCTSWeights)
+			drawBoard();
 //	 }
 	if (threshold > 0) {
-		if (global_ROOT.children.length < 2) {
-			callback(global_ROOT);
+		if (globalRoot.children.length < 2) {
+			callback(globalRoot);
 			return;
 		}
-		var cert = get_certainty(global_ROOT);
+		var cert = getCertainty(globalRoot);
 		console.log(cert, threshold);
 		if (cert < threshold) {
-			callback(global_ROOT);
+			callback(globalRoot);
 			return;
 		}
 	}
-	if (time_on <= 1)
-		callback(global_ROOT);
+	if (timeOn <= 1)
+		callback(globalRoot);
 	else setTimeout(function() {
-		run_MCTS_recursive(times, threshold, time_on - 1, total_times, callback);
+		runMCTSRecursive(times, threshold, timeOn - 1, totalTimes, callback);
 	}, 30);
 }
 
-function get_certainty(root) {
-	var best_child = most_tried_child(root, null);
-	var ratio = most_tried_child(root, best_child).total_tries / best_child.total_tries;
-	var ratio_wins = best_child.hits < best_child.misses ? (best_child.hits / best_child.misses * 2):(best_child.misses / best_child.hits * 3);
-	return ratio > ratio_wins ? ratio_wins:ratio;
+function getCertainty(root) {
+	var bestChild = mostTriedChild(root, null);
+	var ratio = mostTriedChild(root, bestChild).totalTries / bestChild.totalTries;
+	var ratioWins = bestChild.hits < bestChild.misses ? (bestChild.hits / bestChild.misses * 2):(bestChild.misses / bestChild.hits * 3);
+	return ratio > ratioWins ? ratioWins:ratio;
 }
 
-function most_tried_child(root, exclude) {
-	var most_trials = 0, child = null;
+function mostTriedChild(root, exclude) {
+	var mostTrials = 0, child = null;
 	if (!root.children)
 		return null;
 	if (root.children.length == 1)
 		return root.children[0];
 	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i] != exclude && root.children[i].total_tries > most_trials) {
-			most_trials = root.children[i].total_tries;
+		if (root.children[i] != exclude && root.children[i].totalTries > mostTrials) {
+			mostTrials = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
 }
 
-function least_tried_child(root) {
-	var least_trials = root.total_tries + 1, child = null;
+function leastTriedChild(root) {
+	var leastTrials = root.totalTries + 1, child = null;
 	if (!root.children)
 		return null;
 	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i].total_tries < least_trials) {
-			least_trials = root.children[i].total_tries;
+		if (root.children[i].totalTries < leastTrials) {
+			leastTrials = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
 }
 
-function get_best_move_MCTS(callback) {
-	var best_child;
-	if (callback && global_ROOT.total_tries < monte_carlo_trials) {
-		run_MCTS(monte_carlo_trials - global_ROOT.total_tries, certainty_threshold, function() {
+function getBestMoveMCTS(callback) {
+	var bestChild;
+	if (callback && globalRoot.totalTries < monteCarloTrials) {
+		runMCTS(monteCarloTrials - globalRoot.totalTries, certaintyThreshold, function() {
 //			 console.log("finish");
-			best_child = most_tried_child(global_ROOT, null);
-			if (!best_child)
+			bestChild = mostTriedChild(globalRoot, null);
+			if (!bestChild)
 				callback(-1);
-			else callback(best_child.last_move);
+			else callback(bestChild.lastMove);
 		});
 	}
 	else if (callback) {
-		best_child = most_tried_child(global_ROOT, null);
-		if (!best_child)
+		bestChild = mostTriedChild(globalRoot, null);
+		if (!bestChild)
 			callback(-1);
-		else callback(best_child.last_move);
+		else callback(bestChild.lastMove);
 	}
 	else {
-		best_child = most_tried_child(global_ROOT, null);
-		if (!best_child)
+		bestChild = mostTriedChild(globalRoot, null);
+		if (!bestChild)
 			return -1;
-		return best_child.last_move;
+		return bestChild.lastMove;
 	}
 }
 
-function get_MCTS_depth_range() {
+function getMCTSDepthRange() {
 	var root, range = new Array(3);
-	for (range[0] = -1, root = global_ROOT; root && root.children; range[0]++, root = least_tried_child(root));
-	for (range[1] = -1, root = global_ROOT; root && root.children; range[1]++, root = most_tried_child(root));
-	root = global_ROOT;
-	if (root.total_tries > (root.hits + root.misses) * 2)
+	for (range[0] = -1, root = globalRoot; root && root.children; range[0]++, root = leastTriedChild(root));
+	for (range[1] = -1, root = globalRoot; root && root.children; range[1]++, root = mostTriedChild(root));
+	root = globalRoot;
+	if (root.totalTries > (root.hits + root.misses) * 2)
 		range[2] = "Tie";
-	else if ((root.hits > root.misses) == top_turn_global)
+	else if ((root.hits > root.misses) == topTurnGlobal)
 		range[2] = "First";
-	else if ((root.hits < root.misses) == top_turn_global)
+	else if ((root.hits < root.misses) == topTurnGlobal)
 		range[2] = "Second";
 	else range[2] = "Tie";
 	return range;
 }
 
-function analyze_position(top_turn) {
-	return (top_turn ? (board[pits + 1] - board[0]):(board[0] - board[pits + 1]));
+function analyzePosition(topTurn) {
+	return (topTurn ? (board[pits + 1] - board[0]):(board[0] - board[pits + 1]));
 }
 
-function MCTS_analyze_position(tboard, top_turn) {
-	return (top_turn ? (tboard[pits + 1] - tboard[0]):(tboard[0] - tboard[pits + 1]));
+function MCTSAnalyzePosition(tboard, topTurn) {
+	return (topTurn ? (tboard[pits + 1] - tboard[0]):(tboard[0] - tboard[pits + 1]));
 }
 
-function MCTS_get_children(state, father) {
-	var temp_board = state.board.slice(0);
-	var top_turn = state.turn;
+function MCTSGetChildren(state, father) {
+	var tempBoard = state.board.slice(0);
+	var topTurn = state.turn;
 	var i;
 
-	var possible_moves = [];
+	var possibleMoves = [];
 	for (i = 0; i < pits; i++)
-		if (!MCTS_illegal_move(temp_board, i + (top_turn ? 1:(2 + pits)), top_turn))
-			possible_moves[possible_moves.length] = i + (top_turn ? 1:(2 + pits));
+		if (!MCTSIllegalMove(tempBoard, i + (topTurn ? 1:(2 + pits)), topTurn))
+			possibleMoves[possibleMoves.length] = i + (topTurn ? 1:(2 + pits));
 
-	var possible_children = new Array(possible_moves.length);
+	var possibleChildren = new Array(possibleMoves.length);
 
-	for (i = 0; i < possible_children.length; i++) {
-		if (!MCTS_sow(temp_board, possible_moves[i]))
-			top_turn = !top_turn;
-		MCTS_end_game(temp_board, top_turn);
-		possible_children[i] = new MCTS_Node(new State(temp_board, top_turn), father, possible_moves[i]);
+	for (i = 0; i < possibleChildren.length; i++) {
+		if (!MCTSSow(tempBoard, possibleMoves[i]))
+			topTurn = !topTurn;
+		MCTSEndGame(tempBoard, topTurn);
+		possibleChildren[i] = new MCTSNode(new State(tempBoard, topTurn), father, possibleMoves[i]);
 
-		temp_board = state.board.slice(0);
-		top_turn = state.turn;
+		tempBoard = state.board.slice(0);
+		topTurn = state.turn;
 	}
 
-	return possible_children;
+	return possibleChildren;
 }
 
-function MCTS_simulate(State) {
-	var temp_board = State.board.slice(0);
-	var top_turn = State.turn;
+function MCTSSimulate(State) {
+	var tempBoard = State.board.slice(0);
+	var topTurn = State.turn;
 
-	var possible_moves = [];
+	var possibleMoves = [];
 	for (var i = 0; i < pits; i++)
-		if (!MCTS_illegal_move(temp_board, i + (top_turn ? 1:(2 + pits)), top_turn))
-			possible_moves[possible_moves.length] = i + (top_turn ? 1:(2 + pits));
+		if (!MCTSIllegalMove(tempBoard, i + (topTurn ? 1:(2 + pits)), topTurn))
+			possibleMoves[possibleMoves.length] = i + (topTurn ? 1:(2 + pits));
 
-	return MCTS_simulate_game(temp_board, top_turn, top_turn, possible_moves[parseInt(Math.random() * possible_moves.length)]);
+	return MCTSSimulateGame(tempBoard, topTurn, topTurn, possibleMoves[parseInt(Math.random() * possibleMoves.length)]);
 }
 
-function get_end(pit_loc, seed_num, top_turn) {
+function getEnd(pitLoc, seedNum, topTurn) {
 	var end;
-	if (top_turn) {
-		end = (pit_loc + seed_num) % (2 * pits + 1);
+	if (topTurn) {
+		end = (pitLoc + seedNum) % (2 * pits + 1);
 		if (end === 0)
 			return 2 * pits + 1;
 		return end;
 	}
-	end = ((pit_loc + seed_num - pits - 1) % (2 * pits + 1) + pits + 1) % (2*pits + 2);
+	end = ((pitLoc + seedNum - pits - 1) % (2 * pits + 1) + pits + 1) % (2*pits + 2);
 	if (end == pits + 1)
 		return pits;
 	return end;
 }
 
-function MCTS_promising_moves(tboard, possible_moves, top_turn) {
-	var promising_moves = [];
+function MCTSPromisingMoves(tboard, possibleMoves, topTurn) {
+	var promisingMoves = [];
 	var end;
-	for (var i = 0; i < possible_moves.length; i++) {
-		end = get_end(possible_moves[i], tboard[possible_moves[i]], top_turn);
+	for (var i = 0; i < possibleMoves.length; i++) {
+		end = getEnd(possibleMoves[i], tboard[possibleMoves[i]], topTurn);
 		if (end === 0 || end == pits + 1)
-			promising_moves.push(possible_moves[i]);
-		else switch (capturing_rules) {
+			promisingMoves.push(possibleMoves[i]);
+		else switch (capturingRules) {
 			case "No Capturing":
 				break;
 			case "Always Capturing":
 				if (board[end] == 1)
-					promising_moves.push(possible_moves[i]);
+					promisingMoves.push(possibleMoves[i]);
 				break;
 			case "Opposite Occupied":
 				if (board[end] == 1 && tboard[2 * pits + 2 - end] > 0)
-					promising_moves.push(possible_moves[i]);
+					promisingMoves.push(possibleMoves[i]);
 				break;
 			case "Same Side and Opposite Occupied":
-				if (((end <= pits && top_turn) || (end > pits && !top_turn)) && tboard[end] == 1 && tboard[2 * pits + 2 - end] > 0)
-					promising_moves.push(possible_moves[i]);
+				if (((end <= pits && topTurn) || (end > pits && !topTurn)) && tboard[end] == 1 && tboard[2 * pits + 2 - end] > 0)
+					promisingMoves.push(possibleMoves[i]);
 				break;
 		}
 	}
-	return promising_moves;
+	return promisingMoves;
 }
 
-function MCTS_simulate_game(tboard, global_turn, top_turn, pit_loc) {
-	if (!MCTS_sow(tboard, pit_loc))
-		top_turn = !top_turn;
+function MCTSSimulateGame(tboard, globalTurn, topTurn, pitLoc) {
+	if (!MCTSSow(tboard, pitLoc))
+		topTurn = !topTurn;
 
-	if (MCTS_end_game(tboard, top_turn) || tboard[0] > pits * seeds_per_pit || tboard[pits + 1] > pits * seeds_per_pit)
-		return MCTS_analyze_position(tboard, global_turn);
+	if (MCTSEndGame(tboard, topTurn) || tboard[0] > pits * seedsPerPit || tboard[pits + 1] > pits * seedsPerPit)
+		return MCTSAnalyzePosition(tboard, globalTurn);
 
-	var possible_moves = [];
+	var possibleMoves = [];
 	for (var i = 0; i < pits; i++)
-		if (!MCTS_illegal_move(tboard, i + (top_turn ? 1:(2 + pits)), top_turn))
-			possible_moves.push(i + (top_turn ? 1:(2 + pits)));
+		if (!MCTSIllegalMove(tboard, i + (topTurn ? 1:(2 + pits)), topTurn))
+			possibleMoves.push(i + (topTurn ? 1:(2 + pits)));
 
-	var promising_moves = MCTS_promising_moves(tboard, possible_moves, top_turn);
+	var promisingMoves = MCTSPromisingMoves(tboard, possibleMoves, topTurn);
 
-	possible_moves = possible_moves.concat(promising_moves).concat(promising_moves);
+	possibleMoves = possibleMoves.concat(promisingMoves).concat(promisingMoves);
 
-	return MCTS_simulate_game(tboard, global_turn, top_turn, possible_moves[Math.floor(Math.random() * possible_moves.length)]);
+	return MCTSSimulateGame(tboard, globalTurn, topTurn, possibleMoves[Math.floor(Math.random() * possibleMoves.length)]);
 }
 
-function simulate_game(pit_loc, top_turn) {
-	if (!sow(pit_loc))
-		top_turn = !top_turn;
+function simulateGame(pitLoc, topTurn) {
+	if (!sow(pitLoc))
+		topTurn = !topTurn;
 
-	if (end_game(top_turn))
-		return analyze_position(top_turn_global);
+	if (endGame(topTurn))
+		return analyzePosition(topTurnGlobal);
 
-	var possible_moves = [];
+	var possibleMoves = [];
 	for (var i = 0; i < pits; i++)
-		if (!illegal_move(i + (top_turn ? 1:(2 + pits)), top_turn, false))
-			possible_moves[possible_moves.length] = i + (top_turn ? 1:(2 + pits));
+		if (!illegalMove(i + (topTurn ? 1:(2 + pits)), topTurn, false))
+			possibleMoves[possibleMoves.length] = i + (topTurn ? 1:(2 + pits));
 
-	return simulate_game(possible_moves[parseInt(Math.random() * possible_moves.length)], top_turn);
+	return simulateGame(possibleMoves[parseInt(Math.random() * possibleMoves.length)], topTurn);
 }
 
-function monte_carlo_analyze_pit(pit_loc) {
+function monteCarloAnalyzePit(pitLoc) {
 	var hits = 0;
 	var misses = 0;
 	var result;
-	board_copy = board.slice(0);
+	boardCopy = board.slice(0);
 
-	for (var i = 0; i < monte_carlo_trials; i++) {
-		result = simulate_game(pit_loc, top_turn_global);
+	for (var i = 0; i < monteCarloTrials; i++) {
+		result = simulateGame(pitLoc, topTurnGlobal);
 		if (result < 0)
 			misses++;
 		else if (result > 0)
 			hits++;
-		board = board_copy.slice(0);
+		board = boardCopy.slice(0);
 	}
 	return hits / misses;
 }
 
-function monte_carlo_analysis() {
+function monteCarloAnalysis() {
 	var analyses = Array(pits);
 
 	for (var i = 0; i < pits; i++) {
-		if (!illegal_move(i + (top_turn_global ? 1:(2 + pits)), top_turn_global, false))
-			analyses[i] = monte_carlo_analyze_pit(i + (top_turn_global ? 1:(2 + pits)));
+		if (!illegalMove(i + (topTurnGlobal ? 1:(2 + pits)), topTurnGlobal, false))
+			analyses[i] = monteCarloAnalyzePit(i + (topTurnGlobal ? 1:(2 + pits)));
 		else analyses[i] = -1;
 	}
 	return analyses;
 }
 
-function play_monte_carlo_ai_move() {
- get_best_move_MCTS(function(best_move) {
-	console.log(best_move);
-	play_move(best_move);
+function playMonteCarloAiMove() {
+ getBestMoveMCTS(function(bestMove) {
+	console.log(bestMove);
+	playMove(bestMove);
  });
 }
 
@@ -507,48 +507,48 @@ function drawEllipse(x, y, w, h) {
 	brush.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
 }
 
-function clear_board() {
+function clearBoard() {
 	brush.clearRect(0, 0, docwidth, docheight);
 }
 
-function get_pit_color(ratio) {
+function getPitColor(ratio) {
 	var r, g = 0, b = 0;
 	r = Math.floor(ratio * 255);
 
 	return "rgb(" + r + "," + g + "," + b + ")";
 }
 
-function draw_pit(pit_loc, x, y, width, height) {
+function drawPit(pitLoc, x, y, width, height) {
 	brush.beginPath();
 	drawEllipse(x, y, width, height);
-	if (last_move_global < 0 || last_sow_global < 0);
-	else if (pit_loc == last_move_global) {
+	if (lastMoveGlobal < 0 || lastSowGlobal < 0);
+	else if (pitLoc == lastMoveGlobal) {
 		brush.fillStyle = "#76EE00"; // green
 		brush.fill();
 	}
-	else if (pit_loc == last_capture_global) {
+	else if (pitLoc == lastCaptureGlobal) {
 		brush.fillStyle = "#CD3333"; // light red
 		brush.fill();
 	}
-	else if (pit_loc == last_sow_global) {
+	else if (pitLoc == lastSowGlobal) {
 		brush.fillStyle = "#815532"; // brown
 		brush.fill();
 	}
-	else if (board[last_move_global] > 0 || last_sow_global == last_move_global || (last_sow_global > last_move_global && pit_loc > last_move_global && pit_loc < last_sow_global) || (last_sow_global < last_move_global && (pit_loc > last_move_global || pit_loc < last_sow_global))) {
-		if ((pit_loc === 0 && !top_turn_global) || (pit_loc == pits + 1 && top_turn_global));
+	else if (board[lastMoveGlobal] > 0 || lastSowGlobal == lastMoveGlobal || (lastSowGlobal > lastMoveGlobal && pitLoc > lastMoveGlobal && pitLoc < lastSowGlobal) || (lastSowGlobal < lastMoveGlobal && (pitLoc > lastMoveGlobal || pitLoc < lastSowGlobal))) {
+		if ((pitLoc === 0 && !topTurnGlobal) || (pitLoc == pits + 1 && topTurnGlobal));
 		else {
 			brush.fillStyle = "#C3834C"; // light brown
 			brush.fill();
 		}
 	}
-	if (last_rec && monte_carlo_aide && pit_loc == last_rec.last_move)
+	if (lastRec && monteCarloAide && pitLoc == lastRec.lastMove)
 		brush.strokeStyle = "blue";
 	else brush.strokeStyle = "black";
-	if (MCTS_weights && MCTS_get_next_root(pit_loc)) {
-		var tries = MCTS_get_next_root(pit_loc).total_tries;
-		var ratio = tries / global_ROOT.total_tries;
+	if (MCTSWeights && MCTSGetNextRoot(pitLoc)) {
+		var tries = MCTSGetNextRoot(pitLoc).totalTries;
+		var ratio = tries / globalRoot.totalTries;
 		brush.lineWidth = ratio * 2 * pits;
-//		 brush.strokeStyle = get_pit_color(ratio);
+//		 brush.strokeStyle = getPitColor(ratio);
 	}
 	else	brush.lineWidth = 2;
 	brush.stroke();
@@ -556,15 +556,15 @@ function draw_pit(pit_loc, x, y, width, height) {
 	brush.shadowBlur = 0;
 }
 
-var oval_width, oval_height;
+var ovalWidth, ovalHeight;
 
-function draw_board() {
+function drawBoard() {
 
-	clear_board();
+	clearBoard();
 
-	var large_oval_height = parseInt(boardui.getAttribute("height")) - 2 * oval_height;
-	var top_text = oval_width / 7;
-	brush.font = (oval_width / 3) + "px Arial";
+	var largeOvalHeight = parseInt(boardui.getAttribute("height")) - 2 * ovalHeight;
+	var topText = ovalWidth / 7;
+	brush.font = (ovalWidth / 3) + "px Arial";
 	brush.textAlign = "center";
 
 	// large ovals
@@ -572,60 +572,60 @@ function draw_board() {
 	brush.strokeStyle = "black";
 
 	brush.beginPath();
-	draw_pit(0, 1 / 4 * oval_width, (parseInt(boardui.getAttribute("height")) - large_oval_height) / 2, oval_width, large_oval_height);
-	brush.fillText(board[0], 3 / 4 * oval_width, parseInt(boardui.getAttribute("height")) / 2 + top_text);
+	drawPit(0, 1 / 4 * ovalWidth, (parseInt(boardui.getAttribute("height")) - largeOvalHeight) / 2, ovalWidth, largeOvalHeight);
+	brush.fillText(board[0], 3 / 4 * ovalWidth, parseInt(boardui.getAttribute("height")) / 2 + topText);
 
-	draw_pit(pits + 1, parseInt(boardui.getAttribute("width")) - 5 / 4 * oval_width, (parseInt(boardui.getAttribute("height")) - large_oval_height) / 2, oval_width, large_oval_height);
-	brush.fillText(board[pits + 1], parseInt(boardui.getAttribute("width")) - 3 / 4 * oval_width, parseInt(boardui.getAttribute("height")) / 2 + top_text);
+	drawPit(pits + 1, parseInt(boardui.getAttribute("width")) - 5 / 4 * ovalWidth, (parseInt(boardui.getAttribute("height")) - largeOvalHeight) / 2, ovalWidth, largeOvalHeight);
+	brush.fillText(board[pits + 1], parseInt(boardui.getAttribute("width")) - 3 / 4 * ovalWidth, parseInt(boardui.getAttribute("height")) / 2 + topText);
 	brush.stroke();
 
 	// small ovals
 
 	for (var i = 0; i < pits; i++) {
-		draw_pit(reverse_drawing ? (2 * pits - i + 1):(i + 1), (i + 1.5) * oval_width, oval_height, oval_width, oval_height);
-		brush.fillText(reverse_drawing ? board[2 * pits - i + 1]:board[i + 1], (i + 2) * oval_width, oval_height * 1.5 + top_text);
+		drawPit(reverseDrawing ? (2 * pits - i + 1):(i + 1), (i + 1.5) * ovalWidth, ovalHeight, ovalWidth, ovalHeight);
+		brush.fillText(reverseDrawing ? board[2 * pits - i + 1]:board[i + 1], (i + 2) * ovalWidth, ovalHeight * 1.5 + topText);
 
-		draw_pit(reverse_drawing ? (i+1):(2 * pits - i + 1), (i + 1.5) * oval_width, oval_height * 3, oval_width, oval_height);
-		brush.fillText(reverse_drawing ? board[i+1]:board[2 * pits - i + 1], (i + 2) * oval_width, oval_height * 3.5 + top_text);
+		drawPit(reverseDrawing ? (i+1):(2 * pits - i + 1), (i + 1.5) * ovalWidth, ovalHeight * 3, ovalWidth, ovalHeight);
+		brush.fillText(reverseDrawing ? board[i+1]:board[2 * pits - i + 1], (i + 2) * ovalWidth, ovalHeight * 3.5 + topText);
 	}
 }
 
-function get_pit_loc(x, y) {
-	y -= wrapper_top;
+function getPitLoc(x, y) {
+	y -= wrapperTop;
 
-	x = Math.floor((x - oval_width * 1.5) / oval_width);
-	y = Math.floor((y - oval_height) / oval_height);
+	x = Math.floor((x - ovalWidth * 1.5) / ovalWidth);
+	y = Math.floor((y - ovalHeight) / ovalHeight);
 
 	if (x < 0 || y < 0 || x >= pits || y == 1 || y > 2)
 		return -1;
 
-	if (reverse_drawing)
+	if (reverseDrawing)
 		y = 2 - y;
 
 	return x + 1 + (y > 0 ? (2 * (pits - x)):0);
 }
 
 $('#board').mousedown(function(e) {
-	if (ai === top_turn_global) {
+	if (ai === topTurnGlobal) {
 		alert("It is not your turn!");
 		return;
 	}
-	var pit_loc = get_pit_loc(e.pageX, e.pageY);
-	if (illegal_move(pit_loc, top_turn_global, true))
+	var pitLoc = getPitLoc(e.pageX, e.pageY);
+	if (illegalMove(pitLoc, topTurnGlobal, true))
 		return;
 
-	play_move(pit_loc);
+	playMove(pitLoc);
 });
 
-function illegal_move(pit_loc, top_turn, output) {
-	if (pit_loc < 0)
+function illegalMove(pitLoc, topTurn, output) {
+	if (pitLoc < 0)
 		return true;
-	if ((top_turn && pit_loc > pits) || (!top_turn && pit_loc <= pits)) {
+	if ((topTurn && pitLoc > pits) || (!topTurn && pitLoc <= pits)) {
 		if (output)
 			alert("It is not your turn!");
 		return true;
 	}
-	if (board[pit_loc] === 0) {
+	if (board[pitLoc] === 0) {
 		if (output)
 			alert("No seeds to sow");
 		return true;
@@ -633,126 +633,126 @@ function illegal_move(pit_loc, top_turn, output) {
 	return false;
 }
 
-function MCTS_illegal_move(tboard, pit_loc, top_turn) {
-	if (pit_loc < 0)
+function MCTSIllegalMove(tboard, pitLoc, topTurn) {
+	if (pitLoc < 0)
 		return true;
-	if ((top_turn && pit_loc > pits) || (!top_turn && pit_loc <= pits))
+	if ((topTurn && pitLoc > pits) || (!topTurn && pitLoc <= pits))
 		return true;
-	if (tboard[pit_loc] === 0)
+	if (tboard[pitLoc] === 0)
 		return true;
 	return false;
 }
 
-function capture_pit(pit_loc, top_turn) {
-	var captures = board[pit_loc];
-	board[pit_loc] = 0;
-	if (capturing_rules == "Always Capturing")
-		last_capture_global = pit_loc;
+function capturePit(pitLoc, topTurn) {
+	var captures = board[pitLoc];
+	board[pitLoc] = 0;
+	if (capturingRules == "Always Capturing")
+		lastCaptureGlobal = pitLoc;
 
-	pit_loc = 2 * pits + 2 - pit_loc;
-	captures += board[pit_loc];
-	if (board[pit_loc] > 0)
-		last_capture_global = pit_loc;
-	board[pit_loc] = 0;
+	pitLoc = 2 * pits + 2 - pitLoc;
+	captures += board[pitLoc];
+	if (board[pitLoc] > 0)
+		lastCaptureGlobal = pitLoc;
+	board[pitLoc] = 0;
 
-	if (top_turn)
+	if (topTurn)
 		board[pits + 1] += captures;
 	else board[0] += captures;
 }
 
-function MCTS_capture_pit(tboard, pit_loc, top_turn) {
-	var captures = tboard[pit_loc];
-	tboard[pit_loc] = 0;
+function MCTSCapturePit(tboard, pitLoc, topTurn) {
+	var captures = tboard[pitLoc];
+	tboard[pitLoc] = 0;
 
-	pit_loc = 2 * pits + 2 - pit_loc;
-	captures += tboard[pit_loc];
-	tboard[pit_loc] = 0;
+	pitLoc = 2 * pits + 2 - pitLoc;
+	captures += tboard[pitLoc];
+	tboard[pitLoc] = 0;
 
-	if (top_turn)
+	if (topTurn)
 		tboard[pits + 1] += captures;
 	else tboard[0] += captures;
 }
 
-function sow(pit_loc) {
-	last_move_global = pit_loc;
-	var num_seeds = board[pit_loc];
-	var top_turn = pit_loc > pits ? false:true;
-	var curr_pit = pit_loc;
-	board[pit_loc] = 0;
+function sow(pitLoc) {
+	lastMoveGlobal = pitLoc;
+	var numSeeds = board[pitLoc];
+	var topTurn = pitLoc > pits ? false:true;
+	var currPit = pitLoc;
+	board[pitLoc] = 0;
 
-	for (var i = 0; i < num_seeds; i++) {
-		curr_pit++;
-		curr_pit = curr_pit % (pits * 2 + 2);
-		if ((top_turn && curr_pit === 0) || (!top_turn && curr_pit == pits + 1))
-			curr_pit++;
-		board[curr_pit]++;
+	for (var i = 0; i < numSeeds; i++) {
+		currPit++;
+		currPit = currPit % (pits * 2 + 2);
+		if ((topTurn && currPit === 0) || (!topTurn && currPit == pits + 1))
+			currPit++;
+		board[currPit]++;
 	}
 
-	last_capture_global = -1;
-	if (!(curr_pit === 0 || curr_pit == pits + 1) && capturing_rules) {
-		switch (capturing_rules) {
+	lastCaptureGlobal = -1;
+	if (!(currPit === 0 || currPit == pits + 1) && capturingRules) {
+		switch (capturingRules) {
 			case "No Capturing":
 				break;
 			case "Always Capturing":
-				if (board[curr_pit] == 1)
-					capture_pit(curr_pit, top_turn);
+				if (board[currPit] == 1)
+					capturePit(currPit, topTurn);
 				break;
 			case "Opposite Occupied":
-				if (board[curr_pit] == 1 && board[2 * pits + 2 - curr_pit] > 0)
-					capture_pit(curr_pit, top_turn);
+				if (board[currPit] == 1 && board[2 * pits + 2 - currPit] > 0)
+					capturePit(currPit, topTurn);
 				break;
 			case "Same Side and Opposite Occupied":
-				if (((curr_pit <= pits && top_turn) || (curr_pit > pits && !top_turn)) && board[curr_pit] == 1 && board[2 * pits + 2 - curr_pit] > 0)
-					capture_pit(curr_pit, top_turn);
+				if (((currPit <= pits && topTurn) || (currPit > pits && !topTurn)) && board[currPit] == 1 && board[2 * pits + 2 - currPit] > 0)
+					capturePit(currPit, topTurn);
 				break;
 		}
 	}
 
-	last_sow_global = curr_pit;
-	return curr_pit === 0 || curr_pit == pits + 1;
+	lastSowGlobal = currPit;
+	return currPit === 0 || currPit == pits + 1;
 }
 
-function MCTS_sow(tboard, pit_loc) {
-	var num_seeds = tboard[pit_loc];
-	var top_turn = pit_loc > pits ? false:true;
-	var curr_pit = pit_loc;
-	tboard[pit_loc] = 0;
+function MCTSSow(tboard, pitLoc) {
+	var numSeeds = tboard[pitLoc];
+	var topTurn = pitLoc > pits ? false:true;
+	var currPit = pitLoc;
+	tboard[pitLoc] = 0;
 
-	for (var i = 0; i < num_seeds; i++) {
-		curr_pit++;
-		curr_pit = curr_pit % (pits * 2 + 2);
-		if ((top_turn && curr_pit === 0) || (!top_turn && curr_pit == pits + 1))
-			curr_pit++;
-		tboard[curr_pit]++;
+	for (var i = 0; i < numSeeds; i++) {
+		currPit++;
+		currPit = currPit % (pits * 2 + 2);
+		if ((topTurn && currPit === 0) || (!topTurn && currPit == pits + 1))
+			currPit++;
+		tboard[currPit]++;
 	}
 
-	if (!(curr_pit === 0 || curr_pit == pits + 1)) {
-		switch (capturing_rules) {
+	if (!(currPit === 0 || currPit == pits + 1)) {
+		switch (capturingRules) {
 			case "No Capturing":
 				break;
 			case "Always Capturing":
-				if (tboard[curr_pit] == 1)
-					MCTS_capture_pit(tboard, curr_pit, top_turn);
+				if (tboard[currPit] == 1)
+					MCTSCapturePit(tboard, currPit, topTurn);
 				break;
 			case "Opposite Occupied":
-				if (tboard[curr_pit] == 1 && tboard[2 * pits + 2 - curr_pit] > 0)
-					MCTS_capture_pit(tboard, curr_pit, top_turn);
+				if (tboard[currPit] == 1 && tboard[2 * pits + 2 - currPit] > 0)
+					MCTSCapturePit(tboard, currPit, topTurn);
 				break;
 			case "Same Side and Opposite Occupied":
-				if (((curr_pit <= pits && top_turn) || (curr_pit > pits && !top_turn)) && tboard[curr_pit] == 1 && tboard[2 * pits + 2 - curr_pit] > 0)
-					MCTS_capture_pit(tboard, curr_pit, top_turn);
+				if (((currPit <= pits && topTurn) || (currPit > pits && !topTurn)) && tboard[currPit] == 1 && tboard[2 * pits + 2 - currPit] > 0)
+					MCTSCapturePit(tboard, currPit, topTurn);
 				break;
 		}
 	}
 
-	return curr_pit === 0 || curr_pit == pits + 1;
+	return currPit === 0 || currPit == pits + 1;
 }
 
-function end_game(top_turn) {
+function endGame(topTurn) {
 	var i;
 
 	for (i = 1; i <= pits; i++)
-		if ((!top_turn && board[i+pits+1] > 0) || (top_turn && board[i] > 0))
+		if ((!topTurn && board[i+pits+1] > 0) || (topTurn && board[i] > 0))
 			return false;
 
 	var captures = 0;
@@ -771,18 +771,18 @@ function end_game(top_turn) {
 	}
 	board[0] += captures;
 
-	last_sow_global = -1;
+	lastSowGlobal = -1;
 
-	stop_ponder();
+	stopPonder();
 
 	return true;
 }
 
-function MCTS_end_game(tboard, top_turn) {
+function MCTSEndGame(tboard, topTurn) {
 	var i;
 
 	for (i = 1; i <= pits; i++)
-		if ((!top_turn && tboard[i+pits+1] > 0) || (top_turn && tboard[i] > 0))
+		if ((!topTurn && tboard[i+pits+1] > 0) || (topTurn && tboard[i] > 0))
 			return false;
 
 	var captures = 0;
@@ -809,7 +809,7 @@ $(document).keydown(function(e) {
 		return;
 	switch (e.which) {
 		case 78: // n
-			show_new_game_menu();
+			showNewGameMenu();
 			break;
 		case 85: // u
 			undo();
@@ -820,43 +820,43 @@ $(document).keydown(function(e) {
 	}
 });
 
-function show_new_game_menu() {
+function showNewGameMenu() {
 	$('#new-game-menu').animate({opacity: 0.9}, "slow").css('z-index', 100);
 }
 
-var dont_submit;
+var dontSubmit;
 
 $('#form-new-game').submit(function() {
-	if (dont_submit) {
-		dont_submit = false;
+	if (dontSubmit) {
+		dontSubmit = false;
 		return false;
 	}
 
 	pits = parseInt($('input[name="num-pits"]').val());
-	seeds_per_pit = parseInt($('input[name="seeds-per-pit"]').val());
+	seedsPerPit = parseInt($('input[name="seeds-per-pit"]').val());
 
-	var ai_playing = $('input[name="ai"]').prop('checked');
+	var aiPlaying = $('input[name="ai"]').prop('checked');
 	ponder = $('input[name="ai-ponder"]').prop('checked');
-	MCTS_weights = $('input[name="mc-weight"]').prop('checked');
-	capturing_rules = $('input[name="capture-rules"]').val();
-	reverse_drawing = $('input[name="reverse"]').prop('checked');
+	MCTSWeights = $('input[name="mc-weight"]').prop('checked');
+	capturingRules = $('input[name="capture-rules"]').val();
+	reverseDrawing = $('input[name="reverse"]').prop('checked');
 	ai = $('input[name="ai-turn"]').val();
-	if (!ai_playing)
+	if (!aiPlaying)
 		ai = -1;
-	monte_carlo_trials = $('input[name="mc-trials"]').val();
-	expansion_const = $('input[name="mc-expansion"]').val();
-	certainty_threshold = 1 - $('input[name="mc-certainty"]').val() / 100;
+	monteCarloTrials = $('input[name="mc-trials"]').val();
+	expansionConstant = $('input[name="mc-expansion"]').val();
+	certaintyThreshold = 1 - $('input[name="mc-certainty"]').val() / 100;
 
 	$('#new-game-menu').animate({opacity: 0}, "slow", function() {
 		$(this).css('z-index', -1);
-		new_game();
+		newGame();
 	});
 
 	return false;
 });
 
 $('#btn-new-game-cancel').click(function() {
-	dont_submit = true;
+	dontSubmit = true;
 	$('#new-game-menu').animate({opacity: 0}, "slow", function() {
 		$(this).css('z-index', -1);
 	});
@@ -867,67 +867,67 @@ var State = function(board, turn) {
 	this.turn = turn;
 };
 
-function child_potential(child, t, turn) {
+function childPotential(child, t, turn) {
 	var w;
 	if (child.State.turn === turn)
 		w = child.hits - child.misses;
 	else w = child.misses - child.hits;
-	var n = child.total_tries;
-	var c = expansion_const;
+	var n = child.totalTries;
+	var c = expansionConstant;
 
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-var MCTS_Node = function(State, parent, last_move) {
+var MCTSNode = function(State, parent, lastMove) {
 	this.State = State;
 	this.parent = parent;
-	this.last_move = last_move;
+	this.lastMove = lastMove;
 	this.hits = 0;
 	this.misses = 0;
-	this.total_tries = 0;
+	this.totalTries = 0;
 };
 
-MCTS_Node.prototype.choose_child = function() {
+MCTSNode.prototype.chooseChild = function() {
 	if (!this.children)
-		this.children = MCTS_get_children(this.State, this);
+		this.children = MCTSGetChildren(this.State, this);
 	if (this.children.length === 0) // leaf node
-		this.run_simulation();
+		this.runSimulation();
 	else {
 		var i;
 		var unexplored = [];
 		for (i = 0; i < this.children.length; i++)
-			if (this.children[i].total_tries === 0)
+			if (this.children[i].totalTries === 0)
 				unexplored.push(this.children[i]);
 
 		if (unexplored.length > 0)
-			unexplored[Math.floor(Math.random() * unexplored.length)].run_simulation();
+			unexplored[Math.floor(Math.random() * unexplored.length)].runSimulation();
 		else {
-			var best_child = this.children[0], best_potential = child_potential(this.children[0], this.total_tries, this.State.turn), potential;
+			var bestChild = this.children[0], bestPotential = childPotential(this.children[0], this.totalTries, this.State.turn), potential;
 			for (i = 1; i < this.children.length; i++) {
-				potential = child_potential(this.children[i], this.total_tries, this.State.turn);
-				if (potential > best_potential) {
-					best_potential = potential;
-					best_child = this.children[i];
+				potential = childPotential(this.children[i], this.totalTries, this.State.turn);
+				if (potential > bestPotential) {
+					bestPotential = potential;
+					bestChild = this.children[i];
 				}
 			}
-			best_child.choose_child();
+			bestChild.chooseChild();
 		}
 	}
 };
 
-MCTS_Node.prototype.run_simulation = function() {
-	this.back_propogate(MCTS_simulate(this.State));
+MCTSNode.prototype.runSimulation = function() {
+	this.backPropogate(MCTSSimulate(this.State));
 };
 
-MCTS_Node.prototype.back_propogate = function(simulation) {
+MCTSNode.prototype.backPropogate = function(simulation) {
 	if (simulation > 0)
 		this.hits++;
 	else if (simulation < 0)
 		this.misses++;
-	this.total_tries++;
+	this.totalTries++;
 	if (this.parent) {
 		if (this.parent.State.turn === this.State.turn)
-			this.parent.back_propogate(simulation);
-		else this.parent.back_propogate(-simulation);
+			this.parent.backPropogate(simulation);
+		else this.parent.backPropogate(-simulation);
 	}
 };
