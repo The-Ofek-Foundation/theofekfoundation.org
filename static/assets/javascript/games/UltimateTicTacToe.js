@@ -4,17 +4,16 @@ var board;
 var globalRoot;
 var expansionConstant;
 // bound: ~0.0156
-var aiTurn = 'second';
-var maxTrials = 500000; // Prevent Overflow
+var aiTurn;
 var over;
 var prevMove;
 var xTurnGlobal;
-var ponder = false, pondering;
-var timeToThink = 5;
-var certaintyThreshold = 0.05;
+var ponder, pondering;
+var timeToThink;
+var certaintyThreshold;
 var wrapperTop;
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
-var anti = false;
+var anti;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
