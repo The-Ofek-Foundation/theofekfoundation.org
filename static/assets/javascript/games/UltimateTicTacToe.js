@@ -287,13 +287,13 @@ function setTurn(turn, move) {
 					break;
 				case 5:
 					if (anti)
-						alert(tie ? "Game tied! (anti + tie tic tac toe)":"O wins! (anti tic tac toe)");
-					else alert(tie ? "O wins! (tie tic tac toe)":"X wins!");
+						alert(tie ? "X wins! (anti + tie tic tac toe)":"O wins! (anti tic tac toe)");
+					else alert(tie ? "Game tied! (tie tic tac toe)":"X wins!");
 					break;
 				case 6:
 					if (anti)
-						alert(tie ? "X wins! (anti + tie tic tac toe)":"X wins! (anti tic tac toe)");
-					else alert(tie ? "Game tied! (tie tic tac toe)":"O wins!");
+						alert(tie ? "Game tied! (anti + tie tic tac toe)":"X wins! (anti tic tac toe)");
+					else alert(tie ? "O wins! (tie tic tac toe)":"O wins!");
 					break;
 			}
 		}, 100);
@@ -561,7 +561,7 @@ function MCTSSimulate(father, tboard) {
 	if (father.gameOver || gameOver(tboard, father.turn ? 6:5, father.lastMove)) {
 		father.gameOver = true;
 		if (tie)
-			return father.turn !== anti ? 0:1;
+			return father.turn !== anti ? -1:0;
 		return anti ? 1:-1;
 	}
 	if (father.tieGame || tieGame(tboard)) {
@@ -639,7 +639,7 @@ function MCTSSimulate(father, tboard) {
 		turn = !turn;
 	}
 	if (tie)
-		return father.turn !== anti ? (turn ? -1:0):(turn ? 1:0);
+		return father.turn !== anti ? (turn ? 0:-1):(turn ? 0:1);
 	if ((turn === father.turn) !== anti)
 		return -1;
 	return 1;
