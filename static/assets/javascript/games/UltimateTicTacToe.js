@@ -205,7 +205,7 @@ function drawBoard() {
 
 	for (var I = 1; I < 9; I+=3)
 		for (var A = 1; A < 9; A+=3)
-			if (board[I][A] == 5 || board[I][A] == 6)
+			if (board[I][A] === 5 || board[I][A] === 6)
 				drawPiece(I, A);
 			else for (var i = I-1; i <= I+1; i++)
 				for (var a = A-1; a <= A+1; a++)
@@ -340,26 +340,26 @@ function localWin(tboard, color, move, startx, starty) {
 		switch (trial) {
 			case 0:
 				for (i = startx; i < startx + 3; i++)
-					if (tboard[i][move[1]] != color)
+					if (tboard[i][move[1]] !== color)
 						break cont;
 				return true;
 			case 1:
 				for (a = starty; a < starty + 3; a++)
-					if (tboard[move[0]][a] != color)
+					if (tboard[move[0]][a] !== color)
 						break cont;
 				return true;
 			case 2:
-				if (move[0] % 3 != move[1] % 3)
+				if (move[0] % 3 !== move[1] % 3)
 					break;
 				for (i = startx, a = starty; i < startx + 3; i++, a++)
-					if (tboard[i][a] != color)
+					if (tboard[i][a] !== color)
 						break cont;
 				return true;
 			case 3:
-				if (move[0] % 3 != 2 - move[1] % 3)
+				if (move[0] % 3 !== 2 - move[1] % 3)
 					break;
 				for (i = startx, a = starty + 2; i < startx + 3; i++, a--)
-					if (tboard[i][a] != color)
+					if (tboard[i][a] !== color)
 						break cont;
 				return true;
 		}
@@ -384,16 +384,16 @@ function gameOver(tboard, color, m) {
 		switch (trial) {
 			case 0:
 				for (i = 1; i < 9; i+=3)
-					if (tboard[i][move[1]] != color)
+					if (tboard[i][move[1]] !== color)
 						break cont;
 				return true;
 			case 1:
 				for (a = 1; a < 9; a+=3)
-					if (tboard[move[0]][a] != color)
+					if (tboard[move[0]][a] !== color)
 						break cont;
 				return true;
 			case 2:
-				if (Math.floor(move[0] / 3) != Math.floor(move[1] / 3))
+				if (Math.floor(move[0] / 3) !== Math.floor(move[1] / 3))
 					break;
 				for (i = 1, a = 1; i < 9; i+=3, a+=3)
 					if (tboard[i][a] != color)
@@ -403,7 +403,7 @@ function gameOver(tboard, color, m) {
 				if (Math.floor(move[0] / 3) != 2 - Math.floor(move[1] / 3))
 					break;
 				for (i = 1, a = 7; i < 9; i+=3, a-=3)
-					if (tboard[i][a] != color)
+					if (tboard[i][a] !== color)
 						break cont;
 				return true;
 		}
@@ -414,7 +414,7 @@ function gameOver(tboard, color, m) {
 function tieGame(tboard) {
 	for (var i = 1; i < 9; i+=3)
 		for (var a = 1; a < 9; a+=3)
-			if (tboard[i][a] != 3 && tboard[i][a] != 4 && tboard[i][a] != 6 && tboard[i][a] != 5)
+			if (tboard[i][a] !== 3 && tboard[i][a] !== 4 && tboard[i][a] !== 6 && tboard[i][a] !== 5)
 				return false;
 	return true;
 }
@@ -532,7 +532,7 @@ function MCTSGetChildren(father, tboard) {
 	if (father.lastMove) {
 		var nextCenter = [father.lastMove[0] % 3 * 3 + 1, father.lastMove[1] % 3 * 3 + 1];
 		var nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-		if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4) {
+		if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
 			for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
 				for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++)
 					if (tboard[i][a] === 0)
@@ -549,7 +549,7 @@ function MCTSGetChildren(father, tboard) {
 
 	for (var I = 1; I < 9; I+=3)
 		for (var A = 1; A < 9; A+=3)
-			if (tboard[I][A] != 5 && tboard[I][A] != 6 && tboard[I][A] != 3 && tboard[I][A] != 4)
+			if (tboard[I][A] !== 5 && tboard[I][A] !== 6 && tboard[I][A] !== 3 && tboard[I][A] !== 4)
 				for (i = I-1; i <= I+1; i++)
 					for (a = A-1; a <= A+1; a++)
 						if (tboard[i][a] === 0)
@@ -628,7 +628,7 @@ function MCTSSimulate(father, tboard) {
 				x = Math.random() * 9 | 0;
 				y = Math.random() * 9 | 0;
 				tries++;
-			}	while (!legalCenter(tboard, [x, y]));
+			}	while (!legalCenter(tboard, [x, y]) || tboard[x][y] !== 0);
 		if (tries > 1)
 			swap = true;
 		playMove(tboard, [x, y], turn);
@@ -749,10 +749,7 @@ class MCTSNode {
 	}
 
 	chooseChild(board) {
-		if (this.lastMove) {
-			playMove(board, this.lastMove, !this.turn);
-		}
-		if (!this.children)
+		if (this.children === undefined)
 			this.children = MCTSGetChildren(this, board);
 		if (this.children.length === 0) // leaf node
 			this.runSimulation(board);
@@ -785,6 +782,7 @@ class MCTSNode {
 						bestChild = this.children[i];
 					}
 				}
+				playMove(board, bestChild.lastMove, !bestChild.turn);
 				bestChild.chooseChild(board);
 			}
 		}
@@ -1009,4 +1007,17 @@ function showSettingsForm() {
 
 function hideSettingsForm() {
 	$('#game-settings-menu').animate({opacity: 0}, "slow").css('z-index', -1);
+}
+
+function printBoard(board) {
+	for (let i = 0; i < 9; i++) {
+		let str = '';
+		for (let a = 0; a < 9; a++)
+			if (a % 3 === 2 && a !== 8)
+				str += board[a][i] + '|';
+			else str += board[a][i];
+		console.log(str);
+		if (i % 3 === 2 && i !== 8)
+			console.log('-----------');
+	}
 }
