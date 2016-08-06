@@ -232,7 +232,7 @@ function legalMove(tboard, move, prevMove, output) {
 	if (board[move[0]][move[1]] !== 0)
 		return false;
 	var c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
-	if (c == 5 || c == 6 || c == 'T') {
+	if (c === 5 || c === 6 || c === 3 || c === 4) {
 		if (output)
 			alert("Square already finished");
 		return false;
@@ -246,6 +246,11 @@ function legalMove(tboard, move, prevMove, output) {
 		}
 	}
 	return true;
+}
+
+function legalCenter(tboard, move) {
+	let c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
+	return !(c === 5 || c === 6 || c === 4 || c === 3);
 }
 
 function setTurn(turn, move) {
@@ -275,14 +280,14 @@ function setTurn(turn, move) {
 	if (over) {
 		setTimeout(function () {
 			switch (over) {
-				case 0:
+				case 'tie':
 					alert("Game tied!");
 					break;
-				case 1:
-					alert("Red wins!");
+				case 5:
+					alert("X wins!");
 					break;
-				case 2:
-					alert ("Yellow wins!");
+				case 6:
+					alert ("O wins!");
 					break;
 			}
 		}, 100);
@@ -311,10 +316,10 @@ $('#board').mousedown(function (e) {
 });
 
 function playMove(tboard, move, xturn) {
-	var color = xturn ? 1:2;
+	let color = xturn ? 1:2;
+	let centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
+	let startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
 	tboard[move[0]][move[1]] = color;
-	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
-	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
 	if (localWin(tboard, color, move, startx, starty))
 		tboard[centerx][centery] = color + 4;
 	else if (squareFull(tboard, startx, starty))
@@ -549,7 +554,6 @@ function MCTSGetChildren(father, tboard) {
 function MCTSSimulate(father, tboard) {
 	if (father.gameOver || gameOver(tboard, father.turn ? 6:5, father.lastMove)) {
 		father.gameOver = true;
-		father.gameOver = true;
 		return anti ? 1:-1;
 	}
 	if (tieGame(tboard))
@@ -614,7 +618,7 @@ function MCTSSimulate(father, tboard) {
 				x = Math.random() * 9 | 0;
 				y = Math.random() * 9 | 0;
 				tries++;
-			}	while (!legalMove(tboard, [x, y], lm, false));
+			}	while (!legalCenter(tboard, [x, y]));
 		if (tries > 1)
 			swap = true;
 		playMove(tboard, [x, y], turn);
