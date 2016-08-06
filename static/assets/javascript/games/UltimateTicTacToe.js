@@ -284,10 +284,14 @@ function setTurn(turn, move) {
 					alert("Game tied!");
 					break;
 				case 5:
-					alert("X wins!");
+					if (anti)
+						alert("O wins! (anti tic tac toe)");
+					else alert("X wins!");
 					break;
 				case 6:
-					alert ("O wins!");
+					if (anti)
+						alert("X wins! (anti tic tac toe)");
+					else alert ("O wins!");
 					break;
 			}
 		}, 100);
