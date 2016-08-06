@@ -13,6 +13,7 @@ class GameSettings(models.Model):
 	time_to_think = DecimalField(decimal_places=4, max_digits=6, null=True)
 	increasing_factor = DecimalField(decimal_places=4, max_digits=6, null=True)
 	anti = NullBooleanField()
+	tie = NullBooleanField()
 	ponder = NullBooleanField()
 	smart_simulation = NullBooleanField()
 	dimensions = JSONField()

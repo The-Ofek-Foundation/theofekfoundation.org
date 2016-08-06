@@ -13,7 +13,7 @@ var timeToThink;
 var certaintyThreshold;
 var wrapperTop;
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
-var anti;
+var anti, tie;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
@@ -104,6 +104,7 @@ function getSettings() {
 	aiTurn = gameSettings.getOrSet('aiTurn', 'second');
 	ponder = gameSettings.getOrSet('ponder', false);
 	anti = gameSettings.getOrSet('anti', false);
+	tie = gameSettings.getOrSet('tie', false);
 	timeToThink = gameSettings.getOrSet('timeToThink', 5);
 }
 
@@ -280,17 +281,19 @@ function setTurn(turn, move) {
 		setTimeout(function () {
 			switch (over) {
 				case 'tie':
-					alert("Game tied!");
+					if (tie)
+						alert(anti ? "O wins! (anti + tie tic tac toe)":"X wins! (tie tic tac toe)");
+					else alert("Game tied!");
 					break;
 				case 5:
 					if (anti)
-						alert("O wins! (anti tic tac toe)");
-					else alert("X wins!");
+						alert(tie ? "Game tied! (anti + tie tic tac toe)":"O wins! (anti tic tac toe)");
+					else alert(tie ? "O wins! (tie tic tac toe)":"X wins!");
 					break;
 				case 6:
 					if (anti)
-						alert("X wins! (anti tic tac toe)");
-					else alert ("O wins!");
+						alert(tie ? "X wins! (anti + tie tic tac toe)":"X wins! (anti tic tac toe)");
+					else alert(tie ? "Game tied! (tie tic tac toe)":"O wins!");
 					break;
 			}
 		}, 100);
@@ -523,7 +526,7 @@ function MCTSGetChildren(father, tboard) {
 	var children = [];
 	var i, a;
 
-	if (father.gameOver || tieGame(tboard))
+	if (father.gameOver || father.tieGame)
 		return [];
 
 	if (father.lastMove) {
@@ -557,10 +560,14 @@ function MCTSGetChildren(father, tboard) {
 function MCTSSimulate(father, tboard) {
 	if (father.gameOver || gameOver(tboard, father.turn ? 6:5, father.lastMove)) {
 		father.gameOver = true;
+		if (tie)
+			return father.turn !== anti ? 0:1;
 		return anti ? 1:-1;
 	}
-	if (tieGame(tboard))
-		return 0;
+	if (father.tieGame || tieGame(tboard)) {
+		father.tieGame = true;
+		return tie ? (father.turn !== anti ? 1:-1):0;
+	}
 
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
@@ -627,10 +634,12 @@ function MCTSSimulate(father, tboard) {
 		playMove(tboard, [x, y], turn);
 		done = gameOver(tboard, turn ? 5:6, [x, y]);
 		if (tieGame(tboard))
-			return 0;
+			return tie ? (father.turn !== anti ? 1:-1):0;
 		lm = [x, y];
 		turn = !turn;
 	}
+	if (tie)
+		return father.turn !== anti ? (turn ? -1:0):(turn ? 1:0);
 	if ((turn === father.turn) !== anti)
 		return -1;
 	return 1;
@@ -982,6 +991,7 @@ function getNewSettings() {
 		'aiTurn': document.getElementById('ai-turn').value,
 		'timeToThink': document.getElementById('time-to-think').value,
 		'anti': document.getElementById('anti-tic-tac-toe').checked,
+		'tie': document.getElementById('tie-tic-tac-toe').checked,
 	}
 }
 
@@ -990,6 +1000,7 @@ function populateSettingsForm(settings) {
 	document.getElementById('ai-turn').value = settings.aiTurn;
 	document.getElementById('time-to-think').value = settings.timeToThink;
 	document.getElementById('anti-tic-tac-toe').checked = settings.anti;
+	document.getElementById('tie-tic-tac-toe').checked = settings.tie;
 }
 
 function showSettingsForm() {
