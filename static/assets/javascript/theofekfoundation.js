@@ -97,6 +97,10 @@ function setLocallyStored(key, val) {
 	localStorage.setItem(key, JSON.stringify(val));
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function snakeToCamel(s) {
 	return s.replace(/(\_\w)/g, function($1){return $1[1].toUpperCase();});
 }

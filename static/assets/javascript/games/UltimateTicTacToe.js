@@ -279,23 +279,25 @@ function setTurn(turn, move) {
 
 	if (over) {
 		setTimeout(function () {
-			switch (over) {
-				case 'tie':
-					if (tie)
-						alert(anti ? "O wins! (anti + tie tic tac toe)":"X wins! (tie tic tac toe)");
-					else alert("Game tied!");
+			let str = '';
+			switch (parseOver(over)) {
+				case 0:
+					str = 'Game tied!';
 					break;
-				case 5:
-					if (anti)
-						alert(tie ? "X wins! (anti + tie tic tac toe)":"O wins! (anti tic tac toe)");
-					else alert(tie ? "Game tied! (tie tic tac toe)":"X wins!");
+				case 1:
+					str = 'X wins!';
 					break;
-				case 6:
-					if (anti)
-						alert(tie ? "Game tied! (anti + tie tic tac toe)":"X wins! (anti tic tac toe)");
-					else alert(tie ? "O wins! (tie tic tac toe)":"O wins!");
+				case 2:
+					str = 'O wins!';
 					break;
 			}
+			if (tie)
+				if (anti)
+					str += ' (anti + tie tic tac toe)';
+				else str += ' (tie tic tac toe)';
+			else if (anti)
+				str += ' (anti tic tac toe)';
+			alert(str);
 		}, 100);
 		stopPonder();
 	}
@@ -452,7 +454,7 @@ function startPonder() {
 			globalRoot.chooseChild(onetotwod(twotooned(board)));
 			tempCount++;
 		}
-		if (numChoose3 && (tempCount < numChoose3 / 9 || tempCount < numChoose2 / 9 || tempCount < numChoose1 / 9))
+		if (numChoose3 && (tempCount < numChoose3 / 10 || tempCount < numChoose2 / 10 || tempCount < numChoose1 / 10))
 			stopChoose = true;
 		else {
 			numChoose3 = numChoose2;
@@ -526,7 +528,7 @@ function MCTSGetChildren(father, tboard) {
 	var children = [];
 	var i, a;
 
-	if (father.gameOver || father.tieGame)
+	if (father.result !== undefined)
 		return [];
 
 	if (father.lastMove) {
@@ -558,16 +560,16 @@ function MCTSGetChildren(father, tboard) {
 }
 
 function MCTSSimulate(father, tboard) {
-	if (father.gameOver || gameOver(tboard, father.turn ? 6:5, father.lastMove)) {
-		father.gameOver = true;
+	if (father.result !== undefined)
+		return father.result;
+
+	if (gameOver(tboard, father.turn ? 6:5, father.lastMove))
 		if (tie)
-			return father.turn !== anti ? -1:0;
-		return anti ? 1:-1;
-	}
-	if (father.tieGame || tieGame(tboard)) {
-		father.tieGame = true;
-		return tie ? (father.turn !== anti ? 1:-1):0;
-	}
+			return father.result = father.turn !== anti ? -1:0;
+		else return father.result = anti ? 1:-1;
+
+	if (tieGame(tboard))
+		return father.result = tie ? (father.turn !== anti ? 1:-1):0;
 
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
@@ -811,12 +813,13 @@ function MCTSChildPotential(child, t) {
 	return w / n	+	c * Math.sqrt(Math.log(t) / n);
 }
 
-function speedTest() {
+function speedTest(numSimulations) {
 	globalRoot = createMCTSRoot();
-	var totalTrials, start = new Date().getTime();
-	for (totalTrials = 0; totalTrials < 5E5; totalTrials++)
+	let startTime = new Date().getTime();
+	for (let i = 0; i < numSimulations; i++)
 		globalRoot.chooseChild(onetotwod(twotooned(board)));
-	console.log((new Date().getTime() - start) / 1E3);
+	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
+	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
 }
 
 function efficiencyTest() {
@@ -826,6 +829,89 @@ function efficiencyTest() {
 			globalRoot.chooseChild(onetotwod(twotooned(board)));
 		$('#num-trials').text(globalRoot.totalTries);
 	}, 1);
+}
+
+function parseOver(over) {
+	switch (over) {
+		case 'tie':
+			if (tie)
+				return anti ? 2:1;
+			return 0;
+		case 5:
+			if (anti)
+				return tie ? 1:2;
+			return tie ? 0:1;
+		case 6:
+			if (anti)
+				return tie ? 0:1;
+			return 2;
+	}
+}
+
+function testStats(timeToThink, numTrials) {
+	let winsFirst = winsSecond = ties = 0;
+	let startTest = new Date().getTime();
+	for (let I = 0; I < numTrials; I++) {
+		// Create the new game
+		over = false;
+		prevMove = false;
+		board = new Array(9);
+		for (let i = 0; i < board.length; i++) {
+			board[i] = new Array(9);
+			for (let a = 0; a < board[i].length; a++)
+				board[i][a] = 0;
+		}
+		let root = createMCTSRoot();
+		while (!over) {
+			let startTime = new Date().getTime();
+			if (!root)
+				root = createMCTSRoot();
+			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
+				for (let i = 0; i < 100; i++)
+					root.chooseChild(onetotwod(twotooned(board)));
+				let error = getCertainty(root);
+				if (root.children.length < 2 || error < certaintyThreshold)
+					break;
+			}
+			let bestChild = mostTriedChild(root, null);
+			let bestMove = bestChild.lastMove;
+			playMove(board, bestMove, xTurnGlobal);
+
+			let color = xTurnGlobal ? 5:6;
+			if (gameOver(board, color, bestMove))
+				over = color;
+			else if (tieGame(board))
+				over = 'tie';
+
+			xTurnGlobal = !xTurnGlobal;
+			prevMove = bestMove;
+
+			if (root.children) {
+				for (let i = 0; i < root.children.length; i++)
+					if (root.children[i].lastMove[0] == bestMove[0] && root.children[i].lastMove[1] == bestMove[1]) {
+						root = root.children[i];
+						break;
+					}
+				root.parent = null;
+			} else root = createMCTSRoot();
+		}
+		switch (parseOver(over)) {
+			case 0:
+				ties++;
+				break;
+			case 1:
+				winsFirst++;
+				break;
+			case 2:
+				winsSecond++;
+				break;
+		}
+	}
+	let elapsedTestTime = (new Date().getTime() - startTest) / 1E3;
+	console.log("First:\t" + winsFirst);
+	console.log("Second:\t" + winsSecond);
+	console.log("Ties:\t" + ties);
+	console.log("In:\t\t" + elapsedTestTime.toFixed(2) + ' seconds');
 }
 
 var t1;
@@ -891,13 +977,13 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 			else r2 = createMCTSRoot();
 			// console.log("next turn ", board);
 		}
-		switch (over) {
-			case "tie":
+		switch (parseOver(over)) {
+			case 0:
 				if (output)
 					console.log("tie");
 				break;
-			case 5:
-				if ((I % 2 === 0) !== anti) {
+			case 1:
+				if ((I % 2 === 0)) {
 					v1++;
 					if (output)
 						console.log("c1 wins");
@@ -908,8 +994,8 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 						console.log("c2 wins");
 				}
 				break;
-			case 6:
-				if ((I % 2 === 0) !== anti) {
+			case 2:
+				if ((I % 2 === 0)) {
 					v2++;
 					if (output)
 						console.log("c2 wins");
