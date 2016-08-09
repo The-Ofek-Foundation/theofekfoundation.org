@@ -854,7 +854,7 @@ function speedTest(numSimulations) {
 	for (let i = 0; i < numSimulations; i++)
 		globalRoot.chooseChild(onetotwod(twotooned(board)));
 	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
-	console.log(numberWithCommas(globalRoot.totalTries) + ' in ' + elapsedTime);
+	console.log(numSimulations + ' in ' + elapsedTime);
 	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
 }
 
@@ -876,7 +876,7 @@ function webWorkerSpeedTest(timeToThink, numCores) {
 			workerCount--;
 			if (workerCount === 0) {
 				let eT = (new Date().getTime() - startTime) / 1E3;
-				console.log(numberWithCommas(globalRoot.totalTries) + ' in ' + eT);
+				console.log(globalRoot.totalTries + ' in ' + eT);
 				console.log(numberWithCommas(Math.round(globalRoot.totalTries / eT)) + ' simulations per second.');
 			}
 		});
