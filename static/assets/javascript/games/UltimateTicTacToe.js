@@ -14,7 +14,6 @@ var certaintyThreshold;
 var wrapperTop;
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
 var anti, tie;
-var numCores;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
@@ -666,34 +665,18 @@ function createMCTSRoot() {
 	return new MCTSNode(null, xTurnGlobal, prevMove);
 }
 
-function runMCTS(timeToThink, callback) {
-	if (!globalRoot || !globalRoot.children) {
+function runMCTS(time) {
+	if (!globalRoot)
 		globalRoot = createMCTSRoot();
-		globalRoot.children = MCTSGetChildren(globalRoot, board);
-	} else stripChildren(globalRoot);
-	if (globalRoot.children.length === 1) {
-		callback();
-		return;
+	var startTime = new Date().getTime();
+	while ((new Date().getTime() - startTime) / 1E3 < time) {
+		for (var i = 0; i < 1000; i++)
+			globalRoot.chooseChild(onetotwod(twotooned(board)));
+		var error = getCertainty(globalRoot);
+		if (globalRoot.children.length < 2 || error < certaintyThreshold)
+			return;
 	}
-	let maxWorkers = numCores || navigator.hardwareConcurrency || 4;
-	let workers = new Array(maxWorkers);
-	let workerCount = maxWorkers;
-	for (let i = 0; i < workers.length; i++) {
-		workers[i] = new Worker('/static/assets/javascript/games/UTTTWorker.js');
-		workers[i].addEventListener('message', function (e) {
-			let data = e.data;
-			combineRoots(globalRoot, data.root);
-			workers[i].terminate();
-			workerCount--;
-			if (workerCount === 0) {
-				console.log("Total Simulations: " + globalRoot.totalTries);
-				callback();
-			}
-		});
-	}
-
-	for (let i = 0; i < workers.length; i++)
-		workers[i].postMessage({'cmd': 'runTime', 'root': globalRoot, 'board': board, 'index': i, 'numWorkers': maxWorkers, 'timeToThink': timeToThink, 'tie': tie, 'anti': anti})
+	console.log("Total Simulations: " + globalRoot.totalTries);
 }
 
 function getCertainty(root) {
@@ -704,7 +687,8 @@ function getCertainty(root) {
 }
 
 function playAIMove() {
-	runMCTS(timeToThink, fpaim);
+	runMCTS(timeToThink);
+	fpaim();
 }
 
 function fpaim() {
@@ -754,25 +738,6 @@ function MCTSGetNextRoot(move) {
 			return globalRoot.children[i];
 		}
 	return null;
-}
-
-function combineRoots(gR, root) {
-	gR.hits += root.hits;
-	gR.misses += root.misses;
-	gR.totalTries += root.totalTries;
-	if (root.children && root.children.length > 0) {
-		if (!gR.children || gR.children.length === 0)
-			gR.children = root.children;
-		else for (let i = 0; i < root.children.length; i++)
-			combineRoots(gR.children[i], root.children[i]);
-	}
-}
-
-function stripChildren(root) {
-	for (let i = 0; i < root.children.length; i++)
-		if (root.children[i].children)
-			for (let a = 0; a < root.children[i].children.length; a++)
-				root.children[i].children[a].children = undefined;
 }
 
 class MCTSNode {
@@ -854,40 +819,7 @@ function speedTest(numSimulations) {
 	for (let i = 0; i < numSimulations; i++)
 		globalRoot.chooseChild(onetotwod(twotooned(board)));
 	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
-	console.log(numSimulations + ' in ' + elapsedTime);
 	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
-}
-
-function webWorkerSpeedTest(timeToThink, numCores) {
-	if (!globalRoot || !globalRoot.children) {
-		globalRoot = createMCTSRoot();
-		globalRoot.children = MCTSGetChildren(globalRoot, board);
-	}
-	let startTime = new Date().getTime();
-	let maxWorkers = numCores || navigator.hardwareConcurrency || 4;
-	let workers = new Array(maxWorkers);
-	let workerCount = maxWorkers;
-	for (let i = 0; i < workers.length; i++) {
-		workers[i] = new Worker('/static/assets/javascript/games/UTTTWorker.js');
-		workers[i].addEventListener('message', function (e) {
-			let data = e.data;
-			combineRoots(globalRoot, data.root);
-			workers[i].terminate();
-			workerCount--;
-			if (workerCount === 0) {
-				let eT = (new Date().getTime() - startTime) / 1E3;
-				console.log(globalRoot.totalTries + ' in ' + eT);
-				console.log(numberWithCommas(Math.round(globalRoot.totalTries / eT)) + ' simulations per second.');
-			}
-		});
-	}
-	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
-
-	console.log("Initialization Time: " + elapsedTime);
-
-	startTime = new Date().getTime();
-	for (let i = 0; i < workers.length; i++)
-		workers[i].postMessage({'cmd': 'runTime', 'root': globalRoot, 'board': board, 'index': i, 'numWorkers': maxWorkers, 'timeToThink': timeToThink})
 }
 
 function efficiencyTest() {
