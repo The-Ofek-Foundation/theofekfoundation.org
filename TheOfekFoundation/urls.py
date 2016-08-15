@@ -10,13 +10,12 @@ admin.autodiscover()
 urlpatterns = [
 	# Examples:
 	# url(r'^$', 'TheOfekFoundation.views.home', name='home'),
-	# url(r'^blog/', include('blog.urls')),
 
-	url(r'^(?i)account/', include('account.urls')),
-	url(r'^(?i)admin/', include(admin.site.urls)),
-	url(r'^(?i)blog/', include('blog.urls')),
-	url(r'^(?i)games/', include('games.urls')),
-	url(r'^(?i)tools/', include('tools.urls')),
+	url(r'^account/', include('account.urls')),
+	url(r'^admin/', include(admin.site.urls)),
+	url(r'^blog/', include('blog.urls')),
+	url(r'^games/', include('games.urls')),
+	url(r'^tools/', include('tools.urls')),
 	url(r'^', include('main_app.urls')),
 ]
 
