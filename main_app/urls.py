@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from main_app import views
 from django.views.generic import TemplateView
 
