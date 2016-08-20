@@ -14,6 +14,7 @@ var certaintyThreshold;
 var wrapperTop;
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
 var anti, tie;
+var workers, workersCallbackCount;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
@@ -912,6 +913,140 @@ function testStats(timeToThink, numTrials) {
 	console.log("Second:\t" + winsSecond);
 	console.log("Ties:\t" + ties);
 	console.log("In:\t\t" + elapsedTestTime.toFixed(2) + ' seconds');
+}
+
+function initWorkers(callback) {
+	let numWorkers = navigator.hardwareConcurrency || 4;
+	workers = new Array(numWorkers);
+	workersCallbackCount = 0;
+	for (let i = 0; i < workers.length; i++)
+		workers[i] = new Worker("/static/assets/javascript/games/UTTTWorker.js");
+
+}
+
+function evaluateOver(lastMove) {
+	let color = xTurnGlobal ? 5:6;
+	if (gameOver(board, color, lastMove))
+		over = color;
+	else if (tieGame(board))
+		over = 'tie';
+}
+
+function combineRoots(gR, root, board) {
+	if (!gR || !root)
+		return;
+	gR.hits += root.hits;
+	gR.misses += root.misses;
+	gR.totalTries += root.totalTries;
+	if (root.children && root.children.length > 0) {
+		if (!gR.children || gR.children.length === 0)
+			gR.children = MCTSGetChildren(gR, board);
+		for (let i = 0; i < root.children.length; i++) {
+			let b = onetotwod(twotooned(board));
+			playMove(b, gR.children[i].lastMove, !gR.children[i].turn);
+			combineRoots(gR.children[i], root.children[i], b);
+		}
+	}
+}
+
+function playTestMove() {
+	var bestChild = mostTriedChild(globalRoot, null);
+	var bestMove = bestChild.lastMove;
+	playMove(board, bestMove, xTurnGlobal);
+	evaluateOver(bestMove);
+
+	xTurnGlobal = !xTurnGlobal;
+	prevMove = bestMove;
+
+	globalRoot = MCTSGetNextRoot(bestMove);
+	if (!globalRoot)
+		globalRoot = createMCTSRoot();
+	// console.log(bestMove);
+	// printBoard(board);
+}
+
+function playNormalMove(timeToThink, callback) {
+	let startTime = new Date().getTime();
+	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
+		for (var i = 0; i < 100; i++)
+			globalRoot.chooseChild(onetotwod(twotooned(board)));
+	playTestMove();
+	callback();
+}
+
+var workersCount;
+
+function playMultithreadingMove(timeToThink, callback) {
+	workersCount = workers.length;
+	for (let i = 0; i < workers.length; i++) {
+		workers[i].postMessage({
+			'cmd': 'runTime',
+			'root': createMCTSRoot(),
+			'board': board,
+			'index': i,
+			'numWorkers': workers.length,
+			'timeToThink': timeToThink,
+			'tie': tie,
+			'anti': anti
+		});
+		workers[i].onmessage = function (e) {
+			let data = e.data;
+			combineRoots(globalRoot, data.root, board);
+			workersCount--;
+			if (workersCount === 0) {
+				playTestMove();
+				callback();
+			}
+		}
+	}
+}
+
+function testMultithreading(numTrials, timeToThink, init, v1, v2) {
+	if (!workers)
+		initWorkers();
+	if (numTrials === 0) {
+		console.log(v1 > v2 ? 'Multi-threading is better!':'Multi-threading is worse :/');
+	} 	else if (init || init === undefined) {
+		over = false;
+		prevMove = false;
+		board = new Array(9);
+		for (var i = 0; i < board.length; i++) {
+			board[i] = new Array(9);
+			for (var a = 0; a < board[i].length; a++)
+				board[i][a] = 0;
+		}
+
+		xTurnGlobal = true;
+		globalRoot = createMCTSRoot();
+		init = false;
+	} 	else if (over) {
+		if (v1 === undefined)
+			v1 = v2 = 0;
+		switch (parseOver(over)) {
+			case 1:
+				if (numTrials % 2 === 0)
+					v1++;
+				else v2++;
+				break;
+			case 2:
+				if (numTrials % 2 === 0)
+					v2++;
+				else v1++;
+				break;
+		}
+		console.log("Multi-threading: " + v1 + '-' + v2);
+		init = true;
+		numTrials--;
+	}	else {
+		let cb = function() {
+			testMultithreading(numTrials, timeToThink, init, v1, v2);
+		};
+		if (xTurnGlobal === (numTrials % 2 === 0))
+			playMultithreadingMove(timeToThink, cb);
+		else playNormalMove(timeToThink, cb);
+		return;
+	}
+	testMultithreading(numTrials, timeToThink, init, v1, v2);
 }
 
 var t1;
