@@ -1,20 +1,46 @@
 var tie = anti = false;
+var workersCount, workerIndex;
 var globalRoot;
 
 self.addEventListener('message', function(e) {
 	let data = e.data;
+	let gR = data.root, board, timeToThink, startTime;
 	switch (data.cmd) {
-		case 'runTime':
-			let gR = data.root, board = data.board, timeToThink = data.timeToThink;
+		case 'init':
 			tie = data.tie, anti = data.anti;
+			workersCount = data.workersCount, workerIndex = data.workerIndex;
+			globalRoot = new MCTSNode(false, gR.turn, gR.lastMove);
+			break;
+		case 'runTimeSplit':
+			board = data.board, timeToThink = data.timeToThink;
+			globalRoot = new MCTSNode(false, gR.turn, gR.lastMove);
+			globalRoot.children = MCTSGetChildren(globalRoot, board);
+			let startIndex = split(workerIndex, workersCount, globalRoot.children.length);
+			let endIndex = split(workerIndex + 1, workersCount, globalRoot.children.length);
+			startTime = new Date().getTime();
+			let boards = new Array(endIndex - startIndex);
+			for (let a = 0; a < boards.length; a++) {
+				let b = onetotwod(twotooned(board));
+				playMove(b, globalRoot.children[a + startIndex].lastMove, !globalRoot.children[a + startIndex].turn);
+				boards[a] = b;
+			}
+			while ((new Date().getTime() - startTime) / 1E3 < timeToThink)
+				for (let i = startIndex; i < endIndex; i++)
+					globalRoot.children[i].chooseChild(onetotwod(twotooned(boards[i - startIndex])));
+			stripChildren(globalRoot);
+			self.postMessage({'root': globalRoot});
+			break;
+		case 'runTime':
+			board = data.board, timeToThink = data.timeToThink;
 			root = new MCTSNode(false, gR.turn, gR.lastMove);
 			combineRoots(root, gR, board);
-			let startTime = new Date().getTime();
+			startTime = new Date().getTime();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink)
 				for (let i = 0; i < 100; i++)
 					root.chooseChild(onetotwod(twotooned(board)));
 			stripChildren(root);
 			self.postMessage({'root': root});
+			break;
 	}
 });
 

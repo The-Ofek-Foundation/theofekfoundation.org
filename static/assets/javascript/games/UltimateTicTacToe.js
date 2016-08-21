@@ -699,21 +699,36 @@ function fpaim() {
 }
 
 function getBestMoveMCTS() {
-	var bestChild = mostTriedChild(globalRoot, null);
+	let bestChild = mostTriedChild(globalRoot, null);
 	if (!bestChild)
 		return -1;
 	return bestChild.lastMove;
 }
 
 function mostTriedChild(root, exclude) {
-	var mostTrials = 0, child = null;
+	let mostTrials = 0, child = null;
 	if (!root.children)
 		return null;
-	if (root.children.length == 1)
+	if (root.children.length === 1)
 		return root.children[0];
-	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i] != exclude && root.children[i].totalTries > mostTrials) {
+	for (let i = 0; i < root.children.length; i++)
+		if (root.children[i] !== exclude && root.children[i].totalTries > mostTrials) {
 			mostTrials = root.children[i].totalTries;
+			child = root.children[i];
+		}
+	return child;
+}
+
+function bestRatioChild(root, exclude) {
+	let bestRatio = 0, maxTries = 0, child = null;
+	if (!root.children)
+		return null;
+	if (root.children.length === 1)
+		return root.children[0];
+	for (let i = 0; i < root.children.length; i++)
+		if (root.children[i] !== exclude && (root.children[i].totalTries > maxTries * 2 || root.children[i].misses / root.children[i].hits > bestRatio && root.children[i].totalTries > maxTries / 2)) {
+			bestRatio = root.children[i].misses / root.children[i].hits;
+			maxTries = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
@@ -919,8 +934,18 @@ function initWorkers(callback) {
 	let numWorkers = navigator.hardwareConcurrency || 4;
 	workers = new Array(numWorkers);
 	workersCallbackCount = 0;
-	for (let i = 0; i < workers.length; i++)
+	for (let i = 0; i < workers.length; i++) {
 		workers[i] = new Worker("/static/assets/javascript/games/UTTTWorker.js");
+		workers[i].postMessage({
+			'cmd': 'init',
+			'root': createMCTSRoot(),
+			'board': board,
+			'workerIndex': i,
+			'workersCount': workers.length,
+			'tie': tie,
+			'anti': anti
+		});
+	}
 
 }
 
@@ -939,7 +964,7 @@ function combineRoots(gR, root, board) {
 	gR.misses += root.misses;
 	gR.totalTries += root.totalTries;
 	if (root.children && root.children.length > 0) {
-		if (!gR.children || gR.children.length === 0)
+		if (!gR.children || gR.children.length !== root.children.length)
 			gR.children = MCTSGetChildren(gR, board);
 		for (let i = 0; i < root.children.length; i++) {
 			let b = onetotwod(twotooned(board));
@@ -949,8 +974,7 @@ function combineRoots(gR, root, board) {
 	}
 }
 
-function playTestMove() {
-	var bestChild = mostTriedChild(globalRoot, null);
+function playTestMove(bestChild) {
 	var bestMove = bestChild.lastMove;
 	playMove(board, bestMove, xTurnGlobal);
 	evaluateOver(bestMove);
@@ -970,7 +994,8 @@ function playNormalMove(timeToThink, callback) {
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
 			globalRoot.chooseChild(onetotwod(twotooned(board)));
-	playTestMove();
+	console.log("Normal - " + globalRoot.totalTries);
+	playTestMove(mostTriedChild(globalRoot, null));
 	callback();
 }
 
@@ -980,21 +1005,20 @@ function playMultithreadingMove(timeToThink, callback) {
 	workersCount = workers.length;
 	for (let i = 0; i < workers.length; i++) {
 		workers[i].postMessage({
-			'cmd': 'runTime',
+			'cmd': 'runTimeSplit',
 			'root': createMCTSRoot(),
 			'board': board,
-			'index': i,
-			'numWorkers': workers.length,
+			'workerIndex': i,
+			'workersCount': workers.length,
 			'timeToThink': timeToThink,
-			'tie': tie,
-			'anti': anti
 		});
 		workers[i].onmessage = function (e) {
 			let data = e.data;
 			combineRoots(globalRoot, data.root, board);
 			workersCount--;
 			if (workersCount === 0) {
-				playTestMove();
+				console.log("Multi - " + globalRoot.totalTries);
+				playTestMove(bestRatioChild(globalRoot, null));
 				callback();
 			}
 		}
