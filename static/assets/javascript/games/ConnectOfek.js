@@ -1311,12 +1311,14 @@ function efficiencyTest() {
 	}, 1);
 }
 
-function speedTest() {
+function speedTest(totalTrials) {
+	totalTrials = totalTrials || 5E5;
 	globalRoot = createMCTSRoot();
-	var totalTrials, start = new Date().getTime();
-	for (totalTrials = 0; totalTrials < 5E5; totalTrials++)
+	let startTime = new Date().getTime();
+	while (globalRoot.totalTries < totalTrials)
 		globalRoot.chooseChild(position);
-	console.log((new Date().getTime() - start) / 1E3);
+	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
+	console.log(numberWithCommas(Math.round(globalRoot.totalTries / elapsedTime)) + ' simulations per second.');
 }
 
 function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
