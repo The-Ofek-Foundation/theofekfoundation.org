@@ -746,20 +746,6 @@ function fpaim() {
 	setTurn(!redTurnGlobal, bestRow, bestCol);
 }
 
-function onetotwod(oned) {
-	var twod = new Array(dimensions[0]);
-	for (var i = 0; i < dimensions[0]; i++)
-		twod[i] = oned.slice(i * dimensions[1], (i + 1) * dimensions[1]);
-	return twod;
-}
-
-function twotooned(twod) {
-	var oned = new Array(dimensions[0] * dimensions[1]);
-	for (var i = 0; i < dimensions[0] * dimensions[1]; i++)
-		oned[i] = twod[i / dimensions[1] | 0][i % dimensions[1]];
-	return oned;
-}
-
 function gameOver(tboard, x, y) {
 	var countConsecutive = 1;
 	var color = tboard[x][y];

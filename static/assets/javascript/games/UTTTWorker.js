@@ -20,13 +20,13 @@ self.addEventListener('message', function(e) {
 			startTime = new Date().getTime();
 			let boards = new Array(endIndex - startIndex);
 			for (let a = 0; a < boards.length; a++) {
-				let b = onetotwod(twotooned(board));
+				let b = simpleCopy(board);
 				playMove(b, globalRoot.children[a + startIndex].lastMove, !globalRoot.children[a + startIndex].turn);
 				boards[a] = b;
 			}
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink)
 				for (let i = startIndex; i < endIndex; i++)
-					globalRoot.children[i].chooseChild(onetotwod(twotooned(boards[i - startIndex])));
+					globalRoot.children[i].chooseChild(simpleCopy(boards[i - startIndex]));
 			stripChildren(globalRoot);
 			self.postMessage({'root': globalRoot});
 			break;
@@ -37,7 +37,7 @@ self.addEventListener('message', function(e) {
 			startTime = new Date().getTime();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink)
 				for (let i = 0; i < 100; i++)
-					root.chooseChild(onetotwod(twotooned(board)));
+					root.chooseChild(simpleCopy(board));
 			stripChildren(root);
 			self.postMessage({'root': root});
 			break;
@@ -52,7 +52,7 @@ function combineRoots(gR, root, board) {
 		if (!gR.children || gR.children.length === 0)
 			gR.children = MCTSGetChildren(gR, board);
 		for (let i = 0; i < root.children.length; i++) {
-			let b = onetotwod(twotooned(board));
+			let b = simpleCopy(board);
 			playMove(b, gR.children[i].lastMove, !gR.children[i].turn);
 			combineRoots(gR.children[i], root.children[i], b);
 		}
@@ -365,18 +365,14 @@ function MCTSChildPotential(child, t) {
 	return w / n	+	1.03125 * Math.sqrt(Math.log(t) / n);
 }
 
-function onetotwod(oned) {
-	var twod = new Array(9);
-	for (var i = 0; i < 9; i++)
-		twod[i] = oned.slice(i * 9, (i + 1) * 9);
-	return twod;
-}
-
-function twotooned(twod) {
-	var oned = new Array(81);
-	for (var i = 0; i < 81; i++)
-		oned[i] = twod[i / 9 | 0][i % 9];
-	return oned;
+function simpleCopy(board) {
+	let simpleCopy = new Array(9);
+	for (let i = 0; i < 9; i++) {
+		simpleCopy[i] = new Array(9);
+		for (let a = 0; a < 9; a++)
+			simpleCopy[i][a] = board[i][a];
+	}
+	return simpleCopy;
 }
 
 function split(index, num, total) {

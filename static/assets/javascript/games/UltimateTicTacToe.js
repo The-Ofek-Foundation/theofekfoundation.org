@@ -452,7 +452,7 @@ function startPonder() {
 		var startTime = new Date().getTime();
 		var tempCount = 0;
 		while ((new Date().getTime() - startTime) < 30 && !stopChoose) {
-			globalRoot.chooseChild(onetotwod(twotooned(board)));
+			globalRoot.chooseChild(simpleCopy(board));
 			tempCount++;
 		}
 		if (numChoose3 && (tempCount < numChoose3 / 10 || tempCount < numChoose2 / 10 || tempCount < numChoose1 / 10))
@@ -648,20 +648,6 @@ function MCTSSimulate(father, tboard) {
 	return 1;
 }
 
-function onetotwod(oned) {
-	var twod = new Array(9);
-	for (var i = 0; i < 9; i++)
-		twod[i] = oned.slice(i * 9, (i + 1) * 9);
-	return twod;
-}
-
-function twotooned(twod) {
-	var oned = new Array(81);
-	for (var i = 0; i < 81; i++)
-		oned[i] = twod[i / 9 | 0][i % 9];
-	return oned;
-}
-
 function createMCTSRoot() {
 	return new MCTSNode(null, xTurnGlobal, prevMove);
 }
@@ -672,7 +658,7 @@ function runMCTS(time) {
 	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < time) {
 		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild(onetotwod(twotooned(board)));
+			globalRoot.chooseChild(simpleCopy(board));
 		var error = getCertainty(globalRoot);
 		if (globalRoot.children.length < 2 || error < certaintyThreshold)
 			return;
@@ -833,16 +819,26 @@ function speedTest(numSimulations) {
 	globalRoot = createMCTSRoot();
 	let startTime = new Date().getTime();
 	for (let i = 0; i < numSimulations; i++)
-		globalRoot.chooseChild(onetotwod(twotooned(board)));
+		globalRoot.chooseChild(simpleCopy(board));
 	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
 	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
+}
+
+function simpleCopy(board) {
+	let simpleCopy = new Array(9);
+	for (let i = 0; i < 9; i++) {
+		simpleCopy[i] = new Array(9);
+		for (let a = 0; a < 9; a++)
+			simpleCopy[i][a] = board[i][a];
+	}
+	return simpleCopy;
 }
 
 function efficiencyTest() {
 	speedTest();
 	setInterval(function() {
 		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild(onetotwod(twotooned(board)));
+			globalRoot.chooseChild(simpleCopy(board));
 		$('#num-trials').text(globalRoot.totalTries);
 	}, 1);
 }
@@ -884,7 +880,7 @@ function testStats(timeToThink, numTrials) {
 				root = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (let i = 0; i < 100; i++)
-					root.chooseChild(onetotwod(twotooned(board)));
+					root.chooseChild(simpleCopy(board));
 				let error = getCertainty(root);
 				if (root.children.length < 2 || error < certaintyThreshold)
 					break;
@@ -967,7 +963,7 @@ function combineRoots(gR, root, board) {
 		if (!gR.children || gR.children.length !== root.children.length)
 			gR.children = MCTSGetChildren(gR, board);
 		for (let i = 0; i < root.children.length; i++) {
-			let b = onetotwod(twotooned(board));
+			let b = simpleCopy(board);
 			playMove(b, gR.children[i].lastMove, !gR.children[i].turn);
 			combineRoots(gR.children[i], root.children[i], b);
 		}
@@ -993,7 +989,7 @@ function playNormalMove(timeToThink, callback) {
 	let startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
-			globalRoot.chooseChild(onetotwod(twotooned(board)));
+			globalRoot.chooseChild(simpleCopy(board));
 	// console.log("Normal - " + globalRoot.totalTries);
 	playTestMove(mostTriedChild(globalRoot, null));
 	callback();
@@ -1099,7 +1095,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 				r = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (var i = 0; i < 100; i++)
-					r.chooseChild(onetotwod(twotooned(board)));
+					r.chooseChild(simpleCopy(board));
 				var error = getCertainty(r);
 				if (r.children.length < 2 || error < certaintyThreshold)
 					break;
