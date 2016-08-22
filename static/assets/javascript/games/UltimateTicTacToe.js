@@ -994,7 +994,7 @@ function playNormalMove(timeToThink, callback) {
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
 			globalRoot.chooseChild(onetotwod(twotooned(board)));
-	console.log("Normal - " + globalRoot.totalTries);
+	// console.log("Normal - " + globalRoot.totalTries);
 	playTestMove(mostTriedChild(globalRoot, null));
 	callback();
 }
@@ -1017,7 +1017,7 @@ function playMultithreadingMove(timeToThink, callback) {
 			combineRoots(globalRoot, data.root, board);
 			workersCount--;
 			if (workersCount === 0) {
-				console.log("Multi - " + globalRoot.totalTries);
+				// console.log("Multi - " + globalRoot.totalTries);
 				playTestMove(bestRatioChild(globalRoot, null));
 				callback();
 			}
@@ -1030,6 +1030,7 @@ function testMultithreading(numTrials, timeToThink, init, v1, v2) {
 		initWorkers();
 	if (numTrials === 0) {
 		console.log(v1 > v2 ? 'Multi-threading is better!':'Multi-threading is worse :/');
+		return;
 	} 	else if (init || init === undefined) {
 		over = false;
 		prevMove = false;
