@@ -5,3 +5,5 @@
 TheOfekFoundation/wsgi.py
 
 scripts/*
+
+db.sqlite3
