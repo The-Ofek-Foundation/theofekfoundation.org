@@ -39,7 +39,7 @@ function pageReady() {
 	newGame();
 
 	setTimeout(function() {
-		let explainSettings = getLocallyStored('settingsExplained');
+		var explainSettings = getLocallyStored('settingsExplained');
 		if (!explainSettings) {
 			alert("Type 's' to change your settings or 'n' to create a new game!");
 			setLocallyStored('settingsExplained', true);
@@ -250,7 +250,7 @@ function legalMove(tboard, move, prevMove, output) {
 }
 
 function legalCenter(tboard, move) {
-	let c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
+	var c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
 	return !(c === 5 || c === 6 || c === 4 || c === 3);
 }
 
@@ -280,7 +280,7 @@ function setTurn(turn, move) {
 
 	if (over) {
 		setTimeout(function () {
-			let str = '';
+			var str = '';
 			switch (parseOver(over)) {
 				case 0:
 					str = 'Game tied!';
@@ -325,9 +325,9 @@ $('#board').mousedown(function (e) {
 });
 
 function playMove(tboard, move, xturn) {
-	let color = xturn ? 1:2;
-	let centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
-	let startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
+	var color = xturn ? 1:2;
+	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
+	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
 	tboard[move[0]][move[1]] = color;
 	if (localWin(tboard, color, move, startx, starty))
 		tboard[centerx][centery] = color + 4;
@@ -685,19 +685,19 @@ function fpaim() {
 }
 
 function getBestMoveMCTS() {
-	let bestChild = mostTriedChild(globalRoot, null);
+	var bestChild = mostTriedChild(globalRoot, null);
 	if (!bestChild)
 		return -1;
 	return bestChild.lastMove;
 }
 
 function mostTriedChild(root, exclude) {
-	let mostTrials = 0, child = null;
+	var mostTrials = 0, child = null;
 	if (!root.children)
 		return null;
 	if (root.children.length === 1)
 		return root.children[0];
-	for (let i = 0; i < root.children.length; i++)
+	for (var i = 0; i < root.children.length; i++)
 		if (root.children[i] !== exclude && root.children[i].totalTries > mostTrials) {
 			mostTrials = root.children[i].totalTries;
 			child = root.children[i];
@@ -706,12 +706,12 @@ function mostTriedChild(root, exclude) {
 }
 
 function bestRatioChild(root, exclude) {
-	let bestRatio = 0, maxTries = 0, child = null;
+	var bestRatio = 0, maxTries = 0, child = null;
 	if (!root.children)
 		return null;
 	if (root.children.length === 1)
 		return root.children[0];
-	for (let i = 0; i < root.children.length; i++)
+	for (var i = 0; i < root.children.length; i++)
 		if (root.children[i] !== exclude && (root.children[i].totalTries > maxTries * 2 || root.children[i].misses / root.children[i].hits > bestRatio && root.children[i].totalTries > maxTries / 2)) {
 			bestRatio = root.children[i].misses / root.children[i].hits;
 			maxTries = root.children[i].totalTries;
@@ -817,18 +817,18 @@ function MCTSChildPotential(child, t) {
 
 function speedTest(numSimulations) {
 	globalRoot = createMCTSRoot();
-	let startTime = new Date().getTime();
-	for (let i = 0; i < numSimulations; i++)
+	var startTime = new Date().getTime();
+	for (var i = 0; i < numSimulations; i++)
 		globalRoot.chooseChild(simpleCopy(board));
-	let elapsedTime = (new Date().getTime() - startTime) / 1E3;
+	var elapsedTime = (new Date().getTime() - startTime) / 1E3;
 	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
 }
 
 function simpleCopy(board) {
-	let simpleCopy = new Array(9);
-	for (let i = 0; i < 9; i++) {
+	var simpleCopy = new Array(9);
+	for (var i = 0; i < 9; i++) {
 		simpleCopy[i] = new Array(9);
-		for (let a = 0; a < 9; a++)
+		for (var a = 0; a < 9; a++)
 			simpleCopy[i][a] = board[i][a];
 	}
 	return simpleCopy;
@@ -861,35 +861,35 @@ function parseOver(over) {
 }
 
 function testStats(timeToThink, numTrials) {
-	let winsFirst = winsSecond = ties = 0;
-	let startTest = new Date().getTime();
-	for (let I = 0; I < numTrials; I++) {
+	var winsFirst = winsSecond = ties = 0;
+	var startTest = new Date().getTime();
+	for (var I = 0; I < numTrials; I++) {
 		// Create the new game
 		over = false;
 		prevMove = false;
 		board = new Array(9);
-		for (let i = 0; i < board.length; i++) {
+		for (var i = 0; i < board.length; i++) {
 			board[i] = new Array(9);
-			for (let a = 0; a < board[i].length; a++)
+			for (var a = 0; a < board[i].length; a++)
 				board[i][a] = 0;
 		}
-		let root = createMCTSRoot();
+		var root = createMCTSRoot();
 		while (!over) {
-			let startTime = new Date().getTime();
+			var startTime = new Date().getTime();
 			if (!root)
 				root = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
-				for (let i = 0; i < 100; i++)
+				for (var i = 0; i < 100; i++)
 					root.chooseChild(simpleCopy(board));
-				let error = getCertainty(root);
+				var error = getCertainty(root);
 				if (root.children.length < 2 || error < certaintyThreshold)
 					break;
 			}
-			let bestChild = mostTriedChild(root, null);
-			let bestMove = bestChild.lastMove;
+			var bestChild = mostTriedChild(root, null);
+			var bestMove = bestChild.lastMove;
 			playMove(board, bestMove, xTurnGlobal);
 
-			let color = xTurnGlobal ? 5:6;
+			var color = xTurnGlobal ? 5:6;
 			if (gameOver(board, color, bestMove))
 				over = color;
 			else if (tieGame(board))
@@ -899,7 +899,7 @@ function testStats(timeToThink, numTrials) {
 			prevMove = bestMove;
 
 			if (root.children) {
-				for (let i = 0; i < root.children.length; i++)
+				for (var i = 0; i < root.children.length; i++)
 					if (root.children[i].lastMove[0] == bestMove[0] && root.children[i].lastMove[1] == bestMove[1]) {
 						root = root.children[i];
 						break;
@@ -919,7 +919,7 @@ function testStats(timeToThink, numTrials) {
 				break;
 		}
 	}
-	let elapsedTestTime = (new Date().getTime() - startTest) / 1E3;
+	var elapsedTestTime = (new Date().getTime() - startTest) / 1E3;
 	console.log("First:\t" + winsFirst);
 	console.log("Second:\t" + winsSecond);
 	console.log("Ties:\t" + ties);
@@ -927,10 +927,10 @@ function testStats(timeToThink, numTrials) {
 }
 
 function initWorkers(callback) {
-	let numWorkers = navigator.hardwareConcurrency || 4;
+	var numWorkers = navigator.hardwareConcurrency || 4;
 	workers = new Array(numWorkers);
 	workersCallbackCount = 0;
-	for (let i = 0; i < workers.length; i++) {
+	for (var i = 0; i < workers.length; i++) {
 		workers[i] = new Worker("/static/assets/javascript/games/UTTTWorker.js");
 		workers[i].postMessage({
 			'cmd': 'init',
@@ -946,7 +946,7 @@ function initWorkers(callback) {
 }
 
 function evaluateOver(lastMove) {
-	let color = xTurnGlobal ? 5:6;
+	var color = xTurnGlobal ? 5:6;
 	if (gameOver(board, color, lastMove))
 		over = color;
 	else if (tieGame(board))
@@ -962,8 +962,8 @@ function combineRoots(gR, root, board) {
 	if (root.children && root.children.length > 0) {
 		if (!gR.children || gR.children.length !== root.children.length)
 			gR.children = MCTSGetChildren(gR, board);
-		for (let i = 0; i < root.children.length; i++) {
-			let b = simpleCopy(board);
+		for (var i = 0; i < root.children.length; i++) {
+			var b = simpleCopy(board);
 			playMove(b, gR.children[i].lastMove, !gR.children[i].turn);
 			combineRoots(gR.children[i], root.children[i], b);
 		}
@@ -986,7 +986,7 @@ function playTestMove(bestChild) {
 }
 
 function playNormalMove(timeToThink, callback) {
-	let startTime = new Date().getTime();
+	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
 			globalRoot.chooseChild(simpleCopy(board));
@@ -999,7 +999,7 @@ var workersCount;
 
 function playMultithreadingMove(timeToThink, callback) {
 	workersCount = workers.length;
-	for (let i = 0; i < workers.length; i++) {
+	for (var i = 0; i < workers.length; i++) {
 		workers[i].postMessage({
 			'cmd': 'runTimeSplit',
 			'root': createMCTSRoot(),
@@ -1009,7 +1009,7 @@ function playMultithreadingMove(timeToThink, callback) {
 			'timeToThink': timeToThink,
 		});
 		workers[i].onmessage = function (e) {
-			let data = e.data;
+			var data = e.data;
 			combineRoots(globalRoot, data.root, board);
 			workersCount--;
 			if (workersCount === 0) {
@@ -1059,7 +1059,7 @@ function testMultithreading(numTrials, timeToThink, init, v1, v2) {
 		init = true;
 		numTrials--;
 	}	else {
-		let cb = function() {
+		var cb = function() {
 			testMultithreading(numTrials, timeToThink, init, v1, v2);
 		};
 		if (xTurnGlobal === (numTrials % 2 === 0))
@@ -1206,7 +1206,7 @@ $(document).keypress(function(event) {
 });
 
 $('#done').click(function (event) {
-	let settings = getNewSettings();
+	var settings = getNewSettings();
 	gameSettings.setSettings(settings);
 	hideSettingsForm();
 	newGame();
@@ -1218,7 +1218,7 @@ $('#cancel').click(function (event) {
 });
 
 $('#save').click(function (event) {
-	let settings = getNewSettings();
+	var settings = getNewSettings();
 	gameSettings.setSettings(settings);
 	gameSettings.saveSettings(settings);
 	hideSettingsForm();
@@ -1252,9 +1252,9 @@ function hideSettingsForm() {
 }
 
 function printBoard(board) {
-	for (let i = 0; i < 9; i++) {
-		let str = '';
-		for (let a = 0; a < 9; a++)
+	for (var i = 0; i < 9; i++) {
+		var str = '';
+		for (var a = 0; a < 9; a++)
 			if (a % 3 === 2 && a !== 8)
 				str += board[a][i] + '|';
 			else str += board[a][i];
