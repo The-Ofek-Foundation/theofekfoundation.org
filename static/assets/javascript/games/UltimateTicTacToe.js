@@ -224,7 +224,7 @@ function getMove(xloc, yloc) {
 	var left = (docwidth - boardwidth) / 2;
 	if (xloc < left || xloc > left + boardwidth || yloc > boardwidth)
 		return [-1, -1];
-	return [(xloc - left) / squarewidth | 0, yloc / squarewidth | 0];
+	return [Math.floor((xloc - left) / squarewidth), Math.floor(yloc / squarewidth)];
 }
 
 function legalMove(tboard, move, prevMove, output) {
@@ -381,40 +381,49 @@ function squareFull(tboard, startx, starty) {
 function gameOver(tboard, color, m) {
 	var i, a;
 	var move = [m[0] - m[0] % 3 + 1, m[1] - m[1] % 3 + 1];
+	var gg = true;
 
-	for (var trial = 0; trial < 4; trial++) {
-		cont:
-		switch (trial) {
-			case 0:
-				for (i = 1; i < 9; i+=3)
-					if (tboard[i][move[1]] !== color)
-						break cont;
-				return true;
-			case 1:
-				for (a = 1; a < 9; a+=3)
-					if (tboard[move[0]][a] !== color)
-						break cont;
-				return true;
-			case 2:
-				if (Math.floor(move[0] / 3) !== Math.floor(move[1] / 3))
-					break;
-				for (i = 1, a = 1; i < 9; i+=3, a+=3)
-					if (tboard[i][a] != color)
-						break cont;
-				return true;
-			case 3:
-				if (Math.floor(move[0] / 3) != 2 - Math.floor(move[1] / 3))
-					break;
-				for (i = 1, a = 7; i < 9; i+=3, a-=3)
-					if (tboard[i][a] !== color)
-						break cont;
-				return true;
+	for (i = 1; i < 9; i += 3)
+		if (tboard[i][move[1]] !== color) {
+			gg = false;
+			break;
 		}
-	}
-	return false;
+
+	if (gg)
+		return true;
+	gg = true;
+
+	for (a = 1; a < 9; a += 3)
+		if (tboard[move[0]][a] !== color) {
+			gg = false;
+			break;
+		}
+
+	if (gg)
+		return true;
+	gg = true;
+
+	if (Math.floor(move[0] / 3) !== Math.floor(move[1] / 3))
+		gg = false;
+	else for (i = 1, a = 1; i < 9; i+=3, a+=3)
+		if (tboard[i][a] != color) {
+			gg = false;
+			break;
+		}
+
+	if (gg)
+		return true;
+	gg = true;
+
+	if (Math.floor(move[0] / 3) != 2 - Math.floor(move[1] / 3))
+		return false;
+	else for (i = 1, a = 7; i < 9; i+=3, a-=3)
+		if (tboard[i][a] !== color)
+			return false;
+	return true;
 }
 
-function tieGame(tboard) {
+function tieGame(tboard, m) {
 	for (var i = 1; i < 9; i+=3)
 		for (var a = 1; a < 9; a+=3)
 			if (tboard[i][a] !== 3 && tboard[i][a] !== 4 && tboard[i][a] !== 6 && tboard[i][a] !== 5)
@@ -588,7 +597,7 @@ function MCTSSimulate(father, tboard) {
 					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 						if (tboard[x][y] === 0)
 							count++;
-				count = Math.random() * count | 0;
+				count = Math.floor(Math.random() * count);
 				outer:
 				for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
 					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
@@ -607,7 +616,7 @@ function MCTSSimulate(father, tboard) {
 									if (tboard[x][y] === 0)
 										count++;
 					}
-				count = Math.random() * count | 0;
+				count = Math.floor(Math.random() * count);
 				outer1:
 				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
 					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
@@ -623,13 +632,13 @@ function MCTSSimulate(father, tboard) {
 			}
 		else if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
 				do {
-					x = nextCenter[0] - 1 + Math.random() * 3 | 0;
-					y = nextCenter[1] - 1 + Math.random() * 3 | 0;
+					x = Math.floor(nextCenter[0] - 1 + Math.random() * 3);
+					y = Math.floor(nextCenter[1] - 1 + Math.random() * 3);
 					tries++;
 				}	while (tboard[x][y] !== 0);
 			else do {
-				x = Math.random() * 9 | 0;
-				y = Math.random() * 9 | 0;
+				x = Math.floor(Math.random() * 9);
+				y = Math.floor(Math.random() * 9);
 				tries++;
 			}	while (!legalCenter(tboard, [x, y]) || tboard[x][y] !== 0);
 		if (tries > 1)
@@ -776,8 +785,7 @@ class MCTSNode {
 						}
 					}
 
-			}
-			else {
+			}	else {
 				var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
 				for (i = 1; i < this.children.length; i++) {
 					potential = MCTSChildPotential(this.children[i], this.totalTries);
