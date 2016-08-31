@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from main_app.forms import UserForm, UserProfileForm
 from django.template import RequestContext, loader
@@ -22,7 +22,6 @@ import copy
 
 def register(request):
 	# Like before, get the request's context.
-	context = RequestContext(request)
 
 	# A boolean value for telling the template whether the registration was successful.
 	# Set to False initially. Code changes value to True when registration succeeds.
@@ -85,13 +84,10 @@ def register(request):
 		'registered': registered,
 	}
 	# Render the template depending on the context.
-	return render_to_response(
-		'account/register.html', context_dict, context)
+	return render(request, 'account/register.html', context_dict)
 
 def user_login(request):
 	# Like before, obtain the context for the user's request.
-	context = RequestContext(request)
-
 	page = pages.login
 
 	# If the request is a HTTP POST, try to pull out the relevant information.
@@ -123,14 +119,14 @@ def user_login(request):
 			# Bad login details were provided. So we can't log the user in.
 			print ("Invalid login details: {0}, {1}".format(username, password))
 			error_message = "Invalid login details supplied."
-		return render_to_response('account/login.html', {'page': page, 'error_message': error_message}, context)
+		return render(request, 'account/login.html', {'page': page, 'error_message': error_message})
 
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
 	else:
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
-		return render_to_response('account/login.html', {'page': page}, context)
+		return render(request, 'account/login.html', {'page': page})
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required

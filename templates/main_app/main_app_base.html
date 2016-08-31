@@ -63,7 +63,6 @@
 	</div>
 
 	<script type="text/javascript">
-		page_ready = 1;
 		{% if user.is_authenticated %}
 		ga('set', 'userId', '{{ user.id }}'); // Set the user ID using signed-in user_id.
 		{% endif %}
