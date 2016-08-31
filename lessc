@@ -1,32 +1,32 @@
-lessc ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css
+lessc --compress ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css
 
-lessc ./static/assets/styles/account/account_form_base.less ./static/assets/styles/account/account_form_base.css
+lessc --compress ./static/assets/styles/account/account_form_base.less ./static/assets/styles/account/account_form_base.css
 
-lessc ./static/assets/styles/account/reset_password.less ./static/assets/styles/account/reset_password.css
+lessc --compress ./static/assets/styles/account/reset_password.less ./static/assets/styles/account/reset_password.css
 
-lessc ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games/ConnectOfek.css
+lessc --compress ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games/ConnectOfek.css
 
-lessc ./static/assets/styles/games/OnlineGo.less ./static/assets/styles/games/OnlineGo.css
+lessc --compress ./static/assets/styles/games/OnlineGo.less ./static/assets/styles/games/OnlineGo.css
 
-lessc ./static/assets/styles/games/Mancala.less ./static/assets/styles/games/Mancala.css
+lessc --compress ./static/assets/styles/games/Mancala.less ./static/assets/styles/games/Mancala.css
 
-lessc ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles/games/UltimateTicTacToe.css
+lessc --compress ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles/games/UltimateTicTacToe.css
 
-lessc ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/LameDuck.css
+lessc --compress ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/LameDuck.css
 
-lessc ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.css
+lessc --compress ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.css
 
-lessc ./static/assets/styles/tools/PrimeFactorizer.less ./static/assets/styles/tools/PrimeFactorizer.css
+lessc --compress ./static/assets/styles/tools/PrimeFactorizer.less ./static/assets/styles/tools/PrimeFactorizer.css
 
-lessc ./static/assets/styles/tools/PasswordGenerator.less ./static/assets/styles/tools/PasswordGenerator.css
+lessc --compress ./static/assets/styles/tools/PasswordGenerator.less ./static/assets/styles/tools/PasswordGenerator.css
 
-lessc ./static/assets/styles/tools/Grapher.less ./static/assets/styles/tools/Grapher.css
+lessc --compress ./static/assets/styles/tools/Grapher.less ./static/assets/styles/tools/Grapher.css
 
-lessc ./static/assets/styles/tools/HappyNumber.less ./static/assets/styles/tools/HappyNumber.css
+lessc --compress ./static/assets/styles/tools/HappyNumber.less ./static/assets/styles/tools/HappyNumber.css
 
-lessc ./static/assets/styles/tools/ReveresLatsLettesr.less ./static/assets/styles/tools/ReveresLatsLettesr.css
+lessc --compress ./static/assets/styles/tools/ReveresLatsLettesr.less ./static/assets/styles/tools/ReveresLatsLettesr.css
 
-lessc ./static/assets/styles/tools/ImageEditor.less ./static/assets/styles/tools/ImageEditor.css
+lessc --compress ./static/assets/styles/tools/ImageEditor.less ./static/assets/styles/tools/ImageEditor.css
 
-lessc ./static/assets/styles/blog/index.less ./static/assets/styles/blog/index.css
+lessc --compress ./static/assets/styles/blog/index.less ./static/assets/styles/blog/index.css
 
