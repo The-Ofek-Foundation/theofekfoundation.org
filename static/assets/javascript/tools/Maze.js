@@ -192,8 +192,7 @@ function startAnimation() {
 		if (animation[anOn] === undefined) {
 			stopAnimation();
 			drawMaze();
-		}
-		else {
+		} else {
 			brush.beginPath();
 			switch (animation[anOn]) {
 				case 0:
@@ -204,8 +203,7 @@ function startAnimation() {
 						brush.fill();
 						maze[animationX][animationY-1] = 2;
 						maze[animationX][animationY-2] = 2;
-					}
-					else {
+					} else {
 						if (animation[anOn - 1] == 1) {
 							maze[animationX][animationY] = 0;
 							rect(animationX, animationY);
@@ -229,8 +227,7 @@ function startAnimation() {
 						brush.fill();
 						maze[animationX][animationY+1] = 2;
 						maze[animationX][animationY+2] = 2;
-					}
-					else {
+					} else {
 						if (animation[anOn - 1] === 0) {
 							maze[animationX][animationY] = 0;
 							rect(animationX, animationY);
@@ -254,8 +251,7 @@ function startAnimation() {
 						brush.fill();
 						maze[animationX+1][animationY] = 2;
 						maze[animationX+2][animationY] = 2;
-					}
-					else {
+					} else {
 						if (animation[anOn - 1] == 3) {
 							maze[animationX][animationY] = 0;
 							rect(animationX, animationY);
@@ -279,8 +275,7 @@ function startAnimation() {
 						brush.fill();
 						maze[animationX-1][animationY] = 2;
 						maze[animationX-2][animationY] = 2;
-					}
-					else {
+					} else {
 						if (animation[anOn - 1] == 2) {
 							maze[animationX][animationY] = 0;
 							rect(animationX, animationY);
@@ -340,8 +335,7 @@ function generateMaze() {
 	if (animate) {
 		generateAnimationRecursive(startx, starty);
 		startAnimation();
-	}
-	else {
+	} else {
 		generateMazeRecursive(startx, starty);
 		drawMaze();
 	}

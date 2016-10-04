@@ -45,8 +45,7 @@ var getFinalNavbarHeight = setInterval(function () {
 		if (navbarHeight) {
 			docReady();
 			clearInterval(getFinalNavbarHeight);
-		}
-		else	navbarHeight = $("#navbar-top").outerHeight();
+		} else navbarHeight = $("#navbar-top").outerHeight();
 	if (tempHeight !== null)
 		countRepeats++;
 	if (countRepeats > 20 && tempHeight !== null) {
@@ -131,8 +130,7 @@ function convertKeysObject(o, revert) {
 		// convertToPython(o);
 		for (key in o)
 			newObject[camelToSnake(key)] = o[key];
-	}
-	else {
+	} else {
 		convertFromPython(o);
 		for (key in o)
 			newObject[snakeToCamel(key)] = o[key];

@@ -72,8 +72,7 @@
 				prevContainer = tp;
 				prevDp = doubPar;
 				$(prevContainer).children(".flippable").addClass("flipped");
-			}
-			else if (target.tagName === "DIV") {
+			} else if (target.tagName === "DIV") {
 				$(prevContainer).children(".flippable").removeClass("flipped");
 				prevContainer = prevDp = target;
 			}

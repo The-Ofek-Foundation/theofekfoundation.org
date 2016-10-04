@@ -40,8 +40,7 @@ function perfectify(num) {
 		if (mode == 'add')
 			if (inverse)
 				total = total.add(Big(Math.pow(power, parseInt(num.toFixed(0).charAt(i), 10))));
-			else
-			total = total.add(Big(Math.pow(parseInt(num.toFixed(0).charAt(i), 10), power)));
+			else total = total.add(Big(Math.pow(parseInt(num.toFixed(0).charAt(i), 10), power)));
 		else if (mode == 'factorial' || mode == 'fact')
 			if (num.toFixed(0).charAt(i) == '0');
 			else total = total.add(fact(Big(num.toFixed(0).charAt(i))));
@@ -80,8 +79,7 @@ function runPerfect(num, previousNumbers, output) {
 			$('#calculations-div').text('Inconclusive');
 		else if (num.eq(Big('1')))
 			$('#calculations-div').text('Happy!');
-		else
-			$('#calculations-div').text('Unhappy');
+		else $('#calculations-div').text('Unhappy');
 		falldownNumber(previousNumbers, ' > ');
 		console.log(String(previousNumbers).replace(/,/g,' > '));
 	}

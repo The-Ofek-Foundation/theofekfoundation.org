@@ -273,8 +273,7 @@ function setupPosition(pos) {
 		if (legalMove(board, col, false)) {
 			playMove(board, col, redTurnGlobal);
 			redTurnGlobal = !redTurnGlobal;
-		}
-		else return false;
+		} else return false;
 	}
 	return true;
 }
@@ -421,7 +420,7 @@ function setTurn(turn, col, row) {
 
 	if (over == -1 && (turn === (aiTurn === 'first') || aiTurn == "both") && mtc && mtc.lastMove)
 		drawHover(mtc.lastMove);
-	else	drawBoard();
+	else drawBoard();
 
 	over = gameOver(board, col, row);
 
@@ -665,8 +664,7 @@ function runMCTSRecursive(times, threshold, callback, count) {
 	else if (lnc3 && (initTimes - times < lnc3 / 5 || initTimes - times < lnc2 / 5 || initTimes - times < lnc1 / 5)) {
 		console.log(initTimes - times, lnc3);
 		callback();
-	}
-	else {
+	} else {
 		lnc3 = lnc2;
 		lnc2 = lnc1;
 		lnc1 = initTimes - times;
@@ -1151,8 +1149,7 @@ $('#back').click(function() {
 	if (aiTurn === 'first' || aiTurn === 'second') {
 		position = position.substring(0, position.length - 2);
 		monteCarloTrials /= Math.pow(increasingFactor, 2);
-	}
-	else {
+	} else {
 		position = position.substring(0, position.length - 1);
 		monteCarloTrials /= increasingFactor;
 	}
@@ -1227,8 +1224,7 @@ class MCTSNode {
 				console.log(MCTSSimulate(board, this.turn, this.gameOver), this);
 			}
 			this.backPropogate(0);
-		}
-		else {
+		} else {
 			var i;
 			var countUnexplored = 0;
 			for (i = 0; i < this.children.length; i++)
@@ -1245,9 +1241,7 @@ class MCTSNode {
 							return;
 						}
 					}
-
-			}
-			else {
+			} else {
 				var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
 				for (i = 1; i < this.children.length; i++) {
 					potential = MCTSChildPotential(this.children[i], this.totalTries);
@@ -1355,8 +1349,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 						break;
 					}
 				r1.parent = null;
-			}
-			else r1 = createMCTSRoot();
+			} else r1 = createMCTSRoot();
 			if (r2.children) {
 				for (var i = 0; i < r2.children.length; i++)
 					if (r2.children[i].lastMove == bestCol) {
@@ -1364,8 +1357,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 						break;
 					}
 				r2.parent = null;
-			}
-			else r2 = createMCTSRoot();
+			} else r2 = createMCTSRoot();
 			// console.log("next turn ", board, over, bestCol, bestRow);
 		}
 		switch (over) {
@@ -1378,8 +1370,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 					v1++;
 					if (output)
 						console.log("c1 wins");
-				}
-				else {
+				} else {
 					v2++;
 					if (output)
 						console.log("c2 wins");
@@ -1390,8 +1381,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 					v2++;
 					if (output)
 						console.log("c2 wins");
-				}
-				else {
+				} else {
 					v1++;
 					if (output)
 						console.log("c1 wins");

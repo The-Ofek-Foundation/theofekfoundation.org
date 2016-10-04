@@ -59,8 +59,7 @@ function resizeElem(elem, width, ratio) {
 			$("#high-score").text(maxScore);
 		}
 		$('#score').text(width + 0.5 | 0);
-	}
-	else {
+	} else {
 		if (width * ratio < 6 || width / ratio < 6) {
 			elem.remove();
 			return;
@@ -68,8 +67,7 @@ function resizeElem(elem, width, ratio) {
 		if (ratio >= 1) {
 			if (Math.abs(width - elem.outerWidth()) > 1)
 				resizeElemAbs(elem, width, width / ratio);
-		}
-		else if (Math.abs(width - elem.outerHeight()) > 1)
+		} else if (Math.abs(width - elem.outerHeight()) > 1)
 			resizeElemAbs(elem, width * ratio, width);
 		elem.data("width", width);
 	}
@@ -100,8 +98,7 @@ function eatElem(hunter, prey)	{
 		maxScore = 25;
 		$("#high-score").text(maxScore);
 		$('#score').text(duck.data("width"));
-	}
-	else prey.remove();
+	} else prey.remove();
 }
 
 function canEat(hunter, prey)	{

@@ -287,8 +287,7 @@ function MCTSCheckGomokuWin(tboard, x, y) {
 			else if (tboard[i][y] == 'B' || tboard[i][y] == 'W') {
 				color = tboard[i][y];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -304,8 +303,7 @@ function MCTSCheckGomokuWin(tboard, x, y) {
 			else if (tboard[x][a] == 'B' || tboard[x][a] == 'W') {
 				color = tboard[x][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -321,8 +319,7 @@ function MCTSCheckGomokuWin(tboard, x, y) {
 			else if (tboard[i][a] == 'B' || tboard[i][a] == 'W') {
 				color = tboard[i][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -338,8 +335,7 @@ function MCTSCheckGomokuWin(tboard, x, y) {
 			else if (tboard[i][a] == 'B' || tboard[i][a] == 'W') {
 				color = tboard[i][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -356,8 +352,7 @@ function checkGomokuWin(x, y) {
 			else if (board[i][y] == 'B' || board[i][y] == 'W') {
 				color = board[i][y];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -373,8 +368,7 @@ function checkGomokuWin(x, y) {
 			else if (board[x][a] == 'B' || board[x][a] == 'W') {
 				color = board[x][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -390,8 +384,7 @@ function checkGomokuWin(x, y) {
 			else if (board[i][a] == 'B' || board[i][a] == 'W') {
 				color = board[i][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -407,8 +400,7 @@ function checkGomokuWin(x, y) {
 			else if (board[i][a] == 'B' || board[i][a] == 'W') {
 				color = board[i][a];
 				countConsecutive = 1;
-			}
-			else	color = 'null';
+			} else color = 'null';
 		else if (countConsecutive == 5)
 			return true;
 	if (countConsecutive == 5)
@@ -482,15 +474,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -507,15 +497,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -532,15 +520,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -557,15 +543,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -582,15 +566,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -607,15 +589,13 @@ function analyzeGomokuColor(black, bturn, startx, endx, starty, endy) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (board[i][a] == ' ')
+			} else if (board[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -642,15 +622,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -667,15 +645,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -692,15 +668,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -717,15 +691,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -742,15 +714,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -767,15 +737,13 @@ function MCTSAnalyzeGomokuColor(tboard, black, bturn, startx, endx, starty, endy
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 1;
-			}
-			else if (tboard[i][a] == ' ')
+			} else if (tboard[i][a] == ' ')
 				openEnds = 1;
 			else if (countConsecutive > 0) {
 				score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
 				countConsecutive = 0;
 				openEnds = 0;
-			}
-			else openEnds = 0;
+			} else openEnds = 0;
 		}
 		if (countConsecutive > 0)
 			score += gomokuShapeScore(countConsecutive, openEnds, bturn == black);
@@ -871,8 +839,7 @@ function sortMoves(bturn) {
 			analysis = analyzeGomoku(!bturn);
 			board[win[0]][win[1]] = ' ';
 			return [[analysis, win[0], win[1]]];
-		}
-		else win = winningMove(!bturn);
+		} else win = winningMove(!bturn);
 		if (win) {
 			board[win[0]][win[1]] = color;
 			analysis = analyzeGomoku(!bturn);
@@ -911,8 +878,7 @@ function possibleMoves(bturn) {
 		analysis = analyzeGomoku(!bturn);
 		board[win[0]][win[1]] = ' ';
 		return [[analysis, win[0], win[1]]];
-	}
-	else win = winningMove(!bturn);
+	} else win = winningMove(!bturn);
 	if (win) {
 		board[win[0]][win[1]] = color;
 		analysis = analyzeGomoku(!bturn);
@@ -980,8 +946,7 @@ function bestGomokuMove(bturn, depth) {
 			analysis = analyzeGomoku(analTurn);
 			if (anti)
 				analysis *= -1;
-		}
-		else {
+		} else {
 			blackResponse = bestGomokuMove(!bturn, depth - 1);
 			analysis = blackResponse[2];
 		}
@@ -1074,8 +1039,7 @@ function MCTSGetChildren(state, father) {
 //		 console.log(win);
 		tempBoard[win[0]][win[1]] = state.turn ? 'B':'W';
 		return [new MCTSNode(new State(tempBoard, !bturn), father, win, MCTSSimulate, MCTSGetChildren, expansionConst)];
-	}
-	else win = MCTSWinningMove(tempBoard, !bturn);
+	} else win = MCTSWinningMove(tempBoard, !bturn);
 	if (win) {
 //		 console.log(win);
 		tempBoard[win[0]][win[1]] = state.turn ? 'B':'W';
@@ -1215,8 +1179,7 @@ function newGame(length, handicap, starttime) {
 			case 1:
 				board[half][half] = 'B';
 		}
-	}
-	else setTurn(true);
+	} else setTurn(true);
 	boards[0] = board;
 	wcaptures = bcaptures = 0;
 	$('#black-stone').text(bcaptures);
@@ -1246,8 +1209,7 @@ function pageReady() {
 	if (docwidth * 0.8 > docheight) {
 		gowidth = docheight;
 		$('#board').css('left', (docwidth * 0.8 - docheight)/3);
-	}
-	else gowidth = docwidth * 0.8;
+	} else gowidth = docwidth * 0.8;
 
 	$('#board').width(gowidth).height(gowidth).css('top', (docheight - gowidth)/2);
 	$('#settings-panel').width(docwidth - $('#board').outerWidth() - parseInt($('#board').css('left'), 10));
@@ -1271,8 +1233,7 @@ $(window).resize(function(event) {
 	if (docwidth * 0.8 > docheight) {
 		gowidth = docheight;
 		$('#board').css('left', (docwidth * 0.8 - docheight)/3);
-	}
-	else gowidth = docwidth * 0.8;
+	} else gowidth = docwidth * 0.8;
 
 	$('#board').width(gowidth).height(gowidth).css('top', (docheight - gowidth)/2);
 	$('#settings-panel').width(docwidth - $('#board').outerWidth() - parseInt($('#board').css('left'), 10));
@@ -1300,8 +1261,7 @@ function checkDeadHelper(dead, killChar)	{
 						i -= 1;
 					if (a > 0)
 						a -= 2;
-				}
-				else {
+				} else {
 					if (i > 0 && board[i-1][a] == killChar && dead[i-1][a] != -1) {
 						dead[i-1][a] = -1;
 						changed = true;
@@ -1486,8 +1446,7 @@ $('#btn-undo').click(function() {
 	if (boardon < 2) {
 		alert("No moves to undo");
 		return;
-	}
-	else {
+	} else {
 		set(board, getBoard(boardon-2));
 		boardon--;
 		setTurn(!blackturn);
@@ -1500,8 +1459,7 @@ $('#btn-redo').click(function() {
 	if (boardon >= maxTurn) {
 		alert("No moves to redo");
 		return;
-	}
-	else {
+	} else {
 		set(board, getBoard(boardon));
 		boardon++;
 		setTurn(!blackturn);

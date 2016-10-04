@@ -200,14 +200,12 @@ function drawFunction(expr, noSave, dom, deriv) {
 				}
 				pen.beginPath();
 				pen.moveTo(X(x), Y(y));
-			}
-			else {
+			} else {
 				pen.lineTo(X(x), Y(y));
 				drawing = true;
 			}
 		}
-	}
-	else for (x = dom[0]; x <= dom[1]; x += increment)
+	} else for (x = dom[0]; x <= dom[1]; x += increment)
 		pen.fillRect(X(x), Y(evaluate(expr, x)), 1, 1);
 	pen.stroke();
 	if (!noSave)
@@ -243,17 +241,14 @@ var animateFunctionDrawing = function(expr, dom, x, prevY, drawing, noSave, eval
 				pen.lineTo(X(x), Y(y));
 				pen.stroke();
 			}
-		}
-		else if (!prevY.re) {
+		} else if (!prevY.re) {
 			pen.beginPath();
 			pen.moveTo(X(x - increment), Y(prevY));
 			pen.lineTo(X(x), Y(y));
 			pen.stroke();
 			drawing = true;
 		}
-	}
-	else
-		pen.fillRect(X(x), Y(y), 1, 1);
+	} else pen.fillRect(X(x), Y(y), 1, 1);
 
 	if (!stopTimeout)
 		requestAnimationFrame(function() {

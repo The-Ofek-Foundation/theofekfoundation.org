@@ -306,14 +306,12 @@ function getBestMoveMCTS(callback) {
 				callback(-1);
 			else callback(bestChild.lastMove);
 		});
-	}
-	else if (callback) {
+	} else if (callback) {
 		bestChild = mostTriedChild(globalRoot, null);
 		if (!bestChild)
 			callback(-1);
 		else callback(bestChild.lastMove);
-	}
-	else {
+	} else {
 		bestChild = mostTriedChild(globalRoot, null);
 		if (!bestChild)
 			return -1;
@@ -525,16 +523,13 @@ function drawPit(pitLoc, x, y, width, height) {
 	else if (pitLoc == lastMoveGlobal) {
 		brush.fillStyle = "#76EE00"; // green
 		brush.fill();
-	}
-	else if (pitLoc == lastCaptureGlobal) {
+	} else if (pitLoc == lastCaptureGlobal) {
 		brush.fillStyle = "#CD3333"; // light red
 		brush.fill();
-	}
-	else if (pitLoc == lastSowGlobal) {
+	} else if (pitLoc == lastSowGlobal) {
 		brush.fillStyle = "#815532"; // brown
 		brush.fill();
-	}
-	else if (board[lastMoveGlobal] > 0 || lastSowGlobal == lastMoveGlobal || (lastSowGlobal > lastMoveGlobal && pitLoc > lastMoveGlobal && pitLoc < lastSowGlobal) || (lastSowGlobal < lastMoveGlobal && (pitLoc > lastMoveGlobal || pitLoc < lastSowGlobal))) {
+	} else if (board[lastMoveGlobal] > 0 || lastSowGlobal == lastMoveGlobal || (lastSowGlobal > lastMoveGlobal && pitLoc > lastMoveGlobal && pitLoc < lastSowGlobal) || (lastSowGlobal < lastMoveGlobal && (pitLoc > lastMoveGlobal || pitLoc < lastSowGlobal))) {
 		if ((pitLoc === 0 && !topTurnGlobal) || (pitLoc == pits + 1 && topTurnGlobal));
 		else {
 			brush.fillStyle = "#C3834C"; // light brown
@@ -549,8 +544,7 @@ function drawPit(pitLoc, x, y, width, height) {
 		var ratio = tries / globalRoot.totalTries;
 		brush.lineWidth = ratio * 2 * pits;
 //		 brush.strokeStyle = getPitColor(ratio);
-	}
-	else	brush.lineWidth = 2;
+	} else brush.lineWidth = 2;
 	brush.stroke();
 	brush.fillStyle = "black";
 	brush.shadowBlur = 0;

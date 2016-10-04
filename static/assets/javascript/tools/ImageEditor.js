@@ -72,8 +72,7 @@ function swapImageWithOriginal() {
 			pixels[i] = pixelsSave[i];
 		context.putImageData(data, 0, 0, 0, 0, data.width, data.height);
 		original = false;
-	}
-	else if (original === false) {
+	} else if (original === false) {
 		pixelsSave = new Array(pixels.length);
 		for (i = 0; i < pixels.length; i++) {
 			pixelsSave[i] = pixels[i];
@@ -126,8 +125,7 @@ function getAverageColor(data, pixels, x, y, radius, colorInc) {
 				count++;
 			}
 		avRGB[0] /= count; avRGB[1] /= count; avRGB[2] /= count;
-	}
-	else {
+	} else {
 		for (tx = x - radius; tx <= x + radius; tx++)
 			for (ty = y - radius; ty <= y + radius; ty++) {
 				if (tx < 0 || ty < 0 || tx >= data.width || ty >= data.height)
@@ -168,8 +166,7 @@ function blur(params) {
 				pixels[i] = avRGB[0];
 				pixels[i + 1] = avRGB[1];
 				pixels[i + 2] = avRGB[2];
-			}
-			else pixels[i + colorInc] = avRGB[colorInc];
+			} else pixels[i + colorInc] = avRGB[colorInc];
 		}
 }
 
@@ -184,19 +181,16 @@ function tint(params) {
 					pixels[i] += parseInt(magnitude.substring(1), 10);
 					pixels[i + 1] += parseInt(magnitude.substring(1), 10);
 					pixels[i + 2] += parseInt(magnitude.substring(1), 10);
-				}
-				else if (magnitude.charAt(0) == '-') {
+				} else if (magnitude.charAt(0) == '-') {
 					pixels[i] -= parseInt(magnitude.substring(1), 10);
 					pixels[i + 1] -= parseInt(magnitude.substring(1), 10);
 					pixels[i + 2] -= parseInt(magnitude.substring(1), 10);
-				}
-				else {
+				} else {
 					pixels[i] = parseInt(magnitude, 10);
 					pixels[i + 1] = parseInt(magnitude, 10);
 					pixels[i + 2] = parseInt(magnitude, 10);
 				}
-			else
-				if (magnitude.charAt(0) == '+')
+			else if (magnitude.charAt(0) == '+')
 					pixels[i + colorInc] += parseInt(magnitude.substring(1), 10);
 				else if (magnitude.charAt(0) == '-')
 					pixels[i + colorInc] -= parseInt(magnitude.substring(1), 10);
@@ -261,8 +255,7 @@ function pixelate(params) {
 					i = (yt * 4) * data.width + xt * 4;
 					if (colorInc >= 0) {
 						pixels[i + colorInc] = avRGB[colorInc];
-					}
-					else {
+					} else {
 						pixels[i] = avRGB[0];
 						pixels[i + 1] = avRGB[1];
 						pixels[i + 2] = avRGB[2];
@@ -280,8 +273,7 @@ function clear(params) {
 				pixels[i] = pixels[i] * 2 - avRGB[0];
 				pixels[i + 1] = pixels[i + 1] * 2 - avRGB[1];
 				pixels[i + 2] = pixels[i + 2] * 2 - avRGB[2];
-			}
-			else pixels[i + colorInc] = pixels[i + colorInc] * 2 - avRGB[colorInc];
+			} else pixels[i + colorInc] = pixels[i + colorInc] * 2 - avRGB[colorInc];
 		}
 }
 
@@ -295,8 +287,7 @@ function mixed(params) {
 					pixels[i] = pixels[i] * 2 - avRGB[0];
 					pixels[i + 1] = pixels[i + 1] * 2 - avRGB[1];
 					pixels[i + 2] = pixels[i + 2] * 2 - avRGB[2];
-				}
-				else {
+				} else {
 					pixels[i] = avRGB[0];
 					pixels[i + 1] = avRGB[1];
 					pixels[i + 2] = avRGB[2];
@@ -316,8 +307,7 @@ function grayscale(params) {
 				pixels[i] = avg;
 				pixels[i + 1] = avg;
 				pixels[i + 2] = avg;
-			}
-			else pixels[i + colorInc] = avg;
+			} else pixels[i + colorInc] = avg;
 		}
 }
 
@@ -329,8 +319,7 @@ function invert(params) {
 				pixels[i] = 255 - pixels[i];
 				pixels[i + 1] = 255 - pixels[i + 1];
 				pixels[i + 2] = 255 - pixels[i + 2];
-			}
-			else pixels[i + colorInc] = 255 - pixels[i + colorInc];
+			} else pixels[i + colorInc] = 255 - pixels[i + colorInc];
 		}
 }
 
@@ -368,8 +357,7 @@ function sandwich(params) {
 				pixels[i + 2] = avRGB[2];
 			}
 		}
-	else
-		for (ndt = 0; ndt < notdlength; ndt++) {
+	else for (ndt = 0; ndt < notdlength; ndt++) {
 			avRGB = [0, 0, 0];
 			count = 0;
 			for (dt = 0; dt < dlength; dt++) {
@@ -420,8 +408,7 @@ function stripper(params) {
 					pixels[i + 2] = avRGB[2];
 				}
 			}
-	else
-		for (x = 0; x < data.width; x++)
+	else for (x = 0; x < data.width; x++)
 			for (y = 0; y < data.height; y++) {
 				avRGB = [0, 0, 0];
 				count = 0;
@@ -460,8 +447,7 @@ function sepia(params) {
 				pixels[i] = outputColors[0];
 				pixels[i + 1] = outputColors[1];
 				pixels[i + 2] = outputColors[2];
-			}
-			else pixels[i + colorInc] = outputColors[colorInc];
+			} else pixels[i + colorInc] = outputColors[colorInc];
 		}
 }
 
@@ -473,8 +459,7 @@ function darker(params) {
 				pixels[i] *= 0.95;
 				pixels[i + 1] *= 0.95;
 				pixels[i + 2] *= 0.95;
-			}
-			else pixels[i + colorInc] *= 0.95;
+			} else pixels[i + colorInc] *= 0.95;
 		}
 }
 
@@ -486,8 +471,7 @@ function lighter(params) {
 				pixels[i] *= 1.05;
 				pixels[i + 1] *= 1.05;
 				pixels[i + 2] *= 1.05;
-			}
-			else pixels[i + colorInc] *= 1.05;
+			} else pixels[i + colorInc] *= 1.05;
 		}
 }
 
