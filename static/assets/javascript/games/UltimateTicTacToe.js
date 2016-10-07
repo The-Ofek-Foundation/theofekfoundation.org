@@ -275,7 +275,7 @@ function setTurn(turn, move) {
 
 //	 if (!over && (turn === aiTurn || aiTurn == "both") && mtc && mtc.lastMove)
 //		 drawHover(mtc.lastMove[0]);
-//	 else	drawBoard();
+//	 else drawBoard();
 	drawBoard();
 
 	if (over) {
@@ -551,8 +551,7 @@ function MCTSGetChildren(father, tboard) {
 						children.push(new MCTSNode(father, !turn, [i, a]));
 			return children;
 		}
-	}
-	else {
+	} else {
 		for (i = 0; i < 9; i++)
 			for (a = 0; a < 9; a++)
 				children.push(new MCTSNode(father, !turn, [i, a]));
@@ -605,8 +604,7 @@ function MCTSSimulate(father, tboard) {
 							if (count === 0)
 								break outer;
 							else count--;
-			}
-			else {
+			} else {
 				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
 					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
 						nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
@@ -629,8 +627,7 @@ function MCTSSimulate(father, tboard) {
 											break outer1;
 										else count--;
 					}
-			}
-		else if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+			} else if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
 				do {
 					x = Math.floor(nextCenter[0] - 1 + Math.random() * 3);
 					y = Math.floor(nextCenter[1] - 1 + Math.random() * 3);
@@ -714,16 +711,15 @@ function mostTriedChild(root, exclude) {
 	return child;
 }
 
-function bestRatioChild(root, exclude) {
-	var bestRatio = 0, maxTries = 0, child = null;
+function bestRatioChild(root) {
 	if (!root.children)
 		return null;
+	var child = root.children[0], bestRatio = child.misses / child.hits;
 	if (root.children.length === 1)
-		return root.children[0];
-	for (var i = 0; i < root.children.length; i++)
-		if (root.children[i] !== exclude && (root.children[i].totalTries > maxTries * 2 || root.children[i].misses / root.children[i].hits > bestRatio && root.children[i].totalTries > maxTries / 2)) {
+		return child;
+	for (var i = 1; i < root.children.length; i++)
+		if (root.children[i].misses / root.children[i].hits > bestRatio) {
 			bestRatio = root.children[i].misses / root.children[i].hits;
-			maxTries = root.children[i].totalTries;
 			child = root.children[i];
 		}
 	return child;
@@ -998,8 +994,18 @@ function playNormalMove(timeToThink, callback) {
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
 			globalRoot.chooseChild(simpleCopy(board));
-	// console.log("Normal - " + globalRoot.totalTries);
+	// console.log("Normal\t- " + globalRoot.totalTries);
 	playTestMove(mostTriedChild(globalRoot, null));
+	callback();
+}
+
+function playNormalMoveRatio(timeToThink, callback) {
+	var startTime = new Date().getTime();
+	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
+		for (var i = 0; i < 100; i++)
+			globalRoot.chooseChild(simpleCopy(board));
+	// console.log("Normal\t- " + globalRoot.totalTries);
+	playTestMove(bestRatioChild(globalRoot, null));
 	callback();
 }
 
@@ -1021,7 +1027,7 @@ function playMultithreadingMove(timeToThink, callback) {
 			combineRoots(globalRoot, data.root, board);
 			workersCount--;
 			if (workersCount === 0) {
-				// console.log("Multi - " + globalRoot.totalTries);
+				// console.log("Multi\t- " + globalRoot.totalTries);
 				playTestMove(bestRatioChild(globalRoot, null));
 				callback();
 			}
@@ -1030,8 +1036,8 @@ function playMultithreadingMove(timeToThink, callback) {
 }
 
 function testMultithreading(numTrials, timeToThink, init, v1, v2) {
-	if (!workers)
-		initWorkers();
+	// if (!workers)
+	// 	initWorkers();
 	if (numTrials === 0) {
 		console.log(v1 > v2 ? 'Multi-threading is better!':'Multi-threading is worse :/');
 		return;
@@ -1071,7 +1077,8 @@ function testMultithreading(numTrials, timeToThink, init, v1, v2) {
 			testMultithreading(numTrials, timeToThink, init, v1, v2);
 		};
 		if (xTurnGlobal === (numTrials % 2 === 0))
-			playMultithreadingMove(timeToThink, cb);
+			playNormalMoveRatio(timeToThink, cb);
+			// playMultithreadingMove(timeToThink, cb);
 		else playNormalMove(timeToThink, cb);
 		return;
 	}
@@ -1128,8 +1135,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 						break;
 					}
 				r1.parent = null;
-			}
-			else r1 = createMCTSRoot();
+			} else r1 = createMCTSRoot();
 			if (r2.children) {
 				for (var i = 0; i < r2.children.length; i++)
 					if (r2.children[i].lastMove[0] == bestMove[0] && r2.children[i].lastMove[1] == bestMove[1]) {
@@ -1137,8 +1143,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 						break;
 					}
 				r2.parent = null;
-			}
-			else r2 = createMCTSRoot();
+			} else r2 = createMCTSRoot();
 			// console.log("next turn ", board);
 		}
 		switch (parseOver(over)) {
@@ -1151,8 +1156,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 					v1++;
 					if (output)
 						console.log("c1 wins");
-				}
-				else {
+				} else {
 					v2++;
 					if (output)
 						console.log("c2 wins");
@@ -1163,8 +1167,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 					v2++;
 					if (output)
 						console.log("c2 wins");
-				}
-				else {
+				} else {
 					v1++;
 					if (output)
 						console.log("c1 wins");
