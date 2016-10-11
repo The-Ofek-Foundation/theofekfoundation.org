@@ -534,12 +534,12 @@ function getCookie(cname) {
 }
 
 function MCTSGetChildren(father, tboard) {
+	if (father.result !== 10)
+		return [];
+
 	var turn = father.turn;
 	var children = [];
 	var i, a;
-
-	if (father.result !== undefined)
-		return [];
 
 	if (father.lastMove) {
 		var nextCenter = [father.lastMove[0] % 3 * 3 + 1, father.lastMove[1] % 3 * 3 + 1];
@@ -569,7 +569,7 @@ function MCTSGetChildren(father, tboard) {
 }
 
 function MCTSSimulate(father, tboard) {
-	if (father.result !== undefined)
+	if (father.result !== 10)
 		return father.result;
 
 	if (gameOver(tboard, father.turn ? 6:5, father.lastMove))
@@ -755,10 +755,12 @@ class MCTSNode {
 		this.hits = 0;
 		this.misses = 0;
 		this.totalTries = 0;
+		this.children = [];
+		this.result = 10; // never gonna happen
 	}
 
 	chooseChild(board) {
-		if (this.children === undefined)
+		if (this.totalTries === 1 || this.parent === null)
 			this.children = MCTSGetChildren(this, board);
 		if (this.children.length === 0) // leaf node
 			this.runSimulation(board);
