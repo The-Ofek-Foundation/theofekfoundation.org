@@ -650,7 +650,6 @@ function runMCTS(time) {
 
 function getCertainty(root) {
 	var bestChild = mostTriedChild(root, null);
-	console.log(root);
 	var ratio = mostTriedChild(root, bestChild).totalTries / bestChild.totalTries;
 	var ratioWins = bestChild.hits < bestChild.misses ? (bestChild.hits / bestChild.misses * 2):(bestChild.misses / bestChild.hits * 3);
 	return ratio > ratioWins ? ratioWins:ratio;
@@ -732,13 +731,16 @@ class MCTSNode {
 		this.hits = 0;
 		this.misses = 0;
 		this.totalTries = 0;
+		this.hasChildren = false;
 		this.children = [];
 		this.result = 10; // never gonna happen
 	}
 
 	chooseChild(board) {
-		if (this.totalTries === 1 || this.parent === null)
+		if (this.hasChildren === false) {
+			this.hasChildren = true;
 			this.children = MCTSGetChildren(this, board);
+		}
 		if (this.children.length === 0) // leaf node
 			this.runSimulation(board);
 		else {
