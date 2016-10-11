@@ -25,6 +25,8 @@ class GameSettings {
 	}
 
 	getOrSet(key, val) {
+		if (typeof val === 'object')
+			val = val[key];
 		if (this.get(key))
 			return castType(this.get(key), val);
 		return this.set(key, val);
