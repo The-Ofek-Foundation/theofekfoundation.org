@@ -72,7 +72,7 @@ def populate():
 		category = category,
 		full_url = 'http://theofekfoundation.org/games/UltimateTicTacToe/',
 		pathname = 'games/UltimateTicTacToe/',
-		full_description = "Play Ultimate Tic Tac Toe online against the computer with a Monte Carlo tree search AI!",
+		full_description = "Play Ultimate Tic Tac Toe online against the computer with a Monte Carlo tree search AI! This is currently the strongest Ultimate Tic Tac Toe bot, AI, computer, out there, by far!",
 		description = "Ultimate Tic Tac Toe online with a strong Monte Carlo AI computer!",
 		title = 'Ultimate Tic Tac Toe',
 		name = 'Ultimate Tic Tac Toe',
