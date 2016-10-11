@@ -583,63 +583,39 @@ function MCTSSimulate(father, tboard) {
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
 	var x, y, count;
-	var swap = false;
-	var tries;
 	while (!done) {
 		nextCenter = [lm[0] % 3 * 3 + 1, lm[1] % 3 * 3 + 1];
 		nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
 		count = 0;
-		tries = 0;
-		if (swap)
-			if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
-				for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
-					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
-						if (tboard[x][y] === 0)
-							count++;
-				count = Math.floor(Math.random() * count);
-				outer:
-				for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
-					for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
-						if (tboard[x][y] === 0)
-							if (count === 0)
-								break outer;
-							else count--;
-			} else {
-				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
-					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
-						nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-						if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
-							for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
-								for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
-									if (tboard[x][y] === 0)
-										count++;
-					}
-				count = Math.floor(Math.random() * count);
-				outer1:
-				for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
-					for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
-						nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-						if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
-							for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
-								for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
-									if (tboard[x][y] === 0)
-										if (count === 0)
-											break outer1;
-										else count--;
-					}
-			} else if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
-				do {
-					x = Math.floor(nextCenter[0] - 1 + Math.random() * 3);
-					y = Math.floor(nextCenter[1] - 1 + Math.random() * 3);
-					tries++;
-				}	while (tboard[x][y] !== 0);
-			else do {
-				x = Math.floor(Math.random() * 9);
-				y = Math.floor(Math.random() * 9);
-				tries++;
-			}	while (!legalCenter(tboard, [x, y]) || tboard[x][y] !== 0);
-		if (tries > 1)
-			swap = true;
+		if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
+			do {
+				x = Math.floor(nextCenter[0] - 1 + Math.random() * 3);
+				y = Math.floor(nextCenter[1] - 1 + Math.random() * 3);
+			}	while (tboard[x][y] !== 0);
+		} else {
+			for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
+				for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
+					nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
+					if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+						for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+							for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
+								if (tboard[x][y] === 0)
+									count++;
+				}
+			count = Math.floor(Math.random() * count);
+			outer1:
+			for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
+				for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
+					nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
+					if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+						for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
+							for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
+								if (tboard[x][y] === 0)
+									if (count === 0)
+										break outer1;
+									else count--;
+				}
+		}
 		playMove(tboard, [x, y], turn);
 		done = gameOver(tboard, turn ? 5:6, [x, y]);
 		if (tieGame(tboard))
@@ -674,6 +650,7 @@ function runMCTS(time) {
 
 function getCertainty(root) {
 	var bestChild = mostTriedChild(root, null);
+	console.log(root);
 	var ratio = mostTriedChild(root, bestChild).totalTries / bestChild.totalTries;
 	var ratioWins = bestChild.hits < bestChild.misses ? (bestChild.hits / bestChild.misses * 2):(bestChild.misses / bestChild.hits * 3);
 	return ratio > ratioWins ? ratioWins:ratio;
