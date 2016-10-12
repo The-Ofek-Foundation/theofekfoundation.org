@@ -343,7 +343,7 @@ function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
 	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
 	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
 	tboard[move[0]][move[1]] = color;
-	if (localWin(tboard, color, move, startx, starty))
+	if (emptyLeft < 8 && localWin(tboard, color, move, startx, starty))
 		tboard[centerx][centery] = color + 4;
 	else if (emptyLeft === 1)
 		tboard[centerx][centery] += 2;
