@@ -333,6 +333,9 @@ function playMove(tboard, move, xturn) {
 		tboard[centerx][centery] = color + 4;
 	else if (squareFull(tboard, startx, starty))
 		tboard[centerx][centery] += 2;
+	else return false;
+	return true;
+	// returns true if full, false otherwise
 }
 
 function localWin(tboard, color, move, startx, starty) {
@@ -403,7 +406,7 @@ function gameOver(tboard, color, m) {
 		return true;
 	gg = true;
 
-	if (Math.floor(move[0] / 3) !== Math.floor(move[1] / 3))
+	if ((move[0] - move[0] % 3) / 3 !== (move[1] - move[1] % 3) / 3)
 		gg = false;
 	else for (i = 1, a = 1; i < 9; i+=3, a+=3)
 		if (tboard[i][a] != color) {
@@ -415,7 +418,7 @@ function gameOver(tboard, color, m) {
 		return true;
 	gg = true;
 
-	if (Math.floor(move[0] / 3) != 2 - Math.floor(move[1] / 3))
+	if ((move[0] - move[0] % 3) / 3 != 2 - (move[1] - move[1] % 3) / 3)
 		return false;
 	else for (i = 1, a = 7; i < 9; i+=3, a-=3)
 		if (tboard[i][a] !== color)
@@ -565,7 +568,28 @@ function MCTSGetChildren(father, tboard) {
 					for (a = A-1; a <= A+1; a++)
 						if (tboard[i][a] === 0)
 							children.push(new MCTSNode(father, !turn, [i, a]));
-	return children;
+	return children; // if ransom is paid
+}
+
+function getEmptySpots(tboard) {
+	var emptySpots = new Array(3);
+	var count, I, A, i, a;
+	var nextCenterColor;
+	for (i = 0; i < emptySpots.length; i++)
+		emptySpots[i] = new Array(3);
+
+	for (I = 1; I < 9; I += 3)
+		for (A = 1; A < 9; A += 3) {
+			nextCenterColor = tboard[I][A];
+			count = 0;
+			if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+				for (i = I - 1; i <= I + 1; i++)
+					for (a = A - 1; a <= A + 1; a++)
+						if (tboard[i][a] === 0)
+							count++;
+			emptySpots[(I - 1) / 3][(A - 1) / 3] = count;
+		}
+	return emptySpots;
 }
 
 function MCTSSimulate(father, tboard) {
@@ -582,27 +606,27 @@ function MCTSSimulate(father, tboard) {
 
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
-	var x, y, count;
+	var x, y, count, i, a, I, A;
+	var emptySpots = getEmptySpots(tboard);
+	var currentEmpty, totalEmpty = 0;
+	for (i = 0; i < 3; i++)
+		for (a = 0; a < 3; a++)
+			totalEmpty += emptySpots[i][a];
+
 	while (!done) {
 		nextCenter = [lm[0] % 3 * 3 + 1, lm[1] % 3 * 3 + 1];
-		nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-		count = 0;
-		if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
-			do {
-				x = Math.floor(nextCenter[0] - 1 + Math.random() * 3);
-				y = Math.floor(nextCenter[1] - 1 + Math.random() * 3);
-			}	while (tboard[x][y] !== 0);
+		currentEmpty = emptySpots[(nextCenter[0] - nextCenter[0] % 3) / 3][(nextCenter[1] - nextCenter[1] % 3) / 3];
+		if (currentEmpty !== 0) {
+			count = Math.floor(Math.random() * currentEmpty);
+			outer:
+			for (x = nextCenter[0] - 1; x <= nextCenter[0] + 1; x++)
+				for (y = nextCenter[1] - 1; y <= nextCenter[1] + 1; y++)
+					if (tboard[x][y] === 0)
+						if (count === 0)
+							break outer;
+						else count--;
 		} else {
-			for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
-				for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
-					nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-					if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
-						for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
-							for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
-								if (tboard[x][y] === 0)
-									count++;
-				}
-			count = Math.floor(Math.random() * count);
+			count = Math.floor(Math.random() * totalEmpty);
 			outer1:
 			for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
 				for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
@@ -616,10 +640,16 @@ function MCTSSimulate(father, tboard) {
 									else count--;
 				}
 		}
-		playMove(tboard, [x, y], turn);
-		done = gameOver(tboard, turn ? 5:6, [x, y]);
-		if (tieGame(tboard))
-			return tie ? (father.turn !== anti ? 1:-1):0;
+		if (playMove(tboard, [x, y], turn)) {
+			totalEmpty -= emptySpots[(x - x % 3) / 3][(y - y % 3) / 3];
+			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
+			done = gameOver(tboard, turn ? 5:6, [x, y]);
+			if (totalEmpty === 0)
+				return tie ? (father.turn !== anti ? 1:-1):0;
+		} else {
+			totalEmpty--;
+			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3]--;
+		}
 		lm = [x, y];
 		turn = !turn;
 	}
@@ -628,6 +658,31 @@ function MCTSSimulate(father, tboard) {
 	if ((turn === father.turn) !== anti)
 		return -1;
 	return 1;
+}
+
+function syntaxSpeed(numTrials) {
+	let arr = new Array(3);
+	for (let i = 0; i < arr.length; i++) {
+		arr[i] = new Array(3);
+		for (let a = 0; a < arr[i].length; a++)
+			arr[i][a] = i * a + i + a;
+	}
+	let x = 5, y = 3;
+	let startTime = new Date().getTime();
+	for (let i = 0; i < numTrials; i++) {
+		// arr[Math.floor(x / 3)][Math.floor(y / 3)];
+		Math.floor(Math.random() * 8);
+	}
+	console.log((new Date().getTime() - startTime) / 1E3);
+
+	startTime = new Date().getTime();
+	let ran;
+	for (let i = 0; i < numTrials; i++) {
+		ran = Math.random() * 8;
+		ran - ran % 3;
+		// arr[(x - x % 3) / 3][(y - y % 3) / 3];
+	}
+	console.log((new Date().getTime() - startTime) / 1E3);
 }
 
 function createMCTSRoot() {
