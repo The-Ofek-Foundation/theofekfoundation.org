@@ -340,36 +340,44 @@ function playMove(tboard, move, xturn) {
 
 function localWin(tboard, color, move, startx, starty) {
 	var i, a;
+	var gg = true;
 
-	for (var trial = 0; trial < 4; trial++) {
-		cont:
-		switch (trial) {
-			case 0:
-				for (i = startx; i < startx + 3; i++)
-					if (tboard[i][move[1]] !== color)
-						break cont;
-				return true;
-			case 1:
-				for (a = starty; a < starty + 3; a++)
-					if (tboard[move[0]][a] !== color)
-						break cont;
-				return true;
-			case 2:
-				if (move[0] % 3 !== move[1] % 3)
-					break;
-				for (i = startx, a = starty; i < startx + 3; i++, a++)
-					if (tboard[i][a] !== color)
-						break cont;
-				return true;
-			case 3:
-				if (move[0] % 3 !== 2 - move[1] % 3)
-					break;
-				for (i = startx, a = starty + 2; i < startx + 3; i++, a--)
-					if (tboard[i][a] !== color)
-						break cont;
-				return true;
+	for (i = startx; i < startx + 3; i++)
+		if (tboard[i][move[1]] !== color) {
+			gg = false;
+			break;
 		}
+	if (gg) return true;
+	gg = true;
+
+	for (a = starty; a < starty + 3; a++)
+		if (tboard[move[0]][a] !== color) {
+			gg = false;
+			break;
+		}
+	if (gg) return true;
+
+	if (move[0] % 3 === move[1] % 3) {
+		gg = true;
+		for (i = startx, a = starty; i < startx + 3; i++, a++)
+			if (tboard[i][a] !== color) {
+				gg = false;
+				break;
+			}
+		if (gg) return true;
 	}
+
+
+	if (move[0] % 3 === 2 - move[1] % 3) {
+		gg = true;
+		for (i = startx, a = starty + 2; i < startx + 3; i++, a--)
+			if (tboard[i][a] !== color) {
+				gg = false;
+				break;
+			}
+		if (gg) return true;
+	}
+
 	return false;
 }
 
