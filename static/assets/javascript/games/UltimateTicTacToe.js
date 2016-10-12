@@ -338,6 +338,20 @@ function playMove(tboard, move, xturn) {
 	// returns true if full, false otherwise
 }
 
+function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
+	var color = xturn ? 1:2;
+	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
+	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
+	tboard[move[0]][move[1]] = color;
+	if (localWin(tboard, color, move, startx, starty))
+		tboard[centerx][centery] = color + 4;
+	else if (emptyLeft === 1)
+		tboard[centerx][centery] += 2;
+	else return false;
+	return true;
+	// returns true if full, false otherwise
+}
+
 function localWin(tboard, color, move, startx, starty) {
 	var i, a;
 	var gg = true;
@@ -616,7 +630,7 @@ function MCTSSimulate(father, tboard) {
 	var nextCenter, nextCenterColor;
 	var x, y, count, i, a, I, A;
 	var emptySpots = getEmptySpots(tboard);
-	var currentEmpty, totalEmpty = 0;
+	var currentEmpty, totalEmpty = 0, emptyLeft;
 	for (i = 0; i < 3; i++)
 		for (a = 0; a < 3; a++)
 			totalEmpty += emptySpots[i][a];
@@ -648,8 +662,9 @@ function MCTSSimulate(father, tboard) {
 									else count--;
 				}
 		}
-		if (playMove(tboard, [x, y], turn)) {
-			totalEmpty -= emptySpots[(x - x % 3) / 3][(y - y % 3) / 3];
+		emptyLeft = emptySpots[(x - x % 3) / 3][(y - y % 3) / 3];
+		if (playMoveEmptyLeft(tboard, [x, y], turn, emptyLeft)) {
+			totalEmpty -= emptyLeft;
 			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
 			done = gameOver(tboard, turn ? 5:6, [x, y]);
 			if (totalEmpty === 0)
