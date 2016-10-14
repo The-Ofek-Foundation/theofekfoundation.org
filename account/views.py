@@ -16,12 +16,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models.query_utils import Q
 from django.conf import settings
-from main_app.models import WebsiteCategory, WebsitePage, WebsiteForm
+from account import pages
 from django.http import JsonResponse
 import copy
-
-main_category = WebsiteCategory.objects.get(name='Account')
-main_pages = WebsitePage.objects.filter(category=main_category)
 
 def register(request):
 	# Like before, get the request's context.
@@ -78,12 +75,10 @@ def register(request):
 		user_form = UserForm()
 		profile_form = UserProfileForm()
 
-	page = main_pages.get(name='Register')
-	form = WebsiteForm.objects.get(page=page, name='register_form')
+	page = pages.register
 
 	context_dict = {
 		'page': page,
-		'html_form': form,
 		'user_form': user_form,
 		'profile_form': profile_form,
 		'registered': registered,
@@ -93,8 +88,7 @@ def register(request):
 
 def user_login(request):
 	# Like before, obtain the context for the user's request.
-	page = main_pages.get(name='Login')
-	form = WebsiteForm.objects.get(page=page, name='login_form')
+	page = pages.login
 
 	# If the request is a HTTP POST, try to pull out the relevant information.
 	if request.method == 'POST':
@@ -125,14 +119,14 @@ def user_login(request):
 			# Bad login details were provided. So we can't log the user in.
 			print ("Invalid login details: {0}, {1}".format(username, password))
 			error_message = "Invalid login details supplied."
-		return render(request, 'account/login.html', {'page': page, 'html_form': form, 'error_message': error_message})
+		return render(request, 'account/login.html', {'page': page, 'error_message': error_message})
 
 	# The request is not a HTTP POST, so display the login form.
 	# This scenario would most likely be a HTTP GET.
 	else:
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
-		return render(request, 'account/login.html', {'page': page, 'html_form': form})
+		return render(request, 'account/login.html', {'page': page})
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -150,11 +144,7 @@ class ResetPasswordRequestView(FormView):
 
 	def get_context_data(self, **kwargs):
 		context = super(ResetPasswordRequestView, self).get_context_data(**kwargs)
-		page = main_pages.get(name='Reset Password')
-		form = WebsiteForm.objects.get(page=page, name='password_reset_form')
-
-		context['page'] = page
-		context['html_form'] = form
+		context['page'] = pages.reset_password
 		if self.error_message:
 			context['error_message'] = self.error_message
 		return context
@@ -221,16 +211,12 @@ class ResetPasswordRequestView(FormView):
 
 class PasswordResetConfirmView(FormView):
 	template_name = "account/reset_password.html"
-	success_url = '/' + main_pages.get(name='Login').pathname
+	success_url = '/' + pages.login['pathname']
 	form_class = SetPasswordForm
 
 	def get_context_data(self, **kwargs):
 		context = super(PasswordResetConfirmView, self).get_context_data(**kwargs)
-		page = main_pages.get(name='Reset Password Confirm')
-		form = WebsiteForm.objects.get(page=page, name='password_reset_confirm_form')
-
-		context['page'] = page
-		context['html_form'] = form
+		context['page'] = pages.reset_password_confirm
 		return context
 
 	def post(self, request, uidb64=None, token=None, *arg, **kwargs):
