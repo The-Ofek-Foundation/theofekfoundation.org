@@ -3,7 +3,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "TheOfekFoundation.settings")
 import django
 django.setup()
 
-from main_app.models import WebsiteCategory, WebsitePage
+from main_app.models import WebsiteCategory, WebsitePage, WebsiteForm
 
 def populate():
 	category = add_category('Homepage')
@@ -153,16 +153,82 @@ def populate():
 		name = 'Image Editor',
 	)
 
+	category = add_category('Account')
+
+	page = add_page(category, 'http://theofekfoundation.org/account/register/',
+		pathname = 'account/register',
+		full_description = "Register to TheOfekFoundation! Make a free account today!",
+		description = "Register to TheOfekFoundation!",
+		title = 'We Register',
+		name = 'Register',
+	)
+	add_form(page, 'register_form',
+		method = 'post',
+		action = '/account/register/',
+		enctype = 'multipart/form-data',
+		submit_value = 'Register',
+		resizeable = True,
+	)
+
+	page = add_page(category, 'http://theofekfoundation.org/account/login/',
+		pathname = 'account/login',
+		full_description = "Login to TheOfekFoundation! Make a free account today!",
+		description = "Login to TheOfekFoundation!",
+		title = 'We Login',
+		name = 'Login',
+	)
+	add_form(page, 'login_form',
+		method = 'post',
+		action = '/account/login/',
+		submit_value = 'Login',
+		resizeable = True,
+	)
+
+	page = add_page(category, 'http://theofekfoundation.org/account/reset_password/',
+		pathname = 'account/reset_password',
+		full_description = "Reset your password for TheOfekFoundation.",
+		description = "Reset your password.",
+		title = 'We Forget',
+		name = 'Reset Password',
+	)
+	add_form(page, 'password_reset_form',
+		method = 'post',
+		action = '',
+		submit_value = 'Send Email',
+		resizeable = False,
+	)
+
+	page = add_page(category, 'http://theofekfoundation.org/account/reset_password_confirm/',
+		pathname = 'account/reset_password',
+		full_description = "Reset your password for TheOfekFoundation.",
+		description = "Reset your password.",
+		title = 'We Promise to Remember',
+		name = 'Reset Password Confirm',
+	)
+	add_form(page, 'password_reset_confirm_form',
+		method = 'post',
+		action = '',
+		submit_value = 'Reset Password',
+		resizeable = False,
+	)
+
 def add_category(name):
-	c = WebsiteCategory.objects.get_or_create(name=name)[0]
-	return c
+	category = WebsiteCategory.objects.get_or_create(name=name)[0]
+	return category
+
+def update_object(obj, **kwargs):
+	for key in kwargs:
+		setattr(obj, key, kwargs[key])
+	obj.save()
+	return obj
 
 def add_page(category, full_url, **kwargs):
-	p = WebsitePage.objects.get_or_create(category=category, full_url=full_url)[0]
-	for key in kwargs:
-		setattr(p, key, kwargs[key])
-	p.save()
-	return p
+	page = WebsitePage.objects.get_or_create(category=category, full_url=full_url)[0]
+	return update_object(page, **kwargs)
+
+def add_form(page, name, **kwargs):
+	form = WebsiteForm.objects.get_or_create(page=page, name=name)[0]
+	return update_object(form, **kwargs)
 
 def print_pages():
 	for wp in WebsitePage.objects.all():

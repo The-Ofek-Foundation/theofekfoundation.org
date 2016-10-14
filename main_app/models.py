@@ -24,8 +24,8 @@ class WebsiteCategory(models.Model):
 
 class WebsitePage(models.Model):
 	category = models.ForeignKey(WebsiteCategory)
-	name = models.CharField(max_length=128, default='unnamed')
 	full_url = models.CharField(max_length=128)
+	name = models.CharField(max_length=128, default='unnamed')
 	pathname = models.CharField(max_length=128)
 	full_description = models.CharField(max_length=128)
 	description = models.CharField(max_length=128)
@@ -37,6 +37,21 @@ class WebsitePage(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	class Meta:
+		unique_together = ('category', 'full_url',)
+
+class WebsiteForm(models.Model):
+	page = models.ForeignKey(WebsitePage)
+	name = models.CharField(max_length=128, default='unnamed')
+	method = models.CharField(max_length=128, default='post')
+	action = models.CharField(max_length=128, default='/')
+	enctype = models.CharField(max_length=128, default='application/x-www-form-urlencoded')
+	submit_value = models.CharField(max_length=128, default='')
+	resizeable = models.BooleanField(default=True)
+
+	class Meta:
+		unique_together = ('page', 'name',)
 
 # Create your models here.
 # class Category(models.Model):

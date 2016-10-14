@@ -18,8 +18,7 @@
 	{% block unauthenticated_block %}
 	{% endblock %}
 
-	{% with page.form as html_form %}
-	<form class="account_form" id="{{html_form.id}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
+	<form class="account_form" id="{{html_form.name}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
 
 		{% if error_message %}
 		<div class="errorlist">
@@ -40,14 +39,12 @@
 		{% endblock %}
 
 	</form>
-	{% endwith %}
 	{% endif %}
 
 {% endblock %}
 
 {% block end_block %}
-{% with page.form as html_form %}
-{% if html_form.resize %}
+{% if html_form.resizeable %}
 <script type="text/javascript">
 	$(document).ready(function () {
 		resize_form();
@@ -59,10 +56,9 @@
 	});
 
 	function resize_form() {
-		$("#{{html_form.id}}").width($("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
+		$("#{{html_form.name}}").width($("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
 	}
 </script>
 {% endif %}
-{% endwith %}
 
 {% endblock %}
