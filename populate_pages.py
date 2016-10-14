@@ -153,25 +153,21 @@ def populate():
 		name = 'Image Editor',
 	)
 
-	print_pages()
-
 def add_category(name):
 	c = WebsiteCategory.objects.get_or_create(name=name)[0]
 	return c
 
-def add_page(category, full_url, pathname, full_description, description, title, name):
+def add_page(category, full_url, **kwargs):
 	p = WebsitePage.objects.get_or_create(category=category, full_url=full_url)[0]
-	p.name = name
-	p.pathname = pathname
-	p.full_description = full_description
-	p.description = description
-	p.title = title
+	for key in kwargs:
+		setattr(p, key, kwargs[key])
 	p.save()
 	return p
 
 def print_pages():
 	for wp in WebsitePage.objects.all():
-		print wp.name
+		print(wp.name)
 
 if __name__ == '__main__':
 	populate()
+	print_pages()
