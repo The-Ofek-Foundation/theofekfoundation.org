@@ -184,8 +184,8 @@ def populate():
 		resizeable = True,
 	)
 
-	page = add_page(category, 'http://theofekfoundation.org/account/reset_password/',
-		pathname = 'account/reset_password',
+	page = add_page(category, 'http://theofekfoundation.org/account/ResetPassword/',
+		pathname = 'account/ResetPassword',
 		full_description = "Reset your password for TheOfekFoundation.",
 		description = "Reset your password.",
 		title = 'We Forget',
@@ -198,8 +198,8 @@ def populate():
 		resizeable = False,
 	)
 
-	page = add_page(category, 'http://theofekfoundation.org/account/reset_password_confirm/',
-		pathname = 'account/reset_password',
+	page = add_page(category, 'http://theofekfoundation.org/account/ResetPasswordConfirm/',
+		pathname = 'account/ResetPasswordConfirm',
 		full_description = "Reset your password for TheOfekFoundation.",
 		description = "Reset your password.",
 		title = 'We Promise to Remember',
@@ -212,13 +212,21 @@ def populate():
 		resizeable = False,
 	)
 
-	add_page(category, 'http://theofekfoundation.org/account/password_reset_email_sent/',
-		pathname = 'account/password_reset_email_sent',
+	add_page(category, 'http://theofekfoundation.org/account/PasswordResetEmailSent/',
+		pathname = 'account/PasswordResetEmailSent',
 		full_description = "Password reset email was sent.",
 		description = "Reset your password.",
 		title = 'We Forgot',
 		name = 'Password Reset Email Sent',
 	)
+
+def clear_all_table(table):
+	table.objects.all().delete()
+
+def clear_all_website_elems():
+	clear_all_table(WebsiteCategory)
+	clear_all_table(WebsitePage)
+	clear_all_table(WebsiteForm)
 
 def add_category(name):
 	category = WebsiteCategory.objects.get_or_create(name=name)[0]
@@ -243,5 +251,7 @@ def print_pages():
 		print(wp.name)
 
 if __name__ == '__main__':
+	clear_all_table(WebsitePage)
+	clear_all_table(WebsiteForm)
 	populate()
 	print_pages()

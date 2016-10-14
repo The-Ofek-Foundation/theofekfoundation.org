@@ -15,10 +15,10 @@
 		<priority>0.85</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/account/reset_password/</loc>
+		<loc>http://www.theofekfoundation.org/account/ResetPassword/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.69</priority>
-	</url>D
+	</url>
 	<url>
 		<loc>http://www.theofekfoundation.org/games/ConnectFour/</loc>
 		<changefreq>daily</changefreq>

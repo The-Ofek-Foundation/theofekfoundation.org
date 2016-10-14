@@ -20,7 +20,7 @@ urlpatterns = [
 	url(r'(?i)login/$', RedirectView.as_view(url='/account/login/', permanent=True)),
 	url(r'(?i)logout/$', RedirectView.as_view(url='/account/logout/', permanent=True)),
 	url(r'(?i)register/$', RedirectView.as_view(url='/account/register/', permanent=True)),
-	url(r'(?i)reset_password/$', RedirectView.as_view(url='/account/reset_password/', permanent=True)),
+	url(r'(?i)ResetPassword/$', RedirectView.as_view(url='/account/ResetPassword/', permanent=True)),
 	url(r'(?i)blog/$', RedirectView.as_view(url='/blog/', permanent=True)),
 	url(r'(?i)games/$', RedirectView.as_view(url='/games/', permanent=True)),
 	url(r'(?i)tools/$', RedirectView.as_view(url='/tools/', permanent=True)),

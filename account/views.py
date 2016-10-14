@@ -144,7 +144,7 @@ def user_logout(request):
 
 class ResetPasswordRequestView(FormView):
 	template_name = 'account/reset_password.html'
-	success_url = '/account/password_reset_email_sent/'
+	success_url = '/account/PasswordResetEmailSent/'
 	form_class = PasswordResetRequestForm
 	error_message = False
 
