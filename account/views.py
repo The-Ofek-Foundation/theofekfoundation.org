@@ -137,13 +137,16 @@ def user_logout(request):
 	return JsonResponse({"hi": "lo"})
 
 class ResetPasswordRequestView(FormView):
-	template_name = "account/reset_password.html"
+	template_name = 'account/reset_password.html'
 	success_url = '/account/reset_password/'
 	form_class = PasswordResetRequestForm
+	error_message = False
 
 	def get_context_data(self, **kwargs):
 		context = super(ResetPasswordRequestView, self).get_context_data(**kwargs)
 		context['page'] = pages.reset_password
+		if self.error_message:
+			context['error_message'] = self.error_message
 		return context
 
 	@staticmethod
@@ -154,68 +157,56 @@ class ResetPasswordRequestView(FormView):
 		except ValidationError:
 			return False
 
+	def send_email_to_user(self, request, user):
+		c = {
+			'email': user.email,
+			'domain': request.META['HTTP_HOST'],
+			'site_name': 'TheOfekFoundation',
+			'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+			'user': user,
+			'token': default_token_generator.make_token(user),
+			'protocol': 'http',
+		}
+		subject_template_name = 'registration/password_reset_subject.txt'
+		email_template_name = 'account/password_reset_email.html'
+		subject = loader.render_to_string(subject_template_name, c)
+		subject = ''.join(subject.splitlines())
+		email = loader.render_to_string(email_template_name, c)
+		send_mail(subject, email, settings.DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+
+	def send_emails_to_users(self, request, associated_users):
+		for user in associated_users:
+			self.send_email_to_user(request, user)
+
 	def post(self, request, *args, **kwargs):
 		form = self.form_class(request.POST)
 		if form.is_valid():
 			data = form.cleaned_data["email_or_username"]
-		if self.validate_email_address(data) is True:				 #uses the method written above
+		if self.validate_email_address(data) is True:  #uses the method written above
 			'''
 			If the input is an valid email address, then the following code will lookup for users associated with that email address. If found then an email will be sent to the address, else an error message will be printed on the screen.
 			'''
-			associated_users= User.objects.filter(Q(email=data)|Q(username=data))
+			associated_users = User.objects.filter(Q(email=data)|Q(username=data))
 			if associated_users.exists():
-				for user in associated_users:
-						c = {
-							'email': user.email,
-							'domain': request.META['HTTP_HOST'],
-							'site_name': 'TheOfekFoundation',
-							'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-							'user': user,
-							'token': default_token_generator.make_token(user),
-							'protocol': 'http',
-							}
-						subject_template_name='registration/password_reset_subject.txt'
-						email_template_name='account/password_reset_email.html'
-						subject = loader.render_to_string(subject_template_name, c)
-						subject = ''.join(subject.splitlines())
-						email = loader.render_to_string(email_template_name, c)
-						send_mail(subject, email, settings.DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+				self.send_emails_to_users(request, associated_users)
 				result = self.form_valid(form)
-				messages.success(request, 'An email has been sent to ' + data +". Please check its inbox to continue reseting password.")
 				return result
+			self.error_message = 'No user is associated with this email address'
 			result = self.form_invalid(form)
-			messages.error(request, 'No user is associated with this email address')
 			return result
 		else:
 			'''
 			If the input is an username, then the following code will lookup for users associated with that user. If found then an email will be sent to the user's address, else an error message will be printed on the screen.
 			'''
-			associated_users= User.objects.filter(username=data)
+			associated_users = User.objects.filter(username=data)
 			if associated_users.exists():
-				for user in associated_users:
-					c = {
-						'email': user.email,
-						'domain': request.META['HTTP_HOST'], #or your domain
-						'site_name': 'TheOfekFoundation',
-						'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-						'user': user,
-						'token': default_token_generator.make_token(user),
-						'protocol': 'http',
-						}
-					subject_template_name='registration/password_reset_subject.txt'
-					email_template_name='account/password_reset_email.html'
-					subject = loader.render_to_string(subject_template_name, c)
-					# Email subject *must not* contain newlines
-					subject = ''.join(subject.splitlines())
-					email = loader.render_to_string(email_template_name, c)
-					send_mail(subject, email, settings.DEFAULT_FROM_EMAIL , [user.email], fail_silently=False)
+				self.send_emails_to_users(request, associated_users)
 				result = self.form_valid(form)
-				messages.success(request, 'Email has been sent to ' + data +"'s email address. Please check its inbox to continue reseting password.")
 				return result
+			self.error_message = 'This username does not exist in the system.'
 			result = self.form_invalid(form)
-			messages.error(request, 'This username does not exist in the system.')
 			return result
-		messages.error(request, 'Invalid Input')
+		self.error_message = 'Invalid Input'
 		return self.form_invalid(form)
 
 class PasswordResetConfirmView(FormView):
