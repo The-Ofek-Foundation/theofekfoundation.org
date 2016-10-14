@@ -6,6 +6,7 @@ urlpatterns = [
 	url(r'^login/$', views.user_login, name='Login'),
 	url(r'^logout/$', views.user_logout, name='Logout'),
 	url(r'^reset_password/', views.ResetPasswordRequestView.as_view(), name="Password Reset"),
+	url(r'^password_reset_email_sent/', views.password_reset_email_sent, name="Password Reset Email Sent"),
 	url(r'^reset_password_confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', views.PasswordResetConfirmView.as_view(), name='Confirm Password Reset'),
 	url(r'^', include('main_app.misurls')),
 ]

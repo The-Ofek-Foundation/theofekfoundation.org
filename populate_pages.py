@@ -212,6 +212,14 @@ def populate():
 		resizeable = False,
 	)
 
+	add_page(category, 'http://theofekfoundation.org/account/password_reset_email_sent/',
+		pathname = 'account/password_reset_email_sent',
+		full_description = "Password reset email was sent.",
+		description = "Reset your password.",
+		title = 'We Forgot',
+		name = 'Password Reset Email Sent',
+	)
+
 def add_category(name):
 	category = WebsiteCategory.objects.get_or_create(name=name)[0]
 	return category

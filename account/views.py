@@ -144,7 +144,7 @@ def user_logout(request):
 
 class ResetPasswordRequestView(FormView):
 	template_name = 'account/reset_password.html'
-	success_url = '/account/reset_password/'
+	success_url = '/account/password_reset_email_sent/'
 	form_class = PasswordResetRequestForm
 	error_message = False
 
@@ -218,6 +218,10 @@ class ResetPasswordRequestView(FormView):
 			return result
 		self.error_message = 'Invalid Input'
 		return self.form_invalid(form)
+
+def password_reset_email_sent(request):
+	context_dict = {'page': main_pages.get(name='Password Reset Email Sent')}
+	return render(request, 'account/password_reset_email_sent.html', context_dict)
 
 class PasswordResetConfirmView(FormView):
 	template_name = "account/reset_password.html"
