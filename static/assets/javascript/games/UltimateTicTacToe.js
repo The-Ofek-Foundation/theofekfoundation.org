@@ -30,6 +30,7 @@ var workers, workersCallbackCount;
 
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
+var totalEmptyGlobal, emptySpotsGlobal;
 
 /**
  * Automatically called once page elements are loaded. Sets location of elements in page and prompts how to change settings.
@@ -111,6 +112,13 @@ function newGame() {
 	numChoose1 = numChoose2 = numChoose3 = lnc1 = lnc2 = lnc3 = stopChoose = false;
 
 	xTurnGlobal = true;
+	totalEmptyGlobal = 9 * 9;
+	emptySpotsGlobal = new Array(3);
+	for (var i = 0; i < emptySpotsGlobal.length; i++) {
+		emptySpotsGlobal[i] = new Array(3);
+		for (var a = 0; a < emptySpotsGlobal[i].length; a++)
+			emptySpotsGlobal[i][a] = 9;
+	}
 
 	globalRoot = createMCTSRoot();
 	drawBoard();
@@ -327,7 +335,7 @@ function setTurn(turn, move) {
 	var color = xTurnGlobal ? 5:6;
 	if (gameOver(board, color, move))
 		over = color;
-	else if (tieGame(board))
+	else if (totalEmptyGlobal === 0)
 		over = 'tie';
 
 	xTurnGlobal = turn;
@@ -391,9 +399,7 @@ $('#board').mousedown(function (e) {
 	if (!legalMove(board, move, prevMove, true))
 		return;
 
-	playMove(board, move, xTurnGlobal);
-
-	setTurn(!xTurnGlobal, move);
+	playMoveGlobal(board, move, xTurnGlobal);
 	e.preventDefault();
 });
 
@@ -439,6 +445,21 @@ function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
 		return 2;
 	}
 	return 0;
+}
+
+function playMoveGlobal(tboard, move, xturn) {
+	var emptyLeft = emptySpotsGlobal[(move[0] - move[0] % 3) / 3][(move[1] - move[1] % 3) / 3];
+	var playMoveResult = playMoveEmptyLeft(tboard, move, xturn, emptyLeft);
+
+	if (playMoveResult === 0) {
+		totalEmptyGlobal--;
+		emptySpotsGlobal[(move[0] - move[0] % 3) / 3][(move[1] - move[1] % 3) / 3]--;
+	} else {
+		totalEmptyGlobal -= emptyLeft;
+		emptySpotsGlobal[(move[0] - move[0] % 3) / 3][(move[1] - move[1] % 3) / 3] = 0;
+	}
+
+	setTurn(!xturn, move);
 }
 
 /**
@@ -836,8 +857,7 @@ function playAIMove() {
 
 function fpaim() {
 	var bestMove = getBestMoveMCTS();
-	playMove(board, bestMove, xTurnGlobal);
-	setTurn(!xTurnGlobal, bestMove);
+	playMoveGlobal(board, bestMove, xTurnGlobal);
 }
 
 function getBestMoveMCTS() {
