@@ -796,18 +796,12 @@ function syntaxSpeed(numTrials) {
 	}
 	let x = 5, y = 3;
 	let startTime = new Date().getTime();
-	for (let i = 0; i < numTrials; i++) {
-		// arr[Math.floor(x / 3)][Math.floor(y / 3)];
-		Math.floor(Math.random() * 8);
+	for (var i = 0; i < numTrials; i++) {
 	}
 	console.log((new Date().getTime() - startTime) / 1E3);
 
 	startTime = new Date().getTime();
-	let ran;
-	for (let i = 0; i < numTrials; i++) {
-		ran = Math.random() * 8;
-		ran - ran % 3;
-		// arr[(x - x % 3) / 3][(y - y % 3) / 3];
+	for (var i = 0; i < numTrials; i++) {
 	}
 	console.log((new Date().getTime() - startTime) / 1E3);
 }
