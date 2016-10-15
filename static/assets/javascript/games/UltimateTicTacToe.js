@@ -115,7 +115,7 @@ function newGame() {
 	globalRoot = createMCTSRoot();
 	drawBoard();
 
-	if (((aiTurn === 'first') == xTurnGlobal) || aiTurn == 'both')
+	if (((aiTurn === 'first') === xTurnGlobal) || aiTurn === 'both')
 		setTimeout(playAIMove, 20);
 
 	stopPonder();
@@ -342,7 +342,7 @@ function setTurn(turn, move) {
 
 //	 var mtc = mostTriedChild(globalRoot, null);
 
-//	 if (!over && (turn === aiTurn || aiTurn == "both") && mtc && mtc.lastMove)
+//	 if (!over && (turn === aiTurn || aiTurn === "both") && mtc && mtc.lastMove)
 //		 drawHover(mtc.lastMove[0]);
 //	 else drawBoard();
 	drawBoard();
@@ -372,7 +372,7 @@ function setTurn(turn, move) {
 		stopPonder();
 	}
 
-	if (!over && aiTurn !== 'null' && (turn === (aiTurn === 'first') || aiTurn == "both"))		setTimeout(playAIMove, 25);
+	if (!over && aiTurn !== 'null' && (turn === (aiTurn === 'first') || aiTurn === "both"))		setTimeout(playAIMove, 25);
 }
 
 /**
@@ -381,7 +381,7 @@ function setTurn(turn, move) {
 $('#board').mousedown(function (e) {
 	if (e.which === 3)
 		return;
-	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")
+	if (aiTurn !== 'null' && xTurnGlobal === (aiTurn === 'first') || aiTurn === "both")
 		return;
 	if (over) {
 		alert("The game is already over!");
@@ -555,7 +555,7 @@ function tieGame(tboard, m) {
 }
 
 $('#board').mousemove(function (e) {
-	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both" || over)		return;
+	if (aiTurn !== 'null' && xTurnGlobal === (aiTurn === 'first') || aiTurn === "both" || over)		return;
 	var move = getMove(e.pageX, e.pageY - wrapperTop);
 	if (legalMove(board, move, prevMove, false))
 		drawHover(move);
@@ -630,9 +630,9 @@ function getMCTSDepthRange() {
 	root = globalRoot;
 	if (root.totalTries > (root.hits + root.misses) * 3)
 		range[2] = "Tie";
-	else if ((root.hits > root.misses) == xTurnGlobal)
+	else if ((root.hits > root.misses) === xTurnGlobal)
 		range[2] = "X";
-	else if ((root.hits < root.misses) == xTurnGlobal)
+	else if ((root.hits < root.misses) === xTurnGlobal)
 		range[2] = "O";
 	else range[2] = "Tie";
 	return range;
@@ -893,7 +893,7 @@ function MCTSGetNextRoot(move) {
 	if (!globalRoot || !globalRoot.children)
 		return null;
 	for (var i = 0; i < globalRoot.children.length; i++)
-		if (globalRoot.children[i].lastMove[0] == move[0] && globalRoot.children[i].lastMove[1] == move[1]) {
+		if (globalRoot.children[i].lastMove[0] === move[0] && globalRoot.children[i].lastMove[1] === move[1]) {
 			return globalRoot.children[i];
 		}
 	return null;
@@ -1061,7 +1061,7 @@ function testStats(timeToThink, numTrials) {
 
 			if (root.children) {
 				for (var i = 0; i < root.children.length; i++)
-					if (root.children[i].lastMove[0] == bestMove[0] && root.children[i].lastMove[1] == bestMove[1]) {
+					if (root.children[i].lastMove[0] === bestMove[0] && root.children[i].lastMove[1] === bestMove[1]) {
 						root = root.children[i];
 						break;
 					}
@@ -1287,7 +1287,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 
 			if (r1.children) {
 				for (var i = 0; i < r1.children.length; i++)
-					if (r1.children[i].lastMove[0] == bestMove[0] && r1.children[i].lastMove[1] == bestMove[1]) {
+					if (r1.children[i].lastMove[0] === bestMove[0] && r1.children[i].lastMove[1] === bestMove[1]) {
 						r1 = r1.children[i];
 						break;
 					}
@@ -1295,7 +1295,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 			} else r1 = createMCTSRoot();
 			if (r2.children) {
 				for (var i = 0; i < r2.children.length; i++)
-					if (r2.children[i].lastMove[0] == bestMove[0] && r2.children[i].lastMove[1] == bestMove[1]) {
+					if (r2.children[i].lastMove[0] === bestMove[0] && r2.children[i].lastMove[1] === bestMove[1]) {
 						r2 = r2.children[i];
 						break;
 					}
