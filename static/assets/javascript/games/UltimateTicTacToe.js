@@ -423,19 +423,22 @@ function playMove(tboard, move, xturn) {
  * @param  {move}    move      array containing move x and y coords
  * @param  {boolean} xturn     current player turn
  * @param  {number}  emptyLeft the number of empty spots in the board square
- * @return {boolean} true if board is done (local win or square full), false otherwise
+ * @return {number} 1 if local win, 2 if square full, 0 otherwise
  */
 function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
 	var color = xturn ? 1:2;
 	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
 	var startx = move[0] - move[0] % 3, starty = move[1] - move[1] % 3;
 	tboard[move[0]][move[1]] = color;
-	if (emptyLeft < 8 && localWin(tboard, color, move, startx, starty))
+	if (emptyLeft < 8 && localWin(tboard, color, move, startx, starty)) {
 		tboard[centerx][centery] = color + 4;
-	else if (emptyLeft === 1)
+		return 1;
+	}
+	else if (emptyLeft === 1) {
 		tboard[centerx][centery] += 2;
-	else return false;
-	return true;
+		return 2;
+	}
+	return 0;
 }
 
 /**
@@ -726,6 +729,7 @@ function MCTSSimulate(father, tboard) {
 	var x, y, count, i, a, I, A;
 	var emptySpots = getEmptySpots(tboard);
 	var currentEmpty, totalEmpty = 0, emptyLeft;
+	var playMoveResult;
 	for (i = 0; i < 3; i++)
 		for (a = 0; a < 3; a++)
 			totalEmpty += emptySpots[i][a];
@@ -758,15 +762,20 @@ function MCTSSimulate(father, tboard) {
 				}
 		}
 		emptyLeft = emptySpots[(x - x % 3) / 3][(y - y % 3) / 3];
-		if (playMoveEmptyLeft(tboard, [x, y], turn, emptyLeft)) {
-			totalEmpty -= emptyLeft;
-			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
-			done = gameOver(tboard, turn ? 5:6, [x, y]);
-			if (totalEmpty === 0)
-				return tie ? (father.turn !== anti ? 1:-1):0;
-		} else {
-			totalEmpty--;
-			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3]--;
+		playMoveResult = playMoveEmptyLeft(tboard, [x, y], turn, emptyLeft);
+		switch (playMoveResult) {
+			case 0:
+				totalEmpty--;
+				emptySpots[(x - x % 3) / 3][(y - y % 3) / 3]--;
+				break;
+			case 1:
+				done = gameOver(tboard, turn ? 5:6, [x, y]);
+				/* falls through */
+			case 2:
+				totalEmpty -= emptyLeft;
+				emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
+				if (totalEmpty === 0) // tie game
+					return tie ? (father.turn !== anti ? 1:-1):0;
 		}
 		lm = [x, y];
 		turn = !turn;
