@@ -131,7 +131,7 @@ function getSettings() {
 	ponder = gameSettings.getOrSet('ponder', false);
 	anti = gameSettings.getOrSet('anti', false);
 	tie = gameSettings.getOrSet('tie', false);
-	timeToThink = gameSettings.getOrSet('timeToThink', 5);
+	timeToThink = gameSettings.getOrSet('timeToThink', 1);
 }
 
 /**
