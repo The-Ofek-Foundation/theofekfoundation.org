@@ -763,19 +763,17 @@ function MCTSSimulate(father, tboard) {
 		}
 		emptyLeft = emptySpots[(x - x % 3) / 3][(y - y % 3) / 3];
 		playMoveResult = playMoveEmptyLeft(tboard, [x, y], turn, emptyLeft);
-		switch (playMoveResult) {
-			case 0:
-				totalEmpty--;
-				emptySpots[(x - x % 3) / 3][(y - y % 3) / 3]--;
-				break;
-			case 1:
+		if (playMoveResult === 0) {
+			totalEmpty--;
+			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3]--;
+		} else {
+			totalEmpty -= emptyLeft;
+			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
+			if (totalEmpty === 0) // tie game
+				return tie ? (father.turn !== anti ? 1:-1):0;
+			if (playMoveResult === 1 && totalEmpty <= 54)
 				done = gameOver(tboard, turn ? 5:6, [x, y]);
-				/* falls through */
-			case 2:
-				totalEmpty -= emptyLeft;
-				emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
-				if (totalEmpty === 0) // tie game
-					return tie ? (father.turn !== anti ? 1:-1):0;
+				// 9 * 9 - 9 * 3 (three squares completed)
 		}
 		lm = [x, y];
 		turn = !turn;
