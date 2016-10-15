@@ -1,3 +1,15 @@
+/**
+ * Move containing x and y coord
+ *
+ * @typedef {Array.<number, number>} move
+ */
+
+/**
+ * 2d Array representing board
+ *
+ * @typedef {number[][]} board
+ */
+
 var docwidth, docheight;
 var boardwidth, squarewidth;
 var board;
@@ -19,6 +31,9 @@ var workers, workersCallbackCount;
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 
+/**
+ * Automatically called once page elements are loaded. Sets location of elements in page and prompts how to change settings.
+ */
 function pageReady() {
 	docwidth = $("#content-wrapper").outerWidth(true);
 	docheight = $("#content-wrapper").outerHeight(true);
@@ -47,6 +62,10 @@ function pageReady() {
 	}, 100);
 };
 
+/**
+ * Called on window resize.
+ * Resizes elements for new window size.
+ */
 $(window).resize(function(event) {
 	$("#content-wrapper").outerWidth($(window).outerWidth(true));
 	$("#content-wrapper").outerHeight($(window).outerHeight(true) - $("#content-wrapper").position().top);
@@ -67,6 +86,9 @@ $(window).resize(function(event) {
 	drawBoard();
 });
 
+/**
+ * Creates and starts a new game of UltimateTicTacToe.
+ */
 function newGame() {
 	squarewidth = boardwidth / 9;
 
@@ -101,6 +123,9 @@ function newGame() {
 		startPonder();
 }
 
+/**
+ * Gets game settings, or sets them to default value if not existent.
+ */
 function getSettings() {
 	aiTurn = gameSettings.getOrSet('aiTurn', 'second');
 	ponder = gameSettings.getOrSet('ponder', false);
@@ -109,10 +134,16 @@ function getSettings() {
 	timeToThink = gameSettings.getOrSet('timeToThink', 5);
 }
 
+/**
+ * Clears the board.
+ */
 function clearBoard() {
 	brush.clearRect(0, 0, boardwidth, boardwidth);
 }
 
+/**
+ * Draws the lines of the grid, shading in regions where next move forced.
+ */
 function drawGrid() {
 	if (prevMove && !over) {
 		var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
@@ -155,6 +186,11 @@ function drawGrid() {
 	brush.closePath();
 }
 
+/**
+ * Draws a specific tic tac toe piece in the correct location.
+ * @param  {number} x coord of piece on board
+ * @param  {number} y coord of piece on board
+ */
 function drawPiece(x, y) {
 	var o4 = squarewidth / 4;
 	var color;
@@ -199,6 +235,10 @@ function drawPiece(x, y) {
 	}
 	brush.fill();
 }
+
+/**
+ * Draws the tic tac toe board in its current state.
+ */
 function drawBoard() {
 	clearBoard();
 	drawGrid();
@@ -214,12 +254,22 @@ function drawBoard() {
 						drawPiece(i, a);
 }
 
+/**
+ * Draws the board with a piece filled in (when hovering over)
+ * @param  {move} move array containing move x and y coords
+ */
 function drawHover(move) {
 	board[move[0]][move[1]] = xTurnGlobal ? 1:2;
 	drawBoard();
 	board[move[0]][move[1]] = 0;
 }
 
+/**
+ * Gets corresponding move from mouse x and y locations
+ * @param  {number} xloc mouse x coord
+ * @param  {number} yloc mouse y coord
+ * @return {move} array containing move x and y coords
+ */
 function getMove(xloc, yloc) {
 	var left = (docwidth - boardwidth) / 2;
 	if (xloc < left || xloc > left + boardwidth || yloc > boardwidth)
@@ -227,6 +277,14 @@ function getMove(xloc, yloc) {
 	return [Math.floor((xloc - left) / squarewidth), Math.floor(yloc / squarewidth)];
 }
 
+/**
+ * Checks if a move is legal
+ * @param  {board}   tboard   the board
+ * @param  {move}    move     array containing move x and y coords
+ * @param  {move}    prevMove array containing move x and y coords of last move played
+ * @param  {boolean} output   whether or not to show alert output
+ * @return {boolean} true if move is legal
+ */
 function legalMove(tboard, move, prevMove, output) {
 	if (move[0] < 0 || move[1] < 0)
 		return false;
@@ -249,11 +307,22 @@ function legalMove(tboard, move, prevMove, output) {
 	return true;
 }
 
+/**
+ * Returns true if can place there because center is legal, false otherwise
+ * @param  {board} tboard 2
+ * @param  {move}  move   array containing move x and y coords
+ * @return {boolean} true if legal, false otherwise
+ */
 function legalCenter(tboard, move) {
 	var c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
 	return !(c === 5 || c === 6 || c === 4 || c === 3);
 }
 
+/**
+ * Changes the turn, checks if game is over, and gets the next Monte Carlo tree-search root.
+ * @param {boolean} turn true if x, false otherwise
+ * @param {move}    move array containing move x and y coords
+ */
 function setTurn(turn, move) {
 	var color = xTurnGlobal ? 5:6;
 	if (gameOver(board, color, move))
@@ -306,10 +375,14 @@ function setTurn(turn, move) {
 	if (!over && aiTurn !== 'null' && (turn === (aiTurn === 'first') || aiTurn == "both"))		setTimeout(playAIMove, 25);
 }
 
+/**
+ * Called when mouse pressed, handles playing a move and then changing the turn
+ */
 $('#board').mousedown(function (e) {
 	if (e.which === 3)
 		return;
-	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")		return;
+	if (aiTurn !== 'null' && xTurnGlobal == (aiTurn === 'first') || aiTurn == "both")
+		return;
 	if (over) {
 		alert("The game is already over!");
 		return;
@@ -324,6 +397,13 @@ $('#board').mousedown(function (e) {
 	e.preventDefault();
 });
 
+/**
+ * Plays a move in the given board, move, and current player turn. Checks for local wins and for full squares.
+ * @param  {board}   tboard the current board
+ * @param  {move}    move   array containing move x and y coords
+ * @param  {boolean} xturn  current player turn
+ * @return {boolean} true if board is done (local win or square full), false otherwise
+ */
 function playMove(tboard, move, xturn) {
 	var color = xturn ? 1:2;
 	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
@@ -335,9 +415,16 @@ function playMove(tboard, move, xturn) {
 		tboard[centerx][centery] += 2;
 	else return false;
 	return true;
-	// returns true if full, false otherwise
 }
 
+/**
+ * Plays a move in the given board, move, and current player turn. Checks for local wins and for full squares. Check for local wins and full squares aided by emptyLeft.
+ * @param  {board}   tboard    the current board
+ * @param  {move}    move      array containing move x and y coords
+ * @param  {boolean} xturn     current player turn
+ * @param  {number}  emptyLeft the number of empty spots in the board square
+ * @return {boolean} true if board is done (local win or square full), false otherwise
+ */
 function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
 	var color = xturn ? 1:2;
 	var centerx = move[0] - move[0] % 3 + 1, centery = move[1] - move[1] % 3 + 1;
@@ -349,9 +436,17 @@ function playMoveEmptyLeft(tboard, move, xturn, emptyLeft) {
 		tboard[centerx][centery] += 2;
 	else return false;
 	return true;
-	// returns true if full, false otherwise
 }
 
+/**
+ * Checks for a local board win (normal tic tac toe win calculation)
+ * @param  {board}  tboard the current board
+ * @param  {number} color  1 if x, 2 if o
+ * @param  {move}   move   array containing move x and y coords
+ * @param  {number} startx left-most index of square
+ * @param  {number} starty top-most index of square
+ * @return {boolean} true if square won, false otherwise
+ */
 function localWin(tboard, color, move, startx, starty) {
 	var i, a;
 	var gg = true;

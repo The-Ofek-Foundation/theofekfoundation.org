@@ -1,5 +1,5 @@
 /**
- * @typedef {Object.<string, *>} dictionary
+ * @typedef {Array.<string, *>} dictionary
  */
 
 class GameSettings {

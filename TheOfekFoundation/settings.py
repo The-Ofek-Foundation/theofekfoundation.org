@@ -89,28 +89,13 @@ DATABASES = {
 	}
 }
 
-# Uncomment below lines for distribution
-# DATABASES = {
-# 	 'default': {
-# 		 'ENGINE': 'django.db.backends.mysql',
-# 		 'NAME': 'ofekih$theofekfoundationdb',
-# 		 'USER': 'ofekih',
-# 		 'PASSWORD': 'awesome1',
-# 		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
-# 	 }
-# }
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'PST8PDT'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -123,7 +108,6 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = '/account/login/'
 
-# Override Following
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'theofekfoundation@gmail.com'
 SERVER_EMAIL = 'theofekfoundation@gmail.com'
