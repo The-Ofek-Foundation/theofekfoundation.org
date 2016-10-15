@@ -21,6 +21,8 @@ MAIN_IMAGES = os.path.join(os.path.join(STATIC_PATH, 'images'), 'main_app')
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
+# For anyone reading this, the key used in production is different :(
 SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -54,10 +56,6 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-# TEMPLATE_DIRS = (
-#	 TEMPLATE_PATH,
-# )
-
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,33 +75,30 @@ STATICFILES_DIRS = (
 	MAIN_IMAGES
 )
 
-# STATIC_ROOT = STATIC_PATH
-
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
 WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-# DATABASES = {
-# 	'default': {
-# 		'ENGINE': 'django.db.backends.sqlite3',
-# 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-# 	}
-# }
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.sqlite3',
+		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	}
+}
 
 # Uncomment below lines for distribution
-DATABASES = {
-	 'default': {
-		 'ENGINE': 'django.db.backends.mysql',
-		 'NAME': 'ofekih$theofekfoundationdb',
-		 'USER': 'ofekih',
-		 'PASSWORD': 'awesome1',
-		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
-	 }
-}
+# DATABASES = {
+# 	 'default': {
+# 		 'ENGINE': 'django.db.backends.mysql',
+# 		 'NAME': 'ofekih$theofekfoundationdb',
+# 		 'USER': 'ofekih',
+# 		 'PASSWORD': 'awesome1',
+# 		 'HOST': 'ofekih.mysql.pythonanywhere-services.com',
+# 	 }
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -118,7 +113,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
@@ -129,13 +123,24 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = '/account/login/'
 
+# Override Following
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'theofekfoundation@gmail.com'
 SERVER_EMAIL = 'theofekfoundation@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'theofekfoundation@gmail.com'
-EMAIL_HOST_PASSWORD = 'SFEuy5476yRHdfhyey#^%$7845:{'
+EMAIL_HOST_PASSWORD = "I ain't telling you"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DOMAIN = 'theofekfoundation.org'
+
+# Local settings should:
+#
+# * Potentially override DATABASES for different local db
+# * Include EMAIL_HOST_PASSWORD (for protection)
+# * UPDATE THE SECRET KEY :O
+try:
+	from local_settings import *
+except ImportError:
+	pass

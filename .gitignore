@@ -7,3 +7,5 @@ TheOfekFoundation/wsgi.py
 scripts/*
 
 db.sqlite3
+
+**/local_settings.py
