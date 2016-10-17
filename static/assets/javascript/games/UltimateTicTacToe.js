@@ -113,12 +113,7 @@ function newGame() {
 
 	xTurnGlobal = true;
 	totalEmptyGlobal = 9 * 9;
-	emptySpotsGlobal = new Array(3);
-	for (var i = 0; i < emptySpotsGlobal.length; i++) {
-		emptySpotsGlobal[i] = new Array(3);
-		for (var a = 0; a < emptySpotsGlobal[i].length; a++)
-			emptySpotsGlobal[i][a] = 9;
-	}
+	emptySpotsGlobal = getEmptySpots(board);
 
 	globalRoot = createMCTSRoot();
 	drawBoard();
@@ -605,7 +600,7 @@ function startPonder() {
 		var startTime = new Date().getTime();
 		var tempCount = 0;
 		while ((new Date().getTime() - startTime) < 30 && !stopChoose) {
-			globalRoot.chooseChild(simpleCopy(board));
+			globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 			tempCount++;
 		}
 		if (numChoose3 && (tempCount < numChoose3 / 10 || tempCount < numChoose2 / 10 || tempCount < numChoose1 / 10))
@@ -733,27 +728,22 @@ function getEmptySpots(tboard) {
 	return emptySpots;
 }
 
-function MCTSSimulate(father, tboard) {
+function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 	if (father.result !== 10)
 		return father.result;
+
+	if (totalEmpty === 0)
+		return father.result = tie ? (father.turn !== anti ? 1:-1):0;
 
 	if (gameOver(tboard, father.turn ? 6:5, father.lastMove))
 		if (tie)
 			return father.result = father.turn !== anti ? -1:0;
 		else return father.result = anti ? 1:-1;
 
-	if (tieGame(tboard))
-		return father.result = tie ? (father.turn !== anti ? 1:-1):0;
-
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter, nextCenterColor;
 	var x, y, count, i, a, I, A;
-	var emptySpots = getEmptySpots(tboard);
-	var currentEmpty, totalEmpty = 0, emptyLeft;
-	var playMoveResult;
-	for (i = 0; i < 3; i++)
-		for (a = 0; a < 3; a++)
-			totalEmpty += emptySpots[i][a];
+	var currentEmpty, emptyLeft;
 
 	while (!done) {
 		nextCenter = [lm[0] % 3 * 3 + 1, lm[1] % 3 * 3 + 1];
@@ -834,8 +824,9 @@ function runMCTS(time) {
 		globalRoot = createMCTSRoot();
 	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < time) {
-		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild(simpleCopy(board));
+		for (var i = 0; i < 1000; i++) {
+			globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
+		}
 		var error = getCertainty(globalRoot);
 		if (globalRoot.children.length < 2 || error < certaintyThreshold)
 			return;
@@ -930,15 +921,15 @@ class MCTSNode {
 		this.result = 10; // never gonna happen
 	}
 
-	chooseChild(board) {
+	chooseChild(board, emptySpots, totalEmpty) {
 		if (this.hasChildren === false) {
 			this.hasChildren = true;
 			this.children = MCTSGetChildren(this, board);
 		}
 		if (this.children.length === 0) // leaf node
-			this.runSimulation(board);
+			this.runSimulation(board, emptySpots, totalEmpty, 0);
 		else {
-			var i;
+			var i, lastMove, emptyLeft, playMoveResult;
 			var countUnexplored = 0;
 			for (i = 0; i < this.children.length; i++)
 				if (this.children[i].totalTries === 0)
@@ -950,13 +941,23 @@ class MCTSNode {
 					if (this.children[i].totalTries === 0) {
 						countUnexplored--;
 						if (countUnexplored === 0) {
-							playMove(board, this.children[i].lastMove, !this.children[i].turn);
-							this.children[i].runSimulation(board);
+							lastMove = this.children[i].lastMove;
+							emptyLeft = emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3];
+							playMoveResult = playMoveEmptyLeft(board, lastMove, !this.children[i].turn, emptyLeft);
+
+							if (playMoveResult === 0) {
+								totalEmpty--;
+								emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3]--;
+							} else {
+								totalEmpty -= emptyLeft;
+								emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3] = 0;
+							}
+
+							this.children[i].runSimulation(board, emptySpots, totalEmpty, playMoveResult);
 							return;
 						}
 					}
-
-			}	else {
+			} else {
 				var bestChild = this.children[0], bestPotential = MCTSChildPotential(this.children[0], this.totalTries), potential;
 				for (i = 1; i < this.children.length; i++) {
 					potential = MCTSChildPotential(this.children[i], this.totalTries);
@@ -965,14 +966,25 @@ class MCTSNode {
 						bestChild = this.children[i];
 					}
 				}
-				playMove(board, bestChild.lastMove, !bestChild.turn);
-				bestChild.chooseChild(board);
+				lastMove = bestChild.lastMove;
+				emptyLeft = emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3];
+				playMoveResult = playMoveEmptyLeft(board, lastMove, !bestChild.turn, emptyLeft);
+
+				if (playMoveResult === 0) {
+					totalEmpty--;
+					emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3]--;
+				} else {
+					totalEmpty -= emptyLeft;
+					emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3] = 0;
+				}
+
+				bestChild.chooseChild(board, emptySpots, totalEmpty);
 			}
 		}
 	}
 
-	runSimulation(board) {
-		this.backPropogate(MCTSSimulate(this, board));
+	runSimulation(board, emptySpots, totalEmpty, playMoveResult) {
+		this.backPropogate(MCTSSimulate(this, board, emptySpots, totalEmpty, playMoveResult));
 	}
 
 	backPropogate(simulation) {
@@ -998,12 +1010,12 @@ function speedTest(numSimulations) {
 	globalRoot = createMCTSRoot();
 	var startTime = new Date().getTime();
 	for (var i = 0; i < numSimulations; i++)
-		globalRoot.chooseChild(simpleCopy(board));
+		globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 	var elapsedTime = (new Date().getTime() - startTime) / 1E3;
 	console.log(numberWithCommas(Math.round(numSimulations / elapsedTime)) + ' simulations per second.');
 }
 
-function simpleCopy(board) {
+function simpleBoardCopy(board) {
 	var simpleCopy = new Array(9);
 	for (var i = 0; i < 9; i++) {
 		simpleCopy[i] = new Array(9);
@@ -1013,11 +1025,21 @@ function simpleCopy(board) {
 	return simpleCopy;
 }
 
+function simpleSpotsCopy(spots) {
+	var simpleCopy = new Array(3);
+	for (var i = 0; i < 3; i++) {
+		simpleCopy[i] = new Array(3);
+		for (var a = 0; a < 3; a++)
+			simpleCopy[i][a] = spots[i][a];
+	}
+	return simpleCopy;
+}
+
 function efficiencyTest() {
 	speedTest();
 	setInterval(function() {
 		for (var i = 0; i < 1000; i++)
-			globalRoot.chooseChild(simpleCopy(board));
+			globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 		$('#num-trials').text(globalRoot.totalTries);
 	}, 1);
 }
@@ -1059,7 +1081,7 @@ function testStats(timeToThink, numTrials) {
 				root = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (var i = 0; i < 100; i++)
-					root.chooseChild(simpleCopy(board));
+					root.chooseChild(simpleBoardCopy(board));
 				var error = getCertainty(root);
 				if (root.children.length < 2 || error < certaintyThreshold)
 					break;
@@ -1142,7 +1164,7 @@ function combineRoots(gR, root, board) {
 		if (!gR.children || gR.children.length !== root.children.length)
 			gR.children = MCTSGetChildren(gR, board);
 		for (var i = 0; i < root.children.length; i++) {
-			var b = simpleCopy(board);
+			var b = simpleBoardCopy(board);
 			playMove(b, gR.children[i].lastMove, !gR.children[i].turn);
 			combineRoots(gR.children[i], root.children[i], b);
 		}
@@ -1168,7 +1190,7 @@ function playNormalMove(timeToThink, callback) {
 	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
-			globalRoot.chooseChild(simpleCopy(board));
+			globalRoot.chooseChild(simpleBoardCopy(board));
 	// console.log("Normal\t- " + globalRoot.totalTries);
 	playTestMove(mostTriedChild(globalRoot, null));
 	callback();
@@ -1178,7 +1200,7 @@ function playNormalMoveRatio(timeToThink, callback) {
 	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < timeToThink + 0.1)
 		for (var i = 0; i < 100; i++)
-			globalRoot.chooseChild(simpleCopy(board));
+			globalRoot.chooseChild(simpleBoardCopy(board));
 	// console.log("Normal\t- " + globalRoot.totalTries);
 	playTestMove(bestRatioChild(globalRoot, null));
 	callback();
@@ -1285,7 +1307,7 @@ function testExpansionConstants(c1, c2, numTrials, timeToThink, output) {
 				r = createMCTSRoot();
 			while ((new Date().getTime() - startTime) / 1E3 < timeToThink) {
 				for (var i = 0; i < 100; i++)
-					r.chooseChild(simpleCopy(board));
+					r.chooseChild(simpleBoardCopy(board));
 				var error = getCertainty(r);
 				if (r.children.length < 2 || error < certaintyThreshold)
 					break;
