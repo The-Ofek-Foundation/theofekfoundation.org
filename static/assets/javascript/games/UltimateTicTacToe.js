@@ -797,22 +797,25 @@ function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 }
 
 function syntaxSpeed(numTrials) {
-	let arr = new Array(3);
-	for (let i = 0; i < arr.length; i++) {
-		arr[i] = new Array(3);
-		for (let a = 0; a < arr[i].length; a++)
-			arr[i][a] = i * a + i + a;
-	}
-	let x = 5, y = 3;
 	let startTime = new Date().getTime();
-	for (var i = 0; i < numTrials; i++) {
-	}
+	for (var i = 0; i < 5e8; i++) {}
 	console.log((new Date().getTime() - startTime) / 1E3);
+
+	startTime = new Date().getTime();
+	for (var i = 0; i < numTrials; i++) {}
+	let minTime = (new Date().getTime() - startTime) / 1E3;
+
+	console.log("Done preparing");
 
 	startTime = new Date().getTime();
 	for (var i = 0; i < numTrials; i++) {
 	}
-	console.log((new Date().getTime() - startTime) / 1E3);
+	console.log((new Date().getTime() - startTime) / 1E3 - minTime);
+
+	startTime = new Date().getTime();
+	for (var i = 0; i < numTrials; i++) {
+	}
+	console.log((new Date().getTime() - startTime) / 1E3 - minTime);
 }
 
 function createMCTSRoot() {
