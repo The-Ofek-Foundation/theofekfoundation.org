@@ -142,6 +142,8 @@ function getSettings() {
  */
 function clearBoard() {
 	brush.clearRect(0, 0, boardwidth, boardwidth);
+	brush.fillStyle = "white";
+	brush.fillRect(0, 0, boardwidth, boardwidth);
 }
 
 /**
@@ -176,11 +178,11 @@ function drawGrid() {
 
 	brush.lineWidth = 1;
 	brush.beginPath();
-	for (i = squarewidth; i < boardwidth; i += squarewidth) {
+	for (i = squarewidth; i < boardwidth - 1; i += squarewidth) {
 		brush.moveTo(i, 0);
 		brush.lineTo(i, boardwidth);
 	}
-	for (a = squarewidth; a < boardwidth; a += squarewidth) {
+	for (a = squarewidth; a < boardwidth - 1; a += squarewidth) {
 		brush.moveTo(0, a);
 		brush.lineTo(boardwidth, a);
 	}
@@ -1449,7 +1451,9 @@ function showSettingsForm() {
 }
 
 function hideSettingsForm() {
-	$('#game-settings-menu').animate({opacity: 0}, "slow").css('z-index', -1);
+	$('#game-settings-menu').animate({opacity: 0}, "slow", function () {
+		$(this).css('z-index', -1);
+	});
 }
 
 function printBoard(board) {
