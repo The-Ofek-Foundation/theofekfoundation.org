@@ -22,7 +22,7 @@ var prevMove;
 var xTurnGlobal;
 var ponder, pondering;
 var timeToThink;
-var certaintyThreshold;
+var certaintyThreshold = 0.05;
 var wrapperTop;
 var numChoose1, numChoose2, numChoose3, lnc1, lnc2, lnc3, stopChoose;
 var anti, tie;
