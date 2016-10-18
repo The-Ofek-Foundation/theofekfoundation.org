@@ -922,8 +922,8 @@ class MCTSNode {
 			this.hasChildren = true;
 			this.children = MCTSGetChildren(this, board);
 		}
-		if (this.children.length === 0) // leaf node
-			this.runSimulation(board, emptySpots, totalEmpty, 0);
+		if (this.result !== 10) // leaf node
+			this.backPropogate(this.result);
 		else {
 			var i, lastMove, emptyLeft, playMoveResult;
 			var countUnexplored = 0;
@@ -949,7 +949,7 @@ class MCTSNode {
 								emptySpots[(lastMove[0] - lastMove[0] % 3) / 3][(lastMove[1] - lastMove[1] % 3) / 3] = 0;
 							}
 
-							this.children[i].runSimulation(board, emptySpots, totalEmpty, playMoveResult);
+							this.children[i].backPropogate(MCTSSimulate(this.children[i], board, emptySpots, totalEmpty, playMoveResult));
 							return;
 						}
 					}
@@ -979,17 +979,13 @@ class MCTSNode {
 		}
 	}
 
-	runSimulation(board, emptySpots, totalEmpty, playMoveResult) {
-		this.backPropogate(MCTSSimulate(this, board, emptySpots, totalEmpty, playMoveResult));
-	}
-
 	backPropogate(simulation) {
-		if (simulation > 0)
+		if (simulation === 1)
 			this.hits++;
-		else if (simulation < 0)
+		else if (simulation === -1)
 			this.misses++;
 		this.totalTries++;
-		if (this.parent)
+		if (this.parent !== null)
 			this.parent.backPropogate(-simulation);
 	}
 }
