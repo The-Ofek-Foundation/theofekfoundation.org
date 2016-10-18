@@ -725,13 +725,14 @@ function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 	if (father.result !== 10)
 		return father.result;
 
-	if (totalEmpty === 0)
-		return father.result = tie ? (father.turn !== anti ? 1:-1):0;
 
-	if (gameOver(tboard, father.turn ? 6:5, father.lastMove))
+	if (playMoveResult === 1 && totalEmpty <= 54 && gameOver(tboard, father.turn ? 6:5, father.lastMove))
 		if (tie)
 			return father.result = father.turn !== anti ? -1:0;
 		else return father.result = anti ? 1:-1;
+
+	if (totalEmpty === 0)
+		return father.result = tie ? (father.turn !== anti ? 1:-1):0;
 
 	var lm = father.lastMove, turn = father.turn, done = false;
 	var nextCenter;
@@ -772,11 +773,11 @@ function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 		} else {
 			totalEmpty -= emptyLeft;
 			emptySpots[(x - x % 3) / 3][(y - y % 3) / 3] = 0;
-			if (totalEmpty === 0) // tie game
-				return tie ? (father.turn !== anti ? 1:-1):0;
 			if (playMoveResult === 1 && totalEmpty <= 54)
 				done = gameOver(tboard, turn ? 5:6, [x, y]);
 				// 9 * 9 - 9 * 3 (three squares completed)
+			if (totalEmpty === 0) // tie game
+				return tie ? (father.turn !== anti ? 1:-1):0;
 		}
 		lm = [x, y];
 		turn = !turn;
