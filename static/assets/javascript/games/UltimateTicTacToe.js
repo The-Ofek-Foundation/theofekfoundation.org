@@ -150,11 +150,10 @@ function clearBoard() {
 function drawGrid() {
 	if (prevMove && !over) {
 		var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
-		var nextCenterColor = board[nextCenter[0]][nextCenter[1]];
-		if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4 && xTurnGlobal) {
+		if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
 			brush.fillStyle = "rgba(102, 162, 255, 0.5)";
 			brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
-		} else if (nextCenterColor != 5 && nextCenterColor != 6 && nextCenterColor != 3 && nextCenterColor != 4 && !xTurnGlobal) {
+		} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
 				brush.fillStyle = "rgba(255, 123, 123, 0.5)";
 				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
 		}
@@ -293,15 +292,13 @@ function legalMove(tboard, move, prevMove, output) {
 		return false;
 	if (board[move[0]][move[1]] !== 0)
 		return false;
-	var c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
-	if (c === 5 || c === 6 || c === 3 || c === 4) {
+	if (tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1] > 2) {
 		if (output)
 			alert("Square already finished");
 		return false;
 	}
 	if (prevMove) {
-		var center = tboard[prevMove[0] % 3 * 3 + 1][prevMove[1] % 3 * 3 + 1];
-		if ((center != 5 && center != 6 && center != 3 && center != 4) && (prevMove[0] % 3 != Math.floor(move[0] / 3) || prevMove[1] % 3 != Math.floor(move[1] / 3))) {
+		if ((tboard[prevMove[0] % 3 * 3 + 1][prevMove[1] % 3 * 3 + 1] < 3) && (prevMove[0] % 3 !== Math.floor(move[0] / 3) || prevMove[1] % 3 !== Math.floor(move[1] / 3))) {
 			if (output)
 				alert("Wrong square!");
 			return false;
@@ -317,8 +314,7 @@ function legalMove(tboard, move, prevMove, output) {
  * @return {boolean} true if legal, false otherwise
  */
 function legalCenter(tboard, move) {
-	var c = tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1];
-	return !(c === 5 || c === 6 || c === 4 || c === 3);
+	return tboard[move[0] - move[0] % 3 + 1][move[1] - move[1] % 3 + 1] < 3;
 }
 
 /**
@@ -545,7 +541,7 @@ function gameOver(tboard, color, m) {
 	if ((move[0] - move[0] % 3) / 3 !== (move[1] - move[1] % 3) / 3)
 		gg = false;
 	else for (i = 1, a = 1; i < 9; i+=3, a+=3)
-		if (tboard[i][a] != color) {
+		if (tboard[i][a] !== color) {
 			gg = false;
 			break;
 		}
@@ -554,7 +550,7 @@ function gameOver(tboard, color, m) {
 		return true;
 	gg = true;
 
-	if ((move[0] - move[0] % 3) / 3 != 2 - (move[1] - move[1] % 3) / 3)
+	if ((move[0] - move[0] % 3) / 3 !== 2 - (move[1] - move[1] % 3) / 3)
 		return false;
 	else for (i = 1, a = 7; i < 9; i+=3, a-=3)
 		if (tboard[i][a] !== color)
@@ -565,7 +561,7 @@ function gameOver(tboard, color, m) {
 function tieGame(tboard, m) {
 	for (var i = 1; i < 9; i+=3)
 		for (var a = 1; a < 9; a+=3)
-			if (tboard[i][a] !== 3 && tboard[i][a] !== 4 && tboard[i][a] !== 6 && tboard[i][a] !== 5)
+			if (tboard[i][a] < 3)
 				return false;
 	return true;
 }
@@ -682,8 +678,7 @@ function MCTSGetChildren(father, tboard) {
 
 	if (father.lastMove) {
 		var nextCenter = [father.lastMove[0] % 3 * 3 + 1, father.lastMove[1] % 3 * 3 + 1];
-		var nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-		if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4) {
+		if (tboard[nextCenter[0]][nextCenter[1]] < 3) {
 			for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
 				for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++)
 					if (tboard[i][a] === 0)
@@ -699,7 +694,7 @@ function MCTSGetChildren(father, tboard) {
 
 	for (var I = 1; I < 9; I+=3)
 		for (var A = 1; A < 9; A+=3)
-			if (tboard[I][A] !== 5 && tboard[I][A] !== 6 && tboard[I][A] !== 3 && tboard[I][A] !== 4)
+			if (tboard[I][A] < 3)
 				for (i = I-1; i <= I+1; i++)
 					for (a = A-1; a <= A+1; a++)
 						if (tboard[i][a] === 0)
@@ -710,15 +705,13 @@ function MCTSGetChildren(father, tboard) {
 function getEmptySpots(tboard) {
 	var emptySpots = new Array(3);
 	var count, I, A, i, a;
-	var nextCenterColor;
 	for (i = 0; i < emptySpots.length; i++)
 		emptySpots[i] = new Array(3);
 
 	for (I = 1; I < 9; I += 3)
 		for (A = 1; A < 9; A += 3) {
-			nextCenterColor = tboard[I][A];
 			count = 0;
-			if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+			if (tboard[I][A] < 3)
 				for (i = I - 1; i <= I + 1; i++)
 					for (a = A - 1; a <= A + 1; a++)
 						if (tboard[i][a] === 0)
@@ -741,7 +734,7 @@ function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 		else return father.result = anti ? 1:-1;
 
 	var lm = father.lastMove, turn = father.turn, done = false;
-	var nextCenter, nextCenterColor;
+	var nextCenter;
 	var x, y, count, i, a, I, A;
 	var currentEmpty, emptyLeft;
 
@@ -762,8 +755,7 @@ function MCTSSimulate(father, tboard, emptySpots, totalEmpty, playMoveResult) {
 			outer1:
 			for (nextCenter[0] = 1; nextCenter[0] < 9; nextCenter[0] += 3)
 				for (nextCenter[1] = 1; nextCenter[1] < 9; nextCenter[1] += 3) {
-					nextCenterColor = tboard[nextCenter[0]][nextCenter[1]];
-					if (nextCenterColor !== 5 && nextCenterColor !== 6 && nextCenterColor !== 3 && nextCenterColor !== 4)
+					if (tboard[nextCenter[0]][nextCenter[1]] < 3)
 						for (x = nextCenter[0]-1; x <= nextCenter[0]+1; x++)
 							for (y = nextCenter[1]-1; y <= nextCenter[1]+1; y++)
 								if (tboard[x][y] === 0)
