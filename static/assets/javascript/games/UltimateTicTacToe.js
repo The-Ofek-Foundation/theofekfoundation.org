@@ -820,13 +820,14 @@ function runMCTS(time) {
 		globalRoot = createMCTSRoot();
 	var startTime = new Date().getTime();
 	while ((new Date().getTime() - startTime) / 1E3 < time) {
-		for (var i = 0; i < 1000; i++) {
+		for (var i = 0; i < 2000; i++)
 			globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
-		}
 		var error = getCertainty(globalRoot);
 		if (globalRoot.children.length < 2 || error < certaintyThreshold)
 			return;
 	}
+	while (globalRoot.totalTries < 81)
+		globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 	console.log("Total Simulations: " + globalRoot.totalTries);
 }
 
