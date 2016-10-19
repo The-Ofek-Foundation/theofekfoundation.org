@@ -10,7 +10,7 @@ def populate():
 
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org',
+		full_url = 'https://theofekfoundation.org',
 		pathname = '',
 		full_description = "Ofek Gila's website with many game AIs and online tools",
 		description = "Ofek Gila's main website",
@@ -22,7 +22,7 @@ def populate():
 
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/blog/',
+		full_url = 'https://theofekfoundation.org/blog/',
 		pathname = 'blog/',
 		full_description = "TheOfekFoundation's Official Blog!",
 		description = "TheOfekFoundation's Official Blog!",
@@ -34,7 +34,7 @@ def populate():
 
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/',
+		full_url = 'https://theofekfoundation.org/games/',
 		pathname = 'games/',
 		full_description = "Play games on TheOfekFoundation! Either two player, or against the (very powerful) AIs!",
 		description = "Play games on TheOfekFoundation!",
@@ -43,7 +43,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/ConnectFour/',
+		full_url = 'https://theofekfoundation.org/games/ConnectFour/',
 		pathname = 'games/ConnectFour/',
 		full_description = "Connect Four online Monte Carlo AI! Play against human or strong computer! Save your games easily!",
 		description = "Connect Four online Monte Carlo AI!",
@@ -52,7 +52,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/OnlineGo/',
+		full_url = 'https://theofekfoundation.org/games/OnlineGo/',
 		pathname = 'games/OnlineGo/',
 		full_description = "The online games of Go (Weiqi), Gomoku (with a minimax AI), and Wu, with a strong minimax AI for Gomoku.",
 		description = "Play games in the Go family online!",
@@ -61,7 +61,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/Mancala/',
+		full_url = 'https://theofekfoundation.org/games/Mancala/',
 		pathname = 'games/Mancala/',
 		full_description = "Mancala online with a strong Monte Carlo AI computer!",
 		description = "Mancala online with a strong Monte Carlo AI computer!",
@@ -70,7 +70,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/UltimateTicTacToe/',
+		full_url = 'https://theofekfoundation.org/games/UltimateTicTacToe/',
 		pathname = 'games/UltimateTicTacToe/',
 		full_description = "Play Ultimate Tic Tac Toe online against the computer with a Monte Carlo tree search AI! This is currently the strongest Ultimate Tic Tac Toe bot, AI, computer, out there, by far!",
 		description = "Ultimate Tic Tac Toe online with a strong Monte Carlo AI computer!",
@@ -79,7 +79,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/games/LameDuck/',
+		full_url = 'https://theofekfoundation.org/games/LameDuck/',
 		pathname = 'games/LameDuck/',
 		full_description = "The Lame Duck Game! Eat smaller fish, and watch out from larger ones.",
 		description = "The Lame Duck Game!",
@@ -91,7 +91,7 @@ def populate():
 
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/Maze/',
+		full_url = 'https://theofekfoundation.org/tools/Maze/',
 		pathname = 'tools/Maze',
 		full_description = "Generate a Maze online!",
 		description = "Generate a Maze online!",
@@ -100,7 +100,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/PrimeFactorizer/',
+		full_url = 'https://theofekfoundation.org/tools/PrimeFactorizer/',
 		pathname = 'tools/PrimeFactorizer',
 		full_description = "A super fast online Prime Factorizer using a sieve.",
 		description = "A super fast online Prime Factorizer using a sieve.",
@@ -109,7 +109,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/PasswordGenerator/',
+		full_url = 'https://theofekfoundation.org/tools/PasswordGenerator/',
 		pathname = 'tools/PasswordGenerator',
 		full_description = "Generate your passwords randomly to protect your accounts!",
 		description = "Generate passwords quickly.",
@@ -118,7 +118,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/Grapher/',
+		full_url = 'https://theofekfoundation.org/tools/Grapher/',
 		pathname = 'tools/Grapher',
 		full_description = "A function grapher with a trace and newtons' method.",
 		description = "A function grapher with a trace and newtons' method.",
@@ -127,7 +127,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/HappyNumber/',
+		full_url = 'https://theofekfoundation.org/tools/HappyNumber/',
 		pathname = 'tools/HappyNumber',
 		full_description = "A neat tool to calculate happy numbers, and variants.",
 		description = "A neat tool to calculate happy numbers, and variants.",
@@ -136,7 +136,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/ReveresLatsLettesr/',
+		full_url = 'https://theofekfoundation.org/tools/ReveresLatsLettesr/',
 		pathname = 'tools/ReveresLatsLettesr',
 		full_description = "Reveres Lats Tow Lettesr fo Worsd.",
 		description = "Reveres Lats Tow Lettesr fo Worsd.",
@@ -145,7 +145,7 @@ def populate():
 	)
 	add_page(
 		category = category,
-		full_url = 'http://theofekfoundation.org/tools/ImageEditor/',
+		full_url = 'https://theofekfoundation.org/tools/ImageEditor/',
 		pathname = 'tools/ImageEditor',
 		full_description = "A neat tool to calculate happy numbers, and variants.",
 		description = "A neat tool to calculate happy numbers, and variants.",
@@ -155,7 +155,7 @@ def populate():
 
 	category = add_category('Account')
 
-	page = add_page(category, 'http://theofekfoundation.org/account/register/',
+	page = add_page(category, 'https://theofekfoundation.org/account/register/',
 		pathname = 'account/register',
 		full_description = "Register to TheOfekFoundation! Make a free account today!",
 		description = "Register to TheOfekFoundation!",
@@ -170,7 +170,7 @@ def populate():
 		resizeable = True,
 	)
 
-	page = add_page(category, 'http://theofekfoundation.org/account/login/',
+	page = add_page(category, 'https://theofekfoundation.org/account/login/',
 		pathname = 'account/login',
 		full_description = "Login to TheOfekFoundation! Make a free account today!",
 		description = "Login to TheOfekFoundation!",
@@ -184,7 +184,7 @@ def populate():
 		resizeable = True,
 	)
 
-	page = add_page(category, 'http://theofekfoundation.org/account/ResetPassword/',
+	page = add_page(category, 'https://theofekfoundation.org/account/ResetPassword/',
 		pathname = 'account/ResetPassword',
 		full_description = "Reset your password for TheOfekFoundation.",
 		description = "Reset your password.",
@@ -198,7 +198,7 @@ def populate():
 		resizeable = False,
 	)
 
-	page = add_page(category, 'http://theofekfoundation.org/account/ResetPasswordConfirm/',
+	page = add_page(category, 'https://theofekfoundation.org/account/ResetPasswordConfirm/',
 		pathname = 'account/ResetPasswordConfirm',
 		full_description = "Reset your password for TheOfekFoundation.",
 		description = "Reset your password.",
@@ -212,7 +212,7 @@ def populate():
 		resizeable = False,
 	)
 
-	add_page(category, 'http://theofekfoundation.org/account/PasswordResetEmailSent/',
+	add_page(category, 'https://theofekfoundation.org/account/PasswordResetEmailSent/',
 		pathname = 'account/PasswordResetEmailSent',
 		full_description = "Password reset email was sent.",
 		description = "Reset your password.",
