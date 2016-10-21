@@ -1,3 +1,7 @@
+if (window.location.protocol !== "https:" && window.location.hostname !== "127.0.0.1")
+	window.location = window.location.toString().replace(/^http:/, "https:");
+
+
 $(document).ready(function () {
 	vertPaddingAlign();
 	// console.log("heya");
