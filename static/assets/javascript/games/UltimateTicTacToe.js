@@ -825,7 +825,8 @@ function runMCTS(time) {
 		for (var i = 0; i < 2000; i++)
 			globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 		var error = getCertainty(globalRoot);
-		if (globalRoot.children.length < 2 || error < certaintyThreshold)
+		var certainty = resultCertainty(globalRoot)
+		if (globalRoot.children.length < 2 || error < certaintyThreshold || certainty > 0.9)
 			return;
 	}
 	while (globalRoot.totalTries < 81)
