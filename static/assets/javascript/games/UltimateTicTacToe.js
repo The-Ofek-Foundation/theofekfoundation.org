@@ -47,11 +47,6 @@ function pageReady() {
 	boardui.setAttribute('width', boardwidth);
 	boardui.setAttribute('height', boardwidth);
 
-	$('#new-game-btn').css('top', (docheight - $('#new-game-btn').height()) / 2);
-	$('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
-	$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
-	$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
-
 	newGame();
 
 	setTimeout(function() {

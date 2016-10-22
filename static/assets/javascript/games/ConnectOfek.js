@@ -28,10 +28,6 @@ function pageReady() {
 
 	$("#form-new-game").height(docHeight * 0.6);
 
-	$(".game-settings-table").css('height', docHeight - $("#game-settings-menu h1").outerHeight() - parseInt($("#game-settings-menu").css('padding-top')) - parseInt($("#game-settings-menu").css('padding-bottom')) + 'px');
-	while ($('#game-settings-menu').outerHeight() > docHeight)
-		$('.game-settings-table').css('height', $('.game-settings-table').outerHeight() - 1 + 'px');
-
 	newGame(window.location.hash);
 
 	$('input[name="name"]').val(newCookieId());
@@ -44,10 +40,6 @@ $(window).resize(function() {
 	docWidth = $("#content-wrapper").outerWidth(true);
 	docHeight = $("#content-wrapper").outerHeight(true);
 
-	$(".game-settings-table").css('height', docHeight - $("#game-settings-menu h1").outerHeight() - parseInt($("#game-settings-menu").css('padding-top')) - parseInt($("#game-settings-menu").css('padding-bottom')) + 'px');
-	while ($('#game-settings-menu').outerHeight() > docHeight)
-		$('.game-settings-table').css('height', $('.game-settings-table').outerHeight() - 1 + 'px');
-
 	$('#board').width(docWidth).height(docHeight);
 	boardui.setAttribute('width', docWidth);
 	boardui.setAttribute('height', docHeight);
@@ -56,6 +48,7 @@ $(window).resize(function() {
 	discHeight = docHeight / (dimensions[1] + 1);
 
 	$("#form-new-game").height(docHeight * 0.6);
+	adjustButtons();
 
 	drawBoard();
 });
@@ -86,11 +79,11 @@ function stopPonder() {
 }
 
 function adjustButtons() {
-	$('.footer button').css('font-size', discHeight / 4);
-	$('.footer').css("height", discHeight / 2);
-	$('.footer').css('margin-bottom', discHeight / 4 - $('#back').outerHeight(false));
-	$('.footer #anal').css('line-height', discHeight / 2 + "px");
-	$('.footer #num-trials').css('line-height', discHeight / 2 + "px");
+	$('#footer button').css('font-size', discHeight / 4);
+	$('#footer').css("height", discHeight / 2);
+	// $('#footer').css('margin-bottom', discHeight / 4 - $('#back').outerHeight(false));
+	$('#footer #anal').css('line-height', discHeight / 2 + "px");
+	$('#footer #num-trials').css('line-height', discHeight / 2 + "px");
 }
 
 function updateAnalysis() {
