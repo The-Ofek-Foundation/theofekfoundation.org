@@ -45,6 +45,11 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 			</tr>
 
 			<tr>
+				<td>Show AI move weights (cool)!</td>
+				<td><input type="checkbox" id="draw-weights"></td>
+			</tr>
+
+			<tr>
 				<td>Anti Tic Tac Toe? (Goal is to lose)</td>
 				<td><input type="checkbox" id="anti-tic-tac-toe"></td>
 			</tr>
@@ -99,6 +104,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 	var boardui = document.getElementById("board");
 	var brush = boardui.getContext("2d");
 	var totalEmptyGlobal, emptySpotsGlobal;
+	var drawWeights, hoveredMove;
 
 	/**
 	 * Automatically called once page elements are loaded. Sets location of elements in page and prompts how to change settings.
@@ -115,11 +121,6 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		$('#board').css('left', (docwidth - boardwidth) / 2);
 		boardui.setAttribute('width', boardwidth);
 		boardui.setAttribute('height', boardwidth);
-
-		$('#new-game-btn').css('top', (docheight - $('#new-game-btn').height()) / 2);
-		$('#new-game-btn').css('left', (docwidth - $('#new-game-btn').outerWidth()) / 2);
-		$('#new-game-menu').css('top', (docheight - $('#new-game-menu').outerHeight()) / 2);
-		$('#new-game-menu').css('left', (docwidth - $('#new-game-menu').outerWidth()) / 2);
 
 		newGame();
 
@@ -183,6 +184,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		xTurnGlobal = true;
 		totalEmptyGlobal = 9 * 9;
 		emptySpotsGlobal = getEmptySpots(board);
+		hoveredMove = false;
 
 		globalRoot = createMCTSRoot();
 		drawBoard();
@@ -201,6 +203,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 	function getSettings() {
 		aiTurn = gameSettings.getOrSet('aiTurn', 'second');
 		ponder = gameSettings.getOrSet('ponder', false);
+		drawWeights = gameSettings.getOrSet('drawWeights', false);
 		anti = gameSettings.getOrSet('anti', false);
 		tie = gameSettings.getOrSet('tie', false);
 		timeToThink = gameSettings.getOrSet('timeToThink', 1);
@@ -219,18 +222,35 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 	 * Draws the lines of the grid, shading in regions where next move forced.
 	 */
 	function drawGrid() {
-		if (prevMove && !over) {
+		var i, a;
+
+		if (drawWeights) {
+			var bestChild = mostTriedChild(globalRoot, null), bestTries;
+			if (bestChild !== null) {
+				bestTries = bestChild.totalTries;
+				for (i = 0; i < 9; i++)
+					for (a = 0; a < 9; a++) {
+						var squareRoot = MCTSGetNextRoot([i, a]);
+						if (squareRoot !== null) {
+							brush.fillStyle = getWeightedStyle(bestTries, squareRoot.totalTries, xTurnGlobal);
+							brush.fillRect(i * squarewidth, a * squarewidth, squarewidth, squarewidth);
+						}
+					}
+			}
+		}
+
+		if (!drawWeights && prevMove && !over) {
 			var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
+
 			if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
 				brush.fillStyle = "rgba(102, 162, 255, 0.5)";
 				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
 			} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
-					brush.fillStyle = "rgba(255, 123, 123, 0.5)";
-					brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+				brush.fillStyle = "rgba(255, 123, 123, 0.5)";
+				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
 			}
 		}
 
-		var i, a;
 		brush.lineWidth = 5;
 		brush.strokeStyle = "black";
 		brush.beginPath();
@@ -257,6 +277,12 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		}
 		brush.stroke();
 		brush.closePath();
+	}
+
+	function getWeightedStyle(bestTries, tries, xTurn) {
+		if (xTurn)
+			return "rgba(102, 162, 255, " + tries / bestTries + ")";
+		else return "rgba(255, 123, 123, " + tries / bestTries + ")";
 	}
 
 	/**
@@ -461,6 +487,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		if (!legalMove(board, move, prevMove, true))
 			return;
 
+		hoveredMove = false;
 		playMoveGlobal(board, move, xTurnGlobal);
 		e.preventDefault();
 	});
@@ -640,8 +667,10 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 	$('#board').mousemove(function (e) {
 		if (aiTurn !== 'null' && xTurnGlobal === (aiTurn === 'first') || aiTurn === "both" || over)		return;
 		var move = getMove(e.pageX, e.pageY - wrapperTop);
-		if (legalMove(board, move, prevMove, false))
+		if (legalMove(board, move, prevMove, false)) {
+			hoveredMove = move;
 			drawHover(move);
+		} else hoveredMove = false;
 	});
 
 	function updateAnalysis() {
@@ -660,6 +689,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		else return 1 - (root.hits + root.misses) / root.totalTries;
 	}
 
+	var numPonders = 0;
 	function startPonder() {
 		pondering = setInterval(function() {
 			if (!globalRoot)
@@ -677,6 +707,11 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 				numChoose2 = numChoose1;
 				numChoose1 = tempCount;
 			}
+			numPonders++;
+			if (numPonders % 10 === 0 && drawWeights)
+				if (hoveredMove)
+					drawHover(hoveredMove);
+				else drawBoard();
 			updateAnalysis();
 		}, 1);
 	}
@@ -894,7 +929,8 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 			for (var i = 0; i < 2000; i++)
 				globalRoot.chooseChild(simpleBoardCopy(board), simpleSpotsCopy(emptySpotsGlobal), totalEmptyGlobal);
 			var error = getCertainty(globalRoot);
-			if (globalRoot.children.length < 2 || error < certaintyThreshold)
+			var certainty = resultCertainty(globalRoot)
+			if (globalRoot.children.length < 2 || error < certaintyThreshold || certainty > 0.9)
 				return;
 		}
 		while (globalRoot.totalTries < 81)
@@ -1502,6 +1538,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 			'ponder': document.getElementById('ponder').checked,
 			'aiTurn': document.getElementById('ai-turn').value,
 			'timeToThink': document.getElementById('time-to-think').value,
+			'drawWeights': document.getElementById('draw-weights').checked,
 			'anti': document.getElementById('anti-tic-tac-toe').checked,
 			'tie': document.getElementById('tie-tic-tac-toe').checked,
 		}
@@ -1511,6 +1548,7 @@ padding:"inner"+a,content:b,"":"outer"+a},function(c,d){n.fn[d]=function(d,e){va
 		document.getElementById('ponder').checked = settings.ponder;
 		document.getElementById('ai-turn').value = settings.aiTurn;
 		document.getElementById('time-to-think').value = settings.timeToThink;
+		document.getElementById('draw-weights').checked = settings.drawWeights;
 		document.getElementById('anti-tic-tac-toe').checked = settings.anti;
 		document.getElementById('tie-tic-tac-toe').checked = settings.tie;
 	}
