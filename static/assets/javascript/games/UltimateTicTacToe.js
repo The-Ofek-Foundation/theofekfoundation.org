@@ -150,30 +150,30 @@ function clearBoard() {
 function drawGrid() {
 	var i, a;
 
-	if (prevMove && !over) {
+	if (drawWeights) {
+		var bestChild = mostTriedChild(globalRoot, null), bestTries;
+		if (bestChild !== null) {
+			bestTries = bestChild.totalTries;
+			for (i = 0; i < 9; i++)
+				for (a = 0; a < 9; a++) {
+					var squareRoot = MCTSGetNextRoot([i, a]);
+					if (squareRoot !== null) {
+						brush.fillStyle = getWeightedStyle(bestTries, squareRoot.totalTries, xTurnGlobal);
+						brush.fillRect(i * squarewidth, a * squarewidth, squarewidth, squarewidth);
+					}
+				}
+		}
+	}
+
+	if (!drawWeights && prevMove && !over) {
 		var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
 
-		if (drawWeights) {
-			var bestChild = mostTriedChild(globalRoot, null), bestTries;
-			if (bestChild !== null) {
-				bestTries = bestChild.totalTries;
-				for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
-					for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++) {
-						var squareRoot = MCTSGetNextRoot([i, a]);
-						if (squareRoot !== null) {
-							brush.fillStyle = getWeightedStyle(bestTries, squareRoot.totalTries, xTurnGlobal);
-							brush.fillRect(i * squarewidth, a * squarewidth, squarewidth, squarewidth);
-						}
-					}
-			}
-		} else {
-			if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
-				brush.fillStyle = "rgba(102, 162, 255, 0.5)";
-				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
-			} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
-				brush.fillStyle = "rgba(255, 123, 123, 0.5)";
-				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
-			}
+		if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
+			brush.fillStyle = "rgba(102, 162, 255, 0.5)";
+			brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+		} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
+			brush.fillStyle = "rgba(255, 123, 123, 0.5)";
+			brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
 		}
 	}
 
