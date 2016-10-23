@@ -105,16 +105,14 @@
 			<td><input type="text" name="name"></td>
 		</tr>
 
-		<tr>
-			<td style="width: 25em;">
-				<input type="submit" id="done" value="Done">
-				{% if user.is_authenticated %}
-				<input type="submit" id="save" value="Save">
-				{% endif %}
-				<input type="submit" id="cancel" value="Cancel">
-			</td>
-		</tr>
-	</form>
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
 </div>
 
 {% endblock %}
