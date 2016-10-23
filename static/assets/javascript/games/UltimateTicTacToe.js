@@ -31,6 +31,7 @@ var workers, workersCallbackCount;
 var boardui = document.getElementById("board");
 var brush = boardui.getContext("2d");
 var totalEmptyGlobal, emptySpotsGlobal;
+var drawWeights, hoveredMove;
 
 /**
  * Automatically called once page elements are loaded. Sets location of elements in page and prompts how to change settings.
@@ -109,6 +110,7 @@ function newGame() {
 	xTurnGlobal = true;
 	totalEmptyGlobal = 9 * 9;
 	emptySpotsGlobal = getEmptySpots(board);
+	hoveredMove = false;
 
 	globalRoot = createMCTSRoot();
 	drawBoard();
@@ -127,6 +129,7 @@ function newGame() {
 function getSettings() {
 	aiTurn = gameSettings.getOrSet('aiTurn', 'second');
 	ponder = gameSettings.getOrSet('ponder', false);
+	drawWeights = gameSettings.getOrSet('drawWeights', false);
 	anti = gameSettings.getOrSet('anti', false);
 	tie = gameSettings.getOrSet('tie', false);
 	timeToThink = gameSettings.getOrSet('timeToThink', 1);
@@ -145,18 +148,35 @@ function clearBoard() {
  * Draws the lines of the grid, shading in regions where next move forced.
  */
 function drawGrid() {
+	var i, a;
+
 	if (prevMove && !over) {
 		var nextCenter = [prevMove[0] % 3 * 3 + 1, prevMove[1] % 3 * 3 + 1];
-		if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
-			brush.fillStyle = "rgba(102, 162, 255, 0.5)";
-			brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
-		} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
+
+		if (drawWeights) {
+			var bestChild = mostTriedChild(globalRoot, null), bestTries;
+			if (bestChild !== null) {
+				bestTries = bestChild.totalTries;
+				for (i = nextCenter[0] - 1; i <= nextCenter[0] + 1; i++)
+					for (a = nextCenter[1] - 1; a <= nextCenter[1] + 1; a++) {
+						var squareRoot = MCTSGetNextRoot([i, a]);
+						if (squareRoot !== null) {
+							brush.fillStyle = getWeightedStyle(bestTries, squareRoot.totalTries, xTurnGlobal);
+							brush.fillRect(i * squarewidth, a * squarewidth, squarewidth, squarewidth);
+						}
+					}
+			}
+		} else {
+			if (board[nextCenter[0]][nextCenter[1]] < 3 && xTurnGlobal) {
+				brush.fillStyle = "rgba(102, 162, 255, 0.5)";
+				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+			} else if (board[nextCenter[0]][nextCenter[1]] < 3 && !xTurnGlobal) {
 				brush.fillStyle = "rgba(255, 123, 123, 0.5)";
 				brush.fillRect((nextCenter[0] - 1) * squarewidth, (nextCenter[1] - 1) * squarewidth, 3 * squarewidth, 3 * squarewidth);
+			}
 		}
 	}
 
-	var i, a;
 	brush.lineWidth = 5;
 	brush.strokeStyle = "black";
 	brush.beginPath();
@@ -183,6 +203,12 @@ function drawGrid() {
 	}
 	brush.stroke();
 	brush.closePath();
+}
+
+function getWeightedStyle(bestTries, tries, xTurn) {
+	if (xTurn)
+		return "rgba(102, 162, 255, " + tries / bestTries + ")";
+	else return "rgba(255, 123, 123, " + tries / bestTries + ")";
 }
 
 /**
@@ -387,6 +413,7 @@ $('#board').mousedown(function (e) {
 	if (!legalMove(board, move, prevMove, true))
 		return;
 
+	hoveredMove = false;
 	playMoveGlobal(board, move, xTurnGlobal);
 	e.preventDefault();
 });
@@ -566,8 +593,10 @@ function tieGame(tboard, m) {
 $('#board').mousemove(function (e) {
 	if (aiTurn !== 'null' && xTurnGlobal === (aiTurn === 'first') || aiTurn === "both" || over)		return;
 	var move = getMove(e.pageX, e.pageY - wrapperTop);
-	if (legalMove(board, move, prevMove, false))
+	if (legalMove(board, move, prevMove, false)) {
+		hoveredMove = move;
 		drawHover(move);
+	} else hoveredMove = false;
 });
 
 function updateAnalysis() {
@@ -586,6 +615,7 @@ function resultCertainty(root) {
 	else return 1 - (root.hits + root.misses) / root.totalTries;
 }
 
+var numPonders = 0;
 function startPonder() {
 	pondering = setInterval(function() {
 		if (!globalRoot)
@@ -603,6 +633,11 @@ function startPonder() {
 			numChoose2 = numChoose1;
 			numChoose1 = tempCount;
 		}
+		numPonders++;
+		if (numPonders % 10 === 0 && drawWeights)
+			if (hoveredMove)
+				drawHover(hoveredMove);
+			else drawBoard();
 		updateAnalysis();
 	}, 1);
 }
@@ -1429,6 +1464,7 @@ function getNewSettings() {
 		'ponder': document.getElementById('ponder').checked,
 		'aiTurn': document.getElementById('ai-turn').value,
 		'timeToThink': document.getElementById('time-to-think').value,
+		'drawWeights': document.getElementById('draw-weights').checked,
 		'anti': document.getElementById('anti-tic-tac-toe').checked,
 		'tie': document.getElementById('tie-tic-tac-toe').checked,
 	}
@@ -1438,6 +1474,7 @@ function populateSettingsForm(settings) {
 	document.getElementById('ponder').checked = settings.ponder;
 	document.getElementById('ai-turn').value = settings.aiTurn;
 	document.getElementById('time-to-think').value = settings.timeToThink;
+	document.getElementById('draw-weights').checked = settings.drawWeights;
 	document.getElementById('anti-tic-tac-toe').checked = settings.anti;
 	document.getElementById('tie-tic-tac-toe').checked = settings.tie;
 }

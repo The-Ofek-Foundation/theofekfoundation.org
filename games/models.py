@@ -12,6 +12,7 @@ class GameSettings(models.Model):
 	certainty_threshold = DecimalField(decimal_places=3, max_digits=5, null=True)
 	time_to_think = DecimalField(decimal_places=4, max_digits=6, null=True)
 	increasing_factor = DecimalField(decimal_places=4, max_digits=6, null=True)
+	draw_weights = NullBooleanField()
 	anti = NullBooleanField()
 	tie = NullBooleanField()
 	ponder = NullBooleanField()
