@@ -4,3 +4,12 @@
 [submodule "static/assets/javascript/games/LameDuck"]
 	path = static/assets/javascript/games/LameDuck
 	url = git@github.com:The-Ofek-Foundation/Lame-Duck
+[submodule "static/assets/javascript/games/Mancala"]
+	path = static/assets/javascript/games/Mancala
+	url = git@github.com:The-Ofek-Foundation/Mancala
+[submodule "static/assets/javascript/games/OnlineGo"]
+	path = static/assets/javascript/games/OnlineGo
+	url = git@github.com:The-Ofek-Foundation/Online-Go
+[submodule "static/assets/javascript/games/UltimateTicTacToe"]
+	path = static/assets/javascript/games/UltimateTicTacToe
+	url = git@github.com:The-Ofek-Foundation/UltimateTicTacToe
