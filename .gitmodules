@@ -1,0 +1,3 @@
+[submodule "static/assets/javascript/games/ConnectOfekAI"]
+	path = static/assets/javascript/games/ConnectOfekAI
+	url = https://github.com/The-Ofek-Foundation/ConnectOfek
