@@ -42,10 +42,10 @@ tools = {
 			'imagesrc': 'factor-tree.gif',
 			'description': 'A super-fast prime number factorizer that uses a sieve of a size that you get to input!',
 		},	{
-			'name': 'Image Editor',
-			'imagesrc': 'image-editor.jpg',
-			'description': 'A neat little image editor that has many effects. Press \'c\' to enter commands.',
-		},	{
+		# 	'name': 'Image Editor',
+		# 	'imagesrc': 'image-editor.jpg',
+		# 	'description': 'A neat little image editor that has many effects. Press \'c\' to enter commands.',
+		# },	{
 			'name': 'Grapher',
 			'imagesrc': 'grapher.gif',
 			'description': 'A function grapher with a neat tracing and newtons\' method (click \'n\' in trace mode).',
