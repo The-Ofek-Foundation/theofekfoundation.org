@@ -28,3 +28,6 @@
 [submodule "static/assets/javascript/tools/ReveresLatsLettesr"]
 	path = static/assets/javascript/tools/ReveresLatsLettesr
 	url = git@github.com:The-Ofek-Foundation/ReveresLatsLettesr
+[submodule "static/assets/javascript/tools/PasswordGenerator"]
+	path = static/assets/javascript/tools/PasswordGenerator
+	url = git@github.com:The-Ofek-Foundation/PasswordGenerator
