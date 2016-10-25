@@ -13,3 +13,18 @@
 [submodule "static/assets/javascript/games/UltimateTicTacToe"]
 	path = static/assets/javascript/games/UltimateTicTacToe
 	url = git@github.com:The-Ofek-Foundation/UltimateTicTacToe
+[submodule "static/assets/javascript/tools/Grapher"]
+	path = static/assets/javascript/tools/Grapher
+	url = git@github.com:The-Ofek-Foundation/Grapher
+[submodule "static/assets/javascript/tools/HappyNumber"]
+	path = static/assets/javascript/tools/HappyNumber
+	url = git@github.com:The-Ofek-Foundation/Happy-Numbers
+[submodule "static/assets/javascript/tools/Maze"]
+	path = static/assets/javascript/tools/Maze
+	url = git@github.com:The-Ofek-Foundation/Maze
+[submodule "static/assets/javascript/tools/PrimeFactorizer"]
+	path = static/assets/javascript/tools/PrimeFactorizer
+	url = git@github.com:The-Ofek-Foundation/PrimeFactorizer
+[submodule "static/assets/javascript/tools/ReveresLatsLettesr"]
+	path = static/assets/javascript/tools/ReveresLatsLettesr
+	url = git@github.com:The-Ofek-Foundation/ReveresLatsLettesr
