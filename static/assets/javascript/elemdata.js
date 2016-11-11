@@ -1,4 +1,5 @@
 function getElemProperty(elem, property) {
+	property = camelToHtml(property);
 	return parseInt(
 		window.getComputedStyle(elem, null).getPropertyValue(property));
 }
@@ -21,17 +22,95 @@ function getElemHeight(elem) {
 	return getElemProperty(elem, 'height') + getElemPaddingHeight(elem);
 }
 
+function getElemStyle(elem, prop) {
+	return elem.style[prop];
+}
+
+function getStyleOperator(value) {
+	if (value.indexOf('px') !== -1)
+		return 'px';
+	if (value.indexOf('em') !== -1)
+		return 'em';
+	if (value.indexOf('pt') !== -1)
+		return 'pt';
+	if (value.indexOf('rem') !== -1)
+		return 'rem';
+}
+
+function setElemStyle(elem, prop, value) {
+	value += '';
+	if (value.substring(0, 2) === '+=')
+		value = getElemProperty(elem, prop) + parseInt(value.substring(2)) +
+			getStyleOperator(value);
+	else if (value.substring(0, 2) === '-=')
+		value = getElemProperty(elem, prop) - parseInt(value.substring(2)) +
+			getStyleOperator(value);
+	elem.style[prop] = value;
+}
+
+function setElemWidth(elem, px) {
+	setElemStyle(elem, 'width', parseInt(px) + 'px');
+}
+
+function setElemHeight(elem, px) {
+	setElemStyle(elem, 'height', parseInt(px) + 'px');
+}
+
+function getWindowWidth() {
+	return window.innerWidth;
+}
+
+function getWindowHeight() {
+	return window.innerHeight;
+}
+
+function getElemId(id) {
+	return document.getElementById(id);
+}
+
+function getElemQuery(query) {
+	return document.querySelector(query);
+}
+
+function getElemsClass(className) {
+	return document.getElementsByClassName(className);
+}
+
+function getElemClass(className) {
+	return getElemsClass(className)[0];
+}
+
+function getElemData(elem, key) {
+	return elem.dataset[key];
+}
+
+function setElemData(elem, key, val) {
+	elem.dataset[key] = val;
+}
+
+function elemHasClass(elem, cls) {
+	return elem.classList.contains(cls);
+}
+
+function setInputValue(name, value) {
+	getElemQuery('input[name="' + name + '"]').value = value;
+}
+
 function centerVertically(elem) {
-	elem.style.top =
-		(getElemHeight(elem.parentElement) - getElemHeight(elem)) / 2 + "px";
+	setElemStyle(elem, 'top',
+		(getElemHeight(elem.parentElement) - getElemHeight(elem)) / 2 + "px");
 }
 
 function centerHorizontally(elem) {
-	elem.style.left =
-		(getElemWidth(elem.parentElement) - getElemWidth(elem)) / 2 + "px";
+	setElemStyle(elem, 'left',
+		(getElemWidth(elem.parentElement) - getElemWidth(elem)) / 2 + "px");
 }
 
 function centerElement(elem) {
 	centerVertically(elem);
 	centerHorizontally(elem);
+}
+
+function camelToHtml(s){
+	return s.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
 }

@@ -11,15 +11,15 @@ var data, pixels, pixelsCopy;
 image = new Image();
 image.crossorigin = 'anonymous';
 
-docwidth = $("#content-wrapper").outerWidth(true);
-docheight = $("#content-wrapper").outerHeight(true);
+docwidth = getElemWidth(document.getElementById('content-wrapper'));
+docheight = getElemHeight(document.getElementById('content-wrapper'));
 
 background = document.getElementById("background");
 context = background.getContext("2d");
 
 image.onload = function() {
-	docwidth = $("#content-wrapper").outerWidth(true);
-	docheight = $("#content-wrapper").outerHeight(true);
+	docwidth = getElemWidth(document.getElementById('content-wrapper'));
+	docheight = getElemHeight(document.getElementById('content-wrapper'));
 	var imageRatio = image.width / image.height;
 	var screenRatio = docwidth / docheight;
 	var changeRatio;
@@ -99,8 +99,8 @@ function ding() {
 }
 
 function fullscreen() {
-	docwidth = $("#content-wrapper").outerWidth(true);
-	docheight = $("#content-wrapper").outerHeight(true);
+	docwidth = getElemWidth(document.getElementById('content-wrapper'));
+	docheight = getElemHeight(document.getElementById('content-wrapper'));
 	background.width = docwidth;
 	background.height = docheight;
 	context.drawImage(image,0,0,image.width,image.height, 0, 0, docwidth, docheight);

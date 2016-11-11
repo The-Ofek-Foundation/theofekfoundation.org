@@ -1,91 +1,59 @@
 if (window.location.protocol !== "https:" && window.location.hostname !== "127.0.0.1")
 	window.location = window.location.toString().replace(/^http:/, "https:");
 
-
-$(document).ready(function () {
-	vertPaddingAlign();
-	// console.log("heya");
-});
+document.addEventListener("DOMContentLoaded", docReady);
 
 function docReady() {
-	var contentWrapper = $("#content-wrapper"), windowHeight = $(window).outerHeight(true);
-	contentWrapper.css('top', $('#navbar-top').outerHeight(true)).height(windowHeight - $('#navbar-top').outerHeight(true));
-	vertPaddingAlign();
+	var contentWrapper = getElemId('content-wrapper'),
+	    windowHeight = getWindowHeight(),
+	    navbarTopHeight = getElemHeight(getElemId('navbar-top'));
+	setElemStyle(contentWrapper, 'top', navbarTopHeight);
+	setElemHeight(contentWrapper, windowHeight - navbarTopHeight - 1);
 	prt();
-	// console.log($("#navbar-top").outerHeight());
-	// if (document.getElementById('navbar-top') !== null)
-	// 	document.body.style.paddingTop = document.getElementById('navbar-top').clientHeight + "px";
-
-	$(".path-link").click(function(event) {
-		setLocallyStored("path", $(this).data('path'));
-		redirect($(this).data('url'));
-	});
-
-	$("#logout-url").click(function(event) {
-		$.post($(this).data('url'),
-			function (data) {
-				redirect(window.location.href);
-			}
-		)
+	document.addEventListener('click', function(event) {
+		var targetElem = event.target;
+		if (elemHasClass(targetElem, 'path-link')) {
+			setLocallyStored("path", getElemData(targetElem, 'path'));
+			redirect(getElemData(targetElem, 'url'));
+		} else if (targetElem.id === 'logout-url')
+			$.post(getElemData(targetElem, 'url'),
+				function (data) {
+					redirect(window.location.href);
+				}
+			)
 	});
 };
 
 function prt() {	// page ready test
-	// console.log("testing3");
 	if (typeof pageReady === 'function')
 		pageReady();
 	else if (pageReady === null)
-		setTimeout(prt, 500);
+		setTimeout(prt, 50);
 }
 
 var pageReady = null;
 
-var navbarHeight = null;
-var countRepeats = 0;
-var getFinalNavbarHeight = setInterval(function () {
-	var tempHeight = $("#navbar-top").outerHeight();
-	// console.log(tempHeight);
-	if (tempHeight != navbarHeight)
-		if (navbarHeight) {
-			docReady();
-			clearInterval(getFinalNavbarHeight);
-		} else navbarHeight = $("#navbar-top").outerHeight();
-	if (tempHeight !== null)
-		countRepeats++;
-	if (countRepeats > 20 && tempHeight !== null) {
-		docReady();
-		clearInterval(getFinalNavbarHeight);
-	}
-}, 60);
-
-function vertPaddingAlign() {
-	var vertPaddingAlign = document.getElementsByClassName('vert-padding-align');
-	for (var i = 0, elem = $(vertPaddingAlign[i]); i < vertPaddingAlign.length; i++, elem = $(vertPaddingAlign[i]))
-		elem.css('padding-top', (elem.parent().height() - elem.height()) / 2 + "px");
-}
-
 function fitParent() {
-	var fitParents = document.getElementsByClassName("fit-parent");
-	var fp = fitParents, elem;
-	for (var i = 0; i < fp.length; i++) {
-		elem = $(fp[i]);
-		while (elem.height() > elem.parent().height())
-			elem.css('font-size', (parseInt(elem.css('font-size')) - 1) + "px" );
+	var fp = getElemsClass("fit-parent");
+	for (elem of fp) {
+		var parentHeight = getElemHeight(elem.parentElement);
+		while (getElemHeight(elem) > parentHeight)
+			setElemStyle(elem, 'fontSize',
+				getElemProperty(elem, 'fontSize') - 1 + "px");
 	}
 }
 
 function vertAlign() {
-	var vertAligns = document.getElementsByClassName("vert-align");
+	var va = getElemsClass("vert-align");
 
-	var va = vertAligns, elem;
-	for (var i = 0; i < va.length; i++) {
-		elem = $(va[i]);
-		elem.css('margin-top', (elem.parent().height() - elem.height()) / 2 + "px");
-	}
+	for (elem of va)
+		setElemStyle(elem, 'marginTop', (getElemHeight(elem.parentElement) -
+			getElemHeight(elem)) / 2 + "px");
 }
 
 function windowAt(elem) {
-	return $(document).scrollTop() + $(window).height() - $('.footer').outerHeight(true) >= elem.position().top;
+	return window.pageYOffset + getWindowHeight() -
+		getElemHeight(getElemClass('footer')) >= elem.offsetTop;
 }
 
 function redirect(url) {
