@@ -37,9 +37,9 @@ function fitParent() {
 	var fp = getElemsClass("fit-parent");
 	for (var i = 0, elem = fp[i]; i < fp.length; i++, elem = fp[i]) {
 		var parentHeight = getElemHeight(elem.parentElement);
-		// while (getElemHeight(elem) > parentHeight)
-		// 	setElemStyle(elem, 'fontSize',
-		// 		getElemProperty(elem, 'fontSize') - 1 + "px");
+		while (getElemHeight(elem) > parentHeight)
+			setElemStyle(elem, 'fontSize',
+				getElemProperty(elem, 'fontSize') - 1 + "px");
 	}
 }
 
@@ -52,8 +52,10 @@ function vertAlign() {
 }
 
 function windowAt(elem) {
-	return window.pageYOffset + getWindowHeight() -
-		getElemHeight(getElemClass('footer')) >= elem.offsetTop;
+	var doc = document.documentElement;
+	return (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0)
+		+ getWindowHeight() - getElemHeight(getElemClass('footer'))
+		>= elem.offsetTop;
 }
 
 function redirect(url) {
