@@ -35,18 +35,18 @@ var pageReady = null;
 
 function fitParent() {
 	var fp = getElemsClass("fit-parent");
-	for (elem of fp) {
+	for (var i = 0, elem = fp[i]; i < fp.length; i++, elem = fp[i]) {
 		var parentHeight = getElemHeight(elem.parentElement);
-		while (getElemHeight(elem) > parentHeight)
-			setElemStyle(elem, 'fontSize',
-				getElemProperty(elem, 'fontSize') - 1 + "px");
+		// while (getElemHeight(elem) > parentHeight)
+		// 	setElemStyle(elem, 'fontSize',
+		// 		getElemProperty(elem, 'fontSize') - 1 + "px");
 	}
 }
 
 function vertAlign() {
 	var va = getElemsClass("vert-align");
 
-	for (elem of va)
+	for (var i = 0, elem = va[i]; i < va.length; i++, elem = va[i])
 		setElemStyle(elem, 'marginTop', (getElemHeight(elem.parentElement) -
 			getElemHeight(elem)) / 2 + "px");
 }

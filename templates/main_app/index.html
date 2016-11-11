@@ -84,14 +84,14 @@
 
 	function setupPseudoBody() {
 		var pb = getElemsClass('pseudo-body');
-		for (elem of pb)
+		for (var i = 0, elem = pb[i]; i < pb.length; i++, elem = pb[i])
 			setElemStyle(elem, 'marginBottom', 2 *
 				getElemHeight(getElemClass('footer')) + "px");
 	}
 
 	function setupInfo() {
 		var info = getElemsClass('info');
-		for (elem of info) {
+		for (var i = 0, elem = info[i]; i < info.length; i++, elem = info[i]) {
 			setElemStyle(elem, 'marginLeft', '-=25px');
 			setElemStyle(elem, 'paddingLeft', '+=20px');
 			setElemStyle(elem, 'paddingRight', '+=20px');
@@ -101,7 +101,8 @@
 
 	function setupSquares() {
 		var squares = getElemsClass('square');
-		for (elem of squares)
+		for (var i = 0, elem = squares[i]; i < squares.length; i++, elem =
+			squares[i])
 			setElemHeight(elem, getElemWidth(elem));
 	}
 
