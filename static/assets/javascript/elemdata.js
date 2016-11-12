@@ -76,6 +76,14 @@ function getElemsClass(className) {
 	return document.getElementsByClassName(className);
 }
 
+function getElemsName(name) {
+	return document.getElementsByName(name);
+}
+
+function getElemName(name) {
+	return getElemsName(name)[0];
+}
+
 function getElemClass(className) {
 	return getElemsClass(className)[0];
 }
@@ -93,12 +101,26 @@ function elemHasClass(elem, cls) {
 }
 
 function setInputValue(name, value) {
-	getElemQuery('input[name="' + name + '"]').value = value;
+	if (typeof value === 'boolean')
+		getElemName(name).checked = value;
+	else getElemName(name).value = value;
+}
+
+function getInputValue(name) {
+	var inputElem = getElemName(name);
+	if (inputElem.type === 'checkbox')
+		return inputElem.checked;
+	else if (inputElem.type === 'number')
+		if (inputElem.value % 1 === 0)
+			return parseInt(inputElem.value);
+		else return parseFloat(inputElem.value);
+	else return inputElem.value;
 }
 
 function centerVertically(elem) {
 	setElemStyle(elem, 'top',
-		(getElemHeight(elem.parentElement) - getElemHeight(elem)) / 2 + "px");
+		Math.floor((getElemHeight(elem.parentElement) - getElemHeight(elem)))
+		/ 2 + "px");
 }
 
 function centerHorizontally(elem) {
