@@ -4,11 +4,7 @@ if (window.location.protocol !== "https:" && window.location.hostname !== "127.0
 document.addEventListener("DOMContentLoaded", docReady);
 
 function docReady() {
-	var contentWrapper = getElemId('content-wrapper'),
-	    windowHeight = getWindowHeight(),
-	    navbarTopHeight = getElemHeight(getElemId('navbar-top'));
-	setElemStyle(contentWrapper, 'top', navbarTopHeight);
-	setElemHeight(contentWrapper, windowHeight - navbarTopHeight - 1);
+	resizeContentWrapper();
 	prt();
 	document.addEventListener('click', function(event) {
 		var targetElem = event.target;
@@ -18,11 +14,25 @@ function docReady() {
 		} else if (targetElem.id === 'logout-url')
 			$.post(getElemData(targetElem, 'url'),
 				function (data) {
-					redirect(window.location.href);
+					location.reload();
 				}
 			)
 	});
 };
+
+window.addEventListener('resize', function () {
+	resizeContentWrapper();
+	if (typeof onResize === 'function')
+		onResize();
+});
+
+function resizeContentWrapper() {
+	var contentWrapper = getElemId('content-wrapper'),
+	    windowHeight = getWindowHeight(),
+	    navbarTopHeight = getElemHeight(getElemId('navbar-top'));
+	setElemStyle(contentWrapper, 'top', navbarTopHeight);
+	setElemHeight(contentWrapper, windowHeight - navbarTopHeight - 1);
+}
 
 function prt() {	// page ready test
 	if (typeof pageReady === 'function')

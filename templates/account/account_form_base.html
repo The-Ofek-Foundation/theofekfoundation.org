@@ -51,9 +51,9 @@
 		$(".hidden-input[name=path]").val(getLocallyStored('path') ? getLocallyStored('path'):'');
 	});
 
-	$(window).resize(function () {
+	function onResize() {
 		resize_form();
-	});
+	};
 
 	function resize_form() {
 		$("#{{html_form.name}}").width($("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());

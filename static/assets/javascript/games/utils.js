@@ -138,14 +138,14 @@ function arraysEqual(array1, array2) {
 
 function resizeGameSettingsTable() {
 	let menuHeight = getElemHeight(
-		document.getElementById('game-settings-menu'))
-	    - getElemHeight(document.getElementById('game-settings-table')),
+		getElemId('game-settings-menu'))
+	    - getElemHeight(getElemId('game-settings-table')),
 	    tableHeight = getElemHeight(
-	    	document.getElementById('content-wrapper')) - menuHeight;
+	    	getElemId('content-wrapper')) - menuHeight;
 
 	if (tableHeight <= 25)
 		tableHeight = 25;
-	document.getElementById('game-settings-table').style.maxHeight =
-		tableHeight - 1 + "px";
-	centerVertically(document.getElementById('game-settings-menu'));
+	setElemStyle(getElemId('game-settings-table'), 'maxHeight',
+		tableHeight - 1 + "px");
+	centerVertically(getElemId('game-settings-menu'));
 }
