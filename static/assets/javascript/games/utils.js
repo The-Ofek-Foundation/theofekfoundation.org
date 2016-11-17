@@ -140,12 +140,32 @@ function resizeGameSettingsTable() {
 	let menuHeight = getElemHeight(
 		getElemId('game-settings-menu'))
 	    - getElemHeight(getElemId('game-settings-table')),
-	    tableHeight = getElemHeight(
-	    	getElemId('content-wrapper')) - menuHeight;
+	    tableHeight = getElemHeight(contentWrapper) - menuHeight;
 
 	if (tableHeight <= 25)
 		tableHeight = 25;
 	setElemStyle(getElemId('game-settings-table'), 'maxHeight',
 		tableHeight - 1 + "px");
+	setElemStyle(getElemId('game-settings-table').children[0], 'maxHeight',
+		tableHeight - 1 + "px");
 	centerVertically(getElemId('game-settings-menu'));
+}
+
+var gameSettingsVisible = false;
+
+function showSettingsForm() {
+	if (gameSettingsVisible)
+		hideSettingsForm();
+	else {
+		gameSettingsVisible = true;
+		$(getElemId('game-settings-menu')).animate({opacity: 0.9}, "slow").css('z-index', 100);
+	}
+}
+
+function hideSettingsForm(callback) {
+	gameSettingsVisible = false;
+	callback = callback || function () {
+		setElemStyle(getElemId('game-settings-menu'), 'z-index', -1);
+	};
+	$(getElemId('game-settings-menu')).animate({opacity: 0}, "slow", callback);
 }

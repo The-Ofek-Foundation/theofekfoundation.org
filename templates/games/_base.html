@@ -2,6 +2,13 @@
 
 {% load staticfiles %}
 
+{% block header_additions %}
+
+{{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/styles.css" %}">
+
+{% endblock %}
+
 {% block end_block %}
 
 <script type="text/javascript" src="{% static "assets/javascript/games/utils.js" %}"></script>
@@ -9,7 +16,8 @@
 {% if game_settings %}
 <script type="text/javascript">
 	{% autoescape off %}
-	gameSettings = new GameSettings('UltimateTicTacToe', convertKeysObject({{ game_settings }}));
+	var settings = convertKeysObject({{ game_settings }})
+	gameSettings = new GameSettings(settings.gameName, settings);
 	{% endautoescape %}
 </script>
 {% endif %}

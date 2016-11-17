@@ -7,7 +7,10 @@ class GameSettings(models.Model):
 	user_id = IntegerField()
 	game_name = CharField(max_length=128)
 	ai_turn = CharField(max_length=10)
+	capturing_rules = CharField(max_length=128, null=True)
 	monte_carlo_trials = IntegerField(null=True)
+	pits = IntegerField(null=True)
+	seeds_per_pit = IntegerField(null=True)
 	expansion_constant = DecimalField(decimal_places=10, max_digits=12, null=True)
 	certainty_threshold = DecimalField(decimal_places=3, max_digits=5, null=True)
 	time_to_think = DecimalField(decimal_places=4, max_digits=6, null=True)
@@ -17,6 +20,7 @@ class GameSettings(models.Model):
 	tie = NullBooleanField()
 	ponder = NullBooleanField()
 	smart_simulation = NullBooleanField()
+	reverse_drawing = NullBooleanField()
 	dimensions = JSONField()
 
 	class Meta:

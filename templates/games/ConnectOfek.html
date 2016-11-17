@@ -4,6 +4,8 @@
 
 {% block header_additions %}
 
+{{block.super}}
+
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/ConnectOfek.css" %}">
 
 {% endblock %}
@@ -104,7 +106,6 @@
 			<td>Enter a name for the game if you want:</td>
 			<td><input type="text" name="name"></td>
 		</tr>
-
 	</table>
 	<div class="submit-buttons-div">
 		<tr><input type="submit" id="done" value="Done"></tr>

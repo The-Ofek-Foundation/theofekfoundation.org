@@ -23,7 +23,7 @@ function getElemHeight(elem) {
 }
 
 function getElemStyle(elem, prop) {
-	return elem.style[prop];
+	return elem.style[prop] || getComputedStyle(elem)[prop];
 }
 
 function getStyleOperator(value) {
@@ -118,12 +118,20 @@ function getInputValue(name) {
 }
 
 function centerVertically(elem) {
-	setElemStyle(elem, 'top',
+	var pstyle = getElemStyle(elem, 'position'), prop;
+	if (pstyle === 'absolute' || pstyle === 'fixed')
+		prop = 'top';
+	else prop = 'margin-top';
+	setElemStyle(elem, prop,
 		Math.floor((getElemHeight(elem.parentElement) - getElemHeight(elem)))
 		/ 2 + "px");
 }
 
 function centerHorizontally(elem) {
+	var pstyle = getElemStyle(elem, 'position'), prop;
+	if (pstyle === 'absolute' || pstyle === 'fixed')
+		prop = 'left';
+	else prop = 'margin-left';
 	setElemStyle(elem, 'left',
 		(getElemWidth(elem.parentElement) - getElemWidth(elem)) / 2 + "px");
 }

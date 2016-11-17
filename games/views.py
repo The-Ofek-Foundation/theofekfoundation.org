@@ -30,6 +30,7 @@ def weiqi(request):
 
 def mancala(request):
 	context_dict = {'page': main_pages.get(name='Mancala')}
+	_get_game_settings(request, 'Mancala', context_dict)
 	return render(request, 'games/Mancala.html', context_dict)
 
 def ultimatetictactoe(request):

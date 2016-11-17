@@ -1,9 +1,11 @@
+var contentWrapper;
+
 if (window.location.protocol !== "https:" && window.location.hostname !== "127.0.0.1")
 	window.location = window.location.toString().replace(/^http:/, "https:");
 
 document.addEventListener("DOMContentLoaded", docReady);
-
 function docReady() {
+	contentWrapper = getElemId('content-wrapper');
 	resizeContentWrapper();
 	prt();
 	document.addEventListener('click', function(event) {
@@ -27,8 +29,7 @@ window.addEventListener('resize', function () {
 });
 
 function resizeContentWrapper() {
-	var contentWrapper = getElemId('content-wrapper'),
-	    windowHeight = getWindowHeight(),
+	var windowHeight = getWindowHeight(),
 	    navbarTopHeight = getElemHeight(getElemId('navbar-top'));
 	setElemStyle(contentWrapper, 'top', navbarTopHeight);
 	setElemHeight(contentWrapper, windowHeight - navbarTopHeight - 1);
@@ -47,7 +48,8 @@ function fitParent() {
 	var fp = getElemsClass("fit-parent");
 	for (var i = 0, elem = fp[i]; i < fp.length; i++, elem = fp[i]) {
 		var parentHeight = getElemHeight(elem.parentElement);
-		while (getElemHeight(elem) > parentHeight)
+		var parentWidth = getElemWidth(elem.parentElement);
+		while (getElemHeight(elem) > parentHeight || getElemWidth(elem) > parentWidth)
 			setElemStyle(elem, 'fontSize',
 				getElemProperty(elem, 'fontSize') - 1 + "px");
 	}
@@ -111,7 +113,6 @@ function convertFromPython(o) {
 function convertKeysObject(o, revert) {
 	newObject = {};
 	if (revert) {
-		// convertToPython(o);
 		for (key in o)
 			newObject[camelToSnake(key)] = o[key];
 	} else {
