@@ -15,11 +15,17 @@ function getElemPaddingHeight(elem) {
 }
 
 function getElemWidth(elem) {
-	return getElemProperty(elem, 'width') + getElemPaddingWidth(elem);
+	return parseInt(getElemData(elem, 'width'))
+		|| getElemProperty(elem, 'width') + getElemPaddingWidth(elem)
+		|| elem.width
+		|| getElemStyle('width');
 }
 
 function getElemHeight(elem) {
-	return getElemProperty(elem, 'height') + getElemPaddingHeight(elem);
+	return parseInt(getElemData(elem, 'height'))
+		|| getElemProperty(elem, 'height') + getElemPaddingHeight(elem)
+		|| elem.height
+		|| getElemStyle('height');
 }
 
 function getElemStyle(elem, prop) {
@@ -38,6 +44,11 @@ function getStyleOperator(value) {
 }
 
 function setElemStyle(elem, prop, value) {
+	if (typeof prop === 'object') {
+		for (key in prop)
+			setElemStyle(elem, key, prop[key]);
+		return;
+	}
 	value += '';
 	if (value.substring(0, 2) === '+=')
 		value = getElemProperty(elem, prop) + parseInt(value.substring(2)) +
@@ -93,11 +104,30 @@ function getElemData(elem, key) {
 }
 
 function setElemData(elem, key, val) {
-	elem.dataset[key] = val;
+	if (typeof key === 'object') {
+		for (k in key)
+			setElemData(elem, k, key[k]);
+	} else elem.dataset[key] = val;
 }
 
-function elemHasClass(elem, cls) {
-	return elem.classList.contains(cls);
+function addClassElem(elem, className) {
+	if (elem.classList)
+		elem.classList.add(className);
+	else elem.className += ' ' + className;
+}
+
+function removeClassElem(elem, className) {
+	if (elem.classList)
+		elem.classList.remove(className);
+	else elem.className = elem.className.replace(new RegExp('(^|\\b)' +
+		className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+}
+
+function hasClassElem(elem, className) {
+	if (elem.classList)
+		return elem.classList.contains(className);
+	return new RegExp('(^| )' + className + '( |$)', 'gi')
+		.test(elem.className);
 }
 
 function setInputValue(name, value) {
@@ -115,6 +145,12 @@ function getInputValue(name) {
 			return parseInt(inputElem.value);
 		else return parseFloat(inputElem.value);
 	else return inputElem.value;
+}
+
+function getElemSiblings(elem) {
+	return Array.prototype.filter.call(elem.parentNode.children, function (child) {
+		return child !== elem;
+	});
 }
 
 function centerVertically(elem) {
@@ -136,7 +172,7 @@ function centerHorizontally(elem) {
 		(getElemWidth(elem.parentElement) - getElemWidth(elem)) / 2 + "px");
 }
 
-function centerElement(elem) {
+function centerElem(elem) {
 	centerVertically(elem);
 	centerHorizontally(elem);
 }

@@ -10,7 +10,7 @@ function docReady() {
 	prt();
 	document.addEventListener('click', function(event) {
 		var targetElem = event.target;
-		if (elemHasClass(targetElem, 'path-link')) {
+		if (hasClassElem(targetElem, 'path-link')) {
 			setLocallyStored("path", getElemData(targetElem, 'path'));
 			redirect(getElemData(targetElem, 'url'));
 		} else if (targetElem.id === 'logout-url')
