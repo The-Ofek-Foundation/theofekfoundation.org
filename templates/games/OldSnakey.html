@@ -10,18 +10,6 @@
 	<h1 style="margin-top: 0px;">Game Settings</h1>
 	<table id="game-settings-table">
 
-		<!--<tr>
-			<td>AI Turn:</td>
-			<td>
-				<select id="ai-turn">
-					<option value="null">None</option>
-					<option value="first">First</option>
-					<option value="second" selected>Second</option>
-					<option value="both">Both</option>
-				</select>
-			</td>
-		</tr>-->
-
 		<tr>
 			<td>Number of square wide:</td>
 			<td><input type="number" name="dimension-x" min="5" step="1" value="25"></td>
@@ -35,6 +23,18 @@
 		<tr>
 			<td>Teleport from one side of wall to other:</td>
 			<td><input type="checkbox" name="teleportation-walls"></td>
+		</tr>
+
+		<tr>
+			<td>AI Turn:</td>
+			<td>
+				<select name="ai-turn">
+					<option value="none">None</option>
+					<option value="first">First</option>
+					<!--<option value="second" selected>Second</option>
+					<option value="both">Both</option>-->
+				</select>
+			</td>
 		</tr>
 
 	</table>
