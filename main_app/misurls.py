@@ -7,6 +7,8 @@ urlpatterns = [
 	url(r'(?i)Mancala/$', RedirectView.as_view(url='/games/Mancala/', permanent=True)),
 	url(r'(?i)UltimateTicTacToe/$', RedirectView.as_view(url='/games/UltimateTicTacToe/', permanent=True)),
 	url(r'(?i)LameDuck/$', RedirectView.as_view(url='/games/LameDuck/', permanent=True)),
+	url(r'(?i)OldSnakey/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
+	url(r'(?i)Snake/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
 	url(r'(?i)Maze/$', RedirectView.as_view(url='/tools/Maze/', permanent=True)),
 	url(r'(?i)PrimeFactorizer/$', RedirectView.as_view(url='/tools/PrimeFactorizer/', permanent=True)),
 	url(r'(?i)PasswordGenerator/$', RedirectView.as_view(url='/tools/PasswordGenerator/', permanent=True)),

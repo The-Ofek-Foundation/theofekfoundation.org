@@ -10,6 +10,14 @@ games = {
 			'imagesrc': 'connect-4.jpg',
 			'description': 'Perhaps my strongest AI, my Connect Four Monte Carlo tree search AI is very powerful and very fast!',
 		},	{
+			'name': 'Ultimate Tic Tac Toe',
+			'imagesrc': 'Ultimate-Tic-Tac-Toe.jpg',
+			'description': 'An AI I literally whipped over two nights—the interface is slightly lacking—but plays well nonetheless.',
+		},	{
+			'name': 'Old Snakey',
+			'imagesrc': 'snakey_level_1.gif',
+			'description': 'The good old retro game of Old Snakey, coded with multiple AIs (that you can simultaneously play against!)',
+		},	{
 			'name': 'Weiqi',
 			'imagesrc': 'board-game-go.jpg',
 			'description': 'Play Go, Gomoku, or Wu. The only one with an AI—however—is Gomoku—with a Minimax implementation.',
@@ -17,10 +25,6 @@ games = {
 			'name': 'Mancala',
 			'imagesrc': 'mancala.JPG',
 			'description': 'My first Monte Carlo tree search AI! The game itself is programmed with a customizable set of rules.',
-		},	{
-			'name': 'Ultimate Tic Tac Toe',
-			'imagesrc': 'Ultimate-Tic-Tac-Toe.jpg',
-			'description': 'An AI I literally whipped over two nights—the interface is slightly lacking—but plays well nonetheless.',
 		},	{
 			'name': 'Lame Duck',
 			'imagesrc': 'duck.svg',

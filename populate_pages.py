@@ -86,6 +86,15 @@ def populate():
 		title = 'Lame Duck',
 		name = 'Lame Duck',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/OldSnakey/',
+		pathname = 'games/OldSnakey/',
+		full_description = "The Old Snakey retro game with multiplayer functionality, including against AI opponents!",
+		description = "The Old Snakey retro game!",
+		title = 'Old Snakey',
+		name = 'Old Snakey',
+	)
 
 	category = add_category('Tools')
 

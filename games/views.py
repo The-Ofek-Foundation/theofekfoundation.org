@@ -42,6 +42,10 @@ def lameduck(request):
 	context_dict = {'page': main_pages.get(name='Lame Duck')}
 	return render(request, 'games/LameDuck.html', context_dict)
 
+def oldsnakey(request):
+	context_dict = {'page': main_pages.get(name='Old Snakey')}
+	return render(request, 'games/OldSnakey.html', context_dict)
+
 @login_required
 def save_settings(request):
 	settings = json.loads(request.POST['settings'])
