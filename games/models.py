@@ -9,8 +9,10 @@ class GameSettings(models.Model):
 	ai_turn = CharField(max_length=10)
 	capturing_rules = CharField(max_length=128, null=True)
 	monte_carlo_trials = IntegerField(null=True)
+	game_speed = IntegerField(null=True)
 	pits = IntegerField(null=True)
 	seeds_per_pit = IntegerField(null=True)
+	max_score = IntegerField(null=True)
 	expansion_constant = DecimalField(decimal_places=10, max_digits=12, null=True)
 	certainty_threshold = DecimalField(decimal_places=3, max_digits=5, null=True)
 	time_to_think = DecimalField(decimal_places=4, max_digits=6, null=True)
@@ -21,6 +23,7 @@ class GameSettings(models.Model):
 	ponder = NullBooleanField()
 	smart_simulation = NullBooleanField()
 	reverse_drawing = NullBooleanField()
+	teleportation_walls = NullBooleanField()
 	dimensions = JSONField()
 
 	class Meta:

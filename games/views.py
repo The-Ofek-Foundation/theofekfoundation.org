@@ -44,6 +44,7 @@ def lameduck(request):
 
 def oldsnakey(request):
 	context_dict = {'page': main_pages.get(name='Old Snakey')}
+	_get_game_settings(request, 'Old Snakey', context_dict)
 	return render(request, 'games/OldSnakey.html', context_dict)
 
 @login_required

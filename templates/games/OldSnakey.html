@@ -9,12 +9,8 @@
 <div id="game-settings-menu">
 	<h1 style="margin-top: 0px;">Game Settings</h1>
 	<table id="game-settings-table">
-		<tr>
-			<td>Allow Pondering (Faster AI)?</td>
-			<td><input type="checkbox" id="ponder" checked></td>
-		</tr>
 
-		<tr>
+		<!--<tr>
 			<td>AI Turn:</td>
 			<td>
 				<select id="ai-turn">
@@ -24,27 +20,23 @@
 					<option value="both">Both</option>
 				</select>
 			</td>
+		</tr>-->
+
+		<tr>
+			<td>Number of square wide:</td>
+			<td><input type="number" name="dimension-x" min="5" step="1" value="25"></td>
 		</tr>
 
 		<tr>
-			<td>Time to think (secs):</td>
-			<td><input type="number" id="time-to-think" min="0" max="10" value="5"></td>
+			<td>Delay between moves:</td>
+			<td><input type="number" name="game-speed" min="0" step="1" value="75"></td>
 		</tr>
 
 		<tr>
-			<td>Show AI move weights (cool)!</td>
-			<td><input type="checkbox" id="draw-weights"></td>
+			<td>Teleport from one side of wall to other:</td>
+			<td><input type="checkbox" name="teleportation-walls"></td>
 		</tr>
 
-		<tr>
-			<td>Anti Tic Tac Toe? (Goal is to lose)</td>
-			<td><input type="checkbox" id="anti-tic-tac-toe"></td>
-		</tr>
-
-		<tr>
-			<td>Tie Tic Tac Toe? (X wants to tie, O wants to win XD)</td>
-			<td><input type="checkbox" id="tie-tic-tac-toe"></td>
-		</tr>
 	</table>
 	<div class="submit-buttons-div">
 		<tr><input type="submit" id="done" value="Done"></tr>
