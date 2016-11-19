@@ -7,8 +7,6 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    replaces = [(b'games', '0006_gamesettings_game_speed_squashed_0007_gamesettings_teleportation_walls'), (b'games', '0008_gamesettings_max_score')]
-
     dependencies = [
         ('games', '0005_auto_20161116_1634_squashed_0006_auto_20161116_1645'),
     ]

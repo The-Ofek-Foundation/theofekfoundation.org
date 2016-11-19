@@ -24,6 +24,7 @@ class GameSettings(models.Model):
 	smart_simulation = NullBooleanField()
 	reverse_drawing = NullBooleanField()
 	teleportation_walls = NullBooleanField()
+	multiplayer = NullBooleanField()
 	dimensions = JSONField()
 
 	class Meta:
