@@ -11,7 +11,7 @@ function docReady() {
 	document.addEventListener('click', function(event) {
 		var targetElem = event.target;
 		if (hasClassElem(targetElem, 'path-link')) {
-			setLocallyStored("path", getElemData(targetElem, 'path'));
+			setSessionData('path', getElemData(targetElem, 'path'));
 			redirect(getElemData(targetElem, 'url'));
 		} else if (targetElem.id === 'logout-url')
 			$.post(getElemData(targetElem, 'url'),
@@ -72,6 +72,19 @@ function windowAt(elem) {
 
 function redirect(url) {
 	window.location.href = url;
+}
+
+function setSessionData(key, val) {
+	try {
+		setLocallyStored(key, val);
+	} catch(err) {}
+	try {
+		setCookie(key, val, 365 * 100);
+	} catch(err) {}
+}
+
+function getSessionData(key) {
+	return getLocallyStored(key) || getCookie(key);
 }
 
 function getLocallyStored(key) {
@@ -156,7 +169,15 @@ function getCookie(name) {
 	}
 	return cookieValue;
 }
-var csrftoken = getCookie('csrftoken');
+
+function setCookie(cname, cvalue, exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+d.toUTCString();
+	document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+var csrftoken = getSessionData('csrftoken');
 function csrfSafeMethod(method) {
 	// these HTTP methods do not require CSRF protection
 	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
