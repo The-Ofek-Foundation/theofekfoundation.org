@@ -8,6 +8,8 @@ class GameSettings(models.Model):
 	game_name = CharField(max_length=128)
 	ai_turn = CharField(max_length=10)
 	capturing_rules = CharField(max_length=128, null=True)
+	ai_mode = CharField(max_length=128, null=True)
+	ai_mode2 = CharField(max_length=128, null=True)
 	monte_carlo_trials = IntegerField(null=True)
 	game_speed = IntegerField(null=True)
 	pits = IntegerField(null=True)
