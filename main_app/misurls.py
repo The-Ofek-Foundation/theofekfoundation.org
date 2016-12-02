@@ -19,6 +19,7 @@ urlpatterns = [
 	url(r'(?i)ReverseLastLetter/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=True)),
 	url(r'(?i)ReverseLastLetters/$', RedirectView.as_view(url='/tools/ReveresLatsLettesr/', permanent=True)),
 	url(r'(?i)ImageEditor/$', RedirectView.as_view(url='/tools/ImageEditor/', permanent=True)),
+	url(r'(?i)DijkstraAlgorithm/$', RedirectView.as_view(url='/tools/DijkstraAlgorithm/', permanent=True)),
 	url(r'(?i)login/$', RedirectView.as_view(url='/account/login/', permanent=True)),
 	url(r'(?i)logout/$', RedirectView.as_view(url='/account/logout/', permanent=True)),
 	url(r'(?i)register/$', RedirectView.as_view(url='/account/register/', permanent=True)),

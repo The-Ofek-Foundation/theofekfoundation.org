@@ -21,7 +21,7 @@ MAIN_IMAGES = os.path.join(os.path.join(STATIC_PATH, 'images'), 'main_app')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# For anyone reading this, the key used in production is different :(
+# For anyone reading this, the key used in production is different :'(
 SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 
 # SECURITY WARNING: don't run with debug turned on in production!

@@ -28,6 +28,8 @@ lessc --compress ./static/assets/styles/tools/ReveresLatsLettesr.less ./static/a
 
 lessc --compress ./static/assets/styles/tools/ImageEditor.less ./static/assets/styles/tools/ImageEditor.css
 
+lessc --compress ./static/assets/styles/tools/DijkstraAlgorithm.less ./static/assets/styles/tools/DijkstraAlgorithm.css
+
 lessc --compress ./static/assets/styles/blog/index.less ./static/assets/styles/blog/index.css
 
 lessc --compress ./static/assets/styles/account/password_reset_email_sent.less ./static/assets/styles/account/password_reset_email_sent.css

@@ -16,6 +16,10 @@ def passwordgenerator(request):
 	context_dict = {'page': main_pages.get(name='Password Generator')}
 	return render(request, 'tools/PasswordGenerator.html', context_dict)
 
+def dijkstraalgorithm(request):
+	context_dict = {'page': main_pages.get(name='Dijkstra Algorithm')}
+	return render(request, 'tools/DijkstraAlgorithm.html', context_dict)
+
 def grapher(request):
 	context_dict = {'page': main_pages.get(name='Grapher')}
 	return render(request, 'tools/Grapher.html', context_dict)

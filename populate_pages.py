@@ -161,6 +161,15 @@ def populate():
 		title = 'We Are Happy',
 		name = 'Image Editor',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/tools/DijkstraAlgorithm/',
+		pathname = 'tools/DijkstraAlgorithm',
+		full_description = "An implementation of Dijkstra's shortest path algorithm.",
+		description = "An implementation of Dijkstra's shortest path algorithm.",
+		title = 'We Find Paths',
+		name = 'Dijkstra Algorithm',
+	)
 
 	category = add_category('Account')
 

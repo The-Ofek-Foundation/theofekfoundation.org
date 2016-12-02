@@ -34,3 +34,6 @@
 [submodule "static/assets/javascript/games/Snake"]
 	path = static/assets/javascript/games/Snake
 	url = git@github.com:The-Ofek-Foundation/Snake
+[submodule "static/assets/javascript/tools/DijkstraAlgorithm"]
+	path = static/assets/javascript/tools/DijkstraAlgorithm
+	url = git@github.com:The-Ofek-Foundation/DijkstraAlgorithm

@@ -9,5 +9,6 @@ urlpatterns = [
 	url(r'^ReveresLatsLettesr/$', views.revereslatslettesr, name="Text Reverser"),
 	url(r'^ImageEditor/$', views.imageeditor, name="Image Editor"),
 	url(r'^PasswordGenerator/$', views.passwordgenerator, name="Password Generator"),
+	url(r'^DijkstraAlgorithm/$', views.dijkstraalgorithm, name="Dijkstra Algorithm"),
 	url(r'^', include('main_app.misurls')),
 ]
