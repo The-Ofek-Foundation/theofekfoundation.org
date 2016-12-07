@@ -10,17 +10,27 @@
 	margin-left: auto;
 	margin-right: auto;
 
+	#hidden-top, #hidden-bottom {
+		left: 0px;
+		width: 100%;
+		height: 1000px;
+		z-index: 1;
+		border: none;
+		bottom: 0px;
+	}
+
 	li {
 		border: 3px solid black;
 		position: absolute;
 		background-color: white;
+		word-wrap: break-word;
 	}
 
 	.header {
 		font-size: 30px;
 		font-weight: bold;
 		padding: 10px 35px;
-		z-index: 1;
+		z-index: 2;
 		background-color: orange;
 
 		&.extended::after {
@@ -47,7 +57,9 @@
 		padding-top: 10px;
 		padding-bottom: 20px;
 		padding-left: 70px;
+		padding-right: 70px;
 		transition: margin-top 2s;
 		background-color: yellow;
+		top: -1000px;
 	}
 }
