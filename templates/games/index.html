@@ -1,0 +1,38 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/index.css" %}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<ul class="collapsible-list">
+
+	{% for game in games.list reversed %}
+
+		<li class="header">
+			{{game.name}}
+		</li>
+
+		<li class="description">
+			{{game.description}}
+		</li>
+
+	{% endfor %}
+
+</ul>
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/index.js" %}"></script>
+
+{% endblock %}
+

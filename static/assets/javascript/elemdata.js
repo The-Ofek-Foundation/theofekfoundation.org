@@ -1,7 +1,7 @@
-function getElemProperty(elem, property) {
+function getElemProperty(elem, property, pseudoSelector=null) {
 	property = camelToHtml(property);
 	return parseInt(
-		window.getComputedStyle(elem, null).getPropertyValue(property));
+		window.getComputedStyle(elem, pseudoSelector).getPropertyValue(property));
 }
 
 function getElemPaddingWidth(elem) {
@@ -12,6 +12,16 @@ function getElemPaddingWidth(elem) {
 function getElemPaddingHeight(elem) {
 	return getElemProperty(elem, 'padding-top') +
 	       getElemProperty(elem, 'padding-bottom');
+}
+
+function getElemBorderWidth(elem) {
+	return getElemProperty(elem, 'border-left') +
+	       getElemProperty(elem, 'border-right');
+}
+
+function getElemBorderHeight(elem) {
+	return getElemProperty(elem, 'border-top') +
+	       getElemProperty(elem, 'border-bottom');
 }
 
 function getElemWidth(elem) {

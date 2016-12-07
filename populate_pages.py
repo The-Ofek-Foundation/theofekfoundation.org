@@ -39,7 +39,7 @@ def populate():
 		full_description = "Play games on TheOfekFoundation! Either two player, or against the (very powerful) AIs!",
 		description = "Play games on TheOfekFoundation!",
 		title = 'We Play',
-		name = 'Games',
+		name = 'Games Home',
 	)
 	add_page(
 		category = category,
