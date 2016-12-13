@@ -15,8 +15,7 @@ games = {
 			'name': 'Ultimate Tic Tac Toe',
 			'imagesrc': 'Ultimate-Tic-Tac-Toe.jpg',
 			'description': 'An AI I literally whipped over two nights—the interface is slightly lacking—but plays well nonetheless.',
-			'template': 'games/ConnectFourDescription.html',
-			# 'template': 'games/UltimateTicTacToeDescription.html',
+			'template': 'games/UltimateTicTacToeDescription.html',
 			'save': True,
 		},	{
 			'name': 'Old Snakey',
