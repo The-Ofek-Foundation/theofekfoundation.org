@@ -43,7 +43,7 @@
 	{% for game in games.list reversed %}
 
 	<li class="header">
-		<div>{{game.name}}</div>
+		<div><a href="{% url game.name %}">{{game.name}}</a></div>
 		{% if game.save %}
 		<img class="checkmark" src="{% static "images/games/checkmark.png" %}" title="Save game settings feature">
 		{% endif %}

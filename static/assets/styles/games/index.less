@@ -52,6 +52,19 @@ li {
 
 		:first-child {
 			float: left;
+
+			a {
+				color: black;
+				transition: color 0.3s;
+
+				&:hover {
+					color: rgb(85, 26, 139);
+				}
+
+				&:active {
+					color: rgb(255, 0, 0);
+				}
+			}
 		}
 
 		.extendable {
