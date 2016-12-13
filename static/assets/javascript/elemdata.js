@@ -1,7 +1,8 @@
 function getElemProperty(elem, property, pseudoSelector=null) {
 	property = camelToHtml(property);
 	return parseInt(
-		window.getComputedStyle(elem, pseudoSelector).getPropertyValue(property));
+		window.getComputedStyle(elem, pseudoSelector)
+		.getPropertyValue(property)) || 0;
 }
 
 function getElemPaddingWidth(elem) {
