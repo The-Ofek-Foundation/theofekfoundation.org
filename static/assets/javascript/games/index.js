@@ -10,6 +10,10 @@ function pageReady() {
 }
 
 function onResize() {
+	var extended = getElemsClass('extended');
+	for (var i = 0; i < extended.length; i++)
+		slideUpDescription(extended[i]);
+
 	for (var i = 0; i < collapsibleChildren.length; i++) {
 		var elem = collapsibleChildren[i];
 		if (elem.id.indexOf('hidden') !== -1) continue;
