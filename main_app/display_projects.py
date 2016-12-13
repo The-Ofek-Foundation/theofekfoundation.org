@@ -21,8 +21,7 @@ games = {
 			'name': 'Old Snakey',
 			'imagesrc': 'snakey_level_1.gif',
 			'description': 'The good old retro game of Old Snakey, coded with multiple AIs (that you can simultaneously play against!)',
-			'template': 'games/ConnectFourDescription.html',
-			# 'template': 'games/OldSnakeyDescription.html',
+			'template': 'games/OldSnakeyDescription.html',
 			'save': True,
 		},	{
 			'name': 'Weiqi',
