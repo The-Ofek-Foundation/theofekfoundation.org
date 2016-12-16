@@ -41,6 +41,13 @@ def index(request):
 	}
 	return render(request, 'main_app/index.html', context_dict)
 
+def edan_page(request):
+	context_dict = {
+		'page': main_pages.get(name='EBM')
+	}
+
+	return render(request, 'main_app/edan/edan_page.html', context_dict)
+
 def page_not_found(request):
 	context = RequestContext(request)
 	context_dict = {}

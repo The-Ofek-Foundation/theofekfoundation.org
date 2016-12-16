@@ -18,6 +18,16 @@ def populate():
 		name = 'Homepage',
 	)
 
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/Edan',
+		pathname = 'Edan/',
+		full_description = "Cause darn you",
+		description = "Dau bu Doe Badau",
+		title = 'The Fitnessgram Pacer Test is a Multistage Aerobic Capacity Test...',
+		name = 'EBM',
+	)
+
 	category = add_category('Blog')
 
 	add_page(
