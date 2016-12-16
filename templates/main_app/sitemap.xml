@@ -5,6 +5,11 @@
 		<priority>1.00</priority>
 	</url>
 	<url>
+		<loc>https://www.theofekfoundation.org/Edan</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.01</priority>
+	</url>
+	<url>
 		<loc>https://www.theofekfoundation.org/account/register/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
@@ -93,6 +98,13 @@
 	<url>
 		<loc>
 			https://www.theofekfoundation.org/tools/ImageEditor/
+		</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.85</priority>
+	</url>
+	<url>
+		<loc>
+			https://www.theofekfoundation.org/tools/DijkstraAlgorithm/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
