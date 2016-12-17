@@ -5,8 +5,9 @@ if (window.location.protocol !== "https:" && window.location.hostname !== "127.0
 
 document.addEventListener("DOMContentLoaded", docReady);
 function docReady() {
-	setElemStyle(getElemId('navbar-top'), 'height',
-		getElemHeight(getElemClass('link')) + "px");
+	if (getElemHeight(getElemClass('link')) > getElemHeight(getElemId('navbar-top')))
+		setElemStyle(getElemId('navbar-top'), 'height',
+			getElemHeight(getElemClass('link')) + "px");
 	contentWrapper = getElemId('content-wrapper');
 	resizeContentWrapper();
 	prt();
