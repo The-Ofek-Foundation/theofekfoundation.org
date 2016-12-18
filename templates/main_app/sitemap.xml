@@ -5,7 +5,12 @@
 		<priority>1.00</priority>
 	</url>
 	<url>
-		<loc>https://www.theofekfoundation.org/Edan</loc>
+		<loc>https://www.theofekfoundation.org/people/Edan</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.01</priority>
+	</url>
+	<url>
+		<loc>https://www.theofekfoundation.org/people/Ron</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.01</priority>
 	</url>

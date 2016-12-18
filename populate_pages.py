@@ -22,12 +22,22 @@ def populate():
 
 	add_page(
 		category = category,
-		full_url = 'https://www.theofekfoundation.org/Edan',
+		full_url = 'https://www.theofekfoundation.org/people/Edan',
 		pathname = 'Edan/',
 		full_description = "Cause darn you",
 		description = "Dau bu Doe Badau",
 		title = 'The Fitnessgram Pacer Test is a Multistage Aerobic Capacity Test...',
 		name = 'EBM',
+	)
+
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/people/Ron',
+		pathname = 'Ron/',
+		full_description = "Awesome kid!",
+		description = "Awesome kid!",
+		title = 'We are Ron',
+		name = 'Ron Kibel',
 	)
 
 	category = add_category('Blog')

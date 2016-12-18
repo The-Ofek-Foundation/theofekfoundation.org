@@ -13,3 +13,11 @@ def edan_ben_moshe(request):
 	}
 
 	return render(request, 'people/edan/edan_page.html', context_dict)
+
+def ron_kibel(request):
+	context_dict = {
+		'page': main_pages.get(name='Ron Kibel'),
+		'person_name': "Ron Kibel",
+	}
+
+	return render(request, 'people/ron_page.html', context_dict)

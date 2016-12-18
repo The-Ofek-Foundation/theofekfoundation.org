@@ -28,4 +28,5 @@ urlpatterns = [
 	url(r'(?i)games/$', RedirectView.as_view(url='/games/', permanent=True)),
 	url(r'(?i)tools/$', RedirectView.as_view(url='/tools/', permanent=True)),
 	url(r'(?i)edan/$', RedirectView.as_view(url='/people/Edan', permanent=True)),
+	url(r'(?i)ron/$', RedirectView.as_view(url='/people/Ron', permanent=True)),
 ]
