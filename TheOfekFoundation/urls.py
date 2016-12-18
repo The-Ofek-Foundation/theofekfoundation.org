@@ -16,6 +16,7 @@ urlpatterns = [
 	url(r'^blog/', include('blog.urls')),
 	url(r'^games/', include('games.urls')),
 	url(r'^tools/', include('tools.urls')),
+	url(r'^people/', include('people.urls')),
 	url(r'^', include('main_app.urls')),
 ]
 

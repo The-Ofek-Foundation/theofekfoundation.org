@@ -18,6 +18,8 @@ def populate():
 		name = 'Homepage',
 	)
 
+	category = add_category('People')
+
 	add_page(
 		category = category,
 		full_url = 'https://www.theofekfoundation.org/Edan',
