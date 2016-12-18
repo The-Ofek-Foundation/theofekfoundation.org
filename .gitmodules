@@ -40,3 +40,6 @@
 [submodule "templates/people/edan"]
 	path = templates/people/edan
 	url = git@github.com:The-Ofek-Foundation/Edan
+[submodule "templates/people/ron"]
+	path = templates/people/ron
+	url = git@github.com:The-Ofek-Foundation/Ron

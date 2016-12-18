@@ -20,4 +20,4 @@ def ron_kibel(request):
 		'person_name': "Ron Kibel",
 	}
 
-	return render(request, 'people/ron_page.html', context_dict)
+	return render(request, 'people/ron/ron_page.html', context_dict)
