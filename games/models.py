@@ -16,6 +16,7 @@ class GameSettings(models.Model):
 	seeds_per_pit = IntegerField(null=True)
 	max_score = IntegerField(null=True)
 	boulder_frequency = IntegerField(null=True)
+	mine_frequency = DecimalField(decimal_places=2, max_digits=5, null=True)
 	expansion_constant = DecimalField(decimal_places=10, max_digits=12, null=True)
 	certainty_threshold = DecimalField(decimal_places=3, max_digits=5, null=True)
 	time_to_think = DecimalField(decimal_places=4, max_digits=6, null=True)
