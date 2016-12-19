@@ -1,0 +1,29 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/Minesweeper.css" %}">
+
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+
+<div class="game-images">
+	<img id="mine" src="{% static "images/games/mine.png" %}">
+	<img id="flag" src="{% static "images/games/mineflag.jpg" %}">
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Minesweeper/Minesweeper.js" %}"></script>
+
+{% endblock %}

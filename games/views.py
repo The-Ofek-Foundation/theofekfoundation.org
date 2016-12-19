@@ -51,6 +51,11 @@ def oldsnakey(request):
 	_get_game_settings(request, 'Old Snakey', context_dict)
 	return render(request, 'games/OldSnakey.html', context_dict)
 
+def minesweeper(request):
+	context_dict = {'page': main_pages.get(name='Minesweeper')}
+	_get_game_settings(request, 'Minesweeper', context_dict)
+	return render(request, 'games/Minesweeper.html', context_dict)
+
 @login_required
 def save_settings(request):
 	settings = json.loads(request.POST['settings'])

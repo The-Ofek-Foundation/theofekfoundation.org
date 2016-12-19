@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^UltimateTicTacToe/', views.ultimatetictactoe, name="Ultimate Tic Tac Toe"),
 	url(r'^LameDuck/', views.lameduck, name="Lame Duck"),
 	url(r'^OldSnakey/', views.oldsnakey, name="Old Snakey"),
+	url(r'^Minesweeper/', views.minesweeper, name="Minesweeper"),
 	url(r'^api/save_settings/', views.save_settings, name="save_settings"),
 	url(r'^', include('main_app.misurls')),
 ]

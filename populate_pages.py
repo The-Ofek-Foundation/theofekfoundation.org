@@ -117,6 +117,15 @@ def populate():
 		title = 'Old Snakey',
 		name = 'Old Snakey',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/Minesweeper/',
+		pathname = 'games/Minesweeper/',
+		full_description = "Play Minesweeper online!",
+		description = "Play Minesweeper online!",
+		title = 'We Sweep',
+		name = 'Minesweeper',
+	)
 
 	category = add_category('Tools')
 

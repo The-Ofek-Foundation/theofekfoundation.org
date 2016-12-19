@@ -43,3 +43,6 @@
 [submodule "templates/people/ron"]
 	path = templates/people/ron
 	url = git@github.com:The-Ofek-Foundation/Ron
+[submodule "static/assets/javascript/games/Minesweeper"]
+	path = static/assets/javascript/games/Minesweeper
+	url = git@github.com:The-Ofek-Foundation/Minesweeper

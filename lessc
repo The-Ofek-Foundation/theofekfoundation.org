@@ -37,3 +37,5 @@ lessc --compress ./static/assets/styles/blog/index.less ./static/assets/styles/b
 lessc --compress ./static/assets/styles/account/password_reset_email_sent.less ./static/assets/styles/account/password_reset_email_sent.css
 
 lessc --compress ./static/assets/styles/games/styles.less ./static/assets/styles/games/styles.css
+
+lessc --compress ./static/assets/styles/games/Minesweeper.less ./static/assets/styles/games/Minesweeper.css

@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'(?i)LameDuck/$', RedirectView.as_view(url='/games/LameDuck/', permanent=True)),
 	url(r'(?i)OldSnakey/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
 	url(r'(?i)Snake/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
+	url(r'(?i)Minesweeper/$', RedirectView.as_view(url='/games/Minesweeper/', permanent=True)),
 	url(r'(?i)Maze/$', RedirectView.as_view(url='/tools/Maze/', permanent=True)),
 	url(r'(?i)PrimeFactorizer/$', RedirectView.as_view(url='/tools/PrimeFactorizer/', permanent=True)),
 	url(r'(?i)PasswordGenerator/$', RedirectView.as_view(url='/tools/PasswordGenerator/', permanent=True)),
@@ -27,6 +28,6 @@ urlpatterns = [
 	url(r'(?i)blog/$', RedirectView.as_view(url='/blog/', permanent=True)),
 	url(r'(?i)games/$', RedirectView.as_view(url='/games/', permanent=True)),
 	url(r'(?i)tools/$', RedirectView.as_view(url='/tools/', permanent=True)),
-	url(r'(?i)edan/$', RedirectView.as_view(url='/people/Edan', permanent=True)),
-	url(r'(?i)ron/$', RedirectView.as_view(url='/people/Ron', permanent=True)),
+	url(r'(?i)Edan/$', RedirectView.as_view(url='/people/Edan', permanent=True)),
+	url(r'(?i)Ron/$', RedirectView.as_view(url='/people/Ron', permanent=True)),
 ]
