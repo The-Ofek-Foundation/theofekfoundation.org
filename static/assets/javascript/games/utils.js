@@ -137,18 +137,22 @@ function arraysEqual(array1, array2) {
 }
 
 function resizeGameSettingsTable() {
-	let menuHeight = getElemHeight(
-		getElemId('game-settings-menu'))
-	    - getElemHeight(getElemId('game-settings-table')),
+	let gameSettingsTable = getElemId('game-settings-table'),
+	    menuHeight = getElemHeight(
+			getElemId('game-settings-menu'))
+	    	- getElemHeight(gameSettingsTable),
 	    tableHeight = getElemHeight(contentWrapper) - menuHeight;
 
 	if (tableHeight <= 25)
 		tableHeight = 25;
-	setElemStyle(getElemId('game-settings-table'), 'maxHeight',
+	setElemStyle(gameSettingsTable, 'maxHeight',
 		tableHeight - 1 + "px");
-	setElemStyle(getElemId('game-settings-table').children[0], 'maxHeight',
+	setElemStyle(gameSettingsTable.children[0], 'maxHeight',
 		tableHeight - 1 + "px");
 	centerVertically(getElemId('game-settings-menu'));
+
+	setElemStyle(gameSettingsTable.children[0], 'width',
+		getElemProperty(gameSettingsTable.children[0].children[0], 'width') + "px");
 }
 
 var gameSettingsVisible = false;
