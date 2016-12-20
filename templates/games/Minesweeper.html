@@ -34,23 +34,35 @@
 	<h1 style="margin-top: 0px;">Game Settings</h1>
 	<table id="game-settings-table">
 
-		<tbody style="text-align: center;">
-			<tr>
-				<td>Board Width:</td>
-				<td><input type="number" name="board-width" min="1" step="1" value="20" required></td>
-			</tr>
+		<tr>
+			<td>Difficulty:</td>
+			<td>
+				<select name="difficulty">
+					<option value="custom">Custom (choose values below)</option>
+					<option value="easier">Easier</option>
+					<option value="easy">Easy</option>
+					<option value="normal" selected>Normal</option>
+					<option value="hard">Hard</option>
+					<option value="very hard">Very Hard</option>
+					<option value="good luck">Good Luck!</option>
+				</select>
+			</td>
+		</tr>
 
-			<tr>
-				<td>Board Height:</td>
-				<td><input type="number" name="board-height" min="1" step="1" value="10" required></td>
-			</tr>
+		<tr>
+			<td>Board Width:</td>
+			<td><input type="number" name="board-width" min="1" step="1" value="20" required></td>
+		</tr>
 
-			<tr>
-				<td>Mine Frequency:</td>
-				<td><input type="number" name="mine-frequency" min="0.05" max="1" step="0.01" value="0.1"></td>
-			</tr>
-		</tbody>
+		<tr>
+			<td>Board Height:</td>
+			<td><input type="number" name="board-height" min="1" step="1" value="10" required></td>
+		</tr>
 
+		<tr>
+			<td>Mine Frequency:</td>
+			<td><input type="number" name="mine-frequency" min="0.05" max="1" step="0.01" value="0.1"></td>
+		</tr>
 
 	</table>
 	<div class="submit-buttons-div">

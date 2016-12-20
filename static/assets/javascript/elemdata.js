@@ -142,13 +142,14 @@ function hasClassElem(elem, className) {
 }
 
 function setInputValue(name, value) {
+	var name = camelToHtml(name);
 	if (typeof value === 'boolean')
 		getElemName(name).checked = value;
 	else getElemName(name).value = value;
 }
 
 function getInputValue(name) {
-	var inputElem = getElemName(name);
+	var inputElem = getElemName(camelToHtml(name));
 	if (inputElem.type === 'checkbox')
 		return inputElem.checked;
 	else if (inputElem.type === 'number')
