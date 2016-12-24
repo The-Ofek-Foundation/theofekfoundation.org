@@ -46,3 +46,6 @@
 [submodule "static/assets/javascript/games/Minesweeper"]
 	path = static/assets/javascript/games/Minesweeper
 	url = git@github.com:The-Ofek-Foundation/Minesweeper
+[submodule "static/assets/javascript/games/DotsAndBoxes"]
+	path = static/assets/javascript/games/DotsAndBoxes
+	url = git@github.com:The-Ofek-Foundation/DotsAndBoxes

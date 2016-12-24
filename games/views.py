@@ -56,6 +56,11 @@ def minesweeper(request):
 	_get_game_settings(request, 'Minesweeper', context_dict)
 	return render(request, 'games/Minesweeper.html', context_dict)
 
+def dotsandboxes(request):
+	context_dict = {'page': main_pages.get(name='Dots and Boxes')}
+	_get_game_settings(request, 'Dots and Boxes', context_dict)
+	return render(request, 'games/DotsAndBoxes.html', context_dict)
+
 @login_required
 def save_settings(request):
 	settings = json.loads(request.POST['settings'])

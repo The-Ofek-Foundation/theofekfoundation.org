@@ -1,0 +1,78 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/DotsAndBoxes.css" %}">
+
+{% endblock %}
+
+{% block right_float_additions %}
+<li>
+	<button id="new-game-button">New Game</button>
+</li>
+
+<li>
+	<button id="settings-button">Settings</button>
+</li>
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+
+<div id="game-settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table id="game-settings-table">
+
+		<tr>
+			<td>Difficulty:</td>
+			<td>
+				<select name="difficulty">
+					<option value="custom">Custom (choose values below)</option>
+					<option value="easier">Easier</option>
+					<option value="easy">Easy</option>
+					<option value="normal" selected>Normal</option>
+					<option value="hard">Hard</option>
+					<option value="very hard">Very Hard</option>
+					<option value="good luck">Good Luck!</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Board Width:</td>
+			<td><input type="number" name="board-width" min="1" step="1" value="20" required></td>
+		</tr>
+
+		<tr>
+			<td>Board Height:</td>
+			<td><input type="number" name="board-height" min="1" step="1" value="10" required></td>
+		</tr>
+
+		<tr>
+			<td>Mine Frequency:</td>
+			<td><input type="number" name="mine-frequency" min="0.05" max="1" step="0.01" value="0.1"></td>
+		</tr>
+
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/DotsAndBoxes/DotsAndBoxes.js" %}"></script>
+
+{% endblock %}

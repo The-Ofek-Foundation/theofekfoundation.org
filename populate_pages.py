@@ -121,10 +121,19 @@ def populate():
 		category = category,
 		full_url = 'https://www.theofekfoundation.org/games/Minesweeper/',
 		pathname = 'games/Minesweeper/',
-		full_description = "Play Minesweeper online!",
+		full_description = "Play Minesweeper online with varying difficulty levels!",
 		description = "Play Minesweeper online!",
 		title = 'We Sweep',
 		name = 'Minesweeper',
+	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/DotsAndBoxes/',
+		pathname = 'games/DotsAndBoxes/',
+		full_description = "Play Dots and Boxes online!",
+		description = "Play Dots and Boxes online!",
+		title = 'We Sweep',
+		name = 'Dots and Boxes',
 	)
 
 	category = add_category('Tools')
