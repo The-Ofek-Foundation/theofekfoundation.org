@@ -114,7 +114,7 @@ def populate():
 		pathname = 'games/OldSnakey/',
 		full_description = "The Old Snakey retro game with multiplayer functionality, including against AI opponents!",
 		description = "The Old Snakey retro game!",
-		title = 'Old Snakey',
+		title = 'We Snakey',
 		name = 'Old Snakey',
 	)
 	add_page(
@@ -132,7 +132,7 @@ def populate():
 		pathname = 'games/DotsAndBoxes/',
 		full_description = "Play Dots and Boxes online!",
 		description = "Play Dots and Boxes online!",
-		title = 'We Sweep',
+		title = 'We Dot & We Box',
 		name = 'Dots and Boxes',
 	)
 
