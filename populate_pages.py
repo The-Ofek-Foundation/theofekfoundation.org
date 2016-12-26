@@ -309,7 +309,7 @@ def print_pages():
 		print(wp.name)
 
 if __name__ == '__main__':
-	clear_all_table(WebsitePage)
-	clear_all_table(WebsiteForm)
+	# clear_all_table(WebsitePage)
+	# clear_all_table(WebsiteForm)
 	populate()
 	print_pages()
