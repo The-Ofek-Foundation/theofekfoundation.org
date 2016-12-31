@@ -1,8 +1,5 @@
 var contentWrapper;
 
-if (window.location.protocol !== "https:" && window.location.hostname !== "127.0.0.1")
-	window.location = window.location.toString().replace(/^http:/, "https:");
-
 document.addEventListener("DOMContentLoaded", docReady);
 function docReady() {
 	if (getElemHeight(getElemClass('link')) > getElemHeight(getElemId('navbar-top')))
