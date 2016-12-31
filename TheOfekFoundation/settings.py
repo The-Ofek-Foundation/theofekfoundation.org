@@ -58,7 +58,7 @@ MIDDLEWARE_CLASSES = (
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	# Commented until infinite loop fixed
-	# 'django.middleware.security.SecurityMiddleware',
+	'django.middleware.security.SecurityMiddleware',
 )
 
 TEMPLATES = [
