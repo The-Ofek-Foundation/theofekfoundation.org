@@ -27,7 +27,7 @@ SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['theofekfoundation.org', 'www.theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com']
+ALLOWED_HOSTS = ['theofekfoundation.org', 'www.theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com', '127.0.0.1']
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
