@@ -133,14 +133,22 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DOMAIN = 'theofekfoundation.org'
 
-# Local settings should:
-#
-# * Potentially override DATABASES for different local db
-# * Include EMAIL_HOST_PASSWORD (for protection)
-# * UPDATE THE SECRET KEY :O
-# * Set all secure HTTPS things to False (not required on local connection)
-try:
-	from local_settings import *
-except ImportError:
-	pass
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+	try:
+		from global_settings import *
+	except ImportError:
+		pass
+else:
+	# Local settings should:
+	#
+	# * Potentially override DATABASES for different local db
+	# * Include EMAIL_HOST_PASSWORD (for protection)
+	# * UPDATE THE SECRET KEY :O
+	# * Set all secure HTTPS things to False (not required on local connection)
+	try:
+		from local_settings import *
+	except ImportError:
+		pass
+
+
 

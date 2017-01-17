@@ -9,6 +9,7 @@ scripts/*
 db.sqlite3
 
 **/local_settings.py
+**/global_settings.py
 
 # Google App Engine
 **/Website-07a6a0c3616e.json
