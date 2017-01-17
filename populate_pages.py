@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "TheOfekFoundation.settings")
 import django
@@ -134,6 +136,15 @@ def populate():
 		description = "Play Dots and Boxes online!",
 		title = 'We Dot & We Box',
 		name = 'Dots and Boxes',
+	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/Crossroads/',
+		pathname = 'games/Crossroads/',
+		full_description= "Play the Israeli מפגשים צולבים game online!",
+		description = "Play the Israeli מפגשים צולבים game online!",
+		title = 'מפגשים צולבים',
+		name = 'מפגשים צולבים',
 	)
 
 	category = add_category('Tools')

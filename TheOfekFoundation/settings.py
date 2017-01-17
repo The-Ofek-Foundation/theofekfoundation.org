@@ -150,5 +150,9 @@ else:
 	except ImportError:
 		pass
 
+# encoding=utf8
+import sys
 
-
+reload(sys)
+sys.setdefaultencoding('utf8')
+print sys.getdefaultencoding()

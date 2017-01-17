@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from main_app.models import WebsiteCategory, WebsitePage
 from games.models import GameSettings
@@ -60,6 +62,11 @@ def dotsandboxes(request):
 	context_dict = {'page': main_pages.get(name='Dots and Boxes')}
 	_get_game_settings(request, 'Dots and Boxes', context_dict)
 	return render(request, 'games/DotsAndBoxes.html', context_dict)
+
+def crossroads(request):
+	context_dict = {'page': main_pages.get(name='מפגשים צולבים')}
+	_get_game_settings(request, 'מפגשים צולבים', context_dict)
+	return render(request, 'games/Crossroads.html', context_dict)
 
 @login_required
 def save_settings(request):

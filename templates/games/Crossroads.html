@@ -1,0 +1,83 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/Crossroads.css" %}">
+
+{% endblock %}
+
+{% block right_float_additions %}
+<li>
+	<a disabled style="padding-right: 0.5em;">GUI Help John Ace</a>
+</li>
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+<div id="footer">
+	<div id="anal">Analysis:</div>
+	<div id="num-trials">Trials:</div>
+</div>
+
+<div id="game-settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table id="game-settings-table">
+		<tr>
+			<td>Allow Pondering (Faster AI)?</td>
+			<td><input type="checkbox" id="ponder" checked></td>
+		</tr>
+
+		<tr>
+			<td>AI Turn:</td>
+			<td>
+				<select id="ai-turn">
+					<option value="null">None</option>
+					<option value="first">First</option>
+					<option value="second" selected>Second</option>
+					<option value="both">Both</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Time to think (secs):</td>
+			<td><input type="number" id="time-to-think" min="0" max="10" value="5"></td>
+		</tr>
+
+		<tr>
+			<td>Show AI move weights (cool)!</td>
+			<td><input type="checkbox" id="draw-weights"></td>
+		</tr>
+
+		<tr>
+			<td>Anti Tic Tac Toe? (Goal is to lose)</td>
+			<td><input type="checkbox" id="anti-tic-tac-toe"></td>
+		</tr>
+
+		<tr>
+			<td>Tie Tic Tac Toe? (X wants to tie, O wants to win XD)</td>
+			<td><input type="checkbox" id="tie-tic-tac-toe"></td>
+		</tr>
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Crossroads/Crossroads.js" %}"></script>
+
+{% endblock %}
