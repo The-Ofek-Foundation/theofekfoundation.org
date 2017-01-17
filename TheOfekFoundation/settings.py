@@ -30,10 +30,12 @@ DEBUG = True
 ALLOWED_HOSTS = [
 	'theofekfoundation.org',
 	'www.theofekfoundation.org',
+	'ofekgila.com',
 	'localhost',
 	'ofekih.pythonanywhere.com',
 	'127.0.0.1',
 	'norse-limiter-155822.appspot.com',
+	'google.ofekgila.com',
 ]
 
 SECURE_SSL_REDIRECT = True
