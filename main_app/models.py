@@ -27,7 +27,7 @@ class WebsitePage(models.Model):
 	full_url = models.CharField(max_length=128)
 	name = models.CharField(max_length=128, default='unnamed')
 	pathname = models.CharField(max_length=128)
-	full_description = models.CharField(max_length=128)
+	full_description = models.CharField(max_length=512)
 	description = models.CharField(max_length=128)
 	title = models.CharField(max_length=128)
 	views = models.IntegerField(default=0)

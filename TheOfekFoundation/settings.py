@@ -27,7 +27,14 @@ SECRET_KEY = 'i7!yq3c1yf92c_uramq!xk1x#n8@@uj9x5eta=r04_c8q@^ke^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['theofekfoundation.org', 'www.theofekfoundation.org', 'localhost', 'ofekih.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = [
+	'theofekfoundation.org',
+	'www.theofekfoundation.org',
+	'localhost',
+	'ofekih.pythonanywhere.com',
+	'127.0.0.1',
+	'norse-limiter-155822.appspot.com',
+]
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
@@ -129,7 +136,9 @@ DOMAIN = 'theofekfoundation.org'
 # * Potentially override DATABASES for different local db
 # * Include EMAIL_HOST_PASSWORD (for protection)
 # * UPDATE THE SECRET KEY :O
+# * Set all secure HTTPS things to False (not required on local connection)
 try:
 	from local_settings import *
 except ImportError:
 	pass
+

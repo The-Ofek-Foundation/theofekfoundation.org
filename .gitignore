@@ -9,3 +9,8 @@ scripts/*
 db.sqlite3
 
 **/local_settings.py
+
+# Google App Engine
+**/Website-07a6a0c3616e.json
+cloud_sql_proxy
+tempstatic/
