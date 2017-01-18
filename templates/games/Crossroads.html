@@ -12,7 +12,11 @@
 
 {% block right_float_additions %}
 <li>
-	<a disabled style="padding-right: 0.5em;">GUI Help John Ace</a>
+	<button onclick="newGame();">New Game</button>
+</li>
+
+<li>
+	<button onclick="showSettingsForm();">Settings</button>
 </li>
 {% endblock %}
 
@@ -27,42 +31,41 @@
 <div id="game-settings-menu">
 	<h1 style="margin-top: 0px;">Game Settings</h1>
 	<table id="game-settings-table">
+
+		<tr>
+			<td>Num Players:</td>
+			<td><input type="number" name="num-players" min="2" max="4" value="1"></td>
+		</tr>
+
 		<tr>
 			<td>Allow Pondering (Faster AI)?</td>
-			<td><input type="checkbox" id="ponder" checked></td>
+			<td><input type="checkbox" name="ponder" checked></td>
 		</tr>
 
 		<tr>
 			<td>AI Turn:</td>
 			<td>
-				<select id="ai-turn">
-					<option value="null">None</option>
-					<option value="first">First</option>
-					<option value="second" selected>Second</option>
-					<option value="both">Both</option>
+				<select name="ai-turn">
+					<option value="-1">None</option>
+					<option value="0">First</option>
+					<option value="1" selected>Second</option>
+					<option value="2">Third (Requires at least 3 players)</option>
+					<option value="3">Fourth (Requires 4 players)</option>
+					<option value="4">All</option>
 				</select>
 			</td>
 		</tr>
 
 		<tr>
 			<td>Time to think (secs):</td>
-			<td><input type="number" id="time-to-think" min="0" max="10" value="5"></td>
+			<td><input type="number" name="time-to-think" min="0" max="20" value="1"></td>
 		</tr>
 
 		<tr>
-			<td>Show AI move weights (cool)!</td>
-			<td><input type="checkbox" id="draw-weights"></td>
+			<td>Omniscient View (the original game is hidden)?</td>
+			<td><input type="checkbox" name="omniscient-view" checked></td>
 		</tr>
 
-		<tr>
-			<td>Anti Tic Tac Toe? (Goal is to lose)</td>
-			<td><input type="checkbox" id="anti-tic-tac-toe"></td>
-		</tr>
-
-		<tr>
-			<td>Tie Tic Tac Toe? (X wants to tie, O wants to win XD)</td>
-			<td><input type="checkbox" id="tie-tic-tac-toe"></td>
-		</tr>
 	</table>
 	<div class="submit-buttons-div">
 		<tr><input type="submit" id="done" value="Done"></tr>
