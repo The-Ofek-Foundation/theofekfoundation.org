@@ -11,6 +11,7 @@ class GameSettings(models.Model):
 	ai_mode = CharField(max_length=128, null=True)
 	ai_mode2 = CharField(max_length=128, null=True)
 	difficulty = CharField(max_length=128, null=True)
+	draw_style = CharField(max_length=128, null=True)
 	monte_carlo_trials = IntegerField(null=True)
 	game_speed = IntegerField(null=True)
 	pits = IntegerField(null=True)
@@ -31,7 +32,7 @@ class GameSettings(models.Model):
 	reverse_drawing = NullBooleanField()
 	teleportation_walls = NullBooleanField()
 	multiplayer = NullBooleanField()
-	omniscient_view = NullBooleanField()
+	omniscient_view = NullBooleanField() # Deprecated
 	dimensions = JSONField()
 
 	class Meta:
