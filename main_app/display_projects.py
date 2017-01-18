@@ -53,6 +53,12 @@ games = {
 			'template': 'games/MinesweeperDescription.html',
 			'save': True,
 			'display_main': False,
+		},	{
+			'name': u'מפגשים צולבים',
+			'description': "Play the Israeli מפגשים צולבים game online against an AI!",
+			'template': 'games/CrossroadsDescription.html',
+			'save': True,
+			'display_main': False,
 		},
 	],
 }

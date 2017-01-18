@@ -13,7 +13,7 @@ urlpatterns = [
 	url(r'^OldSnakey/', views.oldsnakey, name="Old Snakey"),
 	url(r'^Minesweeper/', views.minesweeper, name="Minesweeper"),
 	url(r'^DotsAndBoxes/', views.dotsandboxes, name="Dots and Boxes"),
-	url(r'^Crossroads/', views.crossroads, name="מפגשים צולבים"),
+	url(r'^Crossroads/', views.crossroads, name=u"מפגשים צולבים"),
 	url(r'^api/save_settings/', views.save_settings, name="save_settings"),
 	url(r'^', include('main_app.misurls')),
 ]

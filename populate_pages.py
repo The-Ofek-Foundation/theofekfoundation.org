@@ -141,7 +141,7 @@ def populate():
 		category = category,
 		full_url = 'https://www.theofekfoundation.org/games/Crossroads/',
 		pathname = 'games/Crossroads/',
-		full_description= "Play the Israeli מפגשים צולבים game online!",
+		full_description= "Play the Israeli מפגשים צולבים game online against an AI!",
 		description = "Play the Israeli מפגשים צולבים game online!",
 		title = 'מפגשים צולבים',
 		name = 'מפגשים צולבים',
