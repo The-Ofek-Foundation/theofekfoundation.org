@@ -4,6 +4,7 @@ var collapsibleChildren = getElemsClass('collapsible-list')[0].children;
 var hiddenTop = getElemId('hidden-top');
 var lastAnimationTime = new Date().getTime() / 1e3 + 1;
 var mainDescElem = getElemId('main-desc');
+var headerHeight = getElemHeight(headers[0]) + getElemBorderHeight(headers[0]);
 
 function pageReady() {
 	onResize();
@@ -30,12 +31,11 @@ function onResize() {
 	for (var i = headers.length - 1; i >= 0; i--) {
 		var elem = headers[i];
 		var index = headers.length - i - 1;
-		setElemStyle(elem, 'border-top', '0px');
-		setElemStyle(elem, 'transition', 'margin-top ' +
-			index * Math.pow(0.8, index) + 's');
 		if (index === 0)
 			setElemStyle(elem, 'transition', 'margin-top 0.7s');
-		setElemStyle(elem, 'margin-top', mainDescHeight + index * elem.offsetHeight + 'px');
+		else setElemStyle(elem, 'transition', 'margin-top ' +
+			index * Math.pow(0.8, index) + 's');
+		setElemStyle(elem, 'margin-top', mainDescHeight + index * headerHeight + 'px');
 	}
 
 	setElemStyle(hiddenTop, 'bottom', getElemHeight(contentWrapper) -

@@ -1,5 +1,5 @@
 @header-icon-width: 30px;
-@header-icon-height: 30px;
+@header-icon-height: 25px;
 
 #content-wrapper {
 	overflow: auto;
@@ -36,6 +36,8 @@ li {
 	#main-desc {
 		z-index: 10;
 		padding: 10px 35px;
+		max-height: 300px;
+	    overflow-y: auto;
 
 		h1 {
 			margin-top: 0.1em;
@@ -49,6 +51,8 @@ li {
 		padding: 10px 35px;
 		z-index: 2;
 		background-color: orange;
+		height: 37px;
+		border-top: 0px;
 
 		:first-child {
 			float: left;
