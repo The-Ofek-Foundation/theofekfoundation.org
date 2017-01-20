@@ -1,0 +1,8 @@
+README.txt
+Minidetector.egg-info/PKG-INFO
+Minidetector.egg-info/SOURCES.txt
+Minidetector.egg-info/dependency_links.txt
+Minidetector.egg-info/top_level.txt
+minidetector/__init__.py
+minidetector/search_strings.txt
+minidetector/useragents.py

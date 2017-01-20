@@ -41,7 +41,11 @@
 		That's my story so far, and I can't wait until going to a University to formally learn computer science and improve!
 	</div>
 	<div class="footer">
-		Github: <a class="animated" href="https://github.com/The-Ofek-Foundation">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a class="animated" href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a class="animated" href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a>
+		{% if mobile %}
+		<a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">Github</a> <a class="animated" href="{% url 'Blog' '' %}">Blog</a> <a class="animated" href="mailto:ofek@theofekfoundation.org">Email</a>
+		{% else %}
+		Github: <a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a class="animated" href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a class="animated" href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

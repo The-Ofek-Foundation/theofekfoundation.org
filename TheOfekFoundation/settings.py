@@ -52,6 +52,7 @@ INSTALLED_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'minidetector', # detects mobile devices (also in Middleware)
 	'main_app',
 	'games',
 	'tools',
@@ -68,6 +69,7 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	# Commented until infinite loop fixed
 	'django.middleware.security.SecurityMiddleware',
+	'minidetector.Middleware'
 )
 
 TEMPLATES = [
@@ -79,6 +81,7 @@ TEMPLATES = [
 			'debug': DEBUG,
 			'context_processors': [
 				"django.contrib.auth.context_processors.auth",
+				"main_app.context_processors.mobile_detection_processor",
 			]
 		}
 	},

@@ -1,0 +1,9 @@
+../minidetector/useragents.py
+../minidetector/__init__.py
+../minidetector/search_strings.txt
+../minidetector/useragents.pyc
+../minidetector/__init__.pyc
+PKG-INFO
+dependency_links.txt
+top_level.txt
+SOURCES.txt

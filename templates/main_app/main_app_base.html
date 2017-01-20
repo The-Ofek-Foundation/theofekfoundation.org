@@ -5,6 +5,8 @@
 {% block title %}{{page.title}}{% endblock %}
 
 {% block head_block %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<meta name="description"          content="{{page.full_description}}">
 	<meta property="og:url"           content="{{page.full_url}}" />
 	<meta property="og:type"          content="website" />
@@ -26,6 +28,8 @@
 
 	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/main_app.css" %}">
 
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 	{% block header_additions %}{% endblock %}
 {% endblock %}
 
@@ -35,19 +39,28 @@
 		<li class="link"><a href="{% url 'Homepage' %}">Home</a></li>
 		<li class="link"><a href="{% url 'Blog' '' %}">Blog</a></li>
 		<li class="link"><a href="{% url 'Games' %}">Games</a></li>
-		<ul style="float:right; list-style-type:none;">
+		<ul style="float:right; list-style-type:none; padding-left: 0px;">
 			{% block right_float_additions %}{% endblock %}
-			<li class="vert-padding-align" style="padding-top: 6.25px;">
+			<li style="padding-top: 4px;">
 				<div class="social">
+					{% if mobile %}
 					<span class="google">
-						<g:plusone size="standard" href="{{page.full_url}}"></g:plusone>
-						<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+						<div class="g-plusone" data-size="standard" data-annotation="none"></div>
+					</span>
+					<span class="Facebook">
+						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&width=51&layout=button&action=like&size=small&show_faces=false&share=false&height=65&appId" width="51" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+					</span>
+					{% else %}
+					<span class="google">
+						<div class="g-plusone" data-size="standard"></div>
 					</span>
 					<span class="Facebook">
 						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&amp;show_faces=false&amp;layout=button_count" scrolling="no" frameborder="0" style="height: 21px; width: 100px" allowTransparency="true"></iframe>
 					</span>
+					{% endif %}
 				</div>
 			</li>
+			{% if not mobile %}
 			{% if user.is_authenticated %}
 				<li>
 					<a id="navbar-username">{{user.username}}</a>
@@ -56,6 +69,7 @@
 			{% else %}
 				<li class="link"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
 				<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
+			{% endif %}
 			{% endif %}
 		</ul>
 	</ul>

@@ -2,7 +2,7 @@ var contentWrapper;
 
 document.addEventListener("DOMContentLoaded", docReady);
 function docReady() {
-	if (getElemHeight(getElemClass('link')) > getElemHeight(getElemId('navbar-top')))
+	if (getElemHeight(getElemClass('link')) !== getElemHeight(getElemId('navbar-top')))
 		setElemStyle(getElemId('navbar-top'), 'height',
 			getElemHeight(getElemClass('link')) + "px");
 	contentWrapper = getElemId('content-wrapper');
