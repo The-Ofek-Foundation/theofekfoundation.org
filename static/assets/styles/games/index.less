@@ -9,6 +9,11 @@ li {
 	font-size: 25px;
 }
 
+h3 {
+	margin-top: 20px;
+	margin-bottom: 0px;
+}
+
 .collapsible-list {
 	list-style: none;
 	padding-left: 0px;
@@ -37,7 +42,7 @@ li {
 		z-index: 10;
 		padding: 10px 35px;
 		max-height: 300px;
-	    overflow-y: auto;
+		overflow-y: auto;
 
 		h1 {
 			margin-top: 0.1em;
@@ -56,6 +61,8 @@ li {
 
 		:first-child {
 			float: left;
+			overflow: auto;
+			max-height: 100%;
 
 			a {
 				color: black;
@@ -98,8 +105,8 @@ li {
 		z-index: 0;
 		padding-top: 10px;
 		padding-bottom: 20px;
-		padding-left: 70px;
-		padding-right: 70px;
+		padding-left: 35px;
+		padding-right: 35px;
 		transition: margin-top 2s;
 		background-color: yellow;
 		top: -100000px;

@@ -4,7 +4,11 @@ var collapsibleChildren = getElemsClass('collapsible-list')[0].children;
 var hiddenTop = getElemId('hidden-top');
 var lastAnimationTime = new Date().getTime() / 1e3 + 1;
 var mainDescElem = getElemId('main-desc');
+
 var headerHeight = getElemHeight(headers[0]) + getElemBorderHeight(headers[0]);
+var checkmarkExtendable = getElemWidth(getElemClass('checkmark'))
+	+ getElemWidth(getElemClass('extendable'))
+	+ parseInt(getElemStyle(getElemClass('checkmark'), 'margin-left'));
 
 function pageReady() {
 	onResize();
@@ -15,12 +19,21 @@ function onResize() {
 	for (var i = 0; i < extended.length; i++)
 		slideUpDescription(extended[i]);
 
+	var collapsibleChildrenWidth =
+		parseInt(getElemStyle(headers[0].parentElement, 'width'))
+		- getElemPaddingWidth(headers[0]) - getElemBorderWidth(headers[0]);
+
 	for (var i = 0; i < collapsibleChildren.length; i++) {
 		var elem = collapsibleChildren[i];
 		if (elem.id.indexOf('hidden') !== -1) continue;
-		setElemWidth(elem, parseInt(getElemStyle(elem.parentElement, 'width'))
-			- getElemPaddingWidth(elem) - getElemBorderWidth(elem));
+		setElemWidth(elem, collapsibleChildrenWidth);
 	}
+
+	var headerTitleWidth = collapsibleChildrenWidth - checkmarkExtendable -
+		getElemBorderWidth(headers[1]);
+
+	for (var i = 1; i < headers.length; i++)
+		setElemStyle(headers[i].firstElementChild, 'max-width', headerTitleWidth + "px");
 
 	for (var i = 0; i < descriptions.length; i++)
 		setElemStyle(descriptions[i], 'top', "-100000px");

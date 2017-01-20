@@ -6,6 +6,8 @@ lessc --compress ./static/assets/styles/account/reset_password.less ./static/ass
 
 lessc --compress ./static/assets/styles/games/index.less ./static/assets/styles/games/index.css
 
+lessc --compress ./static/assets/styles/games/mobileindex.less ./static/assets/styles/games/mobileindex.css
+
 lessc --compress ./static/assets/styles/games/ConnectOfek.less ./static/assets/styles/games/ConnectOfek.css
 
 lessc --compress ./static/assets/styles/games/OnlineGo.less ./static/assets/styles/games/OnlineGo.css

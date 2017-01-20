@@ -8,6 +8,10 @@
 
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/index.css" %}">
 
+{% if mobile %}
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/mobileindex.css" %}">
+{% endif %}
+
 {% endblock %}
 
 {% block body_content %}
@@ -47,7 +51,7 @@
 		{% if game.save %}
 		<img class="checkmark" src="{% static "images/games/checkmark.png" %}" title="Save game settings feature">
 		{% endif %}
-		<div class="extendable">Expand</div>
+		<div class="extendable">{% if not mobile %}Expand{% endif %}</div>
 	</li>
 
 	<li class="description">
