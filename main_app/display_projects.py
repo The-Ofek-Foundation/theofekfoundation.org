@@ -32,7 +32,7 @@ games = {
 			'description': 'Play Go, Gomoku, or Wu. The only one with an AI—however—is Gomoku—with a Minimax implementation.',
 			'template': 'games/WeiqiDescription.html',
 			'save': False,
-			'display_main': True,
+			'display_main': False,
 		},	{
 			'name': 'Mancala',
 			'imagesrc': 'mancala.JPG',

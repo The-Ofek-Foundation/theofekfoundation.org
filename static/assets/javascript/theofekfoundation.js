@@ -13,12 +13,16 @@ function docReady() {
 		if (hasClassElem(targetElem, 'path-link')) {
 			setSessionData('path', getElemData(targetElem, 'path'));
 			redirect(getElemData(targetElem, 'url'));
-		} else if (targetElem.id === 'logout-url')
-			$.post(getElemData(targetElem, 'url'),
-				function (data) {
+		} else if (targetElem.id === 'logout-url') {
+			var request = new XMLHttpRequest();
+			request.open('POST', getElemData(targetElem, 'url'), true);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			request.send();
+			request.onreadystatechange = function() {
+				if (request.readyState == 4 && request.status == 200)
 					location.reload();
-				}
-			)
+			};
+		}
 	});
 };
 
@@ -159,7 +163,7 @@ function getCookie(name) {
 	if (document.cookie && document.cookie !== '') {
 		var cookies = document.cookie.split(';');
 		for (var i = 0; i < cookies.length; i++) {
-			var cookie = jQuery.trim(cookies[i]);
+			var cookie = cookies[i].trim();
 			// Does this cookie string begin with the name we want?
 			if (cookie.substring(0, name.length + 1) === (name + '=')) {
 				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -182,10 +186,34 @@ function csrfSafeMethod(method) {
 	// these HTTP methods do not require CSRF protection
 	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
-$.ajaxSetup({
-	beforeSend: function(xhr, settings) {
-		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-			xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+function addXMLRequestCallback(callback){
+	var oldSend, i;
+	if( XMLHttpRequest.callbacks ) {
+		// we've already overridden send() so just add the callback
+		XMLHttpRequest.callbacks.push( callback );
+	} else {
+		// create a callback queue
+		XMLHttpRequest.callbacks = [callback];
+		// store the native send()
+		oldSend = XMLHttpRequest.prototype.send;
+		// override the native send()
+		XMLHttpRequest.prototype.send = function(){
+			// process the callback queue
+			// the xhr instance is passed into each callback but seems pretty useless
+			// you can't tell what its destination is or call abort() without an error
+			// so only really good for logging that a request has happened
+			// I could be wrong, I hope so...
+			// EDIT: I suppose you could override the onreadystatechange handler though
+			for( i = 0; i < XMLHttpRequest.callbacks.length; i++ ) {
+				XMLHttpRequest.callbacks[i]( this );
+			}
+			// call the native send()
+			oldSend.apply(this, arguments);
 		}
 	}
+}
+
+addXMLRequestCallback(function(xhr) {
+	xhr.setRequestHeader("X-CSRFToken", csrftoken);
 });

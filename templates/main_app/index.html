@@ -66,26 +66,41 @@
 			if (doubPar === prevDp || (target.tagName === "SECTION"));
 			else if (target.parentElement.tagName === "FIGURE") {
 				var tp = target.parentElement.parentElement.parentElement;
-				$(prevContainer).children(".flippable").removeClass("flipped");
+				if (prevContainer)
+					for (var i = 0; i < prevContainer.children.length; i++) {
+						var elem = prevContainer.children[i];
+						if (hasClassElem(elem, 'flippable'))
+							removeClassElem(elem, 'flipped');
+					}
 				prevContainer = tp;
 				prevDp = doubPar;
-				$(prevContainer).children(".flippable").addClass("flipped");
+				for (var i = 0; i < prevContainer.children.length; i++) {
+					var elem = prevContainer.children[i];
+					if (hasClassElem(elem, 'flippable'))
+						addClassElem(elem, 'flipped');
+				}
 			} else if (target.tagName === "DIV") {
-				$(prevContainer).children(".flippable").removeClass("flipped");
+				if (prevContainer)
+					for (var i = 0; i < prevContainer.children.length; i++) {
+						var elem = prevContainer.children[i];
+						if (hasClassElem(elem, 'flippable'))
+							removeClassElem(elem, 'flipped');
+					}
 				prevContainer = prevDp = target;
 			}
 		};
-		$('body').css('margin-top', ($('.dropdown').height() + 10) + "px");
+		// setElemStyle(document.body, 'margin-top',
+		// 	getElemHeight(getElemClass('dropdown')) + 10 + "px");
 		fitParent();
 		vertAlign();
 		setTimeout(function () {
 			fitParent();
 			vertAlign();
 		}, 1000);
-		$('#games').animate({opacity: 1, 'margin-top': 0}, 1000, function () {
-			after = true;
-		});
-		$(document).scroll();
+		// $('#games').animate({opacity: 1, 'margin-top': 0}, 1000, function () {
+		// 	after = true;
+		// });
+		// $(document).scroll();
 	};
 
 	function setupPseudoBody() {
@@ -98,7 +113,7 @@
 	function setupInfo() {
 		var info = getElemsClass('info');
 		for (var i = 0, elem = info[i]; i < info.length; i++, elem = info[i]) {
-			setElemStyle(elem, 'marginLeft', '-=25px');
+			// setElemStyle(elem, 'marginLeft', '-=25px');
 			setElemStyle(elem, 'paddingLeft', '+=20px');
 			setElemStyle(elem, 'paddingRight', '+=20px');
 			setElemStyle(elem, 'width', '-=40px');
@@ -120,22 +135,22 @@
 	}
 
 	// Animate tools when scrolled to them
-	var after = false;
-	document.addEventListener('scroll', function() {
-		if (after) {
-			var tools = getElemId('tools'),
-			    about = getElemId('about');
-			if (windowAt(tools) && !getElemData(tools, 'animated')) {
-				$(tools).animate({opacity: 1, 'margin-top': "0px"}, 1000);
-				setElemData(tools, 'animated', true);
-			}
-			if (windowAt(about) && !getElemData(about, 'animated')) {
-				$(about).animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
-				setElemStyle(about, 'height', 'auto');
-				setElemData(about, 'animated', true);
-			}
-		}
-	});
+	// var after = false;
+	// document.addEventListener('scroll', function() {
+	// 	if (after) {
+	// 		var tools = getElemId('tools'),
+	// 		    about = getElemId('about');
+	// 		if (windowAt(tools) && !getElemData(tools, 'animated')) {
+	// 			$(tools).animate({opacity: 1, 'margin-top': "0px"}, 1000);
+	// 			setElemData(tools, 'animated', true);
+	// 		}
+	// 		if (windowAt(about) && !getElemData(about, 'animated')) {
+	// 			$(about).animate({opacity: 1, 'margin-left': "+=25px"}, 1000);
+	// 			setElemStyle(about, 'height', 'auto');
+	// 			setElemData(about, 'animated', true);
+	// 		}
+	// 	}
+	// });
 
 	// Scroll to top on window reload so always show up on top
 	window.addEventListener("beforeunload", function (event) {
