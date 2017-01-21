@@ -34,10 +34,12 @@
 	{{block.super}}
 
 	<script type="text/javascript">
-		$(document).ready(function () {
-			$(".errorlist").each(function (e) {
-				$(this).insertAfter($(this).next());
-			});
-		});
+		function pageReady() {
+			var errorList = getElemsClass('errorlist');
+			for (var i = 0; i < errorList.length; i++) {
+				var error = errorList[i];
+				insertAfterElem(error, error.nextElementSibling);
+			}
+		}
 	</script>
 {% endblock %}

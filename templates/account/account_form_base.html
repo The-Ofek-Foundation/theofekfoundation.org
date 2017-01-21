@@ -46,17 +46,22 @@
 {% block end_block %}
 {% if html_form.resizeable %}
 <script type="text/javascript">
-	$(document).ready(function () {
-		resize_form();
-		$(".hidden-input[name=path]").val(getLocallyStored('path') ? getLocallyStored('path'):'');
+
+	var mainForm = getElemId('{{html_form.name}}');
+
+	document.addEventListener("DOMContentLoaded", function () {
+		resizeForm();
+		var hiddenPathInputs = getElemsQuery(".hidden-input[name=path]");
+		for (var i = 0; i < hiddenPathInputs.length; i++)
+			hiddenPathInputs[i].value = getLocallyStored('path') ? getLocallyStored('path'):'';
 	});
 
 	function onResize() {
-		resize_form();
+		resizeForm();
 	};
 
-	function resize_form() {
-		$("#{{html_form.name}}").width($("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}").outerWidth());
+	function resizeForm() {
+		setElemWidth(mainForm, getElemWidth(getElemQuery("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}")));
 	}
 </script>
 {% endif %}

@@ -25,11 +25,12 @@
 	{{block.super}}
 
 	<script type="text/javascript">
-		$(document).ready(function () {
-			$(".errorlist").each(function (e) {
-				$(this).insertAfter($(this).next().children(1));
-				$(this).remove();
-			});
-		});
+		function pageReady() {
+			var errorList = getElemsClass('errorlist');
+			for (var i = 0; i < errorList.length; i++) {
+				var error = errorList[i];
+				insertAfterElem(error, error.nextElementSibling.children[1]);
+			}
+		}
 	</script>
 {% endblock %}

@@ -29,14 +29,14 @@ function getElemWidth(elem) {
 	return parseInt(getElemData(elem, 'width'))
 		|| getElemProperty(elem, 'width') + getElemPaddingWidth(elem)
 		|| elem.width
-		|| getElemStyle('width');
+		|| getElemStyle(elem, 'width');
 }
 
 function getElemHeight(elem) {
 	return parseInt(getElemData(elem, 'height'))
 		|| getElemProperty(elem, 'height') + getElemPaddingHeight(elem)
 		|| elem.height
-		|| getElemStyle('height');
+		|| getElemStyle(elem, 'height');
 }
 
 function getElemStyle(elem, prop) {
@@ -90,6 +90,10 @@ function getElemId(id) {
 	return document.getElementById(id);
 }
 
+function getElemsQuery(query) {
+	return document.querySelectorAll(query);
+}
+
 function getElemQuery(query) {
 	return document.querySelector(query);
 }
@@ -108,6 +112,14 @@ function getElemName(name) {
 
 function getElemClass(className) {
 	return getElemsClass(className)[0];
+}
+
+function getElemsTagName(tagName) {
+	return document.getElementsByTagName(tagName);
+}
+
+function getElemTagName(tagName) {
+	return getElemsTagName(tagName)[0];
 }
 
 function getElemData(elem, key) {
@@ -191,4 +203,8 @@ function centerElem(elem) {
 
 function camelToHtml(s){
 	return s.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
+}
+
+function insertAfterElem(newNode, referenceNode) {
+	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
