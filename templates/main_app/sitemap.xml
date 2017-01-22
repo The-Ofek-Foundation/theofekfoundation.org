@@ -67,6 +67,20 @@
 	</url>
 	<url>
 		<loc>
+			https://www.theofekfoundation.org/games/DotsAndBoxes/
+		</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.85</priority>
+	</url>
+	<url>
+		<loc>
+			https://www.theofekfoundation.org/games/Crossroads/
+		</loc>
+		<changefreq>daily</changefreq>
+		<priority>0.85</priority>
+	</url>
+	<url>
+		<loc>
 			https://www.theofekfoundation.org/tools/Maze/
 		</loc>
 		<changefreq>daily</changefreq>
