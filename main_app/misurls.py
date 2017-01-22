@@ -6,6 +6,7 @@ urlpatterns = [
 	url(r'(?i)OnlineGo/$', RedirectView.as_view(url='/games/OnlineGo/', permanent=True)),
 	url(r'(?i)Mancala/$', RedirectView.as_view(url='/games/Mancala/', permanent=True)),
 	url(r'(?i)UltimateTicTacToe/$', RedirectView.as_view(url='/games/UltimateTicTacToe/', permanent=True)),
+	url(r'(?i)UTTT/$', RedirectView.as_view(url='/games/UltimateTicTacToe/', permanent=True)),
 	url(r'(?i)LameDuck/$', RedirectView.as_view(url='/games/LameDuck/', permanent=True)),
 	url(r'(?i)OldSnakey/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
 	url(r'(?i)Snake/$', RedirectView.as_view(url='/games/OldSnakey/', permanent=True)),
