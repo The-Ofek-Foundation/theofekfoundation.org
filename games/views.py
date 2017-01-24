@@ -70,6 +70,6 @@ def crossroads(request):
 
 @login_required
 def save_settings(request):
-	settings = json.loads(request.POST['settings'])
+	settings = json.loads(request.body)
 	GameSettings.objects.filter(game_name=settings['game_name'], user_id=request.user.id).update(**settings)
 	return HttpResponse()

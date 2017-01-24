@@ -100,19 +100,17 @@ class GameSettings {
 	 * @param  {failure} failure callback that handles error
 	 */
 	saveSettings(success, failure) {
-		$.post({
-			url: "/games/api/save_settings/",
-			data: {'settings': JSON.stringify(convertKeysObject(this._settings, true))},
-			dataType: "json",
-			success: function(s) {
-				if (success)
-					success(s);
-			},
-			error: function(e) {
-				if (failure)
-					failure(e);
-			}
-		});
+		var request = new XMLHttpRequest();
+		request.open('POST', '/games/api/save_settings/', true);
+		request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		request.onreadystatechange = function() {
+			if (request.readyState === 4)
+				if (request.status === 200 && typeof success === 'function')
+					success();
+				else if (typeof failure === 'function')
+					failure();
+		}
+		request.send(JSON.stringify(convertKeysObject(this._settings, true)));
 	}
 }
 
