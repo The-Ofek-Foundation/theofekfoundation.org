@@ -160,7 +160,8 @@ function showSettingsForm() {
 		hideSettingsForm();
 	else {
 		gameSettingsVisible = true;
-		$(getElemId('game-settings-menu')).animate({opacity: 0.9}, "slow").css('z-index', 100);
+		setElemStyle(getElemId('game-settings-menu'), 'z-index', 100);
+		addClassElem(getElemId('game-settings-menu'), 'visible');
 	}
 }
 
@@ -168,6 +169,8 @@ function hideSettingsForm(callback) {
 	gameSettingsVisible = false;
 	callback = callback || function () {
 		setElemStyle(getElemId('game-settings-menu'), 'z-index', -1);
+		getElemId('game-settings-menu').removeEventListener('webkitTransitionEnd');
 	};
-	$(getElemId('game-settings-menu')).animate({opacity: 0}, "slow", callback);
+	getElemId('game-settings-menu').addEventListener('webkitTransitionEnd', callback);
+	removeClassElem(getElemId('game-settings-menu'), 'visible');
 }
