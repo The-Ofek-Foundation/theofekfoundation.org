@@ -168,9 +168,11 @@ function showSettingsForm() {
 function hideSettingsForm(callback) {
 	gameSettingsVisible = false;
 	callback = callback || function () {
-		setElemStyle(getElemId('game-settings-menu'), 'z-index', -1);
-		getElemId('game-settings-menu').removeEventListener('webkitTransitionEnd');
+		if (!hasClassElem(getElemId('game-settings-menu'), 'visible'))
+			setElemStyle(getElemId('game-settings-menu'), 'z-index', -1);
+		getElemId('game-settings-menu').removeEventListener('webkitTransitionEnd', callback);
 	};
 	getElemId('game-settings-menu').addEventListener('webkitTransitionEnd', callback);
 	removeClassElem(getElemId('game-settings-menu'), 'visible');
+	getElemId('game-settings-menu').addEventListener('webkitTransitionStart', callback);
 }
