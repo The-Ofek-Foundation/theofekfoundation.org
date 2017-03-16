@@ -5,7 +5,7 @@ threadsafe: yes
 
 handlers:
 - url: /static
-  static_dir: tempstatic/
+  static_dir: tempstatic
 - url: .*
   script: TheOfekFoundation.wsgi.application
 
