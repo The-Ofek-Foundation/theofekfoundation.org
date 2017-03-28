@@ -12,16 +12,19 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 
 Clone the repository from [here][repo url] recursively, e.g.:
 
-<code>git clone https://github.com/The-Ofek-Foundation/theofekfoundation.org.git --recursive</code>
+```bash
+git clone https://github.com/The-Ofek-Foundation/theofekfoundation.org.git --recursive
+```
 
 #### Step 2: Install dependencies
 
 1. Python 2.7.*, pip
 2. django (1.10.*), minidetector, and jsonfield with pip
-	<code>
-		sudo pip install django
-		sudo pip install minidetector
-		sudo pip install jsonfield
-	</code>
+
+	```bash
+	sudo pip install django
+	sudo pip install minidetector
+	sudo pip install jsonfield
+	```
 
 [repo url]:https://github.com/The-Ofek-Foundation/theofekfoundation.org "github repository"
