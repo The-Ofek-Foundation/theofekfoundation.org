@@ -5,3 +5,23 @@ https://www.theofekfoundation.org is my personal website with plenty games (most
 
 ### What this repository is
 I wholeheartedly believe in open-sourcing code, so the code for my website is and will always be public. Feel free to fork some of my projects and improve them!
+
+### How to get started (for Ubuntu/Linux Mint)
+
+#### Step 1: Setup repository
+
+Clone the repository from [here][repo url] recursively, e.g.:
+
+<code>git clone https://github.com/The-Ofek-Foundation/theofekfoundation.org.git --recursive</code>
+
+#### Step 2: Install dependencies
+
+1. Python 2.7.*, pip
+2. django (1.10.*), minidetector, and jsonfield with pip
+	<code>
+		sudo pip install django
+		sudo pip install minidetector
+		sudo pip install jsonfield
+	</code>
+
+[repo url]:https://github.com/The-Ofek-Foundation/theofekfoundation.org "github repository"
