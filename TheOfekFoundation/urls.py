@@ -2,23 +2,27 @@ from django.conf.urls import include, url
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404
+from django.db.utils import OperationalError
 
 from django.contrib import admin
 admin.autodiscover()
 
+try:
+	urlpatterns = [
+		# Examples:
+		# url(r'^$', 'TheOfekFoundation.views.home', name='home'),
 
-urlpatterns = [
-	# Examples:
-	# url(r'^$', 'TheOfekFoundation.views.home', name='home'),
-
-	url(r'^account/', include('account.urls')),
-	url(r'^admin/', include(admin.site.urls)),
-	url(r'^blog/', include('blog.urls')),
-	url(r'^games/', include('games.urls')),
-	url(r'^tools/', include('tools.urls')),
-	url(r'^people/', include('people.urls')),
-	url(r'^', include('main_app.urls')),
-]
+		url(r'^account/', include('account.urls')),
+		url(r'^admin/', include(admin.site.urls)),
+		url(r'^blog/', include('blog.urls')),
+		url(r'^games/', include('games.urls')),
+		url(r'^tools/', include('tools.urls')),
+		url(r'^people/', include('people.urls')),
+		url(r'^', include('main_app.urls')),
+	]
+except OperationalError:
+	urlpatterns = []
+	print "Run migrations and populate pages!!!\n"
 
 # if settings.DEBUG:
 # 	urlpatterns += patterns(
