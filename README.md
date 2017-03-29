@@ -42,7 +42,7 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 	cp TheOfekFoundation/barebones_local_settings.py TheOfekFoundation/local_settings.py
 	```
 
-2. **Optional** Override email settings with your own testing email account (only necessary if testing forgot password feature)
+2. **Optional:** Override email settings with your own testing email account (only necessary if testing forgot password feature)
 
 #### And that's it!
 
@@ -52,6 +52,6 @@ Start running with:
 python manage.py runserver
 ```
 
-And view your website live [here](http://127.0.0.1:8000/) or [here](http://localhost:8000/)!
+And view the website live [here](http://127.0.0.1:8000/) or [here](http://localhost:8000/)!
 
 [repo url]:https://github.com/The-Ofek-Foundation/theofekfoundation.org "github repository"
