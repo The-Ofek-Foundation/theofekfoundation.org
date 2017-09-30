@@ -45,3 +45,5 @@ lessc --compress ./static/assets/styles/games/Minesweeper.less ./static/assets/s
 lessc --compress ./static/assets/styles/games/DotsAndBoxes.less ./static/assets/styles/games/DotsAndBoxes.css
 
 lessc --compress ./static/assets/styles/games/Crossroads.less ./static/assets/styles/games/Crossroads.css
+
+lessc --compress ./static/assets/styles/utilstyles.less ./static/assets/styles/utilstyles.css

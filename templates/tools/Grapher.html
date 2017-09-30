@@ -14,8 +14,8 @@
 
 <div id="header">
 	Enter A Function:
-	<input id="expression">
-	<select id="operation">
+	<input name="expression">
+	<select name="operation">
 		<option value="value">Value</option>
 		<option value="derivative">Derivative</option>
 		<option value="graph" selected>Graph</option>
@@ -24,7 +24,7 @@
 		<option value="draw-deriv">Draw Derivative</option>
 		<option value="trace">Trace</option>
 	</select>
-	<button id="btn-eval">Evaluate</button>
+	<button onclick="btnEvalClick();">Evaluate</button>
 	<button id="btn-settings">_</button>
 </div>
 <canvas id="graph"></canvas>

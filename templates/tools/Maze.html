@@ -1,9 +1,10 @@
-{% extends 'main_app/main_app_base.html' %}
+{% extends 'tools/_base.html' %}
 
 {% load staticfiles %}
 
 {% block header_additions %}
 
+{{block.super}}
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/tools/Maze.css" %}">
 
 {% endblock %}
@@ -18,63 +19,91 @@
 {% block body_content %}
 
 <div id="maze-tr-div">
-	<button id="new-game">New Maze</button>
-	<button id="solve-maze">Solve Maze</button>
+	<button id="new-game" onclick="showSettingsForm();">New Maze</button>
+	<button id="solve-maze" onclick="solveMaze();">Solve Maze</button>
 	<button onclick="removeDeadEnds(1);">RDE</button>
 </div>
 <canvas id="maze"></canvas>
 
-<div id="new-game-menu">
-	<h1 style="margin-top: 0px;">New Maze</h1>
-	<form id="form-new-game" action="">
-		Maze width:
-		<input type="number" name="width" min="7" step="4" value="23" required>
-		<br />
-		Maze height:
-		<input type="number" name="height" min="7" step="4" value="23" required>
-		<br />
-		Thin walls?
-		<input type="checkbox" name="thin-maze">
-		<br />
-		Show start and end:
-		<input type="checkbox" name="show-start" checked>
-		<br />
-		Animate generation:
-		<input type="checkbox" name="animate">
-		<br />
-		Approximate animation duration (s):
-		<input type="number" name="duration" min="0" value="30">
-		<br />
-		Maze style:
-		<select name="maze-style" requred>
-			<option value="normal" selected>Normal</option>
-			<option value="vertical">Vertical</option>
-			<option value="horizontal">Horizontal</option>
-			<option value="checkerboard">Checkerboard</option>
-			<option value="inward x">Inward X</option>
-			<option value="square">Square</option>
-			<option value="awkward circle">Awkward Circle</option>
-			<option value="awkward circle square">Awkward Circle Square</option>
-		</select>
-		<br />
-		Style intensity:
-		<input type="range" name="style-intensity" min="5" max="9.7" step="0.1" val="8">
-		<br />
-		Custom resolution (for saving images):
-		<input type="checkbox" name="custom-resolution">
-		<br />
-		Block width in pixels (if custom resolution):
-		<input type="number" name="block-width" min="1" step="1" value="10">
-		<br />
-		<input type="submit" value="Generate Maze">
-		<button id="btn-new-game-cancel">Cancel</button>
-	</form>
+<div id="settings-menu">
+	<h1 style="margin-top: 0px;">Maze Settings</h1>
+	<table id="settings-table">
+		<tr>
+			<td>Maze width:</td>
+			<td><input type="number" name="width" min="7" step="4" value="23"></td>
+		</tr>
+
+		<tr>
+			<td>Maze height:</td>
+			<td><input type="number" name="height" min="7" step="4" value="23"></td>
+		</tr>
+
+		<tr>
+			<td>Thin walls?</td>
+			<td><input type="checkbox" name="thin-maze"></td>
+		</tr>
+
+		<tr>
+			<td>Show start and end:</td>
+			<td><input type="checkbox" name="show-start" checked></td>
+		</tr>
+
+		<tr>
+			<td>Animate generation:</td>
+			<td><input type="checkbox" name="animate"></td>
+		</tr>
+
+		<tr>
+			<td>Approximate animation duration (s):</td>
+			<td><input type="number" name="duration" min="0" value="30"></td>
+		</tr>
+
+		<tr>
+			<td>Maze style:</td>
+			<td>
+				<select name="maze-style">
+					<option value="normal" selected>Normal</option>
+					<option value="vertical">Vertical</option>
+					<option value="horizontal">Horizontal</option>
+					<option value="checkerboard">Checkerboard</option>
+					<option value="inward x">Inward X</option>
+					<option value="square">Square</option>
+					<option value="awkward circle">Awkward Circle</option>
+					<option value="awkward circle square">Awkward Circle Square</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Style intensity:</td>
+			<td><input type="range" name="style-intensity" min="5" max="9.7" step="0.1" val="8"></td>
+		</tr>
+
+		<tr>
+			<td>Custom resolution (for saving images):</td>
+			<td><input type="checkbox" name="custom-resolution"></td>
+		</tr>
+
+		<tr>
+			<td>Block width in pixels (if custom resolution):</td>
+			<td><input type="number" name="block-width" min="1" step="1" value="10"></td>
+		</tr>
+
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		<!--{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}-->
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
 </div>
 
 {% endblock %}
 
 {% block end_block %}
 
+{{block.super}}
 <script type="text/javascript" src="{% static "assets/javascript/tools/Maze/Maze.js" %}"></script>
 
 {% endblock %}

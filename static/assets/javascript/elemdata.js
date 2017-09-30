@@ -208,3 +208,11 @@ function camelToHtml(s){
 function insertAfterElem(newNode, referenceNode) {
 	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
+
+function setElemText(elem, text) {
+	elem.innerHTML = text;
+}
+
+function createElem(tagName) {
+	return document.createElement(tagName);
+}

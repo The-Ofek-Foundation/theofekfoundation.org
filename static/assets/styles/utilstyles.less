@@ -1,0 +1,77 @@
+#settings-menu {
+	position: absolute;
+	visibility: visible;
+	background-color: blue;
+	z-index: -1;
+	width: 80%;
+	left: 5%;
+	height: auto;
+	top: auto;
+	padding: 5%;
+	color: white;
+	-moz-box-shadow: 0 0 50px black;
+	-webkit-box-shadow: 0 0 00px black;
+	box-shadow: 0 0 50px black;
+	border-radius: 15px;
+	text-align: center;
+	font-size: 30px;
+	opacity: 0;
+	transition: opacity 1s;
+
+	&.visible {
+		opacity: 0.9;
+	}
+
+	tbody {
+		display: block;
+		overflow: hidden;
+		max-height: 500px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+#settings-table {
+	text-align: left;
+	margin: auto;
+	display: block;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+
+	tbody {
+		display: block;
+		overflow: auto;
+	}
+
+	td {
+		padding: 0.25em 1em;
+	}
+
+	input, select {
+		padding: 0.25em 1em;
+		font-size: 20px;
+
+		&[type=checkbox] {
+			width: auto;
+			margin-left: 1em;
+		}
+	}
+
+	input {
+		width: 10em;
+	}
+
+	select {
+		width: 12em;
+	}
+}
+
+.submit-buttons-div {
+	input {
+		width: 10em;
+		padding: 0.25em 1em;
+		font-size: 20px;
+		margin: 5px;
+	}
+}

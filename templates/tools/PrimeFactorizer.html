@@ -14,14 +14,14 @@
 
 <h1>Prime Number Factorizer</h1>
 <div id="main-content">
-	<input id="sieve-size" placeholder="enter the max number range"></input>
-	<button id="create-sieve">Create Sieve</button>
+	<input name="sieve-size" placeholder="enter the max number range"></input>
+	<button onclick="generateSieve();">Create Sieve</button>
 	<div id="sieve-generated"></div>
 	<br /><br />
-	<input id="input-number" placeholder="enter your number here"></input>
-	<button id="calculate-btn">Factorize</button>
-	<button id="pdp">PDP</button>
-	<button id="clear">C</button>
+	<input name="input-number" placeholder="enter your number here"></input>
+	<button id="calculate-btn" onclick="calculate();">Factorize</button>
+	<button onclick="pdp();">PDP</button>
+	<button onclick="cc();">C</button>
 	<br />
 	<h3 id="calculation-status">Result:</h3>
 	<div id="calculations-div">???</div>

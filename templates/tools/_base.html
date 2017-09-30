@@ -6,22 +6,15 @@
 
 {{block.super}}
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/utilstyles.css" %}">
-<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/styles.css" %}">
 
 {% endblock %}
 
 {% block end_block %}
 
-<script type="text/javascript" src="{% static "assets/javascript/games/utils.js" %}"></script>
 <script type="text/javascript" src="{% static "assets/javascript/utils.js" %}"></script>
 
-{% if game_settings %}
 <script type="text/javascript">
-	{% autoescape off %}
-	var settings = convertKeysObject({{ game_settings }})
-	gameSettings = new GameSettings(settings.gameName, settings);
-	{% endautoescape %}
+	gameSettings = new GameSettings("Maze", {});
 </script>
-{% endif %}
 
 {% endblock %}
