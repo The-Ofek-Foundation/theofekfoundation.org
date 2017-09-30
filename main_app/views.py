@@ -11,6 +11,12 @@ from datetime import datetime
 main_category = WebsiteCategory.objects.get(name='Homepage')
 main_pages = WebsitePage.objects.filter(category=main_category)
 
+def acme(request):
+	return HttpResponse('8ZLrdj27bGIBNSLdW7mCs0fNGbZ9qF-bHvRjJ_Ay5ag.aWq0Ylc85GVsMsZjvXd-b_RAcMGCNZzYU_MXrzm-Pjw')
+
+def acme2(request):
+	return HttpResponse('pK5vG9S_04uCpmAiuZAe3LrC9Z4uJZDH3A_r_RDCz5c.aWq0Ylc85GVsMsZjvXd-b_RAcMGCNZzYU_MXrzm-Pjw')
+
 # Create your views here.
 def index(request):
 	context = RequestContext(request)
