@@ -27,12 +27,19 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 	git clone https://github.com/The-Ofek-Foundation/theofekfoundation.org.git --recursive
 	```
 
-2. Run migrations and populate pages
+If you forgot to clone recursively, you can pull submodules like so:
 
 	```bash
-	python manage.py migrate
-	python populate_pages.py
+	git submodule init
+	git submodule update --recursive
 	```
+
+2. Run migrations and populate pages
+
+```bash
+python manage.py migrate
+python populate_pages.py
+```
 
 #### Step 3: Setup local settings
 
@@ -50,6 +57,12 @@ Start running with:
 
 ```bash
 python manage.py runserver
+```
+
+Note that if you are testing with DEBUG = False (e.g. when testing out the 404 error page), be sure to run with the --insecure parameter, e.g.:
+
+```bash
+python manage.py runserver --insecure
 ```
 
 And view the website live [here](http://127.0.0.1:8000/) or [here](http://localhost:8000/)!
