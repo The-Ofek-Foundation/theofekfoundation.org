@@ -28,21 +28,13 @@
 		function getElemProperty(e,t,n){return void 0===n&&(n=null),t=camelToHtml(t),parseInt(window.getComputedStyle(e,n).getPropertyValue(t))||0}function getElemPaddingWidth(e){return getElemProperty(e,"padding-left")+getElemProperty(e,"padding-right")}function getElemPaddingHeight(e){return getElemProperty(e,"padding-top")+getElemProperty(e,"padding-bottom")}function getElemBorderWidth(e){return getElemProperty(e,"border-left")+getElemProperty(e,"border-right")}function getElemBorderHeight(e){return getElemProperty(e,"border-top")+getElemProperty(e,"border-bottom")}function getElemWidth(e){return parseInt(getElemData(e,"width"))||getElemProperty(e,"width")+getElemPaddingWidth(e)||e.width||getElemStyle(e,"width")}function getElemHeight(e){return parseInt(getElemData(e,"height"))||getElemProperty(e,"height")+getElemPaddingHeight(e)||e.height||getElemStyle(e,"height")}function getElemStyle(e,t){return e.style[t]||getComputedStyle(e)[t]}function getStyleOperator(e){return-1!==e.indexOf("px")?"px":-1!==e.indexOf("em")?"em":-1!==e.indexOf("pt")?"pt":-1!==e.indexOf("rem")?"rem":void 0}function setElemStyle(e,t,n){if("object"!=typeof t)"+="===(n+="").substring(0,2)?n=getElemProperty(e,t)+parseInt(n.substring(2))+getStyleOperator(n):"-="===n.substring(0,2)&&(n=getElemProperty(e,t)-parseInt(n.substring(2))+getStyleOperator(n)),e.style[t]=n;else for(key in t)setElemStyle(e,key,t[key])}function setElemWidth(e,t){setElemStyle(e,"width",parseInt(t)+"px")}function setElemHeight(e,t){setElemStyle(e,"height",parseInt(t)+"px")}function getWindowWidth(){return window.innerWidth}function getWindowHeight(){return window.innerHeight}function getElemId(e){return document.getElementById(e)}function getElemsQuery(e){return document.querySelectorAll(e)}function getElemQuery(e){return document.querySelector(e)}function getElemsClass(e){return document.getElementsByClassName(e)}function getElemsName(e){return document.getElementsByName(e)}function getElemName(e){return getElemsName(e)[0]}function getElemClass(e){return getElemsClass(e)[0]}function getElemsTagName(e){return document.getElementsByTagName(e)}function getElemTagName(e){return getElemsTagName(e)[0]}function getElemData(e,t){return e.dataset[t]}function setElemData(e,t,n){if("object"==typeof t)for(k in t)setElemData(e,k,t[k]);else e.dataset[t]=n}function addClassElem(e,t){e.classList?e.classList.add(t):e.className+=" "+t}function removeClassElem(e,t){e.classList?e.classList.remove(t):e.className=e.className.replace(new RegExp("(^|\\b)"+t.split(" ").join("|")+"(\\b|$)","gi")," ")}function hasClassElem(e,t){return e.classList?e.classList.contains(t):new RegExp("(^| )"+t+"( |$)","gi").test(e.className)}function setInputValue(e,t){var e=camelToHtml(e);"boolean"==typeof t?getElemName(e).checked=t:getElemName(e).value=t}function getInputValue(e){var t=getElemName(camelToHtml(e));return"checkbox"===t.type?t.checked:"number"===t.type?t.value%1==0?parseInt(t.value):parseFloat(t.value):t.value}function getElemSiblings(e){return Array.prototype.filter.call(e.parentNode.children,function(t){return t!==e})}function centerVertically(e){var t=getElemStyle(e,"position");setElemStyle(e,"absolute"===t||"fixed"===t?"top":"margin-top",Math.floor(getElemHeight(e.parentElement)-getElemHeight(e))/2+"px")}function centerHorizontally(e){var t=getElemStyle(e,"position");setElemStyle(e,"left",(getElemWidth(e.parentElement)-getElemWidth(e))/2+"px")}function centerElem(e){centerVertically(e),centerHorizontally(e)}function camelToHtml(e){return e.replace(/([A-Z])/g,function(e){return"-"+e.toLowerCase()})}function insertAfterElem(e,t){t.parentNode.insertBefore(e,t.nextSibling)}function setElemText(e,t){e.innerHTML=t}function createElem(e){return document.createElement(e)}
 	</script>
 
+	<link href='https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/main_app.css" %}">
 
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 	{% block header_additions %}{% endblock %}
-
-	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
-	<script>
-		WebFont.load({
-			google: {
-				families: ['Old+Standard+TT:400,400italic,700']
-			}
-		});
-	</script>
 {% endblock %}
 
 {% block body_block %}
@@ -100,5 +92,4 @@
 </script>
 
 {% endblock %}
-
 
