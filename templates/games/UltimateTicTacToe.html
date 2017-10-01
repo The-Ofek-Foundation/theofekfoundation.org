@@ -20,6 +20,20 @@
 
 {{block.super}}
 
+<li class="right-float-additions" onclick="undo();">
+	{% if mobile %}
+	U
+	{% else %}
+	Undo
+	{% endif %}
+</li>
+
+{% if not mobile %}
+<li class="right-float-additions" onclick="redo();">
+	Redo
+</li>
+{% endif %}
+
 {% endblock %}
 
 {% block body_content %}
