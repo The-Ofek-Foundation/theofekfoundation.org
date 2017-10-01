@@ -29,17 +29,17 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 
 If you forgot to clone recursively, you can pull submodules like so:
 
-	```bash
-	git submodule init
-	git submodule update --recursive
-	```
+```bash
+git submodule init
+git submodule update --recursive
+```
 
 2. Run migrations and populate pages
 
-```bash
-python manage.py migrate
-python populate_pages.py
-```
+	```bash
+	python manage.py migrate
+	python populate_pages.py
+	```
 
 #### Step 3: Setup local settings
 
