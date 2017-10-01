@@ -10,6 +10,24 @@
 
 {% endblock %}
 
+{% block right_float_additions %}
+<li class="right-float-additions" onclick="newGame();">
+	{% if mobile %}
+	N
+	{% else %}
+	New Game
+	{% endif %}
+</li>
+
+<li class="right-float-additions" onclick="showSettingsForm();">
+	{% if mobile %}
+	S
+	{% else %}
+	Settings
+	{% endif %}
+</li>
+{% endblock %}
+
 {% block end_block %}
 
 <script type="text/javascript" src="{% static "assets/javascript/games/utils.js" %}"></script>

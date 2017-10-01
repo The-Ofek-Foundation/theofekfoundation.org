@@ -12,7 +12,7 @@
 			<h2>{{project.header}}</h2>
 			{% endautoescape %}
 			{% for item in project.list %}
-				{% if item.display_main %}
+				{% if item.display_main %}{% if not mobile or item.mobile_friendly %}
 				<section class="container square">
 					<div class="flippable link" onclick="redirect('{% url item.name %}');">
 						<figure class="front">
@@ -23,7 +23,7 @@
 						</figure>
 					</div>
 				</section>
-				{% endif %}
+				{% endif %}{% endif %}
 			{% endfor %}
 		</div>
 	{% endfor %}

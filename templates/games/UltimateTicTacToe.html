@@ -11,9 +11,15 @@
 {% endblock %}
 
 {% block right_float_additions %}
+
+{% if not mobile %}
 <li>
-	<a disabled style="padding-right: 0.5em;">GUI Help John Ace</a>
+	<a disabled style="padding-right: 3px;">GUI Help John Ace</a>
 </li>
+{% endif %}
+
+{{block.super}}
+
 {% endblock %}
 
 {% block body_content %}
