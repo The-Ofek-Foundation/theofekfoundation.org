@@ -12,10 +12,7 @@ main_category = WebsiteCategory.objects.get(name='Homepage')
 main_pages = WebsitePage.objects.filter(category=main_category)
 
 def acme(request):
-	return HttpResponse('8ZLrdj27bGIBNSLdW7mCs0fNGbZ9qF-bHvRjJ_Ay5ag.aWq0Ylc85GVsMsZjvXd-b_RAcMGCNZzYU_MXrzm-Pjw')
-
-def acme2(request):
-	return HttpResponse('pK5vG9S_04uCpmAiuZAe3LrC9Z4uJZDH3A_r_RDCz5c.aWq0Ylc85GVsMsZjvXd-b_RAcMGCNZzYU_MXrzm-Pjw')
+	return HttpResponse('BecZpEB_hNeWmJUz1TGoLuuRbx32ZW4eN2VBZ62O0w0.o7Eq8EZ0MzrB4ONmd4xCxs5Vua-zJw4i9MKVvrC8R1U')
 
 # Create your views here.
 def index(request):

@@ -1,3 +1,5 @@
+// Minify and put in main_app_base
+
 var contentWrapper;
 
 document.addEventListener("DOMContentLoaded", docReady);

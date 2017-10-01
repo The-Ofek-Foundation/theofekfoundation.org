@@ -1,4 +1,6 @@
-function getElemProperty(elem, property, pseudoSelector=null) {
+function getElemProperty(elem, property, pseudoSelector) {
+	if (pseudoSelector === undefined)
+		pseudoSelector = null;
 	property = camelToHtml(property);
 	return parseInt(
 		window.getComputedStyle(elem, pseudoSelector)
@@ -201,7 +203,7 @@ function centerElem(elem) {
 	centerHorizontally(elem);
 }
 
-function camelToHtml(s){
+function camelToHtml(s) {
 	return s.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
 }
 
