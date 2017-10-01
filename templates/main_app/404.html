@@ -1,24 +1,47 @@
 {% extends 'main_app/main_app_base.html' %}
 
+{% load staticfiles %}
+
 {% block page_description %}
 The Ofek Foundation 404 page
 {% endblock %}
 
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/404.css" %}">
+
+{% endblock %}
+
 {% block body_block %}
-	<div id="dropdown">
-		<h2>You seem to have gotten lost</h2>
-		<h3><a class="animated" href="{% url 'Homepage' %}">Can I help with that?</a></h3>
-	</div>
+
+<div style="position: absolute; display: none;">
+{{block.super}} <!-- Necessary to have this for main app base js -->
+</div>
+
+<div id="dropdown">
+	<h2>You seem to have gotten lost</h2>
+	<h3><a class="animated" href="{% url 'Homepage' %}">Can I help with that?</a></h3>
+</div>
+
 {% endblock %}
 
 {% block end_block %}
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#dropdown').css('left', ($(document).outerWidth(true) - $('#dropdown').outerWidth(false)) / 2 + "px");
-		$('#dropdown').css('top', '-' + $('#dropdown').outerHeight(false) + "px");
-		$('#dropdown').animate({top: ($(document).outerHeight(true) - $('#dropdown').outerHeight(false) * 4) / 2 + "px", opacity: 1}, 2000, function() {
-			$('#dropdown a').animate({'margin-left': "0px", opacity: 1}, 2000);
+	function pageReady() {
+		var dropdownElem = getElemId('dropdown');
+		setElemStyle(dropdownElem, 'left', (getWindowWidth()
+			- getElemWidth(dropdownElem)) / 2 + "px");
+		setElemStyle(dropdownElem, 'top', '-' + getElemHeight(dropdownElem) + "px");
+
+		setElemStyle(dropdownElem, 'top', (getWindowHeight() -
+			getElemHeight(dropdownElem)) / 2 + "px");
+
+		dropdownElem.addEventListener('transitionend', function(e) {
+			setElemStyle(getElemQuery('#dropdown a'), 'margin-left', '0px');
+			setElemStyle(getElemQuery('#dropdown a'), 'opacity', '1');
 		});
-	});
+	}
 </script>
 {% endblock %}

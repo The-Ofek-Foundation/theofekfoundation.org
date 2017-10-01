@@ -47,3 +47,5 @@ lessc --compress ./static/assets/styles/games/DotsAndBoxes.less ./static/assets/
 lessc --compress ./static/assets/styles/games/Crossroads.less ./static/assets/styles/games/Crossroads.css
 
 lessc --compress ./static/assets/styles/utilstyles.less ./static/assets/styles/utilstyles.css
+
+lessc --compress ./static/assets/styles/404.less ./static/assets/styles/404.css
