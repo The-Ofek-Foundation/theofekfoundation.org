@@ -1,136 +1,136 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 	<url>
-		<loc>http://www.theofekfoundation.org/</loc>
+		<loc>https://www.theofekfoundation.org/</loc>
 		<changefreq>daily</changefreq>
 		<priority>1.00</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/people/Edan</loc>
+		<loc>https://www.theofekfoundation.org/people/Edan</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.01</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/people/Ron</loc>
+		<loc>https://www.theofekfoundation.org/people/Ron</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.01</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/account/register/</loc>
+		<loc>https://www.theofekfoundation.org/account/register/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/account/login/</loc>
+		<loc>https://www.theofekfoundation.org/account/login/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/account/ResetPassword/</loc>
+		<loc>https://www.theofekfoundation.org/account/ResetPassword/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.69</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/games/ConnectFour/</loc>
+		<loc>https://www.theofekfoundation.org/games/ConnectFour/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/games/OnlineGo/</loc>
+		<loc>https://www.theofekfoundation.org/games/OnlineGo/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
-		<loc>http://www.theofekfoundation.org/games/Mancala/</loc>
+		<loc>https://www.theofekfoundation.org/games/Mancala/</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/games/UltimateTicTacToe/
+			https://www.theofekfoundation.org/games/UltimateTicTacToe/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/games/LameDuck/
+			https://www.theofekfoundation.org/games/LameDuck/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/games/Minesweeper/
+			https://www.theofekfoundation.org/games/Minesweeper/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/games/DotsAndBoxes/
+			https://www.theofekfoundation.org/games/DotsAndBoxes/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/games/Crossroads/
+			https://www.theofekfoundation.org/games/Crossroads/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/Maze/
+			https://www.theofekfoundation.org/tools/Maze/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/PrimeFactorizer/
+			https://www.theofekfoundation.org/tools/PrimeFactorizer/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/Grapher/
+			https://www.theofekfoundation.org/tools/Grapher/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/HappyNumbers/
+			https://www.theofekfoundation.org/tools/HappyNumbers/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/PasswordGenerator/
+			https://www.theofekfoundation.org/tools/PasswordGenerator/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/ReveresLatsLettesr/
+			https://www.theofekfoundation.org/tools/ReveresLatsLettesr/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/ImageEditor/
+			https://www.theofekfoundation.org/tools/ImageEditor/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
 	</url>
 	<url>
 		<loc>
-			http://www.theofekfoundation.org/tools/DijkstraAlgorithm/
+			https://www.theofekfoundation.org/tools/DijkstraAlgorithm/
 		</loc>
 		<changefreq>daily</changefreq>
 		<priority>0.85</priority>
