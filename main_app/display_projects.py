@@ -39,7 +39,7 @@ games = {
 			'mobile_friendly': True,
 		},	{
 			'name': 'Mancala',
-			'imagesrc': 'mancala.JPG',
+			'imagesrc': 'mancala.jpg',
 			'description': 'My first Monte Carlo tree search AI! The game itself is programmed with a customizable set of rules.',
 			'template': 'games/MancalaDescription.html',
 			'save': True,
