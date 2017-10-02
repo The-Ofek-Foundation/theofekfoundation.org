@@ -35,23 +35,12 @@
 
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
-	<script>
-		WebFont.load({
-			google: {
-				families: ['Old+Standard+TT:400,400italic,700']
-			}
-		});
-	</script>
-
-	<noscript>
-		<link href='https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css'>
-	</noscript>
-
 	{% block header_additions %}{% endblock %}
 {% endblock %}
 
 {% block body_block %}
+
+	<link href='https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css' lazyload>
 
 	<ul class="navbar" id="navbar-top">
 		<li class="link"><a href="{% url 'Homepage' %}">Home</a></li>
