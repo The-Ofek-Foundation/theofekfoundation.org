@@ -15,7 +15,7 @@ def acme(request):
 	return HttpResponse('BecZpEB_hNeWmJUz1TGoLuuRbx32ZW4eN2VBZ62O0w0.o7Eq8EZ0MzrB4ONmd4xCxs5Vua-zJw4i9MKVvrC8R1U')
 
 def robots(request):
-	return HttpResponse(open('templates/main_app/robots.txt').read(), 'text/plain')
+	return render(request, 'main_app/robots.txt', {})
 
 # Create your views here.
 def index(request):
