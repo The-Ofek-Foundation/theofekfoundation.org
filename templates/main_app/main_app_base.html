@@ -35,14 +35,13 @@
 
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-	<script type="text/javascript" async defer>
-		/* First CSS File */
-		var giftofspeed = document.createElement('link');
-		giftofspeed.rel = 'stylesheet';
-		giftofspeed.href = 'https://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700';
-		giftofspeed.type = 'text/css';
-		var godefer = document.getElementsByTagName('link')[0];
-		godefer.parentNode.insertBefore(giftofspeed, godefer);
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+	<script>
+		WebFont.load({
+			google: {
+				families: ['Old+Standard+TT:400,400italic,700']
+			}
+		});
 	</script>
 
 	<noscript>
