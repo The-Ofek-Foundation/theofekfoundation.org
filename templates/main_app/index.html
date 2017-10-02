@@ -5,7 +5,7 @@
 {% block body_content %}
 
 <div class="pseudo-body">
-	<h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here 2.0!</h1>
+	<h1>Heya {% if user.is_authenticated %}{{user.username}}{% else %}peeps{% endif %}, Ofek Gila here!</h1>
 	{% for project in projects %}
 		<div class="projects" id="{{project.id}}">
 		{% autoescape off %}
