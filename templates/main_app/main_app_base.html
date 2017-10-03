@@ -47,6 +47,9 @@
 		{% if not mobile or page.title == "We are Ofek" %}
 		<li class="link"><a href="{% url 'Games' %}">Games</a></li>
 		{% endif %}
+		{% if not mobile %}
+		<li class="link"><a href="{% url 'Tools Home' %}">Tools</a></li>
+		{% endif %}
 		<ul style="float:right; list-style-type:none; padding-left: 0px;">
 			{% block right_float_additions %}{% endblock %}
 			<li style="padding-top: 4px;">

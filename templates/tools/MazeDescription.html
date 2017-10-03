@@ -1,0 +1,29 @@
+<h3>Summary</h3>
+
+<p>Generate mazes using this online maze generation tool, and even see the maze generation process with an animation.</p>
+
+<p>You can save the mazes as png files, and even adjust the resolution.</p>
+
+<p>You can even change the style of the maze, with cool shapes and such.</p>
+
+<h3>Controls</h3>
+
+<p>Press ‘s’ for settings, or ‘n’ for generating a new maze.</p>
+
+<p>The RDE button stands for 'remove dead ends'. This might allow multiple solutions, however.</p>
+
+<h3>History</h3>
+
+<p>Halfway through my first year programming in school, we were just introduced to GUI's (graphical user interfaces). One day in the library, I asked my friend for coding suggestions, and he suggested I make mazes.</p>
+
+<p>That same day in the library, I whipped up a program, but it was terrible&mdash;the 'mazes' looked awful. I would just randomly fill in squares on a grid, checking if a solution existed.</p>
+
+<p>When I got home, I looked up maze generation algorithms, stumbled upon depth-first search, and the next day I made a working maze. Originally this was made in Java, and I even made it so you can play against an AI, who would try running into you. The original code can be found <a href="https://github.com/The-Ofek-Foundation/Maze/tree/gh-pages/src" target="_blank">here</a>.</p>
+
+<p>The next week I also added the animation there, and I thought it was sufficiently cool and informative to publish on Wikipedia, and to this day it can be found on Wikipedia's maze generation algorithm page. I also noticed that the recursive solution I used to solve the maze wasn't on Wikipedia, so I added that section along with a Java code sample in the maze solving algorithms page.</p>
+
+<p>I decided to add it to my website because it was a cool addition, and it is written in a much cleaner manor in javascript than it was originally in Java.</p>
+
+<h3>Technical Stuff</h3>
+
+<p>The mazes are generated using a depth-first maze generation algorithm. Styles are made by affecting the probability that maze segments will turn in specific directions in the generation.</p>

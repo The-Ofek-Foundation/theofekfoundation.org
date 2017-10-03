@@ -151,6 +151,15 @@ def populate():
 
 	add_page(
 		category = category,
+		full_url = 'https://www.theofekfoundation.org/tools/',
+		pathname = 'tools/',
+		full_description = "Use tools on TheOfekFoundation! Some have cool settings and fun stuff.",
+		description = "Use tools on TheOfekFoundation!",
+		title = 'We Play',
+		name = 'Tools Home',
+	)
+	add_page(
+		category = category,
 		full_url = 'https://www.theofekfoundation.org/tools/Maze/',
 		pathname = 'tools/Maze',
 		full_description = "Generate a Maze online!",

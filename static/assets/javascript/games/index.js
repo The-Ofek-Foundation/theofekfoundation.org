@@ -6,9 +6,13 @@ var lastAnimationTime = new Date().getTime() / 1e3 + 1;
 var mainDescElem = getElemId('main-desc');
 
 var headerHeight = getElemHeight(headers[0]) + getElemBorderHeight(headers[0]);
-var checkmarkExtendable = getElemWidth(getElemClass('checkmark'))
-	+ getElemWidth(getElemClass('extendable'))
-	+ parseInt(getElemStyle(getElemClass('checkmark'), 'margin-left'));
+
+var tools = getElemClass('checkmark') === undefined;
+
+if (!tools)
+	var checkmarkExtendable = getElemWidth(getElemClass('checkmark'))
+		+ getElemWidth(getElemClass('extendable'))
+		+ parseInt(getElemStyle(getElemClass('checkmark'), 'margin-left'));
 
 function pageReady() {
 	onResize();
@@ -29,7 +33,7 @@ function onResize() {
 		setElemWidth(elem, collapsibleChildrenWidth);
 	}
 
-	var headerTitleWidth = collapsibleChildrenWidth - checkmarkExtendable -
+	var headerTitleWidth = collapsibleChildrenWidth - (tools ? 0:checkmarkExtendable) -
 		getElemBorderWidth(headers[1]);
 
 	for (var i = 1; i < headers.length; i++)

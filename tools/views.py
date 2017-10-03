@@ -1,8 +1,16 @@
 from django.shortcuts import render
 from main_app.models import WebsiteCategory, WebsitePage
+from main_app import display_projects
 
 main_category = WebsiteCategory.objects.get(name='Tools')
 main_pages = WebsitePage.objects.filter(category=main_category)
+
+def index(request):
+	context_dict = {
+		'page': main_pages.get(name='Tools Home'),
+		'tools': display_projects.tools,
+	}
+	return render(request, 'tools/index.html', context_dict)
 
 def maze(request):
 	context_dict = {'page': main_pages.get(name='Maze Generator')}

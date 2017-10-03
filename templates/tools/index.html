@@ -1,0 +1,62 @@
+{% extends 'tools/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/index.css" %}">
+
+{% if mobile %}
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/mobileindex.css" %}">
+{% endif %}
+
+{% endblock %}
+
+{% block right_float_additions %}{% endblock %}
+
+{% block body_content %}
+
+<ul class="collapsible-list">
+
+	<li id="main-desc">
+
+		<h1>Tools</h1>
+
+		<p>Here are all my tools, most with advanced AI opponents (bots) built in!</p>
+
+		<!--<p>Tools with a check mark (<img class="checkmark" src="{% static "images/games/checkmark.png" %}" title="Save game settings feature" style="margin-left: 4px;">) have a setting menu (accessible via 's' click) that allow you to save your settings. These settings will be remembered whenever you log in again, even if you log in on mobile devices.</p>-->
+
+
+		<p>If you have any questions about how any of my tools were made, you can always find them on <a href="https://github.com/The-Ofek-Foundation" target="_blank">GitHub</a>, or just <a href="mailto:ofek@theofekfoundation.org" target="_top">email me</a> directly.</p>
+
+	</li>
+
+	{% for tool in tools.list reversed %}
+
+	<li class="header">
+		<div><a href="{% url tool.name %}">{{tool.name}}</a></div>
+		<div class="extendable">{% if not mobile %}Expand{% endif %}</div>
+	</li>
+
+	<li class="description">
+		{% include tool.template %}
+	</li>
+
+	{% endfor %}
+
+	<li id="hidden-top"></li>
+
+</ul>
+
+<br />
+
+{% endblock %}
+
+{% block end_block %}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/index.js" %}"></script>
+
+{% endblock %}
+

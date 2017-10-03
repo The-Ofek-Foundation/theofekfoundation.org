@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from tools import views
 
 urlpatterns = [
+	url(r'^$', views.index, name="Tools Home"),
 	url(r'^Maze/$', views.maze, name="Maze Generator"),
 	url(r'^PrimeFactorizer/$', views.primefactorizer, name="Prime Factorizer"),
 	url(r'^Grapher/$', views.grapher, name="Grapher"),
