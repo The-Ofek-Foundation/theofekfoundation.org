@@ -155,7 +155,7 @@ def populate():
 		pathname = 'tools/',
 		full_description = "Use tools on TheOfekFoundation! Some have cool settings and fun stuff.",
 		description = "Use tools on TheOfekFoundation!",
-		title = 'We Play',
+		title = 'We Do',
 		name = 'Tools Home',
 	)
 	add_page(
