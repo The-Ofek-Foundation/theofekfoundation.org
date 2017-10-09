@@ -111,96 +111,6 @@ body {
 	font-weight: bold;
 }
 
-.projects {
-	border-radius: 30px;
-	border: 3px solid black;
-	margin: auto;
-	margin-top: 0px;
-	perspective: 800px;
-	text-align: center;
-	width: 80%;
-	margin-bottom: 60px;
-
-	&#games {
-		background-color: #FF7216;
-
-		.back {
-			background-color: #666AA2;
-		}
-	}
-
-	&#tools {
-		background-color: #00FF00;
-
-		.back {
-			background-color: #00A299;
-		}
-	}
-
-	.flippable {
-		height: 100%;
-		position: absolute;
-		transform-origin: right center;
-		transform-style: preserve-3d;
-		transition: transform 1s;
-		width: 100%;
-
-		figure {
-			backface-visibility: hidden;
-			display: block;
-			height: 100%;
-			margin: 0;
-			position: absolute;
-			width: 100%;
-		}
-
-		img {
-			border-radius: 15px;
-			height: 100%;
-			margin: 0px;
-			width: 100%;
-		}
-
-		.back {
-			// background-color: rgba(0, 100, 255, 0.6);
-			border-radius: 15px;
-			font-size: 1.6em;
-			transform: rotateY(180deg);
-		}
-
-		div {
-			padding-left: 25px;
-			padding-right: 25px;
-		}
-	}
-
-	.flippable.flipped {
-		transform: translateX(-100%) rotateY(-180deg);
-	}
-}
-.info {
-	border-radius: 30px;
-	border: 3px solid black;
-	margin-bottom: 60px;
-	margin: auto;
-	padding-bottom: 40px;
-	text-align: center;
-	width: 80%;
-
-	img {
-		width: 70%;
-	}
-}
-.container {
-	display: inline-block;
-	height: 50px;
-	margin: 40px;
-	perspective: 800px;
-	position: relative;
-	width: 30%;
-	min-width: 200px;
-}
-
 .link {
 	cursor: pointer;
 }
@@ -221,25 +131,6 @@ body {
 
 #content-wrapper h2 a.animated {
 	font-weight: bold;
-}
-
-.footer {
-	background-color: yellow;
-	border-top: 1px solid black;
-	bottom: 0px;
-	font-weight: 700;
-	height: auto;
-	left: 0px;
-	padding: 5px 30px 2px 30px;
-	position: fixed;
-	width: 100%;
-	z-index: 10;
-	a {
-		border-radius: 5px;
-		border: 1px solid;
-		padding-bottom: 1px;
-		padding: 0px 5px;
-	}
 }
 
 .social {

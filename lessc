@@ -1,5 +1,7 @@
 lessc --compress ./static/assets/styles/main_app.less ./static/assets/styles/main_app.css
 
+lessc --compress ./static/assets/styles/index.less ./static/assets/styles/index.css
+
 lessc --compress ./static/assets/styles/account/account_form_base.less ./static/assets/styles/account/account_form_base.css
 
 lessc --compress ./static/assets/styles/account/reset_password.less ./static/assets/styles/account/reset_password.css

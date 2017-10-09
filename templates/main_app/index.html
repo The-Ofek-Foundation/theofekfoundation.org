@@ -2,6 +2,12 @@
 
 {% load staticfiles %}
 
+{% block inline_css %}
+<style type="text/css">
+	.projects{border-radius:30px;border:3px solid #000;margin:auto;margin-top:0;perspective:800px;text-align:center;width:80%;margin-bottom:60px}.projects#games{background-color:#add8e6}.projects#games .back{background-color:#50da67}.projects#tools{background-color:#0f0}.projects#tools .back{background-color:#00a299}.projects .flippable{height:100%;position:absolute;transform-origin:right center;transform-style:preserve-3d;transition:transform 1s;width:100%}.projects .flippable figure{backface-visibility:hidden;display:block;height:100%;margin:0;position:absolute;width:100%}.projects .flippable img{border-radius:15px;height:100%;margin:0;width:100%}.projects .flippable .back{border-radius:15px;border:2px solid #000;font-size:1.6em;transform:rotateY(180deg)}.projects .flippable div{padding-left:25px;padding-right:25px}.projects .flippable.flipped{transform:translateX(-100%) rotateY(-180deg)}.info{border-radius:30px;border:3px solid #000;margin-bottom:60px;margin:auto;padding-bottom:40px;text-align:center;width:80%}.info img{width:70%}.container{display:inline-block;height:50px;margin:40px;perspective:800px;position:relative;width:30%;min-width:200px}.footer{background-color:#ff0;border-top:1px solid #000;bottom:0;font-weight:700;height:auto;left:0;padding:5px 30px 2px 30px;position:fixed;width:100%;z-index:10}.footer a{border-radius:5px;border:1px solid;padding-bottom:1px;padding:0 5px}
+</style>
+{% endblock %}
+
 {% block body_content %}
 
 <div class="pseudo-body">
