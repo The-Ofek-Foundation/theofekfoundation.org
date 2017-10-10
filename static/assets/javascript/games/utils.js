@@ -17,3 +17,14 @@ function arraysEqual(array1, array2) {
 
 	return true;
 }
+
+function arrayCopy(arr) {
+	var tarr = new Array(arr.length);
+
+	for (var i = 0; i < tarr.length; i++)
+		if (Array.isArray(arr[i]))
+			tarr[i] = arrayCopy(arr[i]);
+		else tarr[i] = arr[i];
+
+	return tarr;
+}
