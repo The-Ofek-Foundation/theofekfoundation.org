@@ -14,6 +14,7 @@ urlpatterns = [
 	url(r'^Minesweeper/', views.minesweeper, name="Minesweeper"),
 	url(r'^DotsAndBoxes/', views.dotsandboxes, name="Dots and Boxes"),
 	url(r'^Crossroads/', views.crossroads, name=u"מפגשים צולבים"),
+	url(r'^Othello/', views.othello, name=u"Othello"),
 	url(r'^api/save_settings/', views.save_settings, name="save_settings"),
 	url(r'^', include('main_app.misurls')),
 ]

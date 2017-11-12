@@ -146,6 +146,15 @@ def populate():
 		title = 'מפגשים צולבים',
 		name = 'מפגשים צולבים',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/Othello/',
+		pathname = 'games/Othello/',
+		full_description= "Play Othello (Reversi) online against an AI!",
+		description = "Play Othello online!",
+		title = 'We Flip',
+		name = 'Othello',
+	)
 
 	category = add_category('Tools')
 

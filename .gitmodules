@@ -52,3 +52,6 @@
 [submodule "static/assets/javascript/games/Crossroads"]
 	path = static/assets/javascript/games/Crossroads
 	url = git@github.com:The-Ofek-Foundation/Crossroads.git
+[submodule "static/assets/javascript/games/Othello"]
+	path = static/assets/javascript/games/Othello
+	url = git@github.com:The-Ofek-Foundation/Othello.git

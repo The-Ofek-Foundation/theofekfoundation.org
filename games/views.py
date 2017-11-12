@@ -68,6 +68,11 @@ def crossroads(request):
 	_get_game_settings(request, 'מפגשים צולבים', context_dict)
 	return render(request, 'games/Crossroads.html', context_dict)
 
+def othello(request):
+	context_dict = {'page': main_pages.get(name='Othello')}
+	_get_game_settings(request, 'Othello', context_dict)
+	return render(request, 'games/Othello.html', context_dict)
+
 @login_required
 def save_settings(request):
 	settings = json.loads(request.body)

@@ -1,0 +1,70 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/Othello.css" %}">
+
+{% endblock %}
+
+{% block right_float_additions %}
+
+{{block.super}}
+
+<li class="right-float-additions" onclick="undo();">
+	{% if mobile %}
+	U
+	{% else %}
+	Undo
+	{% endif %}
+</li>
+
+{% if not mobile %}
+<li class="right-float-additions" onclick="redo();">
+	Redo
+</li>
+{% endif %}
+
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+<div id="footer">
+	<div id="anal">Analysis:</div>
+	<div id="num-trials">Trials:</div>
+</div>
+
+<div id="settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table id="settings-table">
+		<tr>
+			<td>Board Width:</td>
+			<td><input type="number" name="d-width" min="4" step="2" value="8" required></td>
+		</tr>
+
+		<tr>
+			<td>Board Height:</td>
+			<td><input type="number" name="d-height" min="4" step="2" value="8" required></td>
+		</tr>
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Othello/script.js" %}"></script>
+
+{% endblock %}

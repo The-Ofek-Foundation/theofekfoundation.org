@@ -18,6 +18,8 @@ lessc --compress ./static/assets/styles/games/Mancala.less ./static/assets/style
 
 lessc --compress ./static/assets/styles/games/UltimateTicTacToe.less ./static/assets/styles/games/UltimateTicTacToe.css
 
+lessc --compress ./static/assets/styles/games/Othello.less ./static/assets/styles/games/Othello.css
+
 lessc --compress ./static/assets/styles/games/LameDuck.less ./static/assets/styles/games/LameDuck.css
 
 lessc --compress ./static/assets/styles/tools/Maze.less ./static/assets/styles/tools/Maze.css
