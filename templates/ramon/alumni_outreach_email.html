@@ -1,3 +1,4 @@
+{% autoescape off %}
 Tags you can use (feel free to change their names if others make more sense):
 
 Alumnus name: {{ alumnus.full_name }}, {{ alumnus.first_name }} {{ alumnus.last_name }}
@@ -11,4 +12,7 @@ Alumnus linkedin: {{alumnus.linkedin_url}}
 Image URL (if we end up using this): {{ img_url }}
 Link to Google Sheet: {{ google_sheet_database_url }}
 
-Anything else I can provide {{ something else }}
+<img src="{{ img_url }}" />
+
+Anything else I can provide
+{% endautoescape %}
