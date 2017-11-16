@@ -18,6 +18,7 @@ try:
 		url(r'^games/', include('games.urls')),
 		url(r'^tools/', include('tools.urls')),
 		url(r'^people/', include('people.urls')),
+		url(r'^ramon/', include('ramon.urls')),
 		url(r'^', include('main_app.urls')),
 	]
 except OperationalError:

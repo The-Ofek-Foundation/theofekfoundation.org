@@ -5,9 +5,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.mail import send_mail
 
-def alumni_image(request):
-	image_data = open("/path/to/my/image.png", "rb").read()
-	return HttpResponse(image_data, mimetype="image/png")
+def alumni_image(request, alumnus_id):
+	print(alumnus_id)
+	image_data = open("static/images/ramon/verified_email_thanks.png", "rb").read()
+	return HttpResponse(image_data, content_type="image/png")
 
 def send_alumni_outreach_email(self, request, alumnus):
 	c = {
