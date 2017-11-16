@@ -1,0 +1,14 @@
+Tags you can use (feel free to change their names if others make more sense):
+
+Alumnus name: {{ alumnus.full_name }}, {{ alumnus.first_name }} {{ alumnus.last_name }}
+Alumnus email address: {{ alumnus.email_address }}
+Alumnus grad year (guess): {{ alumnus.grad_year }} (could be empty, you can do):
+	{% if alumnus.grad_year %}Something{% else %}Something Else{% endif %}
+Alumnus facebook: {{alumnus.facebook_url}}
+Alumnus linkedin: {{alumnus.linkedin_url}}
+
+
+Image URL (if we end up using this): {{ img_url }}
+Link to Google Sheet: {{ google_sheet_database_url }}
+
+Anything else I can provide {{ something else }}
