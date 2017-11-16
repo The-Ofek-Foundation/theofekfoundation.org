@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from django.conf import settings
 
 def alumni_image(request, alumnus_id):
 	print(alumnus_id)
-	image_data = open("static/images/ramon/verified_email_thanks.png", "rb").read()
+	image_url = os.path.join(settings.STATIC_PATH, "images/ramon/verified_email_thanks.png")
+	print(image_url)
+	image_data = open(image_url, "rb").read()
 	return HttpResponse(image_data, content_type="image/png")
 
 def send_alumni_outreach_email(self, request, alumnus):
