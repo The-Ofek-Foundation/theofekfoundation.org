@@ -1,18 +1,29 @@
 {% autoescape off %}
-Tags you can use (feel free to change their names if others make more sense):
 
-Alumnus name: {{ alumnus.full_name }}, {{ alumnus.first_name }} {{ alumnus.last_name }}
-Alumnus email address: {{ alumnus.email_address }}
-Alumnus grad year (guess): {{ alumnus.grad_year }} (could be empty, you can do):
-	{% if alumnus.grad_year %}Something{% else %}Something Else{% endif %}
-Alumnus facebook: {{alumnus.facebook_url}}
-Alumnus linkedin: {{alumnus.linkedin_url}}
+Hey {{ alumnus.full_name }}, this is Ofek Gila, a recent Alumnus of Ramon AZA #195
 
+<br /><br />
 
-Image URL (if we end up using this): {{ img_url }}
-Link to Google Sheet: {{ google_sheet_database_url }}
+First of all, I want to invite you to this year's Turkey Bowl, hosted next week on Thursday (November 23rd), at Joaquin Miller Middle school. Hope to see you there!
 
-<img src="{{ img_url }}" />
+<br /><br />
 
-Anything else I can provide
+On another note, a couple of Seuss and Ramon Alumni have been working on making a database of our Alumni, and we'd love it if you could take a few minutes and update your information, or maybe even add missing people, contact info for people you know, etc.—anything would be much appreciated. This would make it easier for Ramon to contact us for future events/reunions.
+
+<br /><br />
+
+You can find the database here: <a href="{{ google_sheet_database_url}}" target="_blank">{{ google_sheet_database_url }}</a>
+
+<br /><br />
+
+Also, in order to verify that your email address is still active, please go to the following url: <a href="{{ img_url }}" target="_blank">{{ img_url }}</a>
+
+<img src="{{ img_url }}">
+
+<br /><br />
+
+---
+Ofek Gila,
+Alumnus of Ramon AZA #195
+
 {% endautoescape %}
