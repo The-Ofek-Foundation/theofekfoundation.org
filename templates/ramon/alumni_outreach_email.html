@@ -1,29 +1,19 @@
 {% autoescape off %}
 
-Hey {{ alumnus.full_name }}, this is Ofek Gila, a recent Alumnus of Ramon AZA #195
+Hey {{ alumnus.first_name }}, <br />
+I'm Ofek Gila, a recent alumnus of Seuss/Ramon AZA #195.
+<br />
+The Annual Turkey Bowl Reunion is next week, Thursday November 23rd at Joaguin Miller Middle School in Cupertino. Come destroy MoAd and shmooze with other alumni.
 
 <br /><br />
 
-First of all, I want to invite you to this year's Turkey Bowl, hosted next week on Thursday (November 23rd), at Joaquin Miller Middle school. Hope to see you there!
-
+We're also updating the <a href="{{ google_sheet_database_url}}" target="_blank">Seuss/Ramon Alumni Directory</a>. Please help update your class' contact info. Also please open <a href="{{ img_url }}" target="_blank"> this link</a> to verify your email address is updated.<br />
+The chapter's 60 Alephs strong and the current Grand Aleph Godol is Ron Hasson, a Ramonian class of 2017.
 <br /><br />
-
-On another note, a couple of Seuss and Ramon Alumni have been working on making a database of our Alumni, and we'd love it if you could take a few minutes and update your information, or maybe even add missing people, contact info for people you know, etc.—anything would be much appreciated. This would make it easier for Ramon to contact us for future events/reunions.
-
-<br /><br />
-
-You can find the database here: <a href="{{ google_sheet_database_url}}" target="_blank">{{ google_sheet_database_url }}</a>
-
-<br /><br />
-
-Also, in order to verify that your email address is still active, please go to the following url: <a href="{{ img_url }}" target="_blank">{{ img_url }}</a>
+Thank you and FratSub, <br />
+Ofek Gila, <br />
+Alumnus of Seuss/Ramon AZA #195
 
 <img src="{{ img_url }}">
-
-<br /><br />
-
----
-Ofek Gila,
-Alumnus of Ramon AZA #195
 
 {% endautoescape %}
