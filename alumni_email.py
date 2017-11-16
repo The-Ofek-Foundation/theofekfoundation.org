@@ -24,7 +24,7 @@ def _send_alumnus_email(alumnus):
 		'google_sheet_database_url': 'https://docs.google.com/spreadsheets/d/11Df18jSmnk1UvexOyiYsrTbViel9mYAck9MPUVFN2OU/edit?usp=sharing',
 	}
 	email_template_name = 'ramon/alumni_outreach_email.html'
-	subject = 'Seuss/Ramon AZA Alumni Turkey Bowl 2017 + Other Updates!'
+	subject = 'Alumni Turkey Bowl XXVIII + Other Updates!'
 	html_content = render_to_string(email_template_name, c)
 	text_content = strip_tags(html_content)
 	email = EmailMultiAlternatives(subject, text_content,
