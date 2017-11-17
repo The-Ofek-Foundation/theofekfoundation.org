@@ -127,8 +127,9 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/account/login/'
 
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'theofekfoundation@gmail.com'
-SERVER_EMAIL = 'theofekfoundation@gmail.com'
+DEFAULT_FROM_EMAIL = 'The Ofek Foundation <theofekfoundation@gmail.com>'
+RAMON_FROM_EMAIL = 'Seuss/Ramon AZA #195 Alumni Committee <theofekfoundation@gmail.com>'
+SERVER_EMAIL = 'The Ofek Foundation <theofekfoundation@gmail.com>'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'theofekfoundation@gmail.com'

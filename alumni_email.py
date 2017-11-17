@@ -11,8 +11,8 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 def _send_alumni_emails():
-	for alumnus in Alumnus.objects.filter(email_sent=False):
-		if alumnus.full_name == 'Idan Hovav':
+	for alumnus in Alumnus.objects.filter(email_sent=True):
+		if alumnus.full_name == 'Idan Hovav' or alumnus.full_name == 'Ofek Gila':
 			_send_alumnus_email(alumnus)
 
 def _send_alumnus_email(alumnus):
@@ -28,7 +28,7 @@ def _send_alumnus_email(alumnus):
 	html_content = render_to_string(email_template_name, c)
 	text_content = strip_tags(html_content)
 	email = EmailMultiAlternatives(subject, text_content,
-		settings.DEFAULT_FROM_EMAIL, [alumnus.email_address])
+		settings.RAMON_FROM_EMAIL, [alumnus.email_address])
 	email.attach_alternative(html_content, 'text/html')
 	email.send()
 	setattr(alumnus, 'email_sent', True)
