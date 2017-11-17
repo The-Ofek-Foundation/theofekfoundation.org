@@ -10,6 +10,8 @@ def _add_alumni():
 	for alumnus in alumni:
 		if alumnus['email_address']:
 			alumnus['full_name'] = alumnus['first_name'] + ' ' + alumnus['last_name']
+			if not type(alumnus['grad_year']) == 'int':
+				alumnus['grad_year'] = -1
 			_add_alumnus(**alumnus)
 
 def _update_object(obj, **kwargs):
