@@ -12,7 +12,7 @@ main_category = WebsiteCategory.objects.get(name='Homepage')
 main_pages = WebsitePage.objects.filter(category=main_category)
 
 def acme(request):
-	return HttpResponse('BecZpEB_hNeWmJUz1TGoLuuRbx32ZW4eN2VBZ62O0w0.o7Eq8EZ0MzrB4ONmd4xCxs5Vua-zJw4i9MKVvrC8R1U')
+	return HttpResponse('T4ffWtt5NuIltIwSIYVzGquKpWy8n7az1HcrDbrC26A.Hh8A_wy1XgD-qz0mj4c1b1Se-8KSezBGVp63Fwgq9vk')
 
 def robots(request):
 	return render(request, 'main_app/robots.txt', {})
