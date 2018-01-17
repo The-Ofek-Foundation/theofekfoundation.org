@@ -72,6 +72,11 @@ function setElemStyle(elem, prop, value) {
 	elem.style[prop] = value;
 }
 
+function setElemStyles(elem, styles) {
+	for (let prop in styles)
+		setElemStyle(elem, prop, styles[prop]);
+}
+
 function setElemWidth(elem, px) {
 	setElemStyle(elem, 'width', parseInt(px) + 'px');
 }
@@ -88,40 +93,40 @@ function getWindowHeight() {
 	return window.innerHeight;
 }
 
-function getElemId(id) {
-	return document.getElementById(id);
+function getElemId(id, parentElem=document) {
+	return parentElem.getElementById(id);
 }
 
-function getElemsQuery(query) {
-	return document.querySelectorAll(query);
+function getElemsQuery(query, parentElem=document) {
+	return parentElem.querySelectorAll(query);
 }
 
-function getElemQuery(query) {
-	return document.querySelector(query);
+function getElemQuery(query, parentElem=document) {
+	return parentElem.querySelector(query);
 }
 
-function getElemsClass(className) {
-	return document.getElementsByClassName(className);
+function getElemsClass(className, parentElem=document) {
+	return parentElem.getElementsByClassName(className);
 }
 
-function getElemsName(name) {
-	return document.getElementsByName(name);
+function getElemsName(name, parentElem=document) {
+	return parentElem.getElementsByName(name);
 }
 
-function getElemName(name) {
-	return getElemsName(name)[0];
+function getElemName(name, parentElem=document) {
+	return getElemsName(name, parentElem)[0];
 }
 
-function getElemClass(className) {
-	return getElemsClass(className)[0];
+function getElemClass(className, parentElem=document) {
+	return getElemsClass(className, parentElem)[0];
 }
 
-function getElemsTagName(tagName) {
-	return document.getElementsByTagName(tagName);
+function getElemsTagName(tagName, parentElem=document) {
+	return parentElem.getElementsByTagName(tagName);
 }
 
-function getElemTagName(tagName) {
-	return getElemsTagName(tagName)[0];
+function getElemTagName(tagName, parentElem=document) {
+	return getElemsTagName(tagName, parentElem)[0];
 }
 
 function getElemData(elem, key) {
@@ -215,6 +220,6 @@ function setElemText(elem, text) {
 	elem.innerHTML = text;
 }
 
-function createElem(tagName) {
-	return document.createElement(tagName);
+function createElem(tagName, parentElem=document) {
+	return parentElem.createElement(tagName);
 }

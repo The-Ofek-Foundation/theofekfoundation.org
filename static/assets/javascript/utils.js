@@ -146,15 +146,16 @@ function showSettingsForm() {
 }
 
 function hideSettingsForm(callback) {
+	let settingsMenu = getElemId('settings-menu');
 	settingsVisible = false;
 	callback = callback || function () {
-		if (!hasClassElem(getElemId('settings-menu'), 'visible'))
-			setElemStyle(getElemId('settings-menu'), 'z-index', -1);
-		getElemId('settings-menu').removeEventListener('webkitTransitionEnd', callback);
+		if (!hasClassElem(settingsMenu, 'visible'))
+			setElemStyle(settingsMenu, 'z-index', -1);
+		settingsMenu.removeEventListener('webkitTransitionEnd', callback);
 	};
-	getElemId('settings-menu').addEventListener('webkitTransitionEnd', callback);
-	removeClassElem(getElemId('settings-menu'), 'visible');
-	getElemId('settings-menu').addEventListener('webkitTransitionStart', callback);
+	settingsMenu.addEventListener('webkitTransitionEnd', callback);
+	removeClassElem(settingsMenu, 'visible');
+	settingsMenu.addEventListener('webkitTransitionStart', callback);
 }
 
 if (getElemId('done'))

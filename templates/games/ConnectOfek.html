@@ -74,6 +74,14 @@
 		</tr>
 
 		<tr>
+			<td style="cursor: pointer;" title="click for info" onclick="showMlInfoModal();">ML File (Optional):</td>
+			<td>
+				<label for="ml-file">Select ml file</label>
+				<input type="file" id="ml-file" name="ml-file" accept=".c4states" onchange="handleFileSelect();" />
+			</td>
+		</tr>
+
+		<tr>
 			<td>Ponder?</td>
 			<td><input type="checkbox" id="ai-ponder" name="ai-ponder" checked></td>
 		</tr>
@@ -122,6 +130,8 @@
 {% block end_block %}
 {{ block.super }}
 
+<script type="text/javascript" src="{% static "assets/javascript/games/ConnectOfekAI/ml.js" %}"></script>
+<script type="text/javascript" src="{% static "assets/javascript/games/ConnectOfekAI/mlreader.js" %}"></script>
 <script type="text/javascript" src="{% static "assets/javascript/games/ConnectOfekAI/script.js" %}"></script>
 
 {% endblock %}
