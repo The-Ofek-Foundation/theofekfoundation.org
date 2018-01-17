@@ -65,6 +65,23 @@ Note that if you are testing with DEBUG = False (e.g. when testing out the 404 e
 python manage.py runserver --insecure
 ```
 
+If you want to edit stylesheets, be sure to edit the **.less** files and not the **.css** files. LESS files compile into CSS. The syntax is pretty similar, but a bit more intuitive in my opinion. In order to compile the LESS files, install *lessc* using:
+
+```bash
+sudo apt-get install node-less
+```
+
+and then run:
+
+```bash
+bash lessc
+# or ./lessc
+```
+
+Also if you add a new LESS file, be sure to update it in the lessc file by mimicking the other lines.
+
+
+
 And view the website live [here](http://127.0.0.1:8000/) or [here](http://localhost:8000/)!
 
 [repo url]:https://github.com/The-Ofek-Foundation/theofekfoundation.org "github repository"
