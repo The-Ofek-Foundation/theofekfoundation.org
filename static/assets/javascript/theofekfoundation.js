@@ -1,9 +1,13 @@
 // Minify and put in main_app_base
 
 var contentWrapper;
+var windowHeight, navbarTopHeight;
 
 document.addEventListener("DOMContentLoaded", docReady);
 function docReady() {
+	windowHeight = getWindowHeight();
+	navbarTopHeight = getElemHeight(getElemId('navbar-top'));
+
 	if (getElemHeight(getElemClass('link')) !== getElemHeight(getElemId('navbar-top')))
 		setElemStyle(getElemId('navbar-top'), 'height',
 			getElemHeight(getElemClass('link')) + "px");
@@ -29,14 +33,16 @@ function docReady() {
 };
 
 window.addEventListener('resize', function () {
+	windowHeight = getWindowHeight();
+	navbarTopHeight = getElemHeight(getElemId('navbar-top'));
+
 	resizeContentWrapper();
+
 	if (typeof onResize === 'function')
 		onResize();
 });
 
 function resizeContentWrapper() {
-	var windowHeight = getWindowHeight(),
-	    navbarTopHeight = getElemHeight(getElemId('navbar-top'));
 	setElemStyle(contentWrapper, 'top', navbarTopHeight);
 	setElemHeight(contentWrapper, windowHeight - navbarTopHeight - 1);
 }
@@ -53,8 +59,8 @@ var pageReady = null;
 function fitParent() {
 	var fp = getElemsClass("fit-parent");
 	for (var i = 0, elem = fp[i]; i < fp.length; i++, elem = fp[i]) {
-		var parentHeight = getElemHeight(elem.parentElement);
-		var parentWidth = getElemWidth(elem.parentElement);
+		var parentHeight = getElemHeight(elem.parentElement),
+		    parentWidth = getElemWidth(elem.parentElement);
 		while (getElemHeight(elem) > parentHeight || getElemWidth(elem) > parentWidth)
 			setElemStyle(elem, 'fontSize',
 				getElemProperty(elem, 'fontSize') - 1 + "px");
@@ -241,11 +247,21 @@ function showInfoModal(headerText, ...bodyLines) {
 }
 
 function showModal(modalElem, headerText, headerStyles, bodyText, bodyStyles) {
-	setElemStyles(getElemClass('modal-header', modalElem), headerStyles);
-	setElemStyles(getElemClass('modal-body', modalElem), bodyStyles);
+	var modalHeader = getElemClass('modal-header', modalElem),
+	    modalBody = getElemClass('modal-body', modalElem);
+
+	var maxBodyHeight = windowHeight - getElemHeight(modalHeader) -
+		2 * getElemClass('modal-content').offsetTop + "px";
+
+	setElemStyle(modalBody, 'max-height', maxBodyHeight)
+
+	setElemStyles(modalHeader, headerStyles);
+	setElemStyles(modalBody, bodyStyles);
 
 	setElemText(getElemClass('modal-header-text', modalElem), headerText);
 	setElemText(getElemClass('modal-body-text', modalElem), bodyText);
+
+
 
 	addClassElem(mainModal, 'visible');
 }
@@ -254,7 +270,7 @@ function closeModal(modalElem) {
 	removeClassElem(modalElem, 'visible');
 }
 
-window.onclick = function(event) {
+function onMainModalClick(event) {
 	if (hasClassElem(event.target, 'modal'))
 		removeClassElem(event.target, 'visible');
 }

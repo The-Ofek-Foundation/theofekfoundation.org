@@ -82,10 +82,10 @@
 	</div>
 
 	<!-- Modal Popup (javascript in theofekfoundation.js, styling in main_app.less) -->
-	<div id="main-modal" class="modal">
+	<div id="main-modal" class="modal" onclick="onMainModalClick(event);">
 		<div class="modal-content">
 			<div class="modal-header">
-				<span class="close" onclick="closeModal(getElemId('main-modal'));">&times;</span>
+				<span class="close" onclick="closeModal(mainModal);">&times;</span>
 				<h2 class="modal-header-text">Modal Header</h2>
 			</div>
 
