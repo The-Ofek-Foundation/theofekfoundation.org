@@ -15,3 +15,5 @@ db.sqlite3
 **/Website-07a6a0c3616e.json
 cloud_sql_proxy
 tempstatic/
+
+*.sublime-*
