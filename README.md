@@ -10,7 +10,7 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 
 #### Step 1: Install dependencies
 
-1. Python 2.7.*, pip
+1. Python 2.7.*, setuptools, pip
 2. django (1.11.*), minidetector, and jsonfield with pip
 
 	```bash
