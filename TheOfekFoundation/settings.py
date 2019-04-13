@@ -138,6 +138,11 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = 'Login'
 LOGIN_REDIRECT_URL = 'Username'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+	'locale': 'en_US',
+	'fields': 'name, email'
+}
 
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'The Ofek Foundation <theofekfoundation@gmail.com>'
