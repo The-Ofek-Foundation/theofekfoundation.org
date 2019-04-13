@@ -26,6 +26,7 @@ urlpatterns = [
 	url(r'(?i)ImageEditor/$', RedirectView.as_view(url='/tools/ImageEditor/', permanent=True)),
 	url(r'(?i)DijkstraAlgorithm/$', RedirectView.as_view(url='/tools/DijkstraAlgorithm/', permanent=True)),
 	url(r'(?i)login/$', RedirectView.as_view(url='/account/login/', permanent=True)),
+	url(r'(?i)username/$', RedirectView.as_view(url='/account/username/', permanent=True)),
 	url(r'(?i)logout/$', RedirectView.as_view(url='/account/logout/', permanent=True)),
 	url(r'(?i)register/$', RedirectView.as_view(url='/account/register/', permanent=True)),
 	url(r'(?i)ResetPassword/$', RedirectView.as_view(url='/account/ResetPassword/', permanent=True)),

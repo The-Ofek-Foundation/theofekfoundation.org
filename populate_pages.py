@@ -244,8 +244,8 @@ def populate():
 
 	page = add_page(category, 'https://www.theofekfoundation.org/account/register/',
 		pathname = 'account/register',
-		full_description = "Register to TheOfekFoundation! Make a free account today!",
-		description = "Register to TheOfekFoundation!",
+		full_description = "Register to The Ofek Foundation! Make a free account today!",
+		description = "Register to The Ofek Foundation!",
 		title = 'We Register',
 		name = 'Register',
 	)
@@ -257,10 +257,25 @@ def populate():
 		resizeable = True,
 	)
 
+	page = add_page(category, 'https://www.theofekfoundation.org/account/username/',
+		pathname = 'account/username',
+		full_description = "Update your username for The Ofek Foundation!",
+		description = "Update your username for The Ofek Foundation!",
+		title = 'We are Reborn',
+		name = 'Username',
+	)
+	add_form(page, 'username_form',
+		method = 'post',
+		action = '/account/username/',
+		enctype = 'multipart/form-data',
+		submit_value = 'Rebirth',
+		resizeable = True,
+	)
+
 	page = add_page(category, 'https://www.theofekfoundation.org/account/login/',
 		pathname = 'account/login',
-		full_description = "Login to TheOfekFoundation! Make a free account today!",
-		description = "Login to TheOfekFoundation!",
+		full_description = "Login to The Ofek Foundation! Make a free account today!",
+		description = "Login to The Ofek Foundation!",
 		title = 'We Login',
 		name = 'Login',
 	)
@@ -273,7 +288,7 @@ def populate():
 
 	page = add_page(category, 'https://www.theofekfoundation.org/account/ResetPassword/',
 		pathname = 'account/ResetPassword',
-		full_description = "Reset your password for TheOfekFoundation.",
+		full_description = "Reset your password for The Ofek Foundation.",
 		description = "Reset your password.",
 		title = 'We Forget',
 		name = 'Reset Password',
@@ -287,7 +302,7 @@ def populate():
 
 	page = add_page(category, 'https://www.theofekfoundation.org/account/ResetPasswordConfirm/',
 		pathname = 'account/ResetPasswordConfirm',
-		full_description = "Reset your password for TheOfekFoundation.",
+		full_description = "Reset your password for The Ofek Foundation.",
 		description = "Reset your password.",
 		title = 'We Promise to Remember',
 		name = 'Reset Password Confirm',

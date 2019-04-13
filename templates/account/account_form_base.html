@@ -18,28 +18,54 @@
 	{% block unauthenticated_block %}
 	{% endblock %}
 
-	<form class="account_form" id="{{html_form.name}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
+	{% endif %}
 
-		{% if error_message %}
-		<div class="errorlist">
-			{{error_message}}
+	{% if force_form or not user.is_authenticated %}
+
+	<div class="wrapper">
+
+		{% if not user.is_authenticated %}
+		<div id="third_party_auth_div">
+
+			New! Third-party logins! <br />
+			Forget the passwords! <br />
+
+			<div id="login-buttons">
+				<a title="Login with Google" alt="Login with Google" href="{% url 'social:begin' 'google-oauth2' %}" id="google-signin-button"></a>
+				<a title="Login with GitHub" alt="Login with GitHub" href="{% url 'social:begin' 'github' %}" id="github-signin-button"></a>
+				<a title="Login with Facebook" alt="Login with Facebook" href="{% url 'social:begin' 'facebook' %}" id="facebook-signin-button"></a>
+			</div>
+
+
+			<span class="disclaimers">Note: Third-party authentication will only use
+			your information for authentication purposes.</span>
+
 		</div>
 		{% endif %}
 
-		{% block form_content %}
-		{% endblock %}
+		<form class="account_form" id="{{html_form.name}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
 
-		<input type="text" class="hidden-input" name="path">
+			{% if error_message %}
+			<div class="errorlist">
+				{{error_message}}
+			</div>
+			{% endif %}
 
-		<div class="center-align">
-			<input type="submit" name="submit" value="{{html_form.submit_value}}" />
-		</div>
+			{% block form_content %}
+			{% endblock %}
 
-		{% block end_form_block %}
-		{% endblock %}
+			<input type="text" class="hidden-input" name="path">
 
-	</form>
-	{% endif %}
+			<div class="center-align">
+				<input type="submit" name="submit" value="{{html_form.submit_value}}" />
+			</div>
+
+			{% block end_form_block %}
+			{% endblock %}
+
+		</form>
+		{% endif %}
+	</div>
 
 {% endblock %}
 
@@ -57,11 +83,22 @@
 	});
 
 	function onResize() {
+		{% if not user.is_authenticated %}
 		resizeForm();
+		{% endif %}
 	};
 
 	function resizeForm() {
-		setElemWidth(mainForm, getElemWidth(getElemQuery("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}")));
+		let formWidth = getElemWidth(getElemQuery("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}"));
+		setElemWidth(mainForm, formWidth);
+		setElemWidth(getElemId('third_party_auth_div'), formWidth);
+	}
+
+	function pageReady() {
+		let errorList = getElemsClass('errorlist');
+		for (let error of errorList) {
+			insertAfterElem(error, error.nextElementSibling.children[1]);
+		}
 	}
 </script>
 {% endif %}

@@ -1,0 +1,23 @@
+{% extends 'account/account_form_base.html' %}
+
+{% block authenticated_block %}
+	<h1>Welcome {{user.username}}!</h1>
+
+	<i>Are you prepared to redefine your identity?</i><br />
+	<span class="help-text">If you're happy with your identity, go <a href="/" class="animated">home</a></span>
+	<br /><br />
+{% endblock %}
+
+{% block unauthenticated_block %}
+	<h1>You are not yet a follower...</h1>
+	Perhaps you meant to <a class="animated" href="{% url 'Login' %}">login</a>?
+	<br />
+{% endblock %}
+
+{% block form_content %}
+	Enter new username:
+
+	{% csrf_token %}
+
+	{{ username_form.as_p }}
+{% endblock %}

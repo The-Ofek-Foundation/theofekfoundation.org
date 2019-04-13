@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from main_app.forms import UserForm, UserProfileForm
+from main_app.forms import UserForm
 from django.template import RequestContext
 from main_app import display_projects
 from main_app.models import WebsiteCategory, WebsitePage

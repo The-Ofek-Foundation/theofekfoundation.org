@@ -2,11 +2,17 @@
 	text-align: center;
 }
 
-.account_form {
+.wrapper {
+	display: inline-block;
+}
+
+.account_form, #third_party_auth_div {
 	display: inline-block;
 	padding: 1em 2em;
 	border: 1px solid black;
 	text-align: left;
+	float: left;
+	clear: left;
 
 	p {
 		margin-top: 0;
@@ -23,6 +29,7 @@
 			outline: double;
 		}
 	}
+
 	input[type=submit] {
 		transition: background-color 1s;
 		border: 1px solid #777777;
@@ -39,10 +46,62 @@
 			background-color: pink;
 		}
 	}
+
 	.hidden-input {
 		display: none;
 	}
+
+	label[for=id_username], label[for=id_password] {
+		font-weight: bold;
+	}
 }
+
+.help-text {
+	font-style: italic;
+	font-size: 0.75em;
+}
+
+#third_party_auth_div {
+	margin-bottom: 5%;
+}
+
+#login-buttons {
+	text-align: center;
+}
+
+#google-signin-button {
+	background: url('/static/images/icons/btn_google_light_normal_ios.svg') transparent 5px 50% no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+	width: 64px;
+	height: 64px;
+
+	&:hover {
+		background: url('/static/images/icons/btn_google_light_focus_ios.svg') transparent 5px 50% no-repeat;
+	}
+
+	&:active {
+		background: url('/static/images/icons/btn_google_light_pressed_ios.svg') transparent 5px 50% no-repeat;
+	}
+}
+
+#github-signin-button {
+	background: url('/static/images/icons/GitHub-Mark-32px.png') transparent 5px 50% no-repeat;
+	display: inline-block;
+	vertical-align: middle;
+	width: 54px;
+	height: 64px;
+}
+
+#facebook-signin-button {
+	background: url('/static/images/icons/facebook.svg') transparent 5px 50% no-repeat;
+	background-size: 40px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 64px;
+	height: 64px;
+}
+
 
 .errorlist {
 	list-style: none;
@@ -50,5 +109,10 @@
 	padding: 0;
 	margin: 0;
 	color: red;
+	font-size: 0.75em;
+}
+
+.disclaimers {
+	font-style: italic;
 	font-size: 0.75em;
 }

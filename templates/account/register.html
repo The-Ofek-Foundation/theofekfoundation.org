@@ -13,24 +13,10 @@
 {% endblock %}
 
 {% block form_content %}
-	Enter account details:
+	Enter account details: <br />
+	<span class="help-text">Items in bold are required<br /></span>
 
 	{% csrf_token %}
 
 	{{ user_form.as_p }}
-	{{ profile_form.as_p }}
-{% endblock %}
-
-{% block end_block %}
-	{{block.super}}
-
-	<script type="text/javascript">
-		function pageReady() {
-			var errorList = getElemsClass('errorlist');
-			for (var i = 0; i < errorList.length; i++) {
-				var error = errorList[i];
-				insertAfterElem(error, error.nextElementSibling.children[1]);
-			}
-		}
-	</script>
 {% endblock %}

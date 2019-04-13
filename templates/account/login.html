@@ -1,5 +1,7 @@
 {% extends 'account/account_form_base.html' %}
 
+{% load staticfiles %}
+
 {% block authenticated_block %}
 	<h1>You are already in, {{user.username}}!</h1>
 
@@ -28,18 +30,4 @@
 		<br />
 		<i><a class="animated" href="{% url 'Password Reset' %}">Reset your password</a></i>
 	</div>
-{% endblock %}
-
-{% block end_block %}
-	{{block.super}}
-
-	<script type="text/javascript">
-		function pageReady() {
-			var errorList = getElemsClass('errorlist');
-			for (var i = 0; i < errorList.length; i++) {
-				var error = errorList[i];
-				insertAfterElem(error, error.nextElementSibling);
-			}
-		}
-	</script>
 {% endblock %}

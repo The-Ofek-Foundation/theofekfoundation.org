@@ -59,6 +59,7 @@ INSTALLED_APPS = (
 	'account',
 	'blog',
 	'ramon',
+	'social_django'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +69,6 @@ MIDDLEWARE_CLASSES = (
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	# Commented until infinite loop fixed
 	'django.middleware.security.SecurityMiddleware',
 	'minidetector.Middleware'
 )
@@ -83,10 +83,22 @@ TEMPLATES = [
 			'context_processors': [
 				"django.contrib.auth.context_processors.auth",
 				"main_app.context_processors.mobile_detection_processor",
+				"social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
 			]
 		}
 	},
 ]
+
+AUTHENTICATION_BACKENDS = (
+	'social_core.backends.open_id.OpenIdAuth',
+	'social_core.backends.google.GoogleOpenId',
+	'social_core.backends.google.GoogleOAuth2',
+	'social_core.backends.github.GithubOAuth2',
+	'social_core.backends.facebook.FacebookOAuth2',
+
+	'django.contrib.auth.backends.ModelBackend',
+)
 
 STATICFILES_DIRS = (
 	STATIC_PATH,
@@ -124,7 +136,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/account/login/'
+LOGIN_URL = 'Login'
+LOGIN_REDIRECT_URL = 'Username'
 
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'The Ofek Foundation <theofekfoundation@gmail.com>'
@@ -132,7 +145,7 @@ RAMON_FROM_EMAIL = 'Seuss/Ramon AZA #195 Alumni Committee <theofekfoundation@gma
 SERVER_EMAIL = 'The Ofek Foundation <theofekfoundation@gmail.com>'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'theofekfoundation@gmail.com'
+EMAIL_HOST_USER = 'support@theofekfoundation.org'
 EMAIL_HOST_PASSWORD = "I ain't telling you"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
