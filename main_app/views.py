@@ -17,6 +17,9 @@ def acme(request):
 def robots(request):
 	return render(request, 'main_app/robots.txt', {})
 
+def privacy_policy(request):
+	return render(request, 'main_app/privacy_policy.html', {})
+
 # Create your views here.
 def index(request):
 	context = RequestContext(request)
