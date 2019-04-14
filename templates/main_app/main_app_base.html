@@ -63,16 +63,24 @@
 					{% endif %}
 				</div>
 			</li>
-			{% if not mobile %}
-			{% if user.is_authenticated %}
+			{% if mobile %}
+				{% if user.is_authenticated %}
 				<li>
-					<a id="navbar-username">{{user.username}}</a>
+					<a id="navbar-username">{{user.username | slice:"0:6"}}</a>
 				</li>
-				<li class="link"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
-			{% else %}
-				<li class="link"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
+				{% else %}
 				<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
-			{% endif %}
+				{% endif %}
+			{% else %}
+				{% if user.is_authenticated %}
+					<li>
+						<a id="navbar-username">{{user.username}}</a>
+					</li>
+					<li class="link"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
+				{% else %}
+					<li class="link"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
+					<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
+				{% endif %}
 			{% endif %}
 		</ul>
 	</ul>
