@@ -36,8 +36,8 @@ function pageReady() {
 
 		setElemWidth(background, background.width);
 		setElemHeight(background, background.height);
-		setElemStyle(background, "left", (docwidth - background.width) / 2);
-		setElemStyle(background, "top", (docheight - background.height) / 2);
+		setElemStyle(background, "left", (docwidth - background.width) / 2 + "px");
+		setElemStyle(background, "top", (docheight - background.height) / 2 + "px");
 
 		data = context.getImageData(0, 0, background.width, background.height);
 		pixels = data.data;
@@ -117,8 +117,8 @@ function fullscreen() {
 
 	setElemWidth(background, background.width);
 	setElemHeight(background, background.height);
-	setElemStyle(background, "left", 0);
-	setElemStyle(background, "top", 0);
+	setElemStyle(background, "left", "0px");
+	setElemStyle(background, "top", "0px");
 
 	ding();
 }
