@@ -140,6 +140,13 @@ function setElemData(elem, key, val) {
 	} else elem.dataset[key] = val;
 }
 
+function toggleElemVisiblity(elem) {
+	if (getElemStyle(elem, 'display') === 'none')
+		setElemStyle(elem, 'display', 'initial');
+	else
+		setElemStyle(elem, 'display', 'none');
+}
+
 function addClassElem(elem, className) {
 	if (elem.classList)
 		elem.classList.add(className);

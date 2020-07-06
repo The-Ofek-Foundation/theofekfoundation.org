@@ -59,18 +59,20 @@ INSTALLED_APPS = (
 	'account',
 	'blog',
 	'ramon',
-	'social_django'
+	'social_django',
+	'corsheaders'
 )
 
 MIDDLEWARE_CLASSES = (
-	'django.contrib.sessions.middleware.SessionMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
-	'minidetector.Middleware'
+	'minidetector.Middleware',
 )
 
 TEMPLATES = [
@@ -173,6 +175,8 @@ EMAIL_HOST_PASSWORD = "I ain't telling you"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 DOMAIN = 'theofekfoundation.org'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
 	try:

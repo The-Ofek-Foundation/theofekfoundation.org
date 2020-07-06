@@ -11,13 +11,14 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 #### Step 1: Install dependencies
 
 1. Python 2.7.*, setuptools, pip
-2. django (1.11.*), minidetector, jsonfield, and social-aut-app-django with pip
+2. django (1.11.*), minidetector, jsonfield, social-aut-app-django, and django-cors-headers with pip
 
 	```bash
-	sudo pip install django
-	sudo pip install minidetector
-	sudo pip install jsonfield
-	sudo pip install social-auth-app-django
+	pip2.7 install django==1.11.5
+	pip2.7 install minidetector
+	pip2.7 install jsonfield==1
+	pip2.7 install social-auth-app-django
+	pip2.7 install django-cors-headers
 	```
 
 #### Step 2: Setup repository
@@ -38,8 +39,8 @@ git submodule update --recursive
 2. Run migrations and populate pages
 
 	```bash
-	python manage.py migrate
-	python populate_pages.py
+	python2.7 manage.py migrate
+	python2.7 populate_pages.py
 	```
 
 #### Step 3: Setup local settings
@@ -47,7 +48,7 @@ git submodule update --recursive
 1. Copy barebone settings from barebones_local_settings.py
 
 	```bash
-	cp TheOfekFoundation/barebones_local_settings.py TheOfekFoundation/local_settings.py
+	cp -v TheOfekFoundation/barebones_local_settings.py TheOfekFoundation/local_settings.py
 	```
 
 2. **Optional:** Override email settings with your own testing email account (only necessary if testing forgot password feature)
@@ -57,13 +58,13 @@ git submodule update --recursive
 Start running with:
 
 ```bash
-python manage.py runserver
+python2.7 manage.py runserver
 ```
 
 Note that if you are testing with DEBUG = False (e.g. when testing out the 404 error page), be sure to run with the --insecure parameter, e.g.:
 
 ```bash
-python manage.py runserver --insecure
+python2.7 manage.py runserver --insecure
 ```
 
 If you want to edit stylesheets, be sure to edit the **.less** files and not the **.css** files. LESS files compile into CSS. The syntax is pretty similar, but a bit more intuitive in my opinion. In order to compile the LESS files, install *lessc* using:

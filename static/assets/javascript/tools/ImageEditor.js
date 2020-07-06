@@ -1,44 +1,56 @@
-var background, context, image;
+const background = getElemId("background");
+const imageSrcElem = getElemId("image-src");
+
+var context, image;
 var docwidth, docheight;
-var playSound = true;
+var toPlaySound = true;
 var pixelsSave, pixelsOriginal;
 var mouseX, mouseY;
 var original = true;
-var colorInc;
+var colorInc, color = "all";
 
 var data, pixels, pixelsCopy;
 
-image = new Image();
-image.crossorigin = 'anonymous';
-
-docwidth = getElemWidth(contentWrapper);
-docheight = getElemHeight(contentWrapper);
-
-background = getElemId("background");
 context = background.getContext("2d");
 
-image.onload = function() {
+function pageReady() {
+	image = new Image();
+	image.crossOrigin = 'Anonymous';
+
 	docwidth = getElemWidth(contentWrapper);
 	docheight = getElemHeight(contentWrapper);
-	var imageRatio = image.width / image.height;
-	var screenRatio = docwidth / docheight;
-	var changeRatio;
-	if (imageRatio > screenRatio)
-		changeRatio = docwidth / image.width;
-	else changeRatio = docheight / image.height;
-	background.width = image.width * changeRatio;
-	background.height = image.height * changeRatio;
-	context.drawImage(image,0,0,image.width,image.height, 0, 0, background.width, background.height);
-	$('#background').width(background.width).height(background.height).css('left', (docwidth - background.width) / 2).css('top', (docheight - background.height) / 2);
-	data = context.getImageData(0, 0, background.width, background.height);
-	pixels = data.data;
-	pixelsOriginal = new Array(pixels.length);
-	for (var i = 0; i < pixels.length; i++)
-		pixelsOriginal[i] = pixels[i];
-	context.putImageData(data, 0, 0, 0, 0, data.width, data.height);
-	original = null;
-	alertCommands();
-};
+
+
+	image.onload = function() {
+		docwidth = getElemWidth(contentWrapper);
+		docheight = getElemHeight(contentWrapper);
+		var imageRatio = image.width / image.height;
+		var screenRatio = docwidth / docheight;
+		var changeRatio;
+		if (imageRatio > screenRatio)
+			changeRatio = docwidth / image.width;
+		else changeRatio = docheight / image.height;
+		background.width = image.width * changeRatio;
+		background.height = image.height * changeRatio;
+		context.drawImage(image,0,0,image.width,image.height, 0, 0, background.width, background.height);
+
+		setElemWidth(background, background.width);
+		setElemHeight(background, background.height);
+		setElemStyle(background, "left", (docwidth - background.width) / 2);
+		setElemStyle(background, "top", (docheight - background.height) / 2);
+
+		data = context.getImageData(0, 0, background.width, background.height);
+		pixels = data.data;
+		pixelsOriginal = new Array(pixels.length);
+		for (var i = 0; i < pixels.length; i++)
+			pixelsOriginal[i] = pixels[i];
+		context.putImageData(data, 0, 0, 0, 0, data.width, data.height);
+		original = null;
+		alertCommands();
+	};
+
+	changeImageSrc(imageSrcElem.value);
+}
 
 function alertCommands() {
 	if (!getCookie("commands-shown")) {
@@ -51,8 +63,6 @@ function changeImageSrc(src) {
 	image.src = src;
 }
 
-changeImageSrc($('#image-src').val());
-
 function showRgb(x, y, alert) {
 	var i = (y * 4) * data.width + x * 4;
 
@@ -61,8 +71,8 @@ function showRgb(x, y, alert) {
 	var B = pixels[i + 2];
 	if (alert)
 		prompt("Copy to Clipboard, Ctrl + C", R + ', ' + G + ", " + B);
-	$('#color-preview').css('background-color', 'rgb(' + R + ', ' + G + ', ' + B + ')');
-	$('#color-text').text('(' + R + ', ' + G + ', ' + B + ')');
+	setElemStyle(getElemId("color-preview"), 'background-color', 'rgb(' + R + ', ' + G + ', ' + B + ')');
+	setElemText(getElemId("color-text"), '(' + R + ', ' + G + ', ' + B + ')');
 }
 
 function swapImageWithOriginal() {
@@ -84,9 +94,9 @@ function swapImageWithOriginal() {
 	showRgb(mouseX, mouseY, false);
 }
 
-function playSound( url ){
-	if (playSound)
-		$('#sound').html("<embed src='"+url+"' hidden=true autostart=true loop=false>");
+function playSound(url) {
+	if (toPlaySound)
+		getElemId("sound").innerHTML = "<embed src='"+url+"' hidden=true autostart=true loop=false>";
 }
 
 function OpenInNewTab(url) {
@@ -95,7 +105,7 @@ function OpenInNewTab(url) {
 }
 
 function ding() {
-	playSound("/static/sounds/ImageEditor/defaultDing.mp3");
+	playSound("/static/sounds/ImageEditor/default_ding.mp3");
 }
 
 function fullscreen() {
@@ -104,7 +114,12 @@ function fullscreen() {
 	background.width = docwidth;
 	background.height = docheight;
 	context.drawImage(image,0,0,image.width,image.height, 0, 0, docwidth, docheight);
-	$('#background').width(background.width).height(background.height).css('left', 0).css('top', 0);
+
+	setElemWidth(background, background.width);
+	setElemHeight(background, background.height);
+	setElemStyle(background, "left", 0);
+	setElemStyle(background, "top", 0);
+
 	ding();
 }
 
@@ -506,9 +521,7 @@ function runEffect(parameters, effectFunction) {
 	original = false;
 }
 
-function promptCommands() {
-	var command = prompt("Please enter a command", "list commands");
-	if (command) // prevent cancel
+function runCommand(command, promptIfNotFound) {
 	switch (command.toLowerCase()) {
 		case "blur": case 'b':
 			runEffect({"radius": parseInt(prompt("Radius", "2"), 10)}, blur);
@@ -581,56 +594,68 @@ function promptCommands() {
 			runEffect({"magnitude": prompt("How much?", "-50")}, tint);
 			break;
 		case "toggle preview": case "preview":
-			$('#color-preview').toggle();
-			$('#color-text').toggle();
+			toggleElemVisiblity(getElemId("color-preview"));
+			toggleElemVisiblity(getElemId("color-text"));
 			break;
 		case "toggle sound": case "sound":
-			playSound = !playSound;
+			toPlaySound = !toPlaySound;
 			break;
 		case "toggle url": case "url":
-			$('#image-src').toggle();
+			toggleElemVisiblity(imageSrcElem);
 			break;
 		default:
-			if(confirm(command + " not found. For a full list of commands, press OK"))
+			if(promptIfNotFound && confirm(command + " not found. For a full list of commands, press OK"))
 				OpenInNewTab("https://goo.gl/Jnhgnc");
 			break;
 	}
 }
 
-$(document).keydown(function(e) {
+function promptCommands() {
+	var command = prompt("Please enter a command", "list commands");
+	if (command) // prevent cancel
+		runCommand(command, true);
+}
+
+document.addEventListener("keydown", e => {
 	switch (e.which) {
 		case 9: // tab
 			e.preventDefault();
 			swapImageWithOriginal();
 			break;
 		case 13: // enter
-			changeImageSrc($('#image-src').val());
-			$('#image-src').blur();
+			changeImageSrc(imageSrcElem.value);
+			imageSrcElem.blur();
 			break;
-		case 67: // c
+		case 67: case 191: // c, /
 			setCookie("commands-shown", "press 'c' to enter commands", 10);
 			color = "all";
 			promptCommands();
 			break;
+		default:
+			runCommand(String.fromCharCode(e.which), false);
+			break;
 	}
 });
-
-$('#background').click(function(e) {
+background.addEventListener("click", e => {
 	if (e.ctrlKey) {
-		var parentOffset = $(this).parent().offset();
-		mouseX = e.pageX - parentOffset.left;
-		mouseY = e.pageY - parentOffset.top;
+		const parentOffsetLeft = background.parentElement.offsetLeft;
+		const parentOffsetTop = background.parentElement.offsetTop;
+
+		mouseX = e.pageX - parentOffsetLeft;
+		mouseY = e.pageY - parentOffsetTop;
 
 		showRgb(mouseX, mouseY, true);
 	}
 });
 
-$('#background').mousemove(function(e) {
-	var parentOffset = $(this).parent().offset();
-	mouseX = e.pageX - parentOffset.left;
-	mouseY = e.pageY - parentOffset.top;
+background.addEventListener("mousemove", e => {
+	const parentOffsetLeft = background.parentElement.offsetLeft;
+	const parentOffsetTop = background.parentElement.offsetTop;
 
-	if ($('#color-preview').is(":visible"))
+	mouseX = e.pageX - parentOffsetLeft;
+	mouseY = e.pageY - parentOffsetTop;
+
+	if(getElemStyle(getElemId("color-preview"), "display") !== "none")
 		showRgb(mouseX, mouseY, false);
 });
 
