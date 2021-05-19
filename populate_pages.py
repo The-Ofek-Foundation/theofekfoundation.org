@@ -155,6 +155,15 @@ def populate():
 		title = 'We Flip',
 		name = 'Othello',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/Hangman/',
+		pathname = 'games/Hangman/',
+		full_description= "Play Hangman online!",
+		description = "Play Hangman online!",
+		title = 'We Hang',
+		name = 'Hangman',
+	)
 
 	category = add_category('Tools')
 

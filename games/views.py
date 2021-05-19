@@ -73,6 +73,11 @@ def othello(request):
 	_get_game_settings(request, 'Othello', context_dict)
 	return render(request, 'games/Othello.html', context_dict)
 
+def hangman(request):
+	context_dict = {'page': main_pages.get(name='Hangman')}
+	_get_game_settings(request, 'Hangman', context_dict)
+	return render(request, 'games/Hangman.html', context_dict)
+
 @login_required
 def save_settings(request):
 	settings = json.loads(request.body)

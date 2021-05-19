@@ -1,0 +1,24 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block body_content %}
+
+<canvas id="diagram" width="300" height="300"></canvas>
+<canvas id="letters" width="300" height="300"></canvas>
+<form id="form">
+	<label for="letter">Guess a character:</label>
+	<input type="text" pattern="." id="letter" name="letter" oninvalid="setCustomValidity('Please only enter a single character')" onchange="try{setCustomValidity('')}catch(e){}">
+	<input type="submit" value="Guess"><br><br>
+	<label for="guesses">Previous guesses:</label>
+	<span id="guesses" name="guesses"></span>
+</form>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Hangman/script.js" %}"></script>
+
+{% endblock %}

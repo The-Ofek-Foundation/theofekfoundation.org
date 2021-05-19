@@ -55,3 +55,6 @@
 [submodule "static/assets/javascript/games/Othello"]
 	path = static/assets/javascript/games/Othello
 	url = git@github.com:The-Ofek-Foundation/Othello.git
+[submodule "static/assets/javascript/games/Hangman"]
+	path = static/assets/javascript/games/Hangman
+	url = git@github.com:The-Ofek-Foundation/Hangman.git
