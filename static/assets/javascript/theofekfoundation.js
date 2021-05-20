@@ -231,9 +231,23 @@ addXMLRequestCallback(function(xhr) {
 var mainModal = getElemId('main-modal');
 
 function showInfoModal(headerText, ...bodyLines) {
-
 	var headerStyles = {
 		'background-color': '#FFFFE1',
+		'color': 'black',
+		'border-bottom': '1px solid purple',
+	},  bodyStyles = {
+		'background-color': 'white',
+		'color': 'black',
+	}
+
+	let bodyText = bodyLines.join('<br />');
+
+	showModal(mainModal, headerText, headerStyles, bodyText, bodyStyles);
+}
+
+function showErrorModal(headerText, ...bodyLines) {
+	var headerStyles = {
+		'background-color': '#FFE1E1',
 		'color': 'black',
 		'border-bottom': '1px solid purple',
 	},  bodyStyles = {
@@ -260,7 +274,6 @@ function showModal(modalElem, headerText, headerStyles, bodyText, bodyStyles) {
 
 	setElemText(getElemClass('modal-header-text', modalElem), headerText);
 	setElemText(getElemClass('modal-body-text', modalElem), bodyText);
-
 
 
 	addClassElem(mainModal, 'visible');

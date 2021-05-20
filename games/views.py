@@ -5,6 +5,8 @@ from main_app.models import WebsiteCategory, WebsitePage
 from games.models import GameSettings
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from main_app import display_projects
 import json
 
@@ -77,6 +79,24 @@ def hangman(request):
 	context_dict = {'page': main_pages.get(name='Hangman')}
 	_get_game_settings(request, 'Hangman', context_dict)
 	return render(request, 'games/Hangman.html', context_dict)
+
+def normalize(s):
+	replacements = {'ם': 'מ', 'ן': 'נ', 'ץ': 'צ', 'ף': 'פ','ך': 'כ'}
+	for k, v in replacements.items():
+		s = s.replace(k, v)
+
+	return s.lower()
+
+@csrf_exempt
+def get_hangman_word(request):
+	guesses = json.loads(request.body)['guesses']
+	response = ''
+	for c in settings.FINAL_HANGMAN[0]().decode('utf-8'):
+		if normalize(c) in guesses or c.isspace():
+			response += c
+		else:
+			response += '`' # placeholder
+	return HttpResponse(json.dumps({'active_word': response, 'text_direction': settings.FINAL_HANGMAN[1]}))
 
 @login_required
 def save_settings(request):
