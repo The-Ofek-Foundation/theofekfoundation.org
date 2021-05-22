@@ -90,6 +90,11 @@ def normalize(s):
 @csrf_exempt
 def get_hangman_word(request):
 	guesses = json.loads(request.body)['guesses']
+
+	# prevent huge guesses
+	if len(guesses) > 10 + len(settings.FINAL_HANGMAN[0]()):
+		guesses = ''
+
 	response = ''
 	for c in settings.FINAL_HANGMAN[0]().decode('utf-8'):
 		if normalize(c) in guesses or c.isspace():
