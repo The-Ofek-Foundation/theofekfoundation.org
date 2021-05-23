@@ -4,6 +4,12 @@
 
 {% block right_float_additions %}
 
+{{block.super}}
+
+<li>
+	<a id="challengemsg" disabled style="display: none;" style="padding-right: 3px;">Challenge Mode</a>
+</li>
+
 {% endblock %}
 
 {% block body_content %}
@@ -17,6 +23,36 @@
 	<label for="guesses">Previous guesses:</label>
 	<span id="guesses" name="guesses"></span>
 </form>
+
+<div id="settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table id="settings-table">
+		<tr>
+			<td>Game mode:</td>
+			<td>
+				<select name="game-mode">
+					<option value="0" selected>Challenge Mode</option>
+					<option value="1">Normal Mode</option>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td>Right-to-left language?</td>
+			<td><input type="checkbox" name="right-to-left"></td>
+		</tr>
+	</table>
+
+	<br />
+
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
+</div>
 
 {% endblock %}
 

@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block right_float_additions %}
-<li class="right-float-additions" onclick="newGame();">
+<li id="new-game-float" class="right-float-additions" onclick="newGame();">
 	{% if mobile %}
 	N
 	{% else %}
@@ -19,7 +19,7 @@
 	{% endif %}
 </li>
 
-<li class="right-float-additions" onclick="showSettingsForm();">
+<li id="show-settings-float" class="right-float-additions" onclick="showSettingsForm();">
 	{% if mobile %}
 	S
 	{% else %}

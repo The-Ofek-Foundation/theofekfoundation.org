@@ -228,10 +228,10 @@ addXMLRequestCallback(function(xhr) {
 
 // Main modal logic
 
-var mainModal = getElemId('main-modal');
+const mainModal = getElemId('main-modal');
 
 function showInfoModal(headerText, ...bodyLines) {
-	var headerStyles = {
+	const headerStyles = {
 		'background-color': '#FFFFE1',
 		'color': 'black',
 		'border-bottom': '1px solid purple',
@@ -240,13 +240,13 @@ function showInfoModal(headerText, ...bodyLines) {
 		'color': 'black',
 	}
 
-	let bodyText = bodyLines.join('<br />');
+	const bodyText = bodyLines.join('<br />');
 
 	showModal(mainModal, headerText, headerStyles, bodyText, bodyStyles);
 }
 
 function showErrorModal(headerText, ...bodyLines) {
-	var headerStyles = {
+	const headerStyles = {
 		'background-color': '#FFE1E1',
 		'color': 'black',
 		'border-bottom': '1px solid purple',
@@ -255,16 +255,16 @@ function showErrorModal(headerText, ...bodyLines) {
 		'color': 'black',
 	}
 
-	let bodyText = bodyLines.join('<br />');
+	const bodyText = bodyLines.join('<br />');
 
 	showModal(mainModal, headerText, headerStyles, bodyText, bodyStyles);
 }
 
 function showModal(modalElem, headerText, headerStyles, bodyText, bodyStyles) {
-	var modalHeader = getElemClass('modal-header', modalElem),
+	const modalHeader = getElemClass('modal-header', modalElem),
 	    modalBody = getElemClass('modal-body', modalElem);
 
-	var maxBodyHeight = windowHeight - getElemHeight(modalHeader) -
+	const maxBodyHeight = windowHeight - getElemHeight(modalHeader) -
 		2 * getElemClass('modal-content').offsetTop + "px";
 
 	setElemStyle(modalBody, 'max-height', maxBodyHeight)
@@ -274,7 +274,6 @@ function showModal(modalElem, headerText, headerStyles, bodyText, bodyStyles) {
 
 	setElemText(getElemClass('modal-header-text', modalElem), headerText);
 	setElemText(getElemClass('modal-body-text', modalElem), bodyText);
-
 
 	addClassElem(mainModal, 'visible');
 }

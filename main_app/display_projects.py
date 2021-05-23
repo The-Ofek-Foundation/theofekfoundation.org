@@ -30,6 +30,14 @@ games = {
 			'display_main': True,
 			'mobile_friendly': False,
 		},	{
+			'name': 'Hangman',
+			'imagesrc': 'hangman.png',
+			'description': 'A fun game of hangman, with a... hard... challenge mode!',
+			'template': 'games/HangmanDescription.html',
+			'save': True,
+			'display_main': False,
+			'mobile_friendly': False,
+		},	{
 			'name': 'Weiqi',
 			'imagesrc': 'board-game-go.jpg',
 			'description': 'Play Go, Gomoku, or Wu. The only one with an AI—however—is Gomoku—with a Minimax implementation.',
@@ -48,7 +56,7 @@ games = {
 		},	{
 			'name': 'Lame Duck',
 			'imagesrc': 'duck.svg',
-			'description': 'This game precedes this website by half a year, and was made in a few hours. It seems to be the largest attraction of my site for some reason.',
+			'description': 'This game predates this website by half a year, and was made in a few hours. It seems to be the largest attraction of my site for some reason.',
 			'template': 'games/LameDuckDescription.html',
 			'save': False,
 			'display_main': True,

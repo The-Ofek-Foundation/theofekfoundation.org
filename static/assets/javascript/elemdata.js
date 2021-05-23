@@ -140,11 +140,19 @@ function setElemData(elem, key, val) {
 	} else elem.dataset[key] = val;
 }
 
+function showElem(elem) {
+	setElemStyle(elem, 'display', 'initial');
+}
+
+function hideElem(elem) {
+	setElemStyle(elem, 'display', 'none');
+}
+
 function toggleElemVisiblity(elem) {
 	if (getElemStyle(elem, 'display') === 'none')
-		setElemStyle(elem, 'display', 'initial');
+		showElem(elem);
 	else
-		setElemStyle(elem, 'display', 'none');
+		hideElem(elem);
 }
 
 function addClassElem(elem, className) {
