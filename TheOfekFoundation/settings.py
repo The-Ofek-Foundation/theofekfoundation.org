@@ -60,7 +60,8 @@ INSTALLED_APPS = (
 	'blog',
 	'ramon',
 	'social_django',
-	'corsheaders'
+	'corsheaders',
+	'hitcount'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,6 +111,8 @@ STATICFILES_DIRS = (
 ROOT_URLCONF = 'TheOfekFoundation.urls'
 
 WSGI_APPLICATION = 'TheOfekFoundation.wsgi.application'
+
+HITCOUNT_KEEP_HIT_ACTIVE = { 'seconds': 5 }
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

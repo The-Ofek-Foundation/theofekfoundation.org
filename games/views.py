@@ -3,11 +3,13 @@
 from django.shortcuts import render
 from main_app.models import WebsiteCategory, WebsitePage
 from games.models import GameSettings
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from main_app import display_projects
+from hitcount.models import HitCount
+from hitcount.views import HitCountMixin
 import json
 
 main_category = WebsiteCategory.objects.get(name='Games')
@@ -89,11 +91,14 @@ def normalize(s):
 
 @csrf_exempt
 def get_hangman_word(request):
+	if not HitCountMixin.hit_count(request, HitCount.objects.get_for_object(main_pages.get(name='Hangman'))).hit_counted:
+		return HttpResponseForbidden(json.dumps({'active_word': 'I need to delay your guesses...', 'text_direction': settings.FINAL_HANGMAN[1]}))
+
 	guesses = json.loads(request.body)['guesses']
 
 	# prevent huge guesses
 	if len(guesses) > 10 + len(settings.FINAL_HANGMAN[0]()):
-		guesses = ''
+		return HttpResponseForbidden(json.dumps({'active_word': 'come on, don\t be *too* bad', 'text_direction': settings.FINAL_HANGMAN[1]}))
 
 	response = ''
 	for c in settings.FINAL_HANGMAN[0]().decode('utf-8'):
