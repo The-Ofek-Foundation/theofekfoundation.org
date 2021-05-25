@@ -19,7 +19,7 @@ I wholeheartedly believe in open-sourcing code, so the code for my website is an
 	pip2.7 install jsonfield==1
 	pip2.7 install social-auth-app-django
 	pip2.7 install django-cors-headers
-	pip2.7 install django-hitcount==1.3.2
+	pip2.7 install django-etc==0.10.0
 	```
 
 #### Step 2: Setup repository
