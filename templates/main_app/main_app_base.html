@@ -107,7 +107,7 @@
 
 	<script type="text/javascript">
 		{% if user.is_authenticated %}
-		ga('set', 'userId', '{{ user.id }}'); // Set the user ID using signed-in user_id.
+		gtag('set', {'user_id': '{{ user.id }}'}); // Set the user ID using signed-in user_id.
 		{% endif %}
 	</script>
 

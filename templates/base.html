@@ -2,6 +2,17 @@
 
 <html>
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-81202457-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-81202457-1');
+		</script>
+		<!-- Google Analytics end -->
+
 		<title>{% block title %}{% endblock %}</title>
 		{% block head_block %}{% endblock %}
 	</head>
@@ -11,12 +22,4 @@
 	</body>
 
 	{% block end_block %}{% endblock %}
-	<!-- Google Analytics -->
-	<script>
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-81202457-1', 'auto');
-	ga('send', 'pageview');
-	</script>
-	<script async src='https://www.google-analytics.com/analytics.js'></script>
-	<!-- End Google Analytics -->
 </html>
