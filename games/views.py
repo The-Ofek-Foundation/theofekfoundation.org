@@ -94,18 +94,19 @@ def get_hangman_word(request):
 	if not HitCountMixin.hit_count(request, HitCount.objects.get_for_object(main_pages.get(name='Hangman'))).hit_counted:
 		return HttpResponseForbidden(json.dumps({'active_word': 'I need to delay your guesses...', 'text_direction': settings.FINAL_HANGMAN[1]}))
 
-	guesses = json.loads(request.body)['guesses']
+	letter = json.loads(request.body)['letter']
 
-	# prevent huge guesses
-	if len(guesses) > 10 + len(settings.FINAL_HANGMAN[0]()):
+	# prevent huge letter
+	if len(letter) > 4:
 		return HttpResponseForbidden(json.dumps({'active_word': 'come on, don\t be *too* bad', 'text_direction': settings.FINAL_HANGMAN[1]}))
 
 	response = ''
 	for c in settings.FINAL_HANGMAN[0]().decode('utf-8'):
-		if normalize(c) in guesses or c.isspace():
+		if normalize(c) == letter or c.isspace():
 			response += c
 		else:
 			response += '`' # placeholder
+
 	return HttpResponse(json.dumps({'active_word': response, 'text_direction': settings.FINAL_HANGMAN[1]}))
 
 @login_required
