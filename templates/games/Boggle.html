@@ -1,0 +1,49 @@
+{% extends 'games/_base.html' %}
+
+{% load staticfiles %}
+
+{% block header_additions %}
+
+{{block.super}}
+
+<!-- <link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/Boggle.css" %}"> -->
+
+{% endblock %}
+
+{% block body_content %}
+
+<canvas id="board"></canvas>
+
+<div id="settings-menu">
+	<h1 style="margin-top: 0px;">Game Settings</h1>
+	<table id="settings-table">
+		<tr>
+			<td>Number of Rows:</td>
+			<td><input type="number" name="num-rows" min="1" max="20" value="6"></td>
+		</tr>
+
+		<tr>
+			<td>Number of Columns:</td>
+			<td><input type="number" name="num-cols" min="1" max="20" value="6"></td>
+		</tr>
+	</table>
+	<div class="submit-buttons-div">
+		<tr><input type="submit" id="done" value="Done"></tr>
+		{% if user.is_authenticated %}
+		<tr><input type="submit" id="save" value="Save"></tr>
+		{% else %}
+		<tr><input type="submit" id="save-locally" value="Save Locally"></tr>
+		{% endif %}
+		<tr><input type="submit" id="cancel" value="Cancel"></tr>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block end_block %}
+{{ block.super }}
+
+<script type="text/javascript" src="{% static "assets/javascript/games/Boggle/sowpods.js" %}"></script>
+<script type="text/javascript" src="{% static "assets/javascript/games/Boggle/Boggle.js" %}"></script>
+
+{% endblock %}

@@ -12,6 +12,7 @@ class GameSettings(models.Model):
 	ai_mode2 = CharField(max_length=128, null=True)
 	difficulty = CharField(max_length=128, null=True)
 	draw_style = CharField(max_length=128, null=True)
+	tile_shape = CharField(max_length=128, null=True)
 	monte_carlo_trials = IntegerField(null=True)
 	game_speed = IntegerField(null=True)
 	pits = IntegerField(null=True)

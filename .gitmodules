@@ -61,3 +61,6 @@
 [submodule "hitcount"]
 	path = hitcount
 	url = git@github.com:The-Ofek-Foundation/hitcount.git
+[submodule "static/assets/javascript/games/Boggle"]
+	path = static/assets/javascript/games/Boggle
+	url = git@github.com:The-Ofek-Foundation/Boggle.git

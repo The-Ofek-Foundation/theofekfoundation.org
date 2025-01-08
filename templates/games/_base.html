@@ -36,7 +36,7 @@
 {% if game_settings %}
 <script type="text/javascript">
 	{% autoescape off %}
-	var settings = convertKeysObject({{ game_settings }})
+	var settings = convertKeysObject({{ game_settings }});
 	gameSettings = new GameSettings(settings.gameName, settings);
 	{% endautoescape %}
 </script>

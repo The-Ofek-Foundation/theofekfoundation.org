@@ -12,8 +12,11 @@ class GameSettings {
 	constructor(gameName, settings) {
 		this._gameName = gameName;
 		this._settings = {};
-		if (settings)
+
+		if ((Object.keys(settings).length > 1))
 			this.setSettings(settings);
+		else if (getSessionData(this._gameName + '_settings'))
+			this.setSettings(JSON.parse(getSessionData(this._gameName + '_settings')));
 	}
 
 	/**
@@ -112,6 +115,14 @@ class GameSettings {
 		}
 		request.send(JSON.stringify(convertKeysObject(this._settings, true)));
 	}
+
+	/**
+	 * Saves the current settings locally, for use when not logged in.
+	 */
+	saveSettingsLocally() {
+		setSessionData(this._gameName + '_settings', JSON.stringify(this._settings));
+	}
+
 }
 
 function resizeSettingsTable() {
@@ -177,6 +188,15 @@ if (getElemId('save'))
 		var settings = getNewSettings();
 		gameSettings.setSettings(settings);
 		gameSettings.saveSettings(settings);
+		hideSettingsForm();
+		newGame();
+	});
+
+if (getElemId('save-locally'))
+	getElemId('save-locally').addEventListener('click', function (event) {
+		var settings = getNewSettings();
+		gameSettings.setSettings(settings);
+		gameSettings.saveSettingsLocally();
 		hideSettingsForm();
 		newGame();
 	});

@@ -16,6 +16,7 @@ urlpatterns = [
 	url(r'^Crossroads/', views.crossroads, name=u"מפגשים צולבים"),
 	url(r'^Othello/', views.othello, name=u"Othello"),
 	url(r'^Hangman/', views.hangman, name=u"Hangman"),
+	url(r'^Boggle/', views.boggle, name=u"Boggle"),
 	url(r'^api/save_settings/', views.save_settings, name="save_settings"),
 	url(r'^api/get_hangman_word/', views.get_hangman_word, name="get_hangman_word"),
 	url(r'^', include('main_app.misurls')),

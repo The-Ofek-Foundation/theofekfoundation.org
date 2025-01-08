@@ -82,6 +82,11 @@ def hangman(request):
 	_get_game_settings(request, 'Hangman', context_dict)
 	return render(request, 'games/Hangman.html', context_dict)
 
+def boggle(request):
+	context_dict = {'page': main_pages.get(name='Boggle')}
+	_get_game_settings(request, 'Boggle', context_dict)
+	return render(request, 'games/Boggle.html', context_dict)
+
 def normalize(s):
 	replacements = {'ם': 'מ', 'ן': 'נ', 'ץ': 'צ', 'ף': 'פ','ך': 'כ'}
 	for k, v in replacements.items():

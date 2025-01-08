@@ -15,6 +15,7 @@ urlpatterns = [
 	url(r'(?i)Crossroads/$', RedirectView.as_view(url='/games/Crossroads/', permanent=True)),
 	url(r'(?i)Othello/$', RedirectView.as_view(url='/games/Othello/', permanent=True)),
 	url(r'(?i)Hangman/$', RedirectView.as_view(url='/games/Hangman/', permanent=True)),
+	url(r'(?i)Boggle/$', RedirectView.as_view(url='/games/Boggle/', permanent=True)),
 	url(r'(?i)Maze/$', RedirectView.as_view(url='/tools/Maze/', permanent=True)),
 	url(r'(?i)PrimeFactorizer/$', RedirectView.as_view(url='/tools/PrimeFactorizer/', permanent=True)),
 	url(r'(?i)PasswordGenerator/$', RedirectView.as_view(url='/tools/PasswordGenerator/', permanent=True)),

@@ -164,6 +164,15 @@ def populate():
 		title = 'We Hang',
 		name = 'Hangman',
 	)
+	add_page(
+		category = category,
+		full_url = 'https://www.theofekfoundation.org/games/Boggle/',
+		pathname = 'games/Boggle/',
+		full_description= "Play Boggle with friends!",
+		description = "Play Boggle with friends!",
+		title = 'We Boggle',
+		name = 'Boggle',
+	)
 
 	category = add_category('Tools')
 
