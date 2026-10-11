@@ -11,6 +11,21 @@
       }
     }
   },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "python312",
+      "ignore": [
+        "venv",
+        "__pycache__",
+        "test_*.py",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
   "hosting": {
     "public": "public",
     "predeploy": ".venv/bin/python manage.py build_static",

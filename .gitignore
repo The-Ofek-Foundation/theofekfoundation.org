@@ -26,3 +26,6 @@ __pycache__/
 public/
 .firebase/
 firebase-debug.log
+
+# Firebase Functions (Python) virtualenv
+functions/venv/
