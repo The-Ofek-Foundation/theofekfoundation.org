@@ -1,4 +1,16 @@
 {
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "The Ofek Foundation",
+        "supportEmail": "ofek.gila@gmail.com",
+        "authorizedRedirectUris": [
+          "https://www.theofekfoundation.org/__/auth/handler"
+        ]
+      }
+    }
+  },
   "hosting": {
     "public": "public",
     "predeploy": ".venv/bin/python manage.py build_static",

@@ -25,3 +25,4 @@ __pycache__/
 # Static build output (python manage.py build_static) and Firebase CLI cache
 public/
 .firebase/
+firebase-debug.log

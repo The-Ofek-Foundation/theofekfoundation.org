@@ -28,9 +28,11 @@
 {% if game_settings %}
 <script type="text/javascript">
 	{% autoescape off %}
-	var settings = convertKeysObject({{ game_settings }})
-	gameSettings = new GameSettings(settings.gameName, settings);
+	var settings = convertKeysObject({{ game_settings }});
 	{% endautoescape %}
+	// Settings saved in this browser (GameSettings.saveSettings in utils.js).
+	Object.assign(settings, GameSettings.loadLocal(settings.gameName));
+	gameSettings = new GameSettings(settings.gameName, settings);
 </script>
 {% endif %}
 

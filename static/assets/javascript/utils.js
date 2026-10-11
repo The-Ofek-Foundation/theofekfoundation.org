@@ -95,22 +95,47 @@ class GameSettings {
 	 */
 
 	/**
-	 * Saves the current settings, associating with the user account.
+	 * Returns the localStorage key under which a game's settings are saved.
+	 * @param  {string} gameName the name of the game
+	 * @return {string}          the storage key
+	 */
+	static storageKey(gameName) {
+		return 'gameSettings:' + gameName;
+	}
+
+	/**
+	 * Loads the settings previously saved in this browser for a game.
+	 * @param  {string} gameName the name of the game
+	 * @return {dictionary}      the saved settings (empty if there are none)
+	 */
+	static loadLocal(gameName) {
+		try {
+			return JSON.parse(localStorage.getItem(GameSettings.storageKey(gameName))) || {};
+		} catch (e) {
+			return {};
+		}
+	}
+
+	/**
+	 * Saves the current settings in this browser (localStorage), then fires a
+	 * 'gamesettingssaved' event on document (detail: {gameName, settings}) so
+	 * signed-in users' settings can also be synced to their account.
 	 * @param  {success} success callback that handles success
 	 * @param  {failure} failure callback that handles error
 	 */
 	saveSettings(success, failure) {
-		var request = new XMLHttpRequest();
-		request.open('POST', '/games/api/save_settings/', true);
-		request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-		request.onreadystatechange = function() {
-			if (request.readyState === 4)
-				if (request.status === 200 && typeof success === 'function')
-					success();
-				else if (typeof failure === 'function')
-					failure();
+		try {
+			localStorage.setItem(GameSettings.storageKey(this._gameName), JSON.stringify(this._settings));
+		} catch (e) {
+			if (typeof failure === 'function')
+				failure(e);
+			return;
 		}
-		request.send(JSON.stringify(convertKeysObject(this._settings, true)));
+		document.dispatchEvent(new CustomEvent('gamesettingssaved', {
+			detail: {gameName: this._gameName, settings: this._settings},
+		}));
+		if (typeof success === 'function')
+			success();
 	}
 }
 
