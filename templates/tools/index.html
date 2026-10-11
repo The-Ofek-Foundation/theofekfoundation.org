@@ -1,6 +1,6 @@
 {% extends 'tools/_base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block header_additions %}
 
@@ -8,9 +8,15 @@
 
 <link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/index.css" %}">
 
-{% if mobile %}
-<link rel="stylesheet" type="text/css" href="{% static "assets/styles/games/mobileindex.css" %}">
-{% endif %}
+<script>
+	// Mobile-only stylesheet (the server used to decide this; see base.html).
+	if (document.documentElement.classList.contains('mobile')) {
+		var mobileIndexCss = document.createElement('link');
+		mobileIndexCss.rel = 'stylesheet';
+		mobileIndexCss.href = '{% static "assets/styles/games/mobileindex.css" %}';
+		document.head.appendChild(mobileIndexCss);
+	}
+</script>
 
 {% endblock %}
 
@@ -37,7 +43,7 @@
 
 	<li class="header">
 		<div><a href="{% url tool.name %}">{{tool.name}}</a></div>
-		<div class="extendable">{% if not mobile %}Expand{% endif %}</div>
+		<div class="extendable"><span class="desktop-only">Expand</span></div>
 	</li>
 
 	<li class="description">

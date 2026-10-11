@@ -14,6 +14,20 @@
 		<!-- Google Analytics end -->
 
 		<title>{% block title %}{% endblock %}</title>
+
+		<!-- Mobile detection (replaces the old server-side minidetector middleware):
+		     adds class="mobile" to <html>; elements use mobile-only / desktop-only. -->
+		<script>
+			if (/Mobi|Android|iP(hone|od|ad)|BlackBerry|IEMobile|Opera Mini|Silk|Kindle|webOS/i.test(navigator.userAgent)
+					|| (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent)))
+				document.documentElement.classList.add('mobile');
+		</script>
+		<style>
+			html:not(.mobile) .mobile-only, html.mobile .desktop-only { display: none !important; }
+			/* Firebase Authentication state (set by JS): html.signed-in shows .auth-signed-in. */
+			html:not(.signed-in) .auth-signed-in, html.signed-in .auth-signed-out { display: none !important; }
+		</style>
+
 		{% block head_block %}{% endblock %}
 	</head>
 

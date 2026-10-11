@@ -1,0 +1,299 @@
+{
+  "hosting": {
+    "public": "public",
+    "predeploy": ".venv/bin/python manage.py build_static",
+    "cleanUrls": true,
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/blog",
+        "destination": "https://blog.theofekfoundation.org/",
+        "type": 301
+      },
+      {
+        "source": "/blog/:path*",
+        "destination": "https://blog.theofekfoundation.org/:path",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:ConnectFour)/?$",
+        "destination": "/games/ConnectFour/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:OnlineGo)/?$",
+        "destination": "/games/OnlineGo/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:Mancala)/?$",
+        "destination": "/games/Mancala/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:UltimateTicTacToe|UTTT)/?$",
+        "destination": "/games/UltimateTicTacToe/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/games/(?:UTTT)/?$",
+        "destination": "/games/UltimateTicTacToe/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:LameDuck)/?$",
+        "destination": "/games/LameDuck/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:OldSnakey|Snake)/?$",
+        "destination": "/games/OldSnakey/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/games/(?:Snake)/?$",
+        "destination": "/games/OldSnakey/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:Minesweeper)/?$",
+        "destination": "/games/Minesweeper/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:DotsAndBoxes)/?$",
+        "destination": "/games/DotsAndBoxes/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:Crossroads)/?$",
+        "destination": "/games/Crossroads/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:Othello)/?$",
+        "destination": "/games/Othello/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:tools|people|account)/)?(?:Hangman)/?$",
+        "destination": "/games/Hangman/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:Maze)/?$",
+        "destination": "/tools/Maze/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:PrimeFactorizer)/?$",
+        "destination": "/tools/PrimeFactorizer/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:PasswordGenerator)/?$",
+        "destination": "/tools/PasswordGenerator/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:Grapher)/?$",
+        "destination": "/tools/Grapher/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:HappyNumbers|HappyNumber)/?$",
+        "destination": "/tools/HappyNumbers/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/tools/(?:HappyNumber)/?$",
+        "destination": "/tools/HappyNumbers/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:ReveresLatsLettesr|ReveresLatsLettre|ReverseLastLetter|ReverseLastLetters)/?$",
+        "destination": "/tools/ReveresLatsLettesr/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/tools/(?:ReveresLatsLettre|ReverseLastLetter|ReverseLastLetters)/?$",
+        "destination": "/tools/ReveresLatsLettesr/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:ImageEditor)/?$",
+        "destination": "/tools/ImageEditor/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|people|account)/)?(?:DijkstraAlgorithm)/?$",
+        "destination": "/tools/DijkstraAlgorithm/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|people)/)?(?:login)/?$",
+        "destination": "/account/login/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|people)/)?(?:username)/?$",
+        "destination": "/account/username/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|people)/)?(?:logout)/?$",
+        "destination": "/account/logout/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|people)/)?(?:register)/?$",
+        "destination": "/account/register/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|people)/)?(?:ResetPassword)/?$",
+        "destination": "/account/ResetPassword/",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|account)/)?(?:Edan)/?$",
+        "destination": "/people/Edan",
+        "type": 301
+      },
+      {
+        "regex": "(?i)^/(?:(?:games|tools|account)/)?(?:Ron)/?$",
+        "destination": "/people/Ron",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "regex": "(?i)^/games/ConnectFour/?$",
+        "destination": "/games/ConnectFour/index.html"
+      },
+      {
+        "regex": "(?i)^/games/OnlineGo/?$",
+        "destination": "/games/OnlineGo/index.html"
+      },
+      {
+        "regex": "(?i)^/games/Mancala/?$",
+        "destination": "/games/Mancala/index.html"
+      },
+      {
+        "regex": "(?i)^/games/UltimateTicTacToe/?$",
+        "destination": "/games/UltimateTicTacToe/index.html"
+      },
+      {
+        "regex": "(?i)^/games/LameDuck/?$",
+        "destination": "/games/LameDuck/index.html"
+      },
+      {
+        "regex": "(?i)^/games/OldSnakey/?$",
+        "destination": "/games/OldSnakey/index.html"
+      },
+      {
+        "regex": "(?i)^/games/Minesweeper/?$",
+        "destination": "/games/Minesweeper/index.html"
+      },
+      {
+        "regex": "(?i)^/games/DotsAndBoxes/?$",
+        "destination": "/games/DotsAndBoxes/index.html"
+      },
+      {
+        "regex": "(?i)^/games/Crossroads/?$",
+        "destination": "/games/Crossroads/index.html"
+      },
+      {
+        "regex": "(?i)^/games/Othello/?$",
+        "destination": "/games/Othello/index.html"
+      },
+      {
+        "regex": "(?i)^/games/Hangman/?$",
+        "destination": "/games/Hangman/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/Maze/?$",
+        "destination": "/tools/Maze/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/PrimeFactorizer/?$",
+        "destination": "/tools/PrimeFactorizer/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/PasswordGenerator/?$",
+        "destination": "/tools/PasswordGenerator/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/Grapher/?$",
+        "destination": "/tools/Grapher/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/HappyNumbers/?$",
+        "destination": "/tools/HappyNumbers/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/ReveresLatsLettesr/?$",
+        "destination": "/tools/ReveresLatsLettesr/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/ImageEditor/?$",
+        "destination": "/tools/ImageEditor/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/DijkstraAlgorithm/?$",
+        "destination": "/tools/DijkstraAlgorithm/index.html"
+      },
+      {
+        "regex": "(?i)^/account/login/?$",
+        "destination": "/account/login/index.html"
+      },
+      {
+        "regex": "(?i)^/account/username/?$",
+        "destination": "/account/username/index.html"
+      },
+      {
+        "regex": "(?i)^/account/logout/?$",
+        "destination": "/account/logout/index.html"
+      },
+      {
+        "regex": "(?i)^/account/register/?$",
+        "destination": "/account/register/index.html"
+      },
+      {
+        "regex": "(?i)^/account/ResetPassword/?$",
+        "destination": "/account/ResetPassword/index.html"
+      },
+      {
+        "regex": "(?i)^/games/?$",
+        "destination": "/games/index.html"
+      },
+      {
+        "regex": "(?i)^/tools/?$",
+        "destination": "/tools/index.html"
+      },
+      {
+        "regex": "(?i)^/people/Edan/?$",
+        "destination": "/people/Edan.html"
+      },
+      {
+        "regex": "(?i)^/people/Ron/?$",
+        "destination": "/people/Ron.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/static/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      }
+    ]
+  }
+}

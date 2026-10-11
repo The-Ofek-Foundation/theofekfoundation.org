@@ -17,3 +17,11 @@ cloud_sql_proxy
 tempstatic/
 
 *.sublime-*
+
+# Python 3 virtualenv and caches
+.venv/
+__pycache__/
+
+# Static build output (python manage.py build_static) and Firebase CLI cache
+public/
+.firebase/

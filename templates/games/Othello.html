@@ -1,6 +1,6 @@
 {% extends 'games/_base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block header_additions %}
 
@@ -15,18 +15,12 @@
 {{block.super}}
 
 <li class="right-float-additions" onclick="undo();">
-	{% if mobile %}
-	U
-	{% else %}
-	Undo
-	{% endif %}
+	<span class="mobile-only">U</span><span class="desktop-only">Undo</span>
 </li>
 
-{% if not mobile %}
-<li class="right-float-additions" onclick="redo();">
+<li class="right-float-additions desktop-only" onclick="redo();">
 	Redo
 </li>
-{% endif %}
 
 {% endblock %}
 
@@ -53,9 +47,7 @@
 	</table>
 	<div class="submit-buttons-div">
 		<tr><input type="submit" id="done" value="Done"></tr>
-		{% if user.is_authenticated %}
 		<tr><input type="submit" id="save" value="Save"></tr>
-		{% endif %}
 		<tr><input type="submit" id="cancel" value="Cancel"></tr>
 	</div>
 </div>

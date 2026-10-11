@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block title %}{{page.title}}{% endblock %}
 
@@ -24,8 +24,6 @@
 
 	<link rel="stylesheet" type="text/css" href="{% static "assets/styles/main_app.css" %}">
 
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-
 	{% block inline_css %} {% endblock %}
 	{% block header_additions %}{% endblock %}
 
@@ -36,52 +34,21 @@
 	<ul class="navbar" id="navbar-top">
 		<li class="link"><a href="{% url 'Homepage' %}">Home</a></li>
 		<li class="link"><a href="{% url 'Blog' '' %}">Blog</a></li>
-		{% if not mobile or page.title == "We are Ofek" %}
-		<li class="link"><a href="{% url 'Games' %}">Games</a></li>
-		{% endif %}
-		{% if not mobile %}
-		<li class="link"><a href="{% url 'Tools Home' %}">Tools</a></li>
-		{% endif %}
+		<li class="link{% if page.title != "We are Ofek" %} desktop-only{% endif %}"><a href="{% url 'Games' %}">Games</a></li>
+		<li class="link desktop-only"><a href="{% url 'Tools Home' %}">Tools</a></li>
 		<ul style="float:right; list-style-type:none; padding-left: 0px;">
 			{% block right_float_additions %}{% endblock %}
-			<li style="padding-top: 4px;">
-				<div class="social">
-					{% if mobile %}
-					<span class="google">
-						<div class="g-plusone" data-size="standard" data-annotation="none"></div>
-					</span>
-					<span class="Facebook">
-						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&width=51&layout=button&action=like&size=small&show_faces=false&share=false&height=65&appId" width="51" height="21" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-					</span>
-					{% else %}
-					<span class="google">
-						<div class="g-plusone" data-size="standard"></div>
-					</span>
-					<span class="Facebook">
-						<iframe src="https://www.facebook.com/plugins/like.php?href={{page.full_url}}&amp;show_faces=false&amp;layout=button_count" scrolling="no" frameborder="0" style="height: 21px; width: 100px" allowTransparency="true"></iframe>
-					</span>
-					{% endif %}
-				</div>
+			{% comment %}
+				Sign-in state is known only in the browser (Firebase Authentication), so both
+				versions are rendered and base.html's CSS shows auth-signed-in / auth-signed-out
+				depending on the "signed-in" class on <html>.
+			{% endcomment %}
+			<li class="auth-signed-in">
+				<a id="navbar-username"></a>
 			</li>
-			{% if mobile %}
-				{% if user.is_authenticated %}
-				<li>
-					<a id="navbar-username">{{user.username | slice:"0:6"}}</a>
-				</li>
-				{% else %}
-				<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
-				{% endif %}
-			{% else %}
-				{% if user.is_authenticated %}
-					<li>
-						<a id="navbar-username">{{user.username}}</a>
-					</li>
-					<li class="link"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
-				{% else %}
-					<li class="link"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
-					<li class="link"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
-				{% endif %}
-			{% endif %}
+			<li class="link auth-signed-in desktop-only"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
+			<li class="link auth-signed-out desktop-only"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
+			<li class="link auth-signed-out"><a class="path-link" data-url="{% url 'Login' %}" data-path="{{page.pathname}}">Login</a></li>
 		</ul>
 	</ul>
 
@@ -104,12 +71,6 @@
 	</div>
 
 	<script type="text/javascript" src="{% static "assets/javascript/theofekfoundation.js" %}"></script>
-
-	<script type="text/javascript">
-		{% if user.is_authenticated %}
-		gtag('set', {'user_id': '{{ user.id }}'}); // Set the user ID using signed-in user_id.
-		{% endif %}
-	</script>
 
 {% endblock %}
 

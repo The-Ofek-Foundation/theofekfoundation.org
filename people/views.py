@@ -1,14 +1,12 @@
 from django.shortcuts import render
 
-from main_app.models import WebsiteCategory, WebsitePage
+from main_app.pages import get_page
 
-main_category = WebsiteCategory.objects.get(name='People')
-main_pages = WebsitePage.objects.filter(category=main_category)
 
 # Create your views here.
 def edan_ben_moshe(request):
 	context_dict = {
-		'page': main_pages.get(name='EBM'),
+		'page': get_page('People', 'EBM'),
 		'person_name': "Edan Ben Moshe",
 	}
 
@@ -16,7 +14,7 @@ def edan_ben_moshe(request):
 
 def ron_kibel(request):
 	context_dict = {
-		'page': main_pages.get(name='Ron Kibel'),
+		'page': get_page('People', 'Ron Kibel'),
 		'person_name': "Ron Kibel",
 	}
 

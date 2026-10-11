@@ -1,116 +1,78 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
-from main_app.models import WebsiteCategory, WebsitePage
-from games.models import GameSettings
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from main_app import display_projects
-from hitcount.models import HitCount
-from hitcount.views import HitCountMixin
 import json
 
-main_category = WebsiteCategory.objects.get(name='Games')
-main_pages = WebsitePage.objects.filter(category=main_category)
+from django.shortcuts import render
+
+from main_app import display_projects
+from main_app.pages import get_page
+
+
+def _page(name):
+	return get_page('Games', name)
+
+
+def _game_context(page_name, game_name):
+	"""Context for a game page with the settings bootstrap (see games/_base.html).
+
+	Settings start as just the game name; the browser fills in anything saved
+	(localStorage, or Firestore for signed-in users).
+	"""
+	return {
+		'page': _page(page_name),
+		'game_settings': json.dumps({'game_name': game_name}),
+	}
+
 
 def index(request):
 	context_dict = {
-		'page': main_pages.get(name='Games Home'),
+		'page': _page('Games Home'),
 		'games': display_projects.games,
 	}
 	return render(request, 'games/index.html', context_dict)
 
-def _get_game_settings(request, game_name, context_dict):
-	if request.user.is_authenticated():
-		game_settings = GameSettings.objects.get_or_create(game_name=game_name, user_id=request.user.id)
-		context_dict['game_settings'] = json.dumps(game_settings[0].get_settings())
-	else:
-		context_dict['game_settings'] = {'game_name': game_name}
 
 def connectfour(request):
-	context_dict = {'page': main_pages.get(name='Connect Four')}
-	_get_game_settings(request, 'Connect Four', context_dict)
-	return render(request, 'games/ConnectOfek.html', context_dict)
+	return render(request, 'games/ConnectOfek.html', _game_context('Connect Four', 'Connect Four'))
+
 
 def weiqi(request):
-	context_dict = {'page': main_pages.get(name='Weiqi')}
+	context_dict = {'page': _page('Weiqi')}
 	return render(request, 'games/OnlineGo.html', context_dict)
 
+
 def mancala(request):
-	context_dict = {'page': main_pages.get(name='Mancala')}
-	_get_game_settings(request, 'Mancala', context_dict)
-	return render(request, 'games/Mancala.html', context_dict)
+	return render(request, 'games/Mancala.html', _game_context('Mancala', 'Mancala'))
+
 
 def ultimatetictactoe(request):
-	context_dict = {'page': main_pages.get(name='Ultimate Tic Tac Toe')}
-	_get_game_settings(request, 'Ultimate Tic Tac Toe', context_dict)
-	return render(request, 'games/UltimateTicTacToe.html', context_dict)
+	return render(request, 'games/UltimateTicTacToe.html', _game_context('Ultimate Tic Tac Toe', 'Ultimate Tic Tac Toe'))
+
 
 def lameduck(request):
-	context_dict = {'page': main_pages.get(name='Lame Duck')}
+	context_dict = {'page': _page('Lame Duck')}
 	return render(request, 'games/LameDuck.html', context_dict)
 
+
 def oldsnakey(request):
-	context_dict = {'page': main_pages.get(name='Old Snakey')}
-	_get_game_settings(request, 'Old Snakey', context_dict)
-	return render(request, 'games/OldSnakey.html', context_dict)
+	return render(request, 'games/OldSnakey.html', _game_context('Old Snakey', 'Old Snakey'))
+
 
 def minesweeper(request):
-	context_dict = {'page': main_pages.get(name='Minesweeper')}
-	_get_game_settings(request, 'Minesweeper', context_dict)
-	return render(request, 'games/Minesweeper.html', context_dict)
+	return render(request, 'games/Minesweeper.html', _game_context('Minesweeper', 'Minesweeper'))
+
 
 def dotsandboxes(request):
-	context_dict = {'page': main_pages.get(name='Dots and Boxes')}
-	_get_game_settings(request, 'Dots and Boxes', context_dict)
-	return render(request, 'games/DotsAndBoxes.html', context_dict)
+	return render(request, 'games/DotsAndBoxes.html', _game_context('Dots and Boxes', 'Dots and Boxes'))
+
 
 def crossroads(request):
-	context_dict = {'page': main_pages.get(name='מפגשים צולבים')}
-	_get_game_settings(request, 'מפגשים צולבים', context_dict)
-	return render(request, 'games/Crossroads.html', context_dict)
+	return render(request, 'games/Crossroads.html', _game_context('מפגשים צולבים', 'מפגשים צולבים'))
+
 
 def othello(request):
-	context_dict = {'page': main_pages.get(name='Othello')}
-	_get_game_settings(request, 'Othello', context_dict)
-	return render(request, 'games/Othello.html', context_dict)
+	return render(request, 'games/Othello.html', _game_context('Othello', 'Othello'))
+
 
 def hangman(request):
-	context_dict = {'page': main_pages.get(name='Hangman')}
-	_get_game_settings(request, 'Hangman', context_dict)
-	return render(request, 'games/Hangman.html', context_dict)
-
-def normalize(s):
-	replacements = {'ם': 'מ', 'ן': 'נ', 'ץ': 'צ', 'ף': 'פ','ך': 'כ'}
-	for k, v in replacements.items():
-		s = s.replace(k, v)
-
-	return s.lower()
-
-@csrf_exempt
-def get_hangman_word(request):
-	if not HitCountMixin.hit_count(request, HitCount.objects.get_for_object(main_pages.get(name='Hangman'))).hit_counted:
-		return HttpResponseForbidden(json.dumps({'active_word': 'I need to delay your guesses...', 'text_direction': settings.FINAL_HANGMAN[1]}))
-
-	letter = json.loads(request.body)['letter']
-
-	# prevent huge letter
-	if len(letter) > 4:
-		return HttpResponseForbidden(json.dumps({'active_word': 'come on, don\t be *too* bad', 'text_direction': settings.FINAL_HANGMAN[1]}))
-
-	response = ''
-	for c in settings.FINAL_HANGMAN[0]().decode('utf-8'):
-		if normalize(c) == letter or c.isspace():
-			response += c
-		else:
-			response += '`' # placeholder
-
-	return HttpResponse(json.dumps({'active_word': response, 'text_direction': settings.FINAL_HANGMAN[1]}))
-
-@login_required
-def save_settings(request):
-	settings = json.loads(request.body)
-	GameSettings.objects.filter(game_name=settings['game_name'], user_id=request.user.id).update(**settings)
-	return HttpResponse()
+	return render(request, 'games/Hangman.html', _game_context('Hangman', 'Hangman'))

@@ -1,6 +1,6 @@
 {% extends 'main_app/main_app_base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block header_additions %}
 
@@ -12,19 +12,11 @@
 
 {% block right_float_additions %}
 <li id="new-game-float" class="right-float-additions" onclick="newGame();">
-	{% if mobile %}
-	N
-	{% else %}
-	New Game
-	{% endif %}
+	<span class="mobile-only">N</span><span class="desktop-only">New Game</span>
 </li>
 
 <li id="show-settings-float" class="right-float-additions" onclick="showSettingsForm();">
-	{% if mobile %}
-	S
-	{% else %}
-	Settings
-	{% endif %}
+	<span class="mobile-only">S</span><span class="desktop-only">Settings</span>
 </li>
 {% endblock %}
 

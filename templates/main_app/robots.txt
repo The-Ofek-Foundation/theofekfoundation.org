@@ -1,2 +1,2 @@
-User-agent: *<br />
+User-agent: *
 Disallow: /account/ResetPassword/

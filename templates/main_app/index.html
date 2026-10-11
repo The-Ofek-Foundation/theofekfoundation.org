@@ -1,6 +1,6 @@
 {% extends 'main_app/main_app_base.html' %}
 
-{% load staticfiles %}
+{% load static %}
 
 {% block inline_css %}
 <style type="text/css">
@@ -11,15 +11,15 @@
 {% block body_content %}
 
 <div class="pseudo-body">
-	<h1>Heya {% if user.is_authenticated %}<a class="animated" title="Change your Username" href="{% url 'Username' %}">{{user.username}}</a>{% else %}peeps{% endif %}, Ofek Gila here!</h1>
+	<h1>Heya <a class="animated auth-signed-in" id="greeting-username" title="Change your Username" href="{% url 'Username' %}"></a><span class="auth-signed-out">peeps</span>, Ofek Gila here!</h1>
 	{% for project in projects %}
 		<div class="projects" id="{{project.id}}">
 		{% autoescape off %}
 			<h2>{{project.header}}</h2>
 			{% endautoescape %}
 			{% for item in project.list %}
-				{% if item.display_main %}{% if not mobile or item.mobile_friendly %}
-				<section class="container square">
+				{% if item.display_main %}
+				<section class="container square{% if not item.mobile_friendly %} desktop-only{% endif %}">
 					<div class="flippable link" onclick="redirect('{% url item.name %}');">
 						<figure class="front">
 							<img class="square" src="{% static item.imagesrc %}">
@@ -29,7 +29,7 @@
 						</figure>
 					</div>
 				</section>
-				{% endif %}{% endif %}
+				{% endif %}
 			{% endfor %}
 		</div>
 	{% endfor %}
@@ -52,11 +52,8 @@
 	</div>
 
 	<div class="footer">
-		{% if mobile %}
-		<a class="animated" href="https://ofekgila.phd" target="_blank">Research</a> <a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">Github</a> <a class="animated" href="{% url 'Blog' '' %}">Blog</a> <a class="animated" href="mailto:ofek@theofekfoundation.org">Email</a>
-		{% else %}
-		Research Portfolio: <a class="animated" href="https://ofek.phd" target="_blank">ofek.phd</a> &nbsp; Github: <a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a class="animated" href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a class="animated" href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a>
-		{% endif %}
+		<span class="mobile-only"><a class="animated" href="https://ofekgila.phd" target="_blank">Research</a> <a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">Github</a> <a class="animated" href="{% url 'Blog' '' %}">Blog</a> <a class="animated" href="mailto:ofek@theofekfoundation.org">Email</a></span>
+		<span class="desktop-only">Research Portfolio: <a class="animated" href="https://ofek.phd" target="_blank">ofek.phd</a> &nbsp; Github: <a class="animated" href="https://github.com/The-Ofek-Foundation" target="_blank">github.com/The-Ofek-Foundation</a> &nbsp; Blog: <a class="animated" href="{% url 'Blog' '' %}">blog.theofekfoundation.org</a> &nbsp; Contact: <a class="animated" href="mailto:ofek@theofekfoundation.org">ofek@theofekfoundation.org</a></span>
 	</div>
 </div>
 {% endblock %}
