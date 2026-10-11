@@ -16,23 +16,17 @@ function docReady() {
 	prt();
 	document.addEventListener('click', function(event) {
 		var targetElem = event.target;
+		// (The navbar's Logout link is handled by firebase_auth.js.)
 		if (hasClassElem(targetElem, 'path-link')) {
 			setSessionData('path', getElemData(targetElem, 'path'));
 			redirect(getElemData(targetElem, 'url'));
-		} else if (targetElem.id === 'logout-url') {
-			var request = new XMLHttpRequest();
-			request.open('POST', getElemData(targetElem, 'url'), true);
-			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-			request.send();
-			request.onreadystatechange = function() {
-				if (request.readyState == 4 && request.status == 200)
-					location.reload();
-			};
 		}
 	});
 };
 
 window.addEventListener('resize', function () {
+	if (!contentWrapper)  // a resize can fire before docReady() has run
+		return;
 	windowHeight = getWindowHeight();
 	navbarTopHeight = getElemHeight(getElemId('navbar-top'));
 

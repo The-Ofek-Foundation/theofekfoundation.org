@@ -44,7 +44,7 @@
 				depending on the "signed-in" class on <html>.
 			{% endcomment %}
 			<li class="auth-signed-in">
-				<a id="navbar-username"></a>
+				<a id="navbar-username" href="{% url 'Username' %}" title="Change your username"></a>
 			</li>
 			<li class="link auth-signed-in desktop-only"><a id="logout-url" data-url="{% url 'Logout' %}">Logout</a></li>
 			<li class="link auth-signed-out desktop-only"><a class="path-link" data-url="{% url 'Register' %}" data-path="{{page.pathname}}">Register</a></li>
@@ -71,6 +71,8 @@
 	</div>
 
 	<script type="text/javascript" src="{% static "assets/javascript/theofekfoundation.js" %}"></script>
+	<!-- Accounts (Firebase Authentication) and settings sync -->
+	<script type="module" src="{% static "assets/javascript/firebase_auth.js" %}"></script>
 
 {% endblock %}
 

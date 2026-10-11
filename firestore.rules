@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// Cloud Firestore Security Rules for www.theofekfoundation.org
+//
+// Data model - the only data the site stores is each signed-in user's saved
+// game settings, one document per game (see static/assets/javascript/firebase_auth.js):
+//
+//   users/{uid}/gameSettings/{gameName}
+//     {uid}       Firebase Auth uid of the owner
+//     {gameName}  one of the games listed in isKnownGame() below
+//     settings    map, required, at most 40 keys - the game's settings
+//     updatedAt   timestamp, required - serverTimestamp() of the last write
+//     (no other fields)
+//
+// Firestore denies every request that no rule below allows, so every other
+// path (including the users/{uid} documents themselves) is locked.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // The request comes from the signed-in user with this uid.
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Games (plus the Maze tool) whose settings can be saved (document IDs,
+    // exactly as the site names them).
+    function isKnownGame(gameName) {
+      return gameName in ['Connect Four', 'Mancala', 'Ultimate Tic Tac Toe',
+                          'Old Snakey', 'Minesweeper', 'Dots and Boxes',
+                          'מפגשים צולבים', 'Othello', 'Hangman', 'Maze'];
+    }
+
+    // A whole settings document, as written by
+    // setDoc(ref, {settings, updatedAt: serverTimestamp()}).
+    function isValidGameSettings(data) {
+      return data.keys().hasAll(['settings', 'updatedAt'])
+          && data.keys().hasOnly(['settings', 'updatedAt'])
+          && data.settings is map
+          && data.settings.size() <= 40
+          && data.updatedAt == request.time;
+    }
+
+    match /users/{uid}/gameSettings/{gameName} {
+      // getDoc, getDocs on the whole subcollection, deleteDoc: owner only.
+      allow read, delete: if isOwner(uid);
+
+      // setDoc: owner only, for a known game, with a valid document. The same
+      // validator guards create and update, so an update can't bypass it.
+      allow create, update: if isOwner(uid)
+                            && isKnownGame(gameName)
+                            && isValidGameSettings(request.resource.data);
+    }
+  }
+}

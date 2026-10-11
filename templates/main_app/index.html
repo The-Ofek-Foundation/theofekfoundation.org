@@ -11,7 +11,7 @@
 {% block body_content %}
 
 <div class="pseudo-body">
-	<h1>Heya <a class="animated auth-signed-in" id="greeting-username" title="Change your Username" href="{% url 'Username' %}"></a><span class="auth-signed-out">peeps</span>, Ofek Gila here!</h1>
+	<h1>Heya <a class="animated auth-signed-in signed-in-name" id="greeting-username" title="Change your Username" href="{% url 'Username' %}"></a><span class="auth-signed-out">peeps</span>, Ofek Gila here!</h1>
 	{% for project in projects %}
 		<div class="projects" id="{{project.id}}">
 		{% autoescape off %}

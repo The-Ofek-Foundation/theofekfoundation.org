@@ -20,9 +20,8 @@ from django.test import Client
 from main_app.pages import PAGES, SITE_URL
 
 # Categories that are not rendered as pages: the blog lives on its own
-# subdomain (/blog/** is a Firebase redirect), and the account pages are added
-# in migration Phase 3c (Firebase Authentication).
-SKIPPED_CATEGORIES = {'Blog', 'Account'}
+# subdomain (/blog/** is a Firebase redirect).
+SKIPPED_CATEGORIES = {'Blog'}
 
 # URLs that are not in PAGES.
 EXTRA_URLS = ['/privacy', '/robots.txt', '/sitemap.xml']

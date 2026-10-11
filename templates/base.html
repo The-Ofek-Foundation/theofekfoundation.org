@@ -27,6 +27,35 @@
 			/* Firebase Authentication state (set by JS): html.signed-in shows .auth-signed-in. */
 			html:not(.signed-in) .auth-signed-in, html.signed-in .auth-signed-out { display: none !important; }
 		</style>
+		<script>
+			// Shows who is signed in (name) or that nobody is (null): toggles html.signed-in,
+			// fills in the username elements, and fires a "signedinchange" event on document.
+			// Called by firebase_auth.js once Firebase knows; until then, the last known name
+			// (cached in localStorage) avoids a flash of "Login".
+			function showSignedInName(name) {
+				document.documentElement.classList.toggle('signed-in', name !== null);
+				var fill = function () {
+					if (name !== null) {
+						var navbarName = document.getElementById('navbar-username');
+						if (navbarName)  // the old site showed 6 characters on phones
+							navbarName.textContent = document.documentElement.classList.contains('mobile')
+								? Array.from(name).slice(0, 6).join('') : name;
+						document.querySelectorAll('.signed-in-name').forEach(function (elem) {
+							elem.textContent = name;
+						});
+					}
+					document.dispatchEvent(new CustomEvent('signedinchange', {detail: {name: name}}));
+				};
+				if (document.readyState === 'loading')
+					document.addEventListener('DOMContentLoaded', fill);
+				else
+					fill();
+			}
+			try {
+				if (localStorage.getItem('auth:displayName') !== null)
+					showSignedInName(localStorage.getItem('auth:displayName'));
+			} catch (e) {}
+		</script>
 
 		{% block head_block %}{% endblock %}
 	</head>

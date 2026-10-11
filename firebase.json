@@ -11,6 +11,9 @@
       }
     }
   },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "functions": [
     {
       "source": "functions",
@@ -44,6 +47,11 @@
       {
         "source": "/blog/:path*",
         "destination": "https://blog.theofekfoundation.org/:path",
+        "type": 301
+      },
+      {
+        "source": "/privacy/",
+        "destination": "/privacy",
         "type": 301
       },
       {
@@ -198,6 +206,13 @@
       }
     ],
     "rewrites": [
+      {
+        "regex": "^/games/api/get_hangman_word/?$",
+        "function": {
+          "functionId": "hangman",
+          "region": "us-central1"
+        }
+      },
       {
         "regex": "(?i)^/games/ConnectFour/?$",
         "destination": "/games/ConnectFour/index.html"

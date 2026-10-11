@@ -1,7 +1,7 @@
 {% extends 'account/account_form_base.html' %}
 
 {% block authenticated_block %}
-	<h1>Welcome {{user.username}}!</h1>
+	<h1>Welcome <span class="signed-in-name"></span>!</h1>
 
 	<i>Are you prepared to redefine your identity?</i><br />
 	<span class="help-text">If you're happy with your identity, go <a href="/" class="animated">home</a></span>
@@ -17,7 +17,6 @@
 {% block form_content %}
 	Enter new username:
 
-	{% csrf_token %}
-
-	{{ username_form.as_p }}
+	<p><label for="id_username">Username:</label> <input type="text" name="username" maxlength="150" autocomplete="username" id="id_username" /></p>
+	<div class="success-message help-text" role="status" hidden></div>
 {% endblock %}

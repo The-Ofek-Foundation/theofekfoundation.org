@@ -16,7 +16,7 @@
 	Enter account details: <br />
 	<span class="help-text">Items in bold are required<br /></span>
 
-	{% csrf_token %}
-
-	{{ user_form.as_p }}
+	<p><label for="id_username">Username:</label> <input type="text" name="username" maxlength="150" autocomplete="username" id="id_username" /></p>
+	<p><label for="id_email" style="font-weight: bold;">Email:</label> <input type="email" name="email" maxlength="254" autocomplete="email" id="id_email" /></p>
+	<p><label for="id_password">Password:</label> <input type="password" name="password" autocomplete="new-password" id="id_password" /></p>
 {% endblock %}

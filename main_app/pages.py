@@ -157,10 +157,6 @@ PAGES = (
 		'Reset your password for The Ofek Foundation.',
 		'Reset your password.',
 		'We Forget'),
-	Page('Account', 'Reset Password Confirm', f'{SITE_URL}/account/ResetPasswordConfirm/', 'account/ResetPasswordConfirm',
-		'Reset your password for The Ofek Foundation.',
-		'Reset your password.',
-		'We Promise to Remember'),
 	Page('Account', 'Password Reset Email Sent', f'{SITE_URL}/account/PasswordResetEmailSent/', 'account/PasswordResetEmailSent',
 		'Password reset email was sent.',
 		'Reset your password.',
@@ -169,13 +165,16 @@ PAGES = (
 		'Update your username for The Ofek Foundation!',
 		'Update your username for The Ofek Foundation!',
 		'We are Reborn'),
+	Page('Account', 'Logout', f'{SITE_URL}/account/logout/', 'account/logout',
+		'Logout of The Ofek Foundation.',
+		'Logout of The Ofek Foundation.',
+		'We Leave'),
 )
 
 FORMS = (
 	Form('Register', 'register_form', 'post', '/account/register/', 'multipart/form-data', 'Register', True),
 	Form('Login', 'login_form', 'post', '/account/login/', 'application/x-www-form-urlencoded', 'Login', True),
 	Form('Reset Password', 'password_reset_form', 'post', '', 'application/x-www-form-urlencoded', 'Send Email', False),
-	Form('Reset Password Confirm', 'password_reset_confirm_form', 'post', '', 'application/x-www-form-urlencoded', 'Reset Password', False),
 	Form('Username', 'username_form', 'post', '/account/username/', 'multipart/form-data', 'Rebirth', True),
 )
 

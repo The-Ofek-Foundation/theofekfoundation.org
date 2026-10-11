@@ -8,32 +8,35 @@
 
 {% block body_content %}
 
-	{% if user.is_authenticated or registered %}
+	{% comment %}
+		Sign-in state is only known in the browser (Firebase Authentication, see
+		firebase_auth.js), so both views are rendered and base.html's CSS shows
+		.auth-signed-in or .auth-signed-out. The form is shown to signed-out visitors,
+		or to signed-in users when form_for is "signed-in" (the username page).
+		firebase_auth.js handles the form's submit and the third-party login buttons.
+	{% endcomment %}
 
+	<div class="auth-signed-in">
 	{% block authenticated_block %}
 	{% endblock %}
+	</div>
 
-	{% else %}
-
+	<div class="auth-signed-out">
 	{% block unauthenticated_block %}
 	{% endblock %}
+	</div>
 
-	{% endif %}
+	<div class="wrapper auth-{{ form_for|default:'signed-out' }}">
 
-	{% if force_form or not user.is_authenticated %}
-
-	<div class="wrapper">
-
-		{% if not user.is_authenticated %}
+		{% if third_party_logins %}
 		<div id="third_party_auth_div">
 
 			New! Third-party logins! <br />
 			Forget the passwords! <br />
 
 			<div id="login-buttons">
-				<a title="Login with Google" alt="Login with Google" href="{% url 'social:begin' 'google-oauth2' %}" id="google-signin-button"></a>
-				<a title="Login with GitHub" alt="Login with GitHub" href="{% url 'social:begin' 'github' %}" id="github-signin-button"></a>
-				<a title="Login with Facebook" alt="Login with Facebook" href="{% url 'social:begin' 'facebook' %}" id="facebook-signin-button"></a>
+				<a href="#" title="Login with Google" id="google-signin-button" data-sign-in-provider="google"></a>
+				<a href="#" title="Login with GitHub" id="github-signin-button" data-sign-in-provider="github"></a>
 			</div>
 
 
@@ -43,18 +46,12 @@
 		</div>
 		{% endif %}
 
-		<form class="account_form" id="{{html_form.name}}" method="{{html_form.method}}" action="{{html_form.action}}" {% if html_form.enctype %}enctype="{{html_form.enctype}}"{% endif %}>
+		<form class="account_form" id="{{html_form.name}}" novalidate>
 
-			{% if error_message %}
-			<div class="errorlist">
-				{{error_message}}
-			</div>
-			{% endif %}
+			<div class="errorlist" role="alert" hidden></div>
 
 			{% block form_content %}
 			{% endblock %}
-
-			<input type="text" class="hidden-input" name="path">
 
 			<div class="center-align">
 				<input type="submit" name="submit" value="{{html_form.submit_value}}" />
@@ -64,7 +61,6 @@
 			{% endblock %}
 
 		</form>
-		{% endif %}
 	</div>
 
 {% endblock %}
@@ -75,30 +71,21 @@
 
 	var mainForm = getElemId('{{html_form.name}}');
 
-	document.addEventListener("DOMContentLoaded", function () {
-		resizeForm();
-		var hiddenPathInputs = getElemsQuery(".hidden-input[name=path]");
-		for (var i = 0; i < hiddenPathInputs.length; i++)
-			hiddenPathInputs[i].value = getLocallyStored('path') ? getLocallyStored('path'):'';
-	});
+	document.addEventListener("DOMContentLoaded", resizeForm);
+	// The form may only become visible once the sign-in state is known.
+	document.addEventListener("signedinchange", resizeForm);
 
 	function onResize() {
-		{% if not user.is_authenticated %}
 		resizeForm();
-		{% endif %}
 	};
 
 	function resizeForm() {
 		let formWidth = getElemWidth(getElemQuery("{% if html_form.resize_reference_query %}{{html_form.resize_reference_query}}{% else %}input[name]{% endif %}"));
+		if (!formWidth)  // hidden
+			return;
 		setElemWidth(mainForm, formWidth);
-		setElemWidth(getElemId('third_party_auth_div'), formWidth);
-	}
-
-	function pageReady() {
-		let errorList = getElemsClass('errorlist');
-		for (let error of errorList) {
-			insertAfterElem(error, error.nextElementSibling.children[1]);
-		}
+		if (getElemId('third_party_auth_div'))
+			setElemWidth(getElemId('third_party_auth_div'), formWidth);
 	}
 </script>
 {% endif %}

@@ -1,0 +1,15 @@
+{% extends 'main_app/main_app_base.html' %}
+
+{% comment %}
+	firebase_auth.js signs out as soon as this page opens (it looks for #logout-page).
+{% endcomment %}
+
+{% block body_content %}
+<div id="logout-page" style="text-align: center;">
+	<h1 class="auth-signed-in">Logging you out...</h1>
+	<div class="auth-signed-out">
+		<h1>You have left the Foundation.</h1>
+		Come back soon! <a class="animated" href="{% url 'Homepage' %}">Return to the homepage.</a>
+	</div>
+</div>
+{% endblock %}

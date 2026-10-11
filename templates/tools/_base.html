@@ -14,7 +14,8 @@
 <script type="text/javascript" src="{% static "assets/javascript/utils.js" %}"></script>
 
 <script type="text/javascript">
-	gameSettings = new GameSettings("Maze", {});
+	// Settings saved in this browser (GameSettings.saveSettings in utils.js).
+	gameSettings = new GameSettings("Maze", GameSettings.loadLocal("Maze"));
 </script>
 
 {% endblock %}

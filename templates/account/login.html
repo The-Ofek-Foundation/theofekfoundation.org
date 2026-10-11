@@ -1,9 +1,7 @@
 {% extends 'account/account_form_base.html' %}
 
-{% load static %}
-
 {% block authenticated_block %}
-	<h1>You are already in, {{user.username}}!</h1>
+	<h1>You are already in, <span class="signed-in-name"></span>!</h1>
 
 	<a class="animated" href="{% url 'Logout' %}">Logout from the Foundation</a> or <a class="animated" href="{% url 'Homepage' %}">go to homepage</a>?
 	<br />
@@ -16,10 +14,9 @@
 {% block form_content %}
 	Enter Account Details:
 	<br />
-	{% csrf_token %}
-	Username: <input type="text" name="username" value="" size="50" />
+	Email: <input type="email" name="email" value="" size="50" autocomplete="email" />
 	<br />
-	Password: <input type="password" name="password" value="" size="50" />
+	Password: <input type="password" name="password" value="" size="50" autocomplete="current-password" />
 	<br />
 {% endblock %}
 
