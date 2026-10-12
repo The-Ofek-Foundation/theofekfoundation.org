@@ -33,6 +33,7 @@ const app = initializeApp({
 	storageBucket: 'theofekfoundation.firebasestorage.app',
 	messagingSenderId: '17171848498',
 	appId: '1:17171848498:web:c565cc218b8a68a4be8b2b',
+	measurementId: 'G-W2YLGQXGNB',
 });
 const auth = getAuth(app);
 
